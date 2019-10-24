@@ -6,7 +6,8 @@
 
 ``` bash
 # Clone this repo
-$ git clone https://github.com/Colm3na/polkastats.git
+$ git clone https://github.com/Colm3na/polkastats-v2.git
+cd polkastats-v2
 
 # Install dependencies
 $ npm run install
