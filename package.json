@@ -1,0 +1,33 @@
+{
+  "name": "PolkaStats",
+  "version": "1.0.0",
+  "description": "Polkadot network statistics",
+  "author": "Mario Pino Uceda",
+  "private": true,
+  "scripts": {
+    "dev": "nuxt",
+    "build": "nuxt build",
+    "start": "nuxt start",
+    "generate": "nuxt generate"
+  },
+  "dependencies": {
+    "@nuxtjs/axios": "^5.3.6",
+    "@nuxtjs/google-analytics": "^2.2.0",
+    "@polkadot/util": "^0.94.1",
+    "@polkadot/util-crypto": "^1.0.1",
+    "@polkadot/vue-identicon": "^0.42.0-beta.29",
+    "apexcharts": "^3.8.2",
+    "bootstrap": "^4.1.3",
+    "bootstrap-vue": "^2.0.0-rc.11",
+    "cookie-universal-nuxt": "^2.0.16",
+    "jdenticon": "^2.2.0",
+    "jquery": "^3.4.1",
+    "moment": "^2.24.0",
+    "nuxt": "^2.0.0",
+    "nuxt-clipboard2": "^0.2.1",
+    "vue-apexcharts": "^1.4.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.9"
+  }
+}

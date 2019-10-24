@@ -1,0 +1,56 @@
+==================================================================
+https://keybase.io/polkastats
+--------------------------------------------------------------------
+
+I hereby claim:
+
+  * I am an admin of https://polkastats.io
+  * I am polkastats (https://keybase.io/polkastats) on keybase.
+  * I have a public key ASAo3IEN21lWxjY94rVdCnfnv2_7_YMP3uXJc6smTT9TMAo
+
+To do so, I am signing this object:
+
+{
+  "body": {
+    "key": {
+      "eldest_kid": "012028dc810ddb5956c6363de2b55d0a77e7bf6ffbfd830fdee5c973ab264d3f53300a",
+      "host": "keybase.io",
+      "kid": "012028dc810ddb5956c6363de2b55d0a77e7bf6ffbfd830fdee5c973ab264d3f53300a",
+      "uid": "4f3daea4d128502d8b54f1fb1d2ec719",
+      "username": "polkastats"
+    },
+    "merkle_root": {
+      "ctime": 1564232562,
+      "hash": "413984be3d98ac7ddd58831cfa7e02637953a6560d84bc8c477034824f12e28e1014cff91e399bba15e88c14354f836a97dc98b6931d029fa4b31e6fc70ddcd8",
+      "hash_meta": "6941244135c132d53a7ff8caed665b1e72f812e05ef22d5cc5d98e5ac99a3f7c",
+      "seqno": 5865031
+    },
+    "service": {
+      "entropy": "JBs6uNimOR7VvJFLVUxO40Sg",
+      "hostname": "polkastats.io",
+      "protocol": "https:"
+    },
+    "type": "web_service_binding",
+    "version": 2
+  },
+  "client": {
+    "name": "keybase.io go client",
+    "version": "4.2.0"
+  },
+  "ctime": 1564232572,
+  "expire_in": 504576000,
+  "prev": "19b8ac0fb8aeec10459ad15914e56f155b94ba1d60bec88845480f18b1f0a02d",
+  "seqno": 5,
+  "tag": "signature"
+}
+
+which yields the signature:
+
+hKRib2R5hqhkZXRhY2hlZMOpaGFzaF90eXBlCqNrZXnEIwEgKNyBDdtZVsY2PeK1XQp3579v+/2DD97lyXOrJk0/UzAKp3BheWxvYWTESpcCBcQgGbisD7iu7BBFmtFZFOVvFVuUuh1gvsiIRUgPGLHwoC3EIGb8mD0yW9XZnyYeCTAhIOuf6UcdCZYxerZ9fExOhaQhAgHCo3NpZ8RArHD2LbN16iy7NTE+2YFhDa+jD++O7KXp+Kc2v6z35oPxz8rf046pcPJCkHX2hu2NVCNjhfLadr0wvmHVGbwYB6hzaWdfdHlwZSCkaGFzaIKkdHlwZQildmFsdWXEIO47onWqoeKgSJMOxhvUmM/t2QqKhs981865sty0Akqyo3RhZ80CAqd2ZXJzaW9uAQ==
+
+And finally, I am proving ownership of this host by posting or
+appending to this document.
+
+View my publicly-auditable identity here: https://keybase.io/polkastats
+
+==================================================================
