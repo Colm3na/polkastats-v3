@@ -403,6 +403,8 @@ export default {
 
       console.log(`bignumber:`, bn)
 
+      console.log(`amount string:`, bn.toString())
+
       //return amount;
       formatBalance.setDefaults({ decimals: 12, unit: 'KSM' });
       return formatBalance(bn);
