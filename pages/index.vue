@@ -396,11 +396,10 @@ export default {
     formatDot(amount) {
       if (isHex(amount)) {
         let bn = new BN(amount, 16)
-        return formatBalance(bn);
       } else {
         let bn = new BN(amount)
-        return formatBalance(bn);
       }
+      return formatBalance(bn.toString(10));
     },  
     shortAddess(address) {
       return (address).substring(0,10) + ' .... ' + (address).substring(address.length - 10);
