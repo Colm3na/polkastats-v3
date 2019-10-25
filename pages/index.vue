@@ -128,9 +128,9 @@
                   <div class="col-md-3 mb-2 text-center">
                     <Identicon :value="validator.accountId" :size="80" :theme="'polkadot'" />
                   </div>
-                  <div class="col-md-9 pt-4">
-                    <p class="mb-0 mt-3 rank">PoA #{{ index+1 }}</p>
-                    <h4 class="card-title mb-4 account mt-4 mt-sm-1 mt-md-1 mt-lg-1 mt-xl-1">
+                  <div class="col-md-9">
+                    <p class="mb-0 mt-2 rank">PoA #{{ index+1 }}</p>
+                    <h4 class="card-title account mt-4 mt-sm-1 mt-md-1 mt-lg-1 mt-xl-1">
                       {{ validator.accountId }}
                     </h4>
                   </div>
