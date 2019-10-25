@@ -394,11 +394,10 @@ export default {
     },
     // Use here isHex function bundled in @polkadot/util
     formatDot(amount) {
-      let bn = BigNumber(amount) 
       if (isHex(amount)) {
-        return formatBalance(bn);
+        return formatBalance(BigNumber(amount, 16));
       } else {
-        return formatBalance(bn);
+        return formatBalance(BigNumber(amount));
       }
     },  
     shortAddess(address) {
