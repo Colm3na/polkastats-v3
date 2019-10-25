@@ -395,7 +395,7 @@ export default {
       
       if (isHex(amount)) {
         console.log(`amount is HEX`)
-        bn = new BN(amount.toString(), 16);
+        bn = new BN(amount.toString());
       } else {
         console.log(`amount is DEC`)
         bn = new BN(amount.toString());
