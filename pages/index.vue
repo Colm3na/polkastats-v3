@@ -14,7 +14,7 @@
         </nav>
         <div class="tab-content mb-2" id="nav-tabContent">
           <div class="tab-pane fade show active" id="active-validators" role="tabpanel" aria-labelledby="nav-active-validators">
-            <div class="validator card mb-3" v-for="(validator, index) in validators">
+            <div class="validator card mb-3" v-for="(validator, index) in validators" :key="validator.accountId">
               <div v-bind:class="{ 'card-body': 'card-body', 'bg-offline': validator.isOffline }">
                 <p class="text-right mb-0">
                   <a class="favorite" v-on:click="toggleFavorite(validator.accountId)" title="Mark as Favorite">
@@ -129,6 +129,7 @@
                         </div>
                       </div>
                     </template> -->
+                    <pre>{{ validator }}</pre>
                   </div>
                 </div>
               </div>
