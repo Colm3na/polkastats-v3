@@ -10,13 +10,13 @@
           <div class="nav nav-tabs" id="nav-tab" role="tablist">
             <a class="nav-item nav-link active" id="nav-intention-validators" data-toggle="tab" href="#intention-validators" role="tab" aria-controls="nav-intention-validators" aria-selected="true">INTENTION VALIDATORS ({{ intentions.length }})</a>
             <a class="nav-item nav-link" id="nav-active-validators" data-toggle="tab" href="#active-validators" role="tab" aria-controls="nav-active-validators" aria-selected="true">ACTIVE VALIDATORS ({{ validators.length }})</a>
-            <a class="nav-item nav-link" id="nav-favorites" data-toggle="tab" href="#favorites" role="tab" aria-controls="nav-favorites" aria-selected="false"> <i class="far fa-star" style="color: rgb(241, 189, 35);"></i> FAVORITES ({{ favorites.length }})</a>
-            </div>
+            <!-- <a class="nav-item nav-link" id="nav-favorites" data-toggle="tab" href="#favorites" role="tab" aria-controls="nav-favorites" aria-selected="false"> <i class="far fa-star" style="color: rgb(241, 189, 35);"></i> FAVORITES ({{ favorites.length }})</a> -->
+          </div>
         </nav>
         <div class="tab-content mb-2" id="nav-tabContent">
           <div class="tab-pane fade show active" id="intention-validators" role="tabpanel" aria-labelledby="nav-intention-validators">
             <div class="validator card mb-3" v-for="(validator, index) in intentions" :key="intentions.accountId">
-              <div v-bind:class="{ 'card-body': 'card-body', 'bg-offline': validator.isOffline }">
+              <div class="card-body">
                 <p class="text-right mb-0">
                   <a class="favorite" v-on:click="toggleFavorite(validator.accountId)" title="Mark as Favorite">
                     <i v-if="isFavorite(validator.accountId)" class="fas fa-star" style="color: #f1bd23" title="Unset as Favorite"></i>
@@ -116,13 +116,12 @@
                         </div>
                       </div>
                     </template>
-                    <!-- <pre>{{ validator }}</pre> -->
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <div class="tab-pane fade show active" id="active-validators" role="tabpanel" aria-labelledby="nav-active-validators">
+          <div class="tab-pane fade show" id="active-validators" role="tabpanel" aria-labelledby="nav-active-validators">
             <div class="validator card mb-3" v-for="(validator, index) in validators" :key="validators.accountId">
               <div v-bind:class="{ 'card-body': 'card-body', 'bg-offline': validator.isOffline }">
                 <p class="text-right mb-0">
@@ -141,46 +140,6 @@
                         {{ validator.accountId }}
                       </nuxt-link>
                     </h4>
-                    <div v-if="validator.controllerId != validator.nextSessionId">
-                      <div class="row">
-                        <div class="col-md-3 mb-2">
-                          <strong>Controller</strong>
-                        </div>
-                        <div class="col-md-9 mb-2">
-                          <Identicon :value="validator.controllerId" :size="20" :theme="'polkadot'" />
-                          <a v-bind:href="blockExplorer.account + validator.controllerId" target="_blank">
-                            <span class="d-inline d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="validator.controllerId">{{ shortAddess(validator.controllerId) }}</span>
-                            <span class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline">{{ validator.controllerId }}</span>
-                          </a>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-md-3 mb-2">
-                          <strong>Session</strong>
-                        </div>
-                        <div class="col-md-9 mb-2">
-                          <Identicon :value="validator.nextSessionId" :size="20" :theme="'polkadot'" />              
-                          <a v-bind:href="blockExplorer.account + validator.nextSessionId" target="_blank">
-                            <span class="d-inline d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="validator.nextSessionId">{{ shortAddess(validator.nextSessionId) }}</span>
-                            <span class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline">{{ validator.nextSessionId }}</span>     
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-                    <div v-else>
-                      <div class="row">
-                        <div class="col-md-3 mb-2">
-                          <strong>Controller/Session</strong>
-                        </div>
-                        <div class="col-md-9 mb-2">
-                          <Identicon :value="validator.nextSessionId" :size="20" :theme="'polkadot'" />
-                          <a v-bind:href="blockExplorer.account + validator.nextSessionId" target="_blank">
-                            <span class="d-inline d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="validator.nextSessionId">{{ shortAddess(validator.nextSessionId) }}</span>
-                            <span class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline">{{ validator.nextSessionId }}</span>
-                          </a>
-                        </div>
-                      </div>
-                    </div>
                   </div>
                 </div>
               </div>
