@@ -388,24 +388,13 @@ export default {
         return (n.toString()).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
       }
     },
-    // Use here isHex function bundled in @polkadot/util
     formatDot(amount) {
-      console.log(`amount:`, amount)
       let bn;
-      
       if (isHex(amount)) {
-        console.log(`amount is HEX`)
         bn = new BN(amount.substring(2, amount.length), 16);
       } else {
-        console.log(`amount is DEC`)
         bn = new BN(amount.toString());
       }
-
-      console.log(`bignumber:`, bn)
-
-      console.log(`amount string:`, bn.toString(10))
-
-      //return amount;
       formatBalance.setDefaults({ decimals: 12, unit: 'KSM' });
       return formatBalance(bn.toString(10));
     },  
