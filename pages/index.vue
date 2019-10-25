@@ -377,14 +377,10 @@ export default {
         .then(function (response) {
           vm.bestblocknumber = response.data;
         });
-    }, 
-    isHex(n) {
-      var a = parseInt(n,16);
-      return (a.toString(16) === n)
     },
     // Use here this.isHex function
     formatNumber(n) {
-      if (this.isHex(n)) {
+      if (isHex(n)) {
         console.log(n + ' is HEX');
         return (parseInt(n, 16).toString()).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
       } else {
