@@ -10,7 +10,7 @@
           <div class="nav nav-tabs" id="nav-tab" role="tablist">
             <a class="nav-item nav-link active" id="nav-intention-validators" data-toggle="tab" href="#intention-validators" role="tab" aria-controls="nav-intention-validators" aria-selected="true">INTENTION VALIDATORS ({{ intentions.length }})</a>
             <a class="nav-item nav-link" id="nav-active-validators" data-toggle="tab" href="#active-validators" role="tab" aria-controls="nav-active-validators" aria-selected="true">ACTIVE VALIDATORS ({{ validators.length }})</a>
-            <!-- <a class="nav-item nav-link" id="nav-favorites" data-toggle="tab" href="#favorites" role="tab" aria-controls="nav-favorites" aria-selected="false"> <i class="far fa-star" style="color: rgb(241, 189, 35);"></i> FAVORITES ({{ favorites.length }})</a> -->
+            <a class="nav-item nav-link" id="nav-favorites" data-toggle="tab" href="#favorites" role="tab" aria-controls="nav-favorites" aria-selected="false"> <i class="far fa-star" style="color: rgb(241, 189, 35);"></i> FAVORITES ({{ favorites.length }})</a>
           </div>
         </nav>
         <div class="tab-content mb-2" id="nav-tabContent">
@@ -124,22 +124,14 @@
           <div class="tab-pane fade show" id="active-validators" role="tabpanel" aria-labelledby="nav-active-validators">
             <div class="validator card mb-3" v-for="(validator, index) in validators" :key="validators.accountId">
               <div class="card-body">
-                <p class="text-right mb-0">
-                  <a class="favorite" v-on:click="toggleFavorite(validator.accountId)" title="Mark as Favorite">
-                    <i v-if="isFavorite(validator.accountId)" class="fas fa-star" style="color: #f1bd23" title="Unset as Favorite"></i>
-                    <i v-else class="fas fa-star" style="color: #e6dfdf;" title="Set as Favorite"></i>
-                  </a>
-                </p>
                 <div class="row">
                   <div class="col-md-3 mb-2 text-center">
                     <Identicon :value="validator.accountId" :size="80" :theme="'polkadot'" />
-                    <p class="mb-0 rank">rank #{{ index+1 }}</p>
+                    <p class="mb-0 mt-2 rank">rank #{{ index+1 }}</p>
                   </div>
                   <div class="col-md-9">
                     <h4 class="card-title mb-4 account mt-4 mt-sm-1 mt-md-1 mt-lg-1 mt-xl-1">
-                      <nuxt-link :to="{name: 'validator', query: { accountId: validator.accountId } }" title="Validator details">
-                        {{ validator.accountId }}
-                      </nuxt-link>
+                      {{ validator.accountId }}
                     </h4>
                   </div>
                 </div>
@@ -155,7 +147,7 @@
                 </button>
               </div>
             </template>
-            <template  v-for="(validator, index) in validators">
+            <template  v-for="(validator, index) in intentions">
               <template v-if="isFavorite(validator.accountId)">
                 <div class="validator card mb-3">
                   <p class="text-right mb-0">
