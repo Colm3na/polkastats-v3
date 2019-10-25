@@ -395,7 +395,7 @@ export default {
       if (isHex(amount)) {
         return formatBalance(parseInt(amount, 16));
       } else {
-        return formatBalance(amount);
+        return formatBalance(parseInt(amount));
       }
     },  
     shortAddess(address) {
