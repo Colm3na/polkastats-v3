@@ -131,7 +131,9 @@
                   <div class="col-md-9">
                     <p class="mb-0 mt-1 rank">PoA #{{ index+1 }}</p>
                     <h4 class="card-title account mt-4 mt-sm-1 mt-md-1 mt-lg-1 mt-xl-1">
-                      {{ validator.accountId }}
+                      <a v-bind:href="blockExplorer.account + validator.controllerId" target="_blank">
+                        {{ validator.accountId }}
+                      </a>
                     </h4>
                   </div>
                 </div>
