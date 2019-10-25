@@ -398,11 +398,11 @@ export default {
       let bn;
       
       if (isHex(amount)) {
-        bn = new BN(amount, 16);
+        bn = new BN(amount.toString(), 16);
       } else {
-        bn = new BN(amount);
+        bn = new BN(amount.toString());
       }
-      
+
       console.log(`bignumber:`, bn)
 
       return amount;
