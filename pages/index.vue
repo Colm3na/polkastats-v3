@@ -125,11 +125,11 @@
             <div class="validator card mb-3" v-for="(validator, index) in validators" :key="validators.accountId">
               <div class="card-body">
                 <div class="row">
-                  <div class="col-md-3 mb-2 text-center">
+                  <div class="col-md-3 text-center">
                     <Identicon :value="validator.accountId" :size="80" :theme="'polkadot'" />
                   </div>
                   <div class="col-md-9">
-                    <p class="mb-0 mt-2 rank">PoA #{{ index+1 }}</p>
+                    <p class="mb-0 mt-1 rank">PoA #{{ index+1 }}</p>
                     <h4 class="card-title account mt-4 mt-sm-1 mt-md-1 mt-lg-1 mt-xl-1">
                       {{ validator.accountId }}
                     </h4>
