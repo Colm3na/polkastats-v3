@@ -8,7 +8,7 @@
         <p class="session text-right">Last block: <strong>#{{ formatNumber(bestblocknumber) }}</strong> | Session: <strong>{{ formatNumber(session.sessionProgress) }}/{{ formatNumber(session.sessionLength) }}</strong> | Era: <strong>{{ formatNumber(session.eraProgress) }}/{{ formatNumber(session.eraLength) }}</strong></p>
         <nav>
           <div class="nav nav-tabs" id="nav-tab" role="tablist">
-            <a class="nav-item nav-link active" id="nav-active-validators" data-toggle="tab" href="#active-validators" role="tab" aria-controls="nav-active-validators" aria-selected="true">VALIDATORS ({{ validators.length }})</a>
+            <a class="nav-item nav-link active" id="nav-active-validators" data-toggle="tab" href="#active-validators" role="tab" aria-controls="nav-active-validators" aria-selected="true">INTENTION VALIDATORS ({{ validators.length }})</a>
             <a class="nav-item nav-link" id="nav-favorites" data-toggle="tab" href="#favorites" role="tab" aria-controls="nav-favorites" aria-selected="false"> <i class="far fa-star" style="color: rgb(241, 189, 35);"></i> FAVORITES ({{ favorites.length }})</a>
             </div>
         </nav>
@@ -100,11 +100,6 @@
                         <h6 class="h6 nominators d-inline mr-4"><i class="fas"></i> Nominators ({{ validator.stakers.others.length }})</h6>
                       </a>
                     </template>
-                    <!-- <template v-if="validator.offline.length > 0">
-                      <a data-toggle="collapse" v-bind:href="'#offline' + index" role="button" aria-expanded="false" v-bind:aria-controls="'offline' + index">
-                        <h6 class="h6 offline d-inline"><i class="fas"></i> Reported offline ({{ validator.offline.length }})</h6>
-                      </a>
-                    </template> -->
                     <template v-if="validator.stakers.others.length > 0">
                       <div class="nominator collapse pt-2 pb-3"  v-bind:id="'staker' + index">
                         <div v-for="staker in validator.stakers.others" class="row">
@@ -120,15 +115,6 @@
                         </div>
                       </div>
                     </template>
-                    <!-- <template v-if="validator.offline.length > 0">
-                      <div class="offlineEvent collapse pt-2 pb-3"  v-bind:id="'offline' + index">
-                        <div v-for="offlineEvent in validator.offline" class="row">
-                          <div class="col-12" style="color: #d75ea1;">                      
-                            <i class="far fa-angry"></i> Reported offline {{ offlineEvent.number }} time/s at block <a class="block" v-bind:href="blockExplorer.block + offlineEvent.block" target="_blank">#{{ thousandsSeparator(offlineEvent.block) }}</a>
-                          </div>
-                        </div>
-                      </div>
-                    </template> -->
                     <pre>{{ validator }}</pre>
                   </div>
                 </div>
@@ -233,11 +219,6 @@
                             <h6 class="h6 nominators d-inline mr-4"><i class="fas"></i> Nominators ({{ validator.stakers.others.length }})</h6>
                           </a>
                         </template>
-                        <!-- <template v-if="validator.offline.length > 0">
-                          <a data-toggle="collapse" v-bind:href="'#offline' + index" role="button" aria-expanded="false" v-bind:aria-controls="'offline' + index">
-                            <h6 class="h6 offline d-inline"><i class="fas"></i> Reported offline ({{ validator.offline.length }})</h6>
-                          </a>
-                        </template> -->
                         <template v-if="validator.stakers.others.length > 0">
                           <div class="nominator collapse pt-2 pb-3"  v-bind:id="'staker' + index">
                             <div v-for="staker in validator.stakers.others" class="row">
@@ -253,15 +234,6 @@
                             </div>
                           </div>
                         </template>
-                        <!-- <template v-if="validator.offline.length > 0">
-                          <div class="offlineEvent collapse pt-2 pb-3"  v-bind:id="'offline' + index">
-                            <div v-for="offlineEvent in validator.offline" class="row">
-                              <div class="col-12" style="color: #d75ea1;">                      
-                                <i class="far fa-angry"></i> Reported offline {{ offlineEvent.number }} time/s at block <a class="block" v-bind:href="blockExplorer.block + offlineEvent.block" target="_blank">#{{ thousandsSeparator(offlineEvent.block) }}</a>
-                              </div>
-                            </div>
-                          </div>
-                        </template> -->
                       </div>
                     </div>
                   </div>
@@ -302,8 +274,8 @@ export default {
         nodeVersion: ""
       },
       blockExplorer: {
-        block: 'https://polkascan.io/pre/alexander/block/',
-        account: 'https://polkascan.io/pre/alexander/account/'
+        block: 'https://polkascan.io/pre/kusama-cc2/block/',
+        account: 'https://polkascan.io/pre/kusama-cc2/account/'
       },
       favorites: [],
       polling: null,
@@ -344,7 +316,7 @@ export default {
       vm.$store.dispatch('validators/update');
     }
 
-    /* Update validators list, best block and session info every 10 seconds */
+    /* Update validators list, best block and session info every 30 seconds */
     this.polling = setInterval(() => {
       vm.$store.dispatch('validators/update');
       this.getSession();

@@ -5,7 +5,7 @@
         <div class="container">
           <b-navbar toggleable="lg" type="dark" class="row">
             <b-navbar-brand>
-              <nuxt-link to="/" class="navbar-brand" title="PolkaStats | Polkadot network statistics"><span class="logo"></span>PolkaStats</nuxt-link>
+              <nuxt-link to="/" class="navbar-brand" title="PolkaStats | Polkadot Kusama CC2 network statistics"><span class="logo"></span>PolkaStats Kusama CC2</nuxt-link>
             </b-navbar-brand>
             <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
             <b-collapse id="nav-collapse" is-nav class="flex-grow-1 text-center text-sx-right text-md-right text-lg-right">
