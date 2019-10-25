@@ -394,10 +394,11 @@ export default {
     },
     // Use here isHex function bundled in @polkadot/util
     formatDot(amount) {
+      let bn;
       if (isHex(amount)) {
-        let bn = new BN(amount, 16)
+        bn = new BN(amount, 16);
       } else {
-        let bn = new BN(amount)
+        bn = new BN(amount);
       }
       return formatBalance(bn.toString(10));
     },  
