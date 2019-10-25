@@ -347,7 +347,7 @@ export default {
       vm.$store.dispatch('validators/update');
       this.getSession();
       this.getBestBlockNumber();
-    }, 10000);
+    }, 30000);
 
   },
   beforeDestroy: function () {
@@ -392,11 +392,12 @@ export default {
     },
     // Use here isHex function bundled in @polkadot/util
     formatDot(amount) {
-      if (isHex(amount)) {
+      return amount
+      /* if (isHex(amount)) {
         return formatBalance(parseInt(amount, 16));
       } else {
         return formatBalance(parseInt(amount));
-      }
+      } */
     },  
     shortAddess(address) {
       return (address).substring(0,10) + ' .... ' + (address).substring(address.length - 10);
