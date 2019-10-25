@@ -406,6 +406,7 @@ export default {
       console.log(`bignumber:`, bn)
 
       //return amount;
+      formatBalance.setDefaults({ decimals: 12, unit: 'KSM' });
       return formatBalance(bn);
     },  
     shortAddess(address) {
