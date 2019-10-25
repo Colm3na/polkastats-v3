@@ -283,7 +283,8 @@ import bootstrap from 'bootstrap';
 import Identicon from "../components/identicon.vue";
 import editable from "../components/editable.vue";
 import { formatBalance, isHex } from '@polkadot/util';
-formatBalance.setDefaults({ decimals: 15, unit: 'DOT' });
+formatBalance.setDefaults({ decimals: 12, unit: 'KSM' });
+import BigNumber from "bignumber.js"
 export default {
   head () {
     return {
@@ -393,12 +394,12 @@ export default {
     },
     // Use here isHex function bundled in @polkadot/util
     formatDot(amount) {
-      return amount
-      /* if (isHex(amount)) {
-        return formatBalance(parseInt(amount, 16));
+      let bn = BigNumber(amount) 
+      if (isHex(amount)) {
+        return formatBalance(bn);
       } else {
-        return formatBalance(parseInt(amount));
-      } */
+        return formatBalance(bn);
+      }
     },  
     shortAddess(address) {
       return (address).substring(0,10) + ' .... ' + (address).substring(address.length - 10);
