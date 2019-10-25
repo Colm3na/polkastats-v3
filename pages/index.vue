@@ -395,7 +395,7 @@ export default {
       
       if (isHex(amount)) {
         console.log(`amount is HEX`)
-        bn = new BN(amount.toString());
+        bn = new BN(amount.toString(), 16);
       } else {
         console.log(`amount is DEC`)
         bn = new BN(amount.toString());
@@ -403,11 +403,11 @@ export default {
 
       console.log(`bignumber:`, bn)
 
-      console.log(`amount string:`, bn.toString())
+      console.log(`amount string:`, bn.toString(10))
 
       //return amount;
       formatBalance.setDefaults({ decimals: 12, unit: 'KSM' });
-      return formatBalance(bn);
+      return formatBalance(bn.toString(10));
     },  
     shortAddess(address) {
       return (address).substring(0,10) + ' .... ' + (address).substring(address.length - 10);
