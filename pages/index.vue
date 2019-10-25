@@ -385,10 +385,10 @@ export default {
     // Use here this.isHex function
     formatNumber(n) {
       if (this.isHex(n)) {
-        //console.log(n + ' is HEX');
+        console.log(n + ' is HEX');
         return (parseInt(n, 16).toString()).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
       } else {
-        //console.log(n + ' is NOT HEX');
+        console.log(n + ' is NOT HEX');
         return (n.toString()).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
       }
     },
