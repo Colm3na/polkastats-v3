@@ -284,7 +284,7 @@ import Identicon from "../components/identicon.vue";
 import editable from "../components/editable.vue";
 import { formatBalance, isHex } from '@polkadot/util';
 formatBalance.setDefaults({ decimals: 12, unit: 'KSM' });
-import BigNumber from "bignumber.js"
+import BN from "bn.js"
 export default {
   head () {
     return {
@@ -395,9 +395,9 @@ export default {
     // Use here isHex function bundled in @polkadot/util
     formatDot(amount) {
       if (isHex(amount)) {
-        return formatBalance(BigNumber(amount, 16));
+        return formatBalance(BN(amount, 16));
       } else {
-        return formatBalance(BigNumber(amount));
+        return formatBalance(BN(amount));
       }
     },  
     shortAddess(address) {
