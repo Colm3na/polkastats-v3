@@ -26,8 +26,8 @@
                   <div class="col-md-3 mb-2 text-center">
                     <Identicon :value="validator.accountId" :size="80" :theme="'polkadot'" />
                     <p class="mb-0 rank">rank #{{ index+1 }}</p>
-                    <p class="bonded mb-0" v-b-tooltip.hover title="Total bonded">{{ formatDot(validator.stakers.total) }}</p>
-                    <p class="mb-0"><small><span v-b-tooltip.hover title="Self bonded">{{ formatDot(validator.stakers.own) }}</span> (+<span v-b-tooltip.hover title="Bonded by nominators">{{ formatDot(validator.stakers.total - validator.stakers.own) }})</span></small></p>
+                    <p class="bonded mb-0" v-b-tooltip.hover title="Total bonded">{{ formatDot(validator.stakingLedger.total) }}</p>
+                    <p class="mb-0"><small><span v-b-tooltip.hover title="Self bonded">{{ formatDot(validator.stakingLedger.own) }}</span> (+<span v-b-tooltip.hover title="Bonded by nominators">{{ formatDot(validator.stakingLedger.total - validator.stakingLedger.own) }})</span></small></p>
                   </div>
                   <div class="col-md-9">
                     <h4 class="card-title mb-4 account mt-4 mt-sm-1 mt-md-1 mt-lg-1 mt-xl-1">
@@ -95,9 +95,9 @@
                         {{ formatDot(validator.validatorPrefs.validatorPayment) }}
                       </div>
                     </div>
-                    <template v-if="validator.stakers.others.length > 0">
+                    <template v-if="validator.stakingLedger.others.length > 0">
                       <a class="" data-toggle="collapse" v-bind:href="'#staker' + index" role="button" aria-expanded="false" v-bind:aria-controls="'staker' + index">
-                        <h6 class="h6 nominators d-inline mr-4"><i class="fas"></i> Nominators ({{ validator.stakers.others.length }})</h6>
+                        <h6 class="h6 nominators d-inline mr-4"><i class="fas"></i> Nominators ({{ validator.stakingLedger.others.length }})</h6>
                       </a>
                     </template>
                     <!-- <template v-if="validator.offline.length > 0">
@@ -105,9 +105,9 @@
                         <h6 class="h6 offline d-inline"><i class="fas"></i> Reported offline ({{ validator.offline.length }})</h6>
                       </a>
                     </template> -->
-                    <template v-if="validator.stakers.others.length > 0">
+                    <template v-if="validator.stakingLedger.others.length > 0">
                       <div class="nominator collapse pt-2 pb-3"  v-bind:id="'staker' + index">
-                        <div v-for="staker in validator.stakers.others" class="row">
+                        <div v-for="staker in validator.stakingLedger.others" class="row">
                           <div class="col-8 who">                      
                             <a v-bind:href="blockExplorer.account + staker.who" target="_blank">
                               <span class="d-block d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="staker.who">{{ shortAddess(staker.who) }}</span>
@@ -158,8 +158,8 @@
                       <div class="col-md-3 mb-2 text-center">
                         <Identicon :value="validator.accountId" :size="80" :theme="'polkadot'" />
                         <p class="mb-0 rank">rank #{{ index+1 }}</p>
-                        <p class="bonded mb-0" v-b-tooltip.hover title="Total bonded">{{ formatDot(validator.stakers.total) }}</p>
-                        <p class="mb-0"><small><span v-b-tooltip.hover title="Self bonded">{{ formatDot(validator.stakers.own) }}</span> (+<span v-b-tooltip.hover title="Bonded by nominators">{{ formatDot(validator.stakers.total - validator.stakers.own) }})</span></small></p>
+                        <p class="bonded mb-0" v-b-tooltip.hover title="Total bonded">{{ formatDot(validator.stakingLedger.total) }}</p>
+                        <p class="mb-0"><small><span v-b-tooltip.hover title="Self bonded">{{ formatDot(validator.stakingLedger.own) }}</span> (+<span v-b-tooltip.hover title="Bonded by nominators">{{ formatDot(validator.stakingLedger.total - validator.stakingLedger.own) }})</span></small></p>
                         <editable v-bind:favorites="favorites" v-model="favorites[getIndex(validator.accountId)].name"></editable>
                       </div>
                       <div class="col-md-9">
@@ -228,9 +228,9 @@
                             {{ formatDot(validator.validatorPrefs.validatorPayment) }}
                           </div>
                         </div>
-                        <template v-if="validator.stakers.others.length > 0">
+                        <template v-if="validator.stakingLedger.others.length > 0">
                           <a class="" data-toggle="collapse" v-bind:href="'#staker' + index" role="button" aria-expanded="false" v-bind:aria-controls="'staker' + index">
-                            <h6 class="h6 nominators d-inline mr-4"><i class="fas"></i> Nominators ({{ validator.stakers.others.length }})</h6>
+                            <h6 class="h6 nominators d-inline mr-4"><i class="fas"></i> Nominators ({{ validator.stakingLedger.others.length }})</h6>
                           </a>
                         </template>
                         <!-- <template v-if="validator.offline.length > 0">
@@ -238,9 +238,9 @@
                             <h6 class="h6 offline d-inline"><i class="fas"></i> Reported offline ({{ validator.offline.length }})</h6>
                           </a>
                         </template> -->
-                        <template v-if="validator.stakers.others.length > 0">
+                        <template v-if="validator.stakingLedger.others.length > 0">
                           <div class="nominator collapse pt-2 pb-3"  v-bind:id="'staker' + index">
-                            <div v-for="staker in validator.stakers.others" class="row">
+                            <div v-for="staker in validator.stakingLedger.others" class="row">
                               <div class="col-8 who">                      
                                 <a v-bind:href="blockExplorer.account + staker.who" target="_blank">
                                   <span class="d-block d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="staker.who">{{ shortAddess(staker.who) }}</span>
