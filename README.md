@@ -1,6 +1,6 @@
-# Polkastats v2
+# PolkaStats v2
 
-> Polkadot Kusama network statistics
+> Polkadot Kusama CC2 network statistics
 
 ## Build frontend
 
@@ -22,3 +22,6 @@ $ npm run build
 $ npm run generate
 ```
 
+## Build backend
+
+See: https://github.com/Colm3na/polkastats-backend-v2
