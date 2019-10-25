@@ -393,11 +393,12 @@ export default {
     },
     // Use here isHex function bundled in @polkadot/util
     formatDot(amount) {
-      if (isHex(amount)) {
+      return amount
+      /* if (isHex(amount)) {
         return formatBalance(parseInt(amount, 16));
       } else {
-        return formatBalance(amount);
-      }
+        return formatBalance(parseInt(amount));
+      } */
     },  
     shortAddess(address) {
       return (address).substring(0,10) + ' .... ' + (address).substring(address.length - 10);
