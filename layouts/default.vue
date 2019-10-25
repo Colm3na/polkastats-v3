@@ -5,11 +5,14 @@
         <div class="container">
           <b-navbar toggleable="lg" type="dark" class="row">
             <b-navbar-brand>
-              <nuxt-link to="/" class="navbar-brand" title="PolkaStats | Polkadot Kusama CC2 network statistics"><span class="logo"></span>PolkaStats Kusama CC2</nuxt-link>
+              <nuxt-link to="/" class="navbar-brand" title="PolkaStats | Polkadot Kusama CC2 network statistics"><span class="logo"></span>PolkaStats v2</nuxt-link>
             </b-navbar-brand>
             <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
             <b-collapse id="nav-collapse" is-nav class="flex-grow-1 text-center text-sx-right text-md-right text-lg-right">
               <b-navbar-nav class="navbar-nav ml-auto flex-nowrap">
+                <b-nav-item>
+                  <a href="https://alexander.polkastats.io" class="nav-link">Alexander network</a>
+                </b-nav-item> 
                 <b-nav-item>
                   <nuxt-link to="/about" active-class="active" class="nav-link">About</nuxt-link>
                 </b-nav-item>                              
