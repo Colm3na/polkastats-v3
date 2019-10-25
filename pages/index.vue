@@ -405,8 +405,8 @@ export default {
 
       console.log(`bignumber:`, bn)
 
-      return amount;
-      //return formatBalance(bn.toString(10));
+      //return amount;
+      return formatBalance(bn);
     },  
     shortAddess(address) {
       return (address).substring(0,10) + ' .... ' + (address).substring(address.length - 10);
