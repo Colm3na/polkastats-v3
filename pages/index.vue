@@ -26,8 +26,8 @@
                   <div class="col-md-3 mb-2 text-center">
                     <Identicon :value="validator.accountId" :size="80" :theme="'polkadot'" />
                     <p class="mb-0 rank">rank #{{ index+1 }}</p>
-                    <p class="bonded mb-0" v-b-tooltip.hover title="Total bonded">{{ formatDot(validator.stakingLedger.total) }}</p>
-                    <p class="mb-0"><small><span v-b-tooltip.hover title="Self bonded">{{ formatDot(validator.stakers.own) }}</span> (+<span v-b-tooltip.hover title="Bonded by nominators">{{ formatDot(validator.stakingLedger.total - validator.stakers.own) }})</span></small></p>
+                    <p class="bonded mb-0" v-b-tooltip.hover title="Active bonded">{{ formatDot(validator.stakingLedger.active) }}</p>
+                    <p class="mb-0"><small><span v-b-tooltip.hover title="Self bonded">{{ formatDot(validator.stakers.own) }}</span> (+<span v-b-tooltip.hover title="Bonded by nominators">{{ formatDot(validator.stakingLedger.active - validator.stakers.own) }})</span></small></p>
                   </div>
                   <div class="col-md-9">
                     <h4 class="card-title mb-4 account mt-4 mt-sm-1 mt-md-1 mt-lg-1 mt-xl-1">
@@ -158,8 +158,8 @@
                       <div class="col-md-3 mb-2 text-center">
                         <Identicon :value="validator.accountId" :size="80" :theme="'polkadot'" />
                         <p class="mb-0 rank">rank #{{ index+1 }}</p>
-                        <p class="bonded mb-0" v-b-tooltip.hover title="Total bonded">{{ formatDot(validator.stakingLedger.total) }}</p>
-                        <p class="mb-0"><small><span v-b-tooltip.hover title="Self bonded">{{ formatDot(validator.stakers.own) }}</span> (+<span v-b-tooltip.hover title="Bonded by nominators">{{ formatDot(validator.stakingLedger.total - validator.stakers.own) }})</span></small></p>
+                        <p class="bonded mb-0" v-b-tooltip.hover title="Active bonded">{{ formatDot(validator.stakingLedger.active) }}</p>
+                        <p class="mb-0"><small><span v-b-tooltip.hover title="Self bonded">{{ formatDot(validator.stakers.own) }}</span> (+<span v-b-tooltip.hover title="Bonded by nominators">{{ formatDot(validator.stakingLedger.active - validator.stakers.own) }})</span></small></p>
                         <editable v-bind:favorites="favorites" v-model="favorites[getIndex(validator.accountId)].name"></editable>
                       </div>
                       <div class="col-md-9">
