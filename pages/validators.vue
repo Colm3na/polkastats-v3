@@ -10,7 +10,7 @@
 
         <b-alert variant="success" show>You will need both <a href="https://keybase.io" target="_blank">Keybase</a> and <a href="https://github.com" target="_blank">GitHub</a> accounts in order to continue.</b-alert>
 
-        <b-card-group deck>
+        <b-card-group deck class="mb-4">
           <b-card title="1">
             <b-card-text>
               Go to PolkaStats v2 GitHub repo at <a href="https://github.com/Colm3na/polkastats-v2" target="_blank">https://github.com/Colm3na/polkastats-v2</a>.
