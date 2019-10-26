@@ -6,8 +6,8 @@ export const state = () => ({
   
 export const mutations = {
   update (state, validators) {
-    // Sort validators by total bonded desc
-    validators.sort((a, b) => (a.stakingLedger.total < b.stakingLedger.total) ? 1 : -1)
+    // Sort validators by active bonded desc
+    validators.sort((a, b) => (a.stakingLedger.active < b.stakingLedger.active) ? 1 : -1)
     state.list = validators;
   },
   getters: function() {
