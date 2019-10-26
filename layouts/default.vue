@@ -206,7 +206,7 @@ section#navigation nav {
 /* Nav bar */
 
 .navbar {
-  padding: 0.5rem 0.3rem 0.5rem 0.3rem;
+  padding: 0.5rem;
 }
 
 .navbar-dark .navbar-nav .nav-link {
