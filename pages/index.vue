@@ -99,7 +99,7 @@
 
 
                     <template v-if="validator.nextSessionIds.length > 0">
-                      <a class="" data-toggle="collapse" v-bind:href="'#session-id' + index" role="button" aria-expanded="false" v-bind:aria-controls="'session-id-' + index">
+                      <a class="" data-toggle="collapse" v-bind:href="'#session-id-' + index" role="button" aria-expanded="false" v-bind:aria-controls="'session-id-' + index">
                         <h6 class="h6 nominators d-inline mr-4"><i class="fas"></i> Next session ids ({{ validator.nextSessionIds.length }})</h6>
                       </a>
                     </template>
