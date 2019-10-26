@@ -16,9 +16,6 @@
             <b-collapse id="nav-collapse" is-nav class="flex-grow-1 text-center text-sx-right text-md-right text-lg-right">
               <b-navbar-nav class="navbar-nav ml-auto flex-nowrap">
                 <b-nav-item>
-                  <nuxt-link to="/alexander" active-class="active" class="nav-link">Alexander network</nuxt-link>
-                </b-nav-item> 
-                <b-nav-item>
                   <nuxt-link to="/about" active-class="active" class="nav-link">About</nuxt-link>
                 </b-nav-item>                              
               </b-navbar-nav>
@@ -56,29 +53,26 @@ export default {}
 @import url('https://use.fontawesome.com/releases/v5.6.3/css/all.css');
 @import url('https://fonts.googleapis.com/css?family=Roboto:300,400,700&display=swap');
 
-/* Global */
+/*----------------------- Global Styles --------------------------*/
+
 body {
   font-family: 'Roboto', sans-serif;
   color: #52555a;
   background-color: rgba(247, 238, 246, 0.5);
   word-break: break-word;
 }
+
 .main.container {
   padding-left: 5px;
   padding-right: 5px;
 }
+
 a {
   color: #670d35;
 }
+
 a:hover {
   color: #670d35;
-}
-
-.navbar-dark .navbar-nav .nav-link {
-  color: rgba(255, 255, 255, 0.7);
-}
-.navbar-dark .navbar-nav .nav-link:hover, .navbar-dark .navbar-nav .nav-link:focus {
-  color: rgba(255, 255, 255, 1);
 }
 
 .btn {
@@ -102,17 +96,36 @@ a:hover {
   border-color: #670d35;
 }
 
-/* Header */
+/* Notifications */
+
+.b-toaster.b-toaster-top-right .b-toaster-slot,
+.toast,
+.b-toast {
+  z-index: 1000000000;
+}
+
+.toast-body {
+  word-break: break-word;
+}
+
+.system {
+  font-size: 2rem;
+  font-weight: 300;
+  line-height: 1.2;
+}
+
+/*----------------------- Header Styles --------------------------*/
+
 #navigation {
   margin-bottom: 88px;
 }
+
 section#navigation nav {
 	background-color: #000000;
 }
-.navbar {
-  padding: 0.5rem 0.3rem 0.5rem 0.3rem;
-}
+
 /* Animated logo */
+
 .navbar-brand .logo {
   margin-right: 0.5rem;
   margin-top: -0.1rem;
@@ -126,9 +139,11 @@ section#navigation nav {
   box-shadow: 0 0 0 rgba(204,169,44, 0.4);
   animation: pulse 2s infinite;
 }
+
 .pulse:hover {
   animation: none;
 }
+
 @-webkit-keyframes pulse {
   0% {
     -webkit-box-shadow: 0 0 0 0 rgba(204,169,44, 0.4);
@@ -140,6 +155,7 @@ section#navigation nav {
       -webkit-box-shadow: 0 0 0 0 rgba(204,169,44, 0);
   }
 }
+
 @keyframes pulse {
   0% {
     -moz-box-shadow: 0 0 0 0 rgba(204,169,44, 0.4);
@@ -154,63 +170,134 @@ section#navigation nav {
       box-shadow: 0 0 0 0 rgba(204,169,44, 0);
   }
 }
+
 /* End animated logo */
+
+/* Top bar */
+
+#top-bar {
+  padding: 0.5rem;
+}
+
+#top-bar p {
+  text-align: right;
+  margin-bottom: 0;
+  color: hsla(0,0%,100%,.7);
+}
+
+#top-bar a {
+  color: #ef1073;
+  margin: 0 0.5rem;
+}
+
+#top-bar a:last-child {
+  margin-right: 0 !important;
+}
+
+#top-bar a.active {
+  font-weight: 700;
+}
+
+/* Nav bar */
+
+.navbar {
+  padding: 0.5rem 0.3rem 0.5rem 0.3rem;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.navbar-dark .navbar-nav .nav-link:hover, .navbar-dark .navbar-nav .nav-link:focus {
+  color: rgba(255, 255, 255, 1);
+}
+
 .navbar-nav {
   text-transform: uppercase;
 }
+
 .nav-bg-color {
   background-color: #000000;
   box-shadow: 0 4px 12px 0 rgba(100,100,100,.3);  
 }
+
 .dropdown-item {
   padding: 0rem 1.5rem;
 }
+
 .dropdown-item a {
 	color: #670d35 !important;
 }
+
 .dropdown-item.active, .dropdown-item:active {
     color: #fff;
     background-color: #000000;
 }
+
 .btn-outline-white {
     color: #ffffff;
     border-color: #ffffff;
 }
+
 .btn-outline-white:hover {
     color: #000000;
     background-color: #ffffff;
     border-color: #ffffff;
 }
+
+.nav-link {
+  padding: 0 1rem !important;
+}
+
+/* i18n flags */
+
 .flag-icon {
   border: 2px solid transparent;
   border-radius: 2px;
   width: 1.6em;
   height: 1.3em;
 }
+
 .flag-icon-es {
   margin-left: 2rem;
 }
+
 .nav-link .nuxt-link-exact-active .flag-icon {
   border: 2px solid white;
 }
 
 /* Slider */
+
 .carousel-caption h2,
 .carousel-caption p {
   text-shadow: 2px 4px rgba(0,0,0,0.4);
 }
 
-/* Footer */
+/* Breadcrumbs */
+
+.breadcrumb {
+  padding: 0.5rem 0rem;
+  margin-bottom: 3rem;
+  background-color: initial;
+  border-radius: 0;
+  font-size: 15px;
+  border-bottom: 1px solid #d75ea1;
+}
+
+/*----------------------- Footer Styles --------------------------*/
+
 section .section-title {
   text-align: center;
   color: #007b5e;
   margin-bottom: 50px;
   text-transform: uppercase;
 }
+
 #footer {
 	background-color: #2d2f33;
   padding: 0 0 40px 0;
 }
+
 #footer h5{
   padding-left: 10px;
   border-left: 3px solid #eeeeee;
@@ -218,14 +305,17 @@ section .section-title {
   margin-bottom: 20px;
   color:#ffffff;
 }
+
 #footer a {
   color: #ffffff;
   background-color: transparent;
   -webkit-text-decoration-skip: objects;
 }
+
 #footer ul.social li{
   padding: 3px 12px 0 0;
 }
+
 #footer ul.social li a i {
   margin-right: 5px;
   font-size:18px;
@@ -233,39 +323,54 @@ section .section-title {
   -moz-transition: .5s all ease;
   transition: .5s all ease;
 }
+
 #footer ul.social li:hover a i {
   font-size:24px;
   margin-top:-10px;
 }
+
 #footer ul.social li a,
 #footer ul.quick-links li a{
   color:#ffffff;
 }
+
 #footer ul.social li a:hover{
   color:#eeeeee;
 }
+
 #footer ul.quick-links li{
   padding: 3px 0;
   -webkit-transition: .5s all ease;
   -moz-transition: .5s all ease;
   transition: .5s all ease;
 }
+
 #footer ul.quick-links li:hover{
   padding: 3px 0;
   margin-left:5px;
   font-weight:700;
 }
+
 #footer ul.quick-links li a i{
   margin-right: 5px;
 }
+
 #footer ul.quick-links li:hover a i {
   font-weight: 700;
 }
+
 .bat {
   max-width: 18px;
   vertical-align: middle;
   margin-left: .1rem;
 }
+
+.kusama-logo {
+  width: 100%;
+  max-width: 300px;
+}
+
+/* Media queries */
 
 @media (max-width:991px){
   #navigation {
@@ -307,53 +412,12 @@ section .section-title {
   }
 }
 
-/* CTA */
+/* Call to action */
+
 .cta {
   color: #fff;
   background-color: #5bc0de;
   border-color: #14b6e6;
   background-image: linear-gradient(135deg, #670d35, #b1e2f1);
-}
-
-/* Breadcrumbs */
-.breadcrumb {
-  padding: 0.5rem 0rem;
-  margin-bottom: 3rem;
-  background-color: initial;
-  border-radius: 0;
-  font-size: 15px;
-  border-bottom: 1px solid #d75ea1;
-}
-
-/* Notifications */
-.b-toaster.b-toaster-top-right .b-toaster-slot,
-.toast,
-.b-toast {
-  z-index: 1000000000;
-}
-.toast-body {
-  word-break: break-word;
-}
-.system {
-  font-size: 2rem;
-  font-weight: 300;
-  line-height: 1.2;
-}
-
-.kusama-logo {
-  width: 100%;
-  max-width: 300px;
-}
-
-#top-bar {
-  padding: 0.5rem;
-}
-
-#top-bar p {
-  text-align: right;
-}
-
-#top-bar a {
-  color: #ef1073;
 }
 </style>
