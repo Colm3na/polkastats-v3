@@ -8,7 +8,7 @@
 
         <h2 class="mt-4 mb-4">Include your validator info in PolkaStats</h2>
 
-        <b-alert variant="success" show>You will need both <a href="https://keybase.io/" target="_blank">Keybase/</a> and <a href="https://github.com" target="_blank">GitHub</a> accounts in order to continue.</b-alert>
+        <b-alert variant="success" show>You will need both <a href="https://keybase.io" target="_blank">Keybase</a> and <a href="https://github.com" target="_blank">GitHub</a> accounts in order to continue.</b-alert>
 
         <div class="row mt-4">
           <div class="col-md-4">
