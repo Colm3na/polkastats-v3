@@ -6,11 +6,11 @@
 
         <p>Own a kusama validator and want to have your name, logo, website url and social links included in PolkaStats? Now you can do it!</p>
 
-        <h2>Include your validator info in PolkaStats</h2>
+        <h2 class="mt-4 mb-4">Include your validator info in PolkaStats</h2>
 
-        <p>NOTE: You will need both <a href="https://keybase.io/" target="_blank">Keybase/</a> and <a href="https://github.com" target="_blank">GitHub</a> accounts in order to continue.</p>
+        <b-alert variant="success" show>You will need both <a href="https://keybase.io/" target="_blank">Keybase/</a> and <a href="https://github.com" target="_blank">GitHub</a> accounts in order to continue.</b-alert>
 
-        <div class="row">
+        <div class="row mt-4">
           <div class="col-md-4">
             <h3>1</h3>
             <p>Go to PolkaStats v2 GitHub repo at <a href="https://github.com/Colm3na/polkastats-v2" target="_blank">https://github.com/Colm3na/polkastats-v2</a></p>
