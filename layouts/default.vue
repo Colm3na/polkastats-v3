@@ -338,7 +338,7 @@ section .section-title {
   line-height: 1.2;
 }
 
-.kusama {
+.kusama-logo {
   width: 100%;
   max-width: 300px;
 }
