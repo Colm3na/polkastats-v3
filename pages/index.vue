@@ -16,7 +16,7 @@
         <div class="tab-content mb-2" id="nav-tabContent">
           <div class="tab-pane fade show active" id="intention-validators" role="tabpanel" aria-labelledby="nav-intention-validators">
             <div class="validator card mb-3" v-for="(validator, index) in intentions" :key="intentions.accountId">
-              <div class="card-body">
+              <div v-bind:class="{ 'card-body': 'card-body', 'bg-candidate': index < 50 }">
                 <p class="text-right mb-0">
                   <a class="favorite" v-on:click="toggleFavorite(validator.accountId)" title="Mark as Favorite">
                     <i v-if="isFavorite(validator.accountId)" class="fas fa-star" style="color: #f1bd23" title="Unset as Favorite"></i>
@@ -184,7 +184,7 @@
                       <i v-else class="fas fa-star" style="color: #e6dfdf;" title="Set as Favorite"></i>
                     </a>
                   </p>                 
-                  <div v-bind:class="{ 'card-body': 'card-body', 'bg-offline': validator.isOffline }">
+                  <div v-bind:class="{ 'card-body': 'card-body', 'bg-candidate': index < 50 }">
                     <div class="row">
                       <div class="col-md-3 mb-2 text-center">
                         <Identicon :value="validator.accountId" :size="80" :theme="'polkadot'" />
@@ -524,6 +524,9 @@ body {
 }
 .validator .bg-offline {
   background-color: rgba(239, 57, 74, 0.12) !important;
+}
+.validator .bg-candidate {
+  background-color: rgba(21, 240, 86, 0.12) !important;
 }
 .rank {
   font-size: 1.6rem;

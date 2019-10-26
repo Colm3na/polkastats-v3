@@ -24,7 +24,7 @@
               </div>
             </div>
             <div class="validator-detail card mt-4 mb-3">
-              <div class="card-body">
+              <div v-bind:class="{ 'card-body': 'card-body', 'bg-candidate': index < 50 }">
                 <p class="text-right">
                   <i v-if="isFavorite(validator.accountId)" class="favorite fas fa-star" style="color: #f1bd23" title="In Favorites"></i>
                   <i v-else class="favorite fas fa-star" style="color: #e6dfdf;" title="Not in Favorites"></i>
