@@ -17,17 +17,17 @@
           </div>
           <div class="col-md-4">
             <h3>2</h3>
-            <p>Login with your GitHub user and make a Fork of PolkaStats v2 repo (<a href="https://github.com/Colm3na/polkastats-v2" target="_blank">https://github.com/Colm3na/polkastats-v2</a>).</p>
+            <p>Login with your GitHub user and make a Fork of PolkaStats v2 repo: <a href="https://github.com/Colm3na/polkastats-v2" target="_blank">https://github.com/Colm3na/polkastats-v2</a>.</p>
           </div>
           <div class="col-md-4">
             <h3>3</h3>
-            <p>In your fork, create a new file in identities folder named "stash_address_of_your_validator.json". Example: <a href="https://raw.githubusercontent.com/Colm3na/polkastats-v2/master/identities/GTzRQPzkcuynHgkEHhsPBFpKdh4sAacVRsnd8vYfPpTMeEY.json" target="_blank">GTzRQPzkcuynHgkEHhsPBFpKdh4sAacVRsnd8vYfPpTMeEY.json</a></p>
+            <p>In your fork, create a new file named "stash_address_of_your_validator.json" in <a href="https://github.com/Colm3na/polkastats-v2/tree/master/identities" target="_blank">identities folder</a>. Example: <a href="https://raw.githubusercontent.com/Colm3na/polkastats-v2/master/identities/GTzRQPzkcuynHgkEHhsPBFpKdh4sAacVRsnd8vYfPpTMeEY.json" target="_blank">GTzRQPzkcuynHgkEHhsPBFpKdh4sAacVRsnd8vYfPpTMeEY.json</a></p>
           </div>
           <div class="col-md-4">
             <h3>4</h3>
             <p>The content of the file should be your username in <a href="https://keybase.io" target="_blank">Keybase</a>. Open in your browser <a href="https://keybase.io/_/api/1.0/user/lookup.json?username=polkastats" target="_blank">https://keybase.io/_/api/1.0/user/lookup.json?username=polkastats</a> (replacing <i>polkastats</i> by your Keybase username) and make sure it shows the information you want to include.</p>
           </div>
-          <div class="col-md-4">
+          <div class="col-md-4">/a>
             <h3>5</h3>
             <p>Make a Pull Request to the master branch of the original repo: <a href="https://github.com/Colm3na/polkastats-v2" target="_blank">https://github.com/Colm3na/polkastats-v2</a>.</p>
           </div>
