@@ -369,8 +369,7 @@ export default {
 
     // First time
     this.getSystemData();
-    this.getSession();
-    this.getBestBlockNumber();
+    this.getChainData();
     
     // Force update of validators list if empty
     if (this.$store.state.validators.list.length == 0) {
@@ -382,13 +381,12 @@ export default {
       vm.$store.dispatch('intentions/update');
     }
 
-    /* Update validators, intention validators, best block and session info every 30 seconds */
+    /* Update validators, intention validators, best block and session info every 10 seconds */
     this.polling = setInterval(() => {
       vm.$store.dispatch('validators/update');
       vm.$store.dispatch('intentions/update');
-      this.getSession();
-      this.getBestBlockNumber();
-    }, 30000);
+      this.getChainData();
+    }, 10000);
 
   },
   beforeDestroy: function () {
@@ -403,21 +401,14 @@ export default {
           vm.system = response.data;
         })
     },
-    getSession: function () {
+    getChainData: function () {
       var vm = this;
-      axios.get('https://polkastats.io:8443/session')
+      axios.get('https://polkastats.io:8443/chain')
         .then(function (response) {
-          vm.session = response.data;
+          vm.bestblocknumber = response.data.block_height;
+          vm.session = response.data.session;
         });
     },
-    getBestBlockNumber: function () {
-      var vm = this;
-      axios.get('https://polkastats.io:8443/bestblocknumber')
-        .then(function (response) {
-          vm.bestblocknumber = response.data;
-        });
-    },
-    // Use here this.isHex function
     formatNumber(n) {
       if (isHex(n)) {
         return (parseInt(n, 16).toString()).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
