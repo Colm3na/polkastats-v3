@@ -292,8 +292,10 @@ import bootstrap from 'bootstrap';
 import Identicon from "../components/identicon.vue";
 import editable from "../components/editable.vue";
 import { formatBalance, isHex } from '@polkadot/util';
-formatBalance.setDefaults({ decimals: 12, unit: 'KSM' });
 import BN from "bn.js"
+
+formatBalance.setDefaults({ decimals: 12, unit: 'KSM' });
+
 export default {
   head () {
     return {

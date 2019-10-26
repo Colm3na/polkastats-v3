@@ -106,7 +106,7 @@
                       </div>
                     </div>
                     <template v-if="validator.stakers.others.length > 0">
-                      <a class="" data-toggle="collapse" v-bind:href="'#staker' + index" role="button" aria-expanded="false" v-bind:aria-controls="'staker' + index">
+                      <a data-toggle="collapse" v-bind:href="'#staker' + index" role="button" aria-expanded="false" v-bind:aria-controls="'staker' + index">
                         <h6 class="h6 nominators"><i class="fas"></i> Nominators ({{ validator.stakers.others.length }})</h6>
                       </a>
                     </template>
@@ -152,7 +152,10 @@ import moment from 'moment';
 import VueApexCharts from 'vue-apexcharts';
 import Identicon from "../../components/identicon.vue";
 import { formatBalance, isHex } from '@polkadot/util';
+import BN from "bn.js"
+
 formatBalance.setDefaults({ decimals: 12, unit: 'KSM' });
+
 export default {
   head () {
     return {
@@ -583,11 +586,14 @@ export default {
         })
     },
     formatDot(amount) {
+      let bn;
       if (isHex(amount)) {
-        return formatBalance(parseInt(amount, 16));
+        bn = new BN(amount.substring(2, amount.length), 16);
       } else {
-        return formatBalance(amount);
+        bn = new BN(amount.toString());
       }
+      formatBalance.setDefaults({ decimals: 12, unit: 'KSM' });
+      return formatBalance(bn.toString(10));
     },
     shortAddess(address) {
       return (address).substring(0,10) + ' .... ' + (address).substring(address.length - 10)
