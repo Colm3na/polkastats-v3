@@ -236,7 +236,7 @@
                             <strong>Stash</strong>
                           </div>
                           <div class="col-md-9 mb-2">
-                            <Identicon :value="validator.nextSessionId" :size="20" :theme="'polkadot'" />
+                            <Identicon :value="validator.stashId" :size="20" :theme="'polkadot'" />
                             <a v-bind:href="blockExplorer.account + validator.stashId" target="_blank">
                               <span class="d-inline d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="validator.stashId">{{ shortAddess(validator.stashId) }}</span>
                               <span class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline">{{ validator.stashId }}</span>
