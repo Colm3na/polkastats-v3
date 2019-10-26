@@ -21,7 +21,7 @@
           </div>
           <div class="col-md-4">
             <h3>3</h3>
-            <p>Create on it a new file in identities folder named like stash_account_of_your_validator.json. Example: <a href="https://raw.githubusercontent.com/Colm3na/polkastats-v2/master/identities/GTzRQPzkcuynHgkEHhsPBFpKdh4sAacVRsnd8vYfPpTMeEY.json" target="_blank">GTzRQPzkcuynHgkEHhsPBFpKdh4sAacVRsnd8vYfPpTMeEY.json</a></p>
+            <p>In your fork, create a new file in identities folder named "stash_account_of_your_validator.json". Example: <a href="https://raw.githubusercontent.com/Colm3na/polkastats-v2/master/identities/GTzRQPzkcuynHgkEHhsPBFpKdh4sAacVRsnd8vYfPpTMeEY.json" target="_blank">GTzRQPzkcuynHgkEHhsPBFpKdh4sAacVRsnd8vYfPpTMeEY.json</a></p>
           </div>
           <div class="col-md-4">
             <h3>4</h3>
@@ -33,7 +33,7 @@
           </div>
           <div class="col-md-4">
             <h3>6</h3>
-            <p>That's it! In our next release your validator information shoud appears in PolkaStats :-).</p>
+            <p>That's it! If all looks good I will merge your Pull Request and, in our next release, your validator information shoud appears in PolkaStats :-).</p>
           </div>
         </div>
 
