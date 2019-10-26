@@ -67,5 +67,9 @@ export default {
   }
 }
 </script>
-<style>
+<style scoped>
+.card-title {
+  color: #ef1073;
+}
+</style>>
 </style>
