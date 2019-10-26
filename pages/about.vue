@@ -14,8 +14,8 @@
         <ul>
           <li>Version 2!</li>
           <li>New GitHub repos: <a href="https://github.com/Colm3na/polkastats-v2" target="_blank">https://github.com/Colm3na/polkastats-v2</a> and <a href="https://github.com/Colm3na/polkastats-backend-v2" target="_blank">https://github.com/Colm3na/polkastats-backend-v2</a></li>
-          <li>Add Kusama CC2 network support.</li>
-          <li>Change default network to Kusama CC2.</li>
+          <li>Added Kusama CC2 network support.</li>
+          <li>Changed default network to Kusama CC2 (<a href="https://polkastats.io" target="_blank">https://polkastats.io</a>).</li>
           <li>Alexander network now is at <a href="https://alexander.polkastats.io" target="_blank">https://alexander.polkastats.io</a>.</li>
           <li>Improved MySQL backend!</li>
         </ul>
