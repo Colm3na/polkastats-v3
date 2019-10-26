@@ -132,7 +132,7 @@ section#navigation nav {
 /* Animated logo */
 
 .navbar-brand .logo {
-  margin: -2rem 0.2rem;
+  margin: -2rem 0.2rem 0 0.2rem;
   display: inline-block;
   vertical-align: middle;
   width: 26px;
