@@ -207,7 +207,7 @@
                       </div>
                       <div class="col-md-9">
                         <h4 class="card-title mb-4 account mt-4 mt-sm-1 mt-md-1 mt-lg-1 mt-xl-1">
-                          <nuxt-link :to="{name: 'validator', query: { accountId: validator.accountId } }" title="Validator details">
+                          <nuxt-link :to="{name: 'intention', query: { accountId: validator.accountId } }" title="Validator details">
                             {{ validator.accountId }}
                           </nuxt-link>
                         </h4>                        
