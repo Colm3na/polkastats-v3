@@ -2,7 +2,7 @@
   <div>
     <section>
       <b-container class="main pt-3 pb-5">
-        <template v-for="(validator, index) in validators">
+        <template v-for="(validator, index) in intentions">
           <template v-if="validator.accountId == accountId">
             <div class="row">
               <div class="col-2 col-lg-1">
@@ -349,8 +349,8 @@ export default {
     }
   },
   computed: {
-    validators () {
-      return this.$store.state.validators.list
+    intentions () {
+      return this.$store.state.intentions.list
     }
   },
   created: function () {
