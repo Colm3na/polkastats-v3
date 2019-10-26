@@ -37,7 +37,8 @@
 
             <p style="font-size: 0.95rem;">Made with <i class="far fa-heart"></i> by <a href="https://mariopino.es" title="Mario Pino">Mario Pino</a> in <a target="_blank" href="https://www.coworkingcolmena.com/" title="La Colmena">La Colmena</a> <span class="mx-2">|</span> Built with <a href="https://basicattentiontoken.org/" target="_blank">Basic Atttention Token <img src="/img/brave/logo-full-color.png" class="img-fluid bat" /></a> <span class="mx-2">|</span> <a href="https://github.com/Colm3na/polkastats-v2" aria-label="View source on GitHub" title="View source code on GitHub" target="_blank"><i class="fab fa-github"></i> View source code on GitHub</a></p>
           
-            <p class="text-center">Built for <a href="https://kusama.network"><img src="/img/KUSAMA_logo_7.png" class="kusama-logo"></a></p>
+            <p class="text-center">Built for</p>
+            <p class="text-center"><a href="https://kusama.network" target="_blank" title="Built for KUSAMA"><img src="/img/KUSAMA_logo_7.png" class="kusama-logo" alt="Built for KUSAMA"></a></p>
           
           </div>
           </hr>
