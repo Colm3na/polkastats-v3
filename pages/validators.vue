@@ -10,7 +10,7 @@
 
         <h2>Include your validator info in PolkaStats</h2>
 
-        <p>NOTE: You will need to register in <a href="https://keybase.io/" target="_blank">https://keybase.io/</a> and fill all your data in order to continue.</p>
+        <p>NOTE: You will need both <a href="https://keybase.io/" target="_blank">Keybase/</a> and <a href="https://github.com" target="_blank">GitHub</a> accounts in order to continue.</p>
 
         <div class="row">
           <div class="col-md-4">
@@ -19,7 +19,7 @@
           </div>
           <div class="col-md-4">
             <h3>2</h3>
-            <p>Make a Fork of PolkaStats v2.</p>
+            <p>Login with your GitHub user and make a Fork of PolkaStats v2.</p>
           </div>
           <div class="col-md-4">
             <h3>3</h3>
@@ -27,11 +27,11 @@
           </div>
           <div class="col-md-4">
             <h3>4</h3>
-            <p>The content of the file should be your username in <a href="https://keybase.io/" target="_blank">https://keybase.io/</a>. Make sure that a query like <a href="https://keybase.io/_/api/1.0/user/lookup.json?username=polkastats" target="_blank">https://keybase.io/_/api/1.0/user/lookup.json?username=polkastats</a> should return the information you want to include.</p>
+            <p>The content of the file should be your username in <a href="https://keybase.io" target="_blank">Keybase</a>. Make sure that a query like <a href="https://keybase.io/_/api/1.0/user/lookup.json?username=polkastats" target="_blank">https://keybase.io/_/api/1.0/user/lookup.json?username=polkastats</a> should return the information you want to include.</p>
           </div>
           <div class="col-md-4">
             <h3>5</h3>
-            <p>Make a Pull Request to master branch of the original repo: <a href="https://github.com/Colm3na/polkastats-v2" target="_blank">https://github.com/Colm3na/polkastats-v2</a>.</p>
+            <p>Make a Pull Request to the master branch of the original repo: <a href="https://github.com/Colm3na/polkastats-v2" target="_blank">https://github.com/Colm3na/polkastats-v2</a>.</p>
           </div>
           <div class="col-md-4">
             <h3>6</h3>
@@ -39,7 +39,7 @@
           </div>
         </div>
 
-        <h3>Need help? Send me a message at <a target="_blank" href="mailto:polkastats@protonmail.com">polkastats@protonmail.com</a>.</h3>
+        <h4>Need help? Send me a message at <a target="_blank" href="mailto:polkastats@protonmail.com">polkastats@protonmail.com</a>.</h4>
 
       </b-container>
     </section>
