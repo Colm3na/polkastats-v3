@@ -250,7 +250,11 @@ section#navigation nav {
 }
 
 .nav-link {
-  padding: 0 1rem !important;
+  padding: 0 1rem;
+}
+
+nav .nav-link {
+  padding: 0.5rem 1rem;
 }
 
 /* i18n flags */
