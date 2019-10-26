@@ -88,7 +88,7 @@
                         </a>
                       </div>
                     </div>
-                    <div class="row mb-2">
+                    <div class="row">
                       <div class="col-md-3 mb-2">
                         <strong>Comission</strong>
                       </div>
@@ -251,12 +251,20 @@
                             </a>
                           </div>
                         </div>
-                        <div class="row mb-2">
+                        <div class="row">
                           <div class="col-md-3 mb-2">
                             <strong>Comission</strong>
                           </div>
                           <div class="col-md-9 mb-2 fee">
                             {{ formatDot(validator.validatorPrefs.validatorPayment) }}
+                          </div>
+                        </div>
+                        <div class="row mb-2">
+                          <div class="col-md-3 mb-2">
+                            <strong>Reward destination</strong>
+                          </div>
+                          <div class="col-md-9 mb-2 fee">
+                            {{ formatRewardDest(validator.rewardDestination) }}
                           </div>
                         </div>
                         <template v-if="validator.nextSessionIds.length > 0">
