@@ -104,10 +104,11 @@
                     <template v-if="validator.nextSessionIds.length > 0">
                       <div class="nominator collapse pt-2 pb-3"  v-bind:id="'session-id-' + index">
                         <div v-for="(sessionId, index) in validator.nextSessionIds" class="row">
-                          <div class="col-12 who">                      
+                          <div class="col-12 who">
+                            {{ index+1 }}.                      
                             <a v-bind:href="blockExplorer.account + sessionId" target="_blank">
                               <span class="d-block d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="sessionId">{{ shortAddess(sessionId) }}</span>
-                              <span class="d-none d-sm-block d-md-block d-lg-block d-xl-block">{{ index+1 }}. {{ sessionId }}</span>                        
+                              <span class="d-none d-sm-block d-md-block d-lg-block d-xl-block">{{ sessionId }}</span>                        
                             </a>
                           </div>
                         </div>
