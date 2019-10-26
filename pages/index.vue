@@ -3,7 +3,7 @@
     <section>
       <b-container class="main pt-4">
         <b-alert show dismissible variant="success" class="text-center">
-          Connected to chain <strong>{{system.chain}}</strong> using <strong>{{ system.nodeName}}</strong> client version <strong>{{system.nodeVersion}}</strong>
+          Connected to chain <strong>{{system.chain}}</strong> using <strong>{{ system.client_name}}</strong> client version <strong>{{system.client_version}}</strong>
         </b-alert>
         <p class="session text-right">Last block: <strong>#{{ formatNumber(bestblocknumber) }}</strong> | Session: <strong>{{ formatNumber(session.sessionProgress) }}/{{ formatNumber(session.sessionLength) }}</strong> | Era: <strong>{{ formatNumber(session.eraProgress) }}/{{ formatNumber(session.eraLength) }}</strong></p>
         <nav>
@@ -327,8 +327,9 @@ export default {
     return {
       system: {
         chain: "",
-        nodeName: "",
-        nodeVersion: ""
+        client_name: "",
+        client_version: "",
+        timestamp: 0
       },
       blockExplorer: {
         block: 'https://polkascan.io/pre/kusama-cc2/block/',
