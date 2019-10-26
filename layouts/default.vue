@@ -337,4 +337,9 @@ section .section-title {
   font-weight: 300;
   line-height: 1.2;
 }
+
+.kusama {
+  width: 100%;
+  max-width: 300px;
+}
 </style>
