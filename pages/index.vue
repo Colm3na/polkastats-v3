@@ -251,6 +251,24 @@
                             {{ formatDot(validator.validatorPrefs.validatorPayment) }}
                           </div>
                         </div>
+                        <template v-if="validator.nextSessionIds.length > 0">
+                          <a class="" data-toggle="collapse" v-bind:href="'#session-id-' + index" role="button" aria-expanded="false" v-bind:aria-controls="'session-id-' + index">
+                            <h6 class="h6 nominators d-inline mr-4"><i class="fas"></i> Next session ids ({{ validator.nextSessionIds.length }})</h6>
+                          </a>
+                        </template>
+                        <template v-if="validator.nextSessionIds.length > 0">
+                          <div class="nominator collapse pt-2 pb-3"  v-bind:id="'session-id-' + index">
+                            <div v-for="(sessionId, index) in validator.nextSessionIds" class="row">
+                              <div class="col-12 who">
+                                {{ index+1 }}.                      
+                                <a v-bind:href="blockExplorer.account + sessionId" target="_blank">
+                                  <span class="d-inline-block d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="sessionId">{{ shortAddess(sessionId) }}</span>
+                                  <span class="d-none d-sm-inline-block d-md-inline-block d-lg-inline-block d-xl-inline-block">{{ sessionId }}</span>                        
+                                </a>
+                              </div>
+                            </div>
+                          </div>
+                        </template>                        
                         <template v-if="validator.stakers.others.length > 0">
                           <a class="" data-toggle="collapse" v-bind:href="'#staker' + index" role="button" aria-expanded="false" v-bind:aria-controls="'staker' + index">
                             <h6 class="h6 nominators d-inline mr-4"><i class="fas"></i> Nominators ({{ validator.stakers.others.length }})</h6>
