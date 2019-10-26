@@ -7,17 +7,17 @@
             <div class="row">
               <div class="col-2 col-lg-1">
                 <template v-if="index > 0">
-                  <nuxt-link :to="{name: 'intention', query: { accountId: intentions[index-1].accountId } }" :title="'Previous validator: ' + intentions[index-1].accountId">
+                  <nuxt-link :to="{name: 'intention', query: { accountId: intentions[index-1].accountId } }" :title="'Previous intention: ' + intentions[index-1].accountId">
                     <i class="fas fa-2x fa-chevron-left"></i>
                   </nuxt-link>
                 </template>
               </div>
               <div class="col-8 col-lg-10 text-center">
-                <h4 class="mb-1">Validator <span v-if="favorites[getIndex(validator.accountId)] !== undefined"><span v-if="favorites[getIndex(validator.accountId)].name != 'Edit validator name...'">{{ favorites[getIndex(validator.accountId)].name }}</span><span v-else>{{ accountId }}</span></span><span v-else>{{ accountId }}</span></a></h4>
+                <h4 class="mb-1">Intention <span v-if="favorites[getIndex(validator.accountId)] !== undefined"><span v-if="favorites[getIndex(validator.accountId)].name != 'Edit validator name...'">{{ favorites[getIndex(validator.accountId)].name }}</span><span v-else>{{ accountId }}</span></span><span v-else>{{ accountId }}</span></a></h4>
               </div>
               <div class="col-2 col-lg-1 text-right">
                 <template v-if="index < intentions.length - 1">
-                  <nuxt-link :to="{name: 'intention', query: { accountId: intentions[index+1].accountId } }" :title="'Next validator: ' + intentions[index+1].accountId">
+                  <nuxt-link :to="{name: 'intention', query: { accountId: intentions[index+1].accountId } }" :title="'Next intention: ' + intentions[index+1].accountId">
                     <i class="fas fa-2x fa-chevron-right"></i>
                   </nuxt-link>  
                 </template>
@@ -28,13 +28,13 @@
                 <p class="text-right">
                   <i v-if="isFavorite(validator.accountId)" class="favorite fas fa-star" style="color: #f1bd23" title="In Favorites"></i>
                   <i v-else class="favorite fas fa-star" style="color: #e6dfdf;" title="Not in Favorites"></i>
-                </a>
+                </p>
                 <div class="row">
                   <div class="col-md-3 mb-2 text-center">
                     <Identicon :value="validator.accountId" :size="80" :theme="'polkadot'" />
                     <p class="mb-0 rank">rank #{{ index+1 }}</p>
-                    <p class="bonded mb-0" v-b-tooltip.hover title="Total bonded">{{ formatDot(validator.stakers.total) }}</p>
-                    <p class="mb-0"><small><span v-b-tooltip.hover title="Self bonded">{{ formatDot(validator.stakers.own) }}</span> (+<span v-b-tooltip.hover title="Bonded by nominators">{{ formatDot(validator.stakers.total - validator.stakers.own) }})</span></small></p>
+                    <p class="bonded mb-0" v-b-tooltip.hover title="Active bonded">{{ formatDot(validator.stakingLedger.active) }}</p>
+                    <p class="mb-0"><small><span v-b-tooltip.hover title="Total bonded">{{ formatDot(validator.stakingLedger.total) }}</span></small></p>
                   </div>
                   <div class="col-md-9">
                     <div v-if="validator.controllerId != validator.nextSessionId">
