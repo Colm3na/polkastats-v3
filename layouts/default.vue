@@ -102,7 +102,7 @@ a:hover {
   margin-bottom: 88px;
 }
 section#navigation nav {
-	background-color: #670d35;
+	background-color: #000000;
 }
 .navbar {
   padding: 0.5rem 0.3rem 0.5rem 0.3rem;
