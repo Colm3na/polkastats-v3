@@ -10,7 +10,7 @@
           </div>
           <b-navbar toggleable="lg" type="dark" class="row">
             <b-navbar-brand>
-              <nuxt-link to="/" class="navbar-brand" title="PolkaStats | Polkadot Kusama CC2 network statistics"><span class="logo"></span>PolkaStats v2</nuxt-link>
+              <nuxt-link to="/" class="navbar-brand" title="PolkaStats | Polkadot Kusama CC2 network statistics"><span class="logo"></span>PolkaStats <small>v2</small></nuxt-link>
             </b-navbar-brand>
             <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
             <b-collapse id="nav-collapse" is-nav class="flex-grow-1 text-center text-sx-right text-md-right text-lg-right">
