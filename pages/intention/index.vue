@@ -350,6 +350,7 @@ export default {
   },
   computed: {
     intentions () {
+      console.log(this.$store.state.intentions.list)
       return this.$store.state.intentions.list
     }
   },
