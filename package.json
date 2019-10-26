@@ -1,7 +1,7 @@
 {
-  "name": "PolkaStats",
-  "version": "1.0.0",
-  "description": "Polkadot network statistics",
+  "name": "polkastats-v2",
+  "version": "2.0.0",
+  "description": "PolkaStats, Polkadot Kusama network statistics",
   "author": "Mario Pino Uceda",
   "private": true,
   "scripts": {
