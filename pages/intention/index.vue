@@ -27,14 +27,18 @@
               <div class="card-body">
                 <p class="text-right">
                   <i v-if="isFavorite(validator.accountId)" class="favorite fas fa-star" style="color: #f1bd23" title="In Favorites"></i>
-                  <i v-else class="favorite fas fa-star" style="color: #e6dfdf;" title="Not in Favorites"></i>
-                  <i v-if="index < 50" class="fas fa-shield-alt" style="color: #f1bd23" title="Ready to validate!"></i>
-                  <i v-else class="fas fa-shield-alt" style="color: #e6dfdf;" title="Out of 50 first validator slots!"></i><i class=""></i>                  
+                  <i v-else class="favorite fas fa-star" style="color: #e6dfdf;" title="Not in Favorites"></i>       
                 </p>
                 <div class="row">
                   <div class="col-md-3 mb-2 text-center">
                     <Identicon :value="validator.accountId" :size="80" :theme="'polkadot'" />
-                    <p class="mb-0 rank">rank #{{ index+1 }}</p>
+                    <p class="mb-0 rank">
+                      rank #{{ index+1 }}
+                      <small>
+                        <i v-if="index < 50" class="fas fa-shield-alt" style="color: #f1bd23" v-b-tooltip.hover title="Ready to validate!"></i>
+                        <i v-else class="fas fa-shield-alt" style="color: #e6dfdf;" v-b-tooltip.hover title="Out of first 50 validator slots!"></i><i class=""></i>
+                      </small>
+                    </p>
                     <p class="bonded mb-0" v-b-tooltip.hover title="Active bonded">{{ formatDot(validator.stakingLedger.active) }}</p>
                     <p class="mb-0"><small><span v-b-tooltip.hover title="Total bonded">{{ formatDot(validator.stakingLedger.total) }}</span></small></p>
                   </div>
