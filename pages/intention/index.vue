@@ -152,7 +152,7 @@ import moment from 'moment';
 import VueApexCharts from 'vue-apexcharts';
 import Identicon from "../../components/identicon.vue";
 import { formatBalance, isHex } from '@polkadot/util';
-formatBalance.setDefaults({ decimals: 15, unit: 'DOT' });
+formatBalance.setDefaults({ decimals: 12, unit: 'KSM' });
 export default {
   head () {
     return {
@@ -185,15 +185,15 @@ export default {
         first: 0
       },
       StakeEvolutionDailySeries: [{
-          name: "Total bonded (DOT)",
+          name: "Total bonded (KSM)",
           data: []
       }],
        StakeEvolutionWeeklySeries: [{
-          name: "Total bonded (DOT)",
+          name: "Total bonded (KSM)",
           data: []
       }],
        StakeEvolutionMonthlySeries: [{
-          name: "Total bonded (DOT)",
+          name: "Total bonded (KSM)",
           data: []
       }],
       StakeEvolutionDailyChartOptions: {
@@ -237,7 +237,7 @@ export default {
         },
         yaxis: {
           title: {
-            text: 'Total bonded (DOT)'
+            text: 'Total bonded (KSM)'
           },
           labels: {
             formatter: function (val) {
@@ -287,7 +287,7 @@ export default {
         },
         yaxis: {
           title: {
-            text: 'Total bonded (DOT)'
+            text: 'Total bonded (KSM)'
           },
           labels: {
             formatter: function (val) {
@@ -337,7 +337,7 @@ export default {
         },
         yaxis: {
           title: {
-            text: 'Total bonded (DOT)'
+            text: 'Total bonded (KSM)'
           },
           labels: {
             formatter: function (val) {
@@ -443,7 +443,7 @@ export default {
                 },
                 labels: {
                   formatter: function (val) {
-                    return (val / 1000000000000000).toFixed(6);
+                    return (val / 1000000000000).toFixed(6);
                   }
                 }         
               }
@@ -506,7 +506,7 @@ export default {
                 },
                 labels: {
                   formatter: function (val) {
-                    return (val / 1000000000000000).toFixed(6);
+                    return (val / 1000000000000).toFixed(6);
                   }
                 }         
               }
@@ -569,7 +569,7 @@ export default {
                 },
                 labels: {
                   formatter: function (val) {
-                    return (val / 1000000000000000).toFixed(6);
+                    return (val / 1000000000000).toFixed(6);
                   }
                 }         
               }
