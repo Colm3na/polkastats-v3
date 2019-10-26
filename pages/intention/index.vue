@@ -467,15 +467,14 @@ export default {
           var newData = [];
       
           //console.log(response.data);
-          if (response.data.length > 0) {
-            for (var i = 0; i < response.data.length; i++) {
-              // Save first and last point
-              if (i == 0) vm.weekly.last = response.data[i].amount;
-              if (i == response.data.length -1) vm.weekly.first = response.data[i].amount;
 
-              newCategories.push(moment.unix(response.data[i].timestamp, 'YYYY-MM-DD HH:mm:ss.SSSSSS Z').format('YYYY-MM-DD HH:mm:ss'));
-              newData.push(response.data[i].amount);
-            }
+          for (var i = 0; i < response.data.length; i++) {
+            // Save first and last point
+            if (i == 0) vm.weekly.last = response.data[i].amount;
+            if (i == response.data.length -1) vm.weekly.first = response.data[i].amount;
+
+            newCategories.push(moment.unix(response.data[i].timestamp, 'YYYY-MM-DD HH:mm:ss.SSSSSS Z').format('YYYY-MM-DD HH:mm:ss'));
+            newData.push(response.data[i].amount);
           }
           
           newCategories.reverse();
@@ -531,15 +530,14 @@ export default {
           var newData = [];
       
           //console.log(response.data);
-          if (response.data.length > 0) {
-            for (var i = 0; i < response.data.length; i++) {
-              // Save first and last point
-              if (i == 0) vm.monthly.last = response.data[i].amount;
-              if (i == response.data.length -1) vm.monthly.first = response.data[i].amount;
 
-              newCategories.push(moment.unix(response.data[i].timestamp, 'YYYY-MM-DD HH:mm:ss.SSSSSS Z').format('YYYY-MM-DD HH:mm:ss'));
-              newData.push(response.data[i].amount);
-            }
+          for (var i = 0; i < response.data.length; i++) {
+            // Save first and last point
+            if (i == 0) vm.monthly.last = response.data[i].amount;
+            if (i == response.data.length -1) vm.monthly.first = response.data[i].amount;
+
+            newCategories.push(moment.unix(response.data[i].timestamp, 'YYYY-MM-DD HH:mm:ss.SSSSSS Z').format('YYYY-MM-DD HH:mm:ss'));
+            newData.push(response.data[i].amount);
           }
           
           newCategories.reverse();
