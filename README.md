@@ -25,3 +25,8 @@ $ npm run generate
 ## Build backend
 
 See: https://github.com/Colm3na/polkastats-backend-v2
+
+## Old v1 version (Alexander network) repos:
+
+- https://github.com/Colm3na/polkastats
+- https://github.com/Colm3na/polkastats-backend
