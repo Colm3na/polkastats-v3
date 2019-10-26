@@ -253,7 +253,7 @@ section#navigation nav {
   padding: 0 1rem;
 }
 
-nav .nav-link {
+#nav-tab .nav-link {
   padding: 0.5rem 1rem;
 }
 
