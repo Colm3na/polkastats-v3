@@ -62,19 +62,14 @@ export default {
     extend(config, ctx) {
     }
   },
-  /*
-  generate: {
-    routes: function () {
-      return axios.get('https://polkadot-node.mariopino.es/validators')
-      .then((res) => {
-        return res.data.map((validator) => {
-          return {
-            route: '/validator/' + validator.accountId,
-            payload: validator
-          }
-        })
+
+  router: {
+    extendRoutes (routes, resolve) {
+      routes.push({
+        name: 'alexander',
+        path: '/alexander',
+        beforeEnter() { location.href = 'https://alexander.polkastats.io' }
       })
     }
   }
-  */
 }

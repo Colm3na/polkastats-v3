@@ -11,7 +11,7 @@
             <b-collapse id="nav-collapse" is-nav class="flex-grow-1 text-center text-sx-right text-md-right text-lg-right">
               <b-navbar-nav class="navbar-nav ml-auto flex-nowrap">
                 <b-nav-item>
-                  <nuxt-link to="https://alexander.polkastats.io" active-class="active" target="_blank" class="nav-link">Alexander</nuxt-link>
+                  <nuxt-link to="/alexander" active-class="active" class="nav-link">Alexander network</nuxt-link>
                 </b-nav-item> 
                 <b-nav-item>
                   <nuxt-link to="/about" active-class="active" class="nav-link">About</nuxt-link>
