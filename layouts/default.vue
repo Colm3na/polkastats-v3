@@ -3,6 +3,11 @@
     <section id="navigation">
       <div class="nav-bg-color fixed-top">
         <div class="container">
+          <div id="top-bar">
+            <p>
+              Network: <a href="https://polkastats.io" class="active"><i class="fas fa-check"></i> Kusama CC2</a> | <a href="https://alexander.polkastats.io" target="_blank">Alexander</a>
+            </p>
+          </div>
           <b-navbar toggleable="lg" type="dark" class="row">
             <b-navbar-brand>
               <nuxt-link to="/" class="navbar-brand" title="PolkaStats | Polkadot Kusama CC2 network statistics"><span class="logo"></span>PolkaStats v2</nuxt-link>
@@ -338,5 +343,17 @@ section .section-title {
 .kusama-logo {
   width: 100%;
   max-width: 300px;
+}
+
+#top-bar {
+  padding: 0.5rem;
+}
+
+#top-bar p {
+  text-align: right;
+}
+
+#top-bar a {
+  color: #ef1073;
 }
 </style>
