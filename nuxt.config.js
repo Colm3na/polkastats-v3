@@ -61,15 +61,5 @@ export default {
     */
     extend(config, ctx) {
     }
-  },
-
-  router: {
-    extendRoutes (routes, resolve) {
-      routes.push({
-        name: 'alexander',
-        path: '/alexander',
-        beforeEnter() { location.href = 'https://alexander.polkastats.io' }
-      })
-    }
   }
 }
