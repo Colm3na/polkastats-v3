@@ -4,9 +4,7 @@
       <b-container class="main pt-4 pb-5 text-center">
         <h1 class="mb-4">VALIDATORS</h1>
 
-        <p>You own a validator and want to have your name, logo, website url and social links included in PolkaStats?</p>
-
-        <p>Now you can do it!</p>
+        <p>Own a kusama validator and want to have your name, logo, website url and social links included in PolkaStats? Now you can do it!</p>
 
         <h2>Include your validator info in PolkaStats</h2>
 
@@ -39,7 +37,7 @@
           </div>
         </div>
 
-        <h4>Need help? Send me a message at <a target="_blank" href="mailto:polkastats@protonmail.com">polkastats@protonmail.com</a>.</h4>
+        <h4 class="mt-4">Need help? Send me a message at <a target="_blank" href="mailto:polkastats@protonmail.com">polkastats@protonmail.com</a>.</h4>
 
       </b-container>
     </section>
