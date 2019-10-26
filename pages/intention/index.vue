@@ -7,7 +7,7 @@
             <div class="row">
               <div class="col-2 col-lg-1">
                 <template v-if="index > 0">
-                  <nuxt-link :to="{name: 'validator', query: { accountId: validators[index-1].accountId } }" :title="'Previous validator: ' + validators[index-1].accountId">
+                  <nuxt-link :to="{name: 'intention', query: { accountId: validators[index-1].accountId } }" :title="'Previous validator: ' + validators[index-1].accountId">
                     <i class="fas fa-2x fa-chevron-left"></i>
                   </nuxt-link>
                 </template>
@@ -369,12 +369,12 @@ export default {
 
     // Force update of validators list if empty
     if (this.$store.state.validators.list.length == 0) {
-      vm.$store.dispatch('validators/update');
+      vm.$store.dispatch('intentions/update');
     }
 
     // Update validators list every 10 seconds
     this.polling = setInterval(() => {
-      vm.$store.dispatch('validators/update')
+      vm.$store.dispatch('intentions/update')
     }, 10000);
     
     // Refresh graph data every minute
@@ -439,7 +439,7 @@ export default {
                 max: 0,
                 */
                 title: {
-                  text: 'Total bonded (DOT)'
+                  text: 'Total bonded (KSM)'
                 },
                 labels: {
                   formatter: function (val) {
@@ -502,7 +502,7 @@ export default {
                 max: 0,
                 */
                 title: {
-                  text: 'Total bonded (DOT)'
+                  text: 'Total bonded (KSM)'
                 },
                 labels: {
                   formatter: function (val) {
@@ -565,7 +565,7 @@ export default {
                 max: 0,
                 */
                 title: {
-                  text: 'Total bonded (DOT)'
+                  text: 'Total bonded (KSM)'
                 },
                 labels: {
                   formatter: function (val) {
