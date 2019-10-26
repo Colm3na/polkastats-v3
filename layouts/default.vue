@@ -379,7 +379,7 @@ section .section-title {
 
 @media (max-width:991px){
   #navigation {
-    margin-bottom: 52px;
+    margin-bottom: 70px;
   }
   #navigation .container {
     max-width: 100%;
@@ -391,7 +391,7 @@ section .section-title {
 
 @media (max-width:767px){
   #navigation {
-    margin-bottom: 52px;
+    margin-bottom: 100px;
   }
   .main.container {
     padding-left: 15px;
@@ -413,7 +413,10 @@ section .section-title {
     max-width: 100%;
   }  
   .navbar {
-    padding: 0 0.5rem;
+    padding: 0.5rem;
+  }
+  #top-bar {
+    padding: 0.5rem;
   }
 }
 
