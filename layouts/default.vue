@@ -133,7 +133,7 @@ section#navigation nav {
 /* Animated logo */
 
 .navbar-brand .logo {
-  margin: 0 0.2rem;
+  margin: 0 0.5rem;
   display: inline-block;
   vertical-align: middle;
   width: 26px;
@@ -151,28 +151,28 @@ section#navigation nav {
 
 @-webkit-keyframes pulse {
   0% {
-    -webkit-box-shadow: 0 0 0 0 rgba(204,169,44, 0.4);
+    -webkit-box-shadow: 0 0 0 0 rgba(230, 0, 122, 0.6);
   }
   70% {
-      -webkit-box-shadow: 0 0 0 10px rgba(204,169,44, 0);
+      -webkit-box-shadow: 0 0 0 10px rgba(230, 0, 122, 0);
   }
   100% {
-      -webkit-box-shadow: 0 0 0 0 rgba(204,169,44, 0);
+      -webkit-box-shadow: 0 0 0 0 rgba(230, 0, 122, 0);
   }
 }
 
 @keyframes pulse {
   0% {
-    -moz-box-shadow: 0 0 0 0 rgba(204,169,44, 0.4);
-    box-shadow: 0 0 0 0 rgba(204,169,44, 0.4);
+    -moz-box-shadow: 0 0 0 0 rgba(230, 0, 122, 0.6);
+    box-shadow: 0 0 0 0 rgba(230, 0, 122, 0.6);
   }
   70% {
-      -moz-box-shadow: 0 0 0 10px rgba(204,169,44, 0);
-      box-shadow: 0 0 0 10px rgba(204,169,44, 0);
+      -moz-box-shadow: 0 0 0 10px rgba(230, 0, 122, 0);
+      box-shadow: 0 0 0 10px rgba(230, 0, 122, 0);
   }
   100% {
-      -moz-box-shadow: 0 0 0 0 rgba(204,169,44, 0);
-      box-shadow: 0 0 0 0 rgba(204,169,44, 0);
+      -moz-box-shadow: 0 0 0 0 rgba(230, 0, 122, 0);
+      box-shadow: 0 0 0 0 rgba(230, 0, 122, 0);
   }
 }
 
