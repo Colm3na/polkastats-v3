@@ -101,7 +101,7 @@
                         <strong>Reward destination</strong>
                       </div>
                       <div class="col-md-9 mb-2 fee">
-                        {{ formatRewardDest(rewardDestination) }}
+                        {{ formatRewardDest(validator.rewardDestination) }}
                       </div>
                     </div>
                     <template v-if="validator.nextSessionIds.length > 0">
