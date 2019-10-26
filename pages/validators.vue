@@ -25,7 +25,7 @@
           </div>
           <div class="col-md-4">
             <h3>4</h3>
-            <p>The content of the file should be your username in <a href="https://keybase.io" target="_blank">Keybase</a>. Make sure that a query like <a href="https://keybase.io/_/api/1.0/user/lookup.json?username=polkastats" target="_blank">https://keybase.io/_/api/1.0/user/lookup.json?username=polkastats</a> should return the information you want to include.</p>
+            <p>The content of the file should be your username in <a href="https://keybase.io" target="_blank">Keybase</a>. Open in your browser <a href="https://keybase.io/_/api/1.0/user/lookup.json?username=polkastats" target="_blank">https://keybase.io/_/api/1.0/user/lookup.json?username=polkastats</a> (replacing <i>polkastats</i> by your Keybase username) and make sure it shows the information you want to include.</p>
           </div>
           <div class="col-md-4">
             <h3>5</h3>
