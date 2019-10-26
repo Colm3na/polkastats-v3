@@ -7,7 +7,7 @@
             <div class="row">
               <div class="col-2 col-lg-1">
                 <template v-if="index > 0">
-                  <nuxt-link :to="{name: 'intention', query: { accountId: validators[index-1].accountId } }" :title="'Previous validator: ' + validators[index-1].accountId">
+                  <nuxt-link :to="{name: 'intention', query: { accountId: intentions[index-1].accountId } }" :title="'Previous validator: ' + intentions[index-1].accountId">
                     <i class="fas fa-2x fa-chevron-left"></i>
                   </nuxt-link>
                 </template>
@@ -16,8 +16,8 @@
                 <h4 class="mb-1">Validator <span v-if="favorites[getIndex(validator.accountId)] !== undefined"><span v-if="favorites[getIndex(validator.accountId)].name != 'Edit validator name...'">{{ favorites[getIndex(validator.accountId)].name }}</span><span v-else>{{ accountId }}</span></span><span v-else>{{ accountId }}</span></a></h4>
               </div>
               <div class="col-2 col-lg-1 text-right">
-                <template v-if="index < validators.length - 1">
-                  <nuxt-link :to="{name: 'intention', query: { accountId: validators[index+1].accountId } }" :title="'Next validator: ' + validators[index+1].accountId">
+                <template v-if="index < intentions.length - 1">
+                  <nuxt-link :to="{name: 'intention', query: { accountId: intentions[index+1].accountId } }" :title="'Next validator: ' + intentions[index+1].accountId">
                     <i class="fas fa-2x fa-chevron-right"></i>
                   </nuxt-link>  
                 </template>
