@@ -368,7 +368,7 @@ export default {
     this.getValidatorMonthlyGraphData();
 
     // Force update of validators list if empty
-    if (this.$store.state.validators.list.length == 0) {
+    if (this.$store.state.intentions.list.length == 0) {
       vm.$store.dispatch('intentions/update');
     }
 
