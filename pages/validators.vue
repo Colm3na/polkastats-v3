@@ -17,7 +17,7 @@
           </div>
           <div class="col-md-4">
             <h3>2</h3>
-            <p>Login with your GitHub user and make a Fork of PolkaStats v2.</p>
+            <p>Login with your GitHub user and make a Fork of PolkaStats v2 repo (<a href="https://github.com/Colm3na/polkastats-v2" target="_blank">https://github.com/Colm3na/polkastats-v2</a>).</p>
           </div>
           <div class="col-md-4">
             <h3>3</h3>
