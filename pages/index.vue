@@ -107,8 +107,8 @@
                           <div class="col-12 who">
                             {{ index+1 }}.                      
                             <a v-bind:href="blockExplorer.account + sessionId" target="_blank">
-                              <span class="d-block d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="sessionId">{{ shortAddess(sessionId) }}</span>
-                              <span class="d-none d-sm-block d-md-block d-lg-block d-xl-block">{{ sessionId }}</span>                        
+                              <span class="d-inline-block d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="sessionId">{{ shortAddess(sessionId) }}</span>
+                              <span class="d-none d-sm-inline-block d-md-inline-block d-lg-inline-block d-xl-inline-block">{{ sessionId }}</span>                        
                             </a>
                           </div>
                         </div>
