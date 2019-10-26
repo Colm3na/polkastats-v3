@@ -16,6 +16,9 @@
             <b-collapse id="nav-collapse" is-nav class="flex-grow-1 text-center text-sx-right text-md-right text-lg-right">
               <b-navbar-nav class="navbar-nav ml-auto flex-nowrap">
                 <b-nav-item>
+                  <nuxt-link to="/validators" active-class="active" class="nav-link">Validators</nuxt-link>
+                </b-nav-item>                  
+                <b-nav-item>
                   <nuxt-link to="/about" active-class="active" class="nav-link">About</nuxt-link>
                 </b-nav-item>                              
               </b-navbar-nav>
