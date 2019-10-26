@@ -124,6 +124,11 @@ section#navigation nav {
 	background-color: #000000;
 }
 
+.navbar-brand {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
 /* Animated logo */
 
 .navbar-brand .logo {
