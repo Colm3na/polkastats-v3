@@ -96,6 +96,14 @@
                         {{ formatDot(validator.validatorPrefs.validatorPayment) }}
                       </div>
                     </div>
+                    <div class="row mb-2">
+                      <div class="col-md-3 mb-2">
+                        <strong>Reward destination</strong>
+                      </div>
+                      <div class="col-md-9 mb-2 fee">
+                        {{ formatRewardDest(rewardDestination) }}
+                      </div>
+                    </div>
                     <template v-if="validator.nextSessionIds.length > 0">
                       <a class="" data-toggle="collapse" v-bind:href="'#session-id-' + index" role="button" aria-expanded="false" v-bind:aria-controls="'session-id-' + index">
                         <h6 class="h6 nominators d-inline mr-4"><i class="fas"></i> Next session ids ({{ validator.nextSessionIds.length }})</h6>
@@ -465,6 +473,18 @@ export default {
         variant: variant,
         solid: solid
       })
+    },
+    formatRewardDest(rewardDestination) {
+      if (rewardDestination === 0) {
+        return `Stash account (increase the amount at stake)`;
+      }
+      if (rewardDestination === 1) {
+        return `Stash account (do not increase the amount at stake)`;
+      }
+      if (rewardDestination === 2) {
+        return `Controller account`;
+      }
+      return rewardDestination;
     }
   },
   watch: {
