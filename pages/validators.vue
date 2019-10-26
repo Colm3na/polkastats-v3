@@ -12,28 +12,46 @@
 
         <div class="row mt-4">
           <div class="col-md-4">
-            <h3>1</h3>
-            <p>Go to PolkaStats v2 GitHub repo at <a href="https://github.com/Colm3na/polkastats-v2" target="_blank">https://github.com/Colm3na/polkastats-v2</a></p>
+            <b-card title="1">
+              <b-card-text>
+                Go to PolkaStats v2 GitHub repo at <a href="https://github.com/Colm3na/polkastats-v2" target="_blank">https://github.com/Colm3na/polkastats-v2</a>.
+              </b-card-text>
+            </b-card>
           </div>
           <div class="col-md-4">
-            <h3>2</h3>
-            <p>Login with your GitHub user and make a Fork of PolkaStats v2 repo: <a href="https://github.com/Colm3na/polkastats-v2" target="_blank">https://github.com/Colm3na/polkastats-v2</a>.</p>
+            <b-card title="2">
+              <b-card-text>
+                Login with your GitHub user and make a Fork of PolkaStats v2 repo: <a href="https://github.com/Colm3na/polkastats-v2" target="_blank">https://github.com/Colm3na/polkastats-v2</a>.
+              </b-card-text>
+            </b-card>
           </div>
           <div class="col-md-4">
-            <h3>3</h3>
-            <p>In your fork, create a new file named "stash_address_of_your_validator.json" in <a href="https://github.com/Colm3na/polkastats-v2/tree/master/identities" target="_blank">identities folder</a>. Example: <a href="https://raw.githubusercontent.com/Colm3na/polkastats-v2/master/identities/GTzRQPzkcuynHgkEHhsPBFpKdh4sAacVRsnd8vYfPpTMeEY.json" target="_blank">GTzRQPzkcuynHgkEHhsPBFpKdh4sAacVRsnd8vYfPpTMeEY.json</a></p>
+            <b-card title="3">
+              <b-card-text>
+                In your fork, create a new file named "stash_address_of_your_validator.json" in <a href="https://github.com/Colm3na/polkastats-v2/tree/master/identities" target="_blank">identities folder</a>. Example: <a href="https://raw.githubusercontent.com/Colm3na/polkastats-v2/master/identities/GTzRQPzkcuynHgkEHhsPBFpKdh4sAacVRsnd8vYfPpTMeEY.json" target="_blank">GTzRQPzkcuynHgkEHhsPBFpKdh4sAacVRsnd8vYfPpTMeEY.json</a>
+              </b-card-text>
+            </b-card>
           </div>
           <div class="col-md-4">
-            <h3>4</h3>
-            <p>The content of the file should be your username in <a href="https://keybase.io" target="_blank">Keybase</a>. Open in your browser <a href="https://keybase.io/_/api/1.0/user/lookup.json?username=polkastats" target="_blank">https://keybase.io/_/api/1.0/user/lookup.json?username=polkastats</a> (replacing <i>polkastats</i> by your Keybase username) and make sure it shows the information you want to include.</p>
-          </div>
-          <div class="col-md-4">/a>
-            <h3>5</h3>
-            <p>Make a Pull Request to the master branch of the original repo: <a href="https://github.com/Colm3na/polkastats-v2" target="_blank">https://github.com/Colm3na/polkastats-v2</a>.</p>
+            <b-card title="4">
+              <b-card-text>
+                The content of the file should be your username in <a href="https://keybase.io" target="_blank">Keybase</a>. Open in your browser <a href="https://keybase.io/_/api/1.0/user/lookup.json?username=polkastats" target="_blank">https://keybase.io/_/api/1.0/user/lookup.json?username=polkastats</a> (replacing <i>polkastats</i> by your Keybase username) and make sure it shows the information you want to include.
+              </b-card-text>
+            </b-card>
           </div>
           <div class="col-md-4">
-            <h3>6</h3>
-            <p>That's it! If all looks good I will merge your Pull Request and, in our next release, your validator information shoud appears in PolkaStats :-).</p>
+            <b-card title="5">
+              <b-card-text>
+                Make a Pull Request to the master branch of the original repo: <a href="https://github.com/Colm3na/polkastats-v2" target="_blank">https://github.com/Colm3na/polkastats-v2</a>.
+              </b-card-text>
+            </b-card>
+          </div>
+          <div class="col-md-4">
+            <b-card title="6">
+              <b-card-text>
+                That's it! If all looks good I will merge your Pull Request and, in our next release, your validator information shoud appears in PolkaStats :-).
+              </b-card-text>
+            </b-card>
           </div>
         </div>
 
