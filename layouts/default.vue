@@ -154,7 +154,7 @@ section#navigation nav {
   text-transform: uppercase;
 }
 .nav-bg-color {
-  background-color: #670d35;
+  background-color: #000000;
   box-shadow: 0 4px 12px 0 rgba(100,100,100,.3);  
 }
 .dropdown-item {
@@ -165,14 +165,14 @@ section#navigation nav {
 }
 .dropdown-item.active, .dropdown-item:active {
     color: #fff;
-    background-color: #670d35;
+    background-color: #000000;
 }
 .btn-outline-white {
     color: #ffffff;
     border-color: #ffffff;
 }
 .btn-outline-white:hover {
-    color: #670d35;
+    color: #000000;
     background-color: #ffffff;
     border-color: #ffffff;
 }

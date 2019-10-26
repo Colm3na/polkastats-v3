@@ -3,7 +3,7 @@
     <section>
       <b-container class="main pt-4">
         <b-alert show dismissible variant="success" class="text-center">
-          Connected to chain {{system.chain}} using {{ system.nodeName}} client version {{system.nodeVersion}}
+          Connected to chain <strong>{{system.chain}}</strong> using <strong>{{ system.nodeName}}</strong> client version <strong>{{system.nodeVersion}}</strong>
         </b-alert>
         <p class="session text-right">Last block: <strong>#{{ formatNumber(bestblocknumber) }}</strong> | Session: <strong>{{ formatNumber(session.sessionProgress) }}/{{ formatNumber(session.sessionLength) }}</strong> | Era: <strong>{{ formatNumber(session.eraProgress) }}/{{ formatNumber(session.eraLength) }}</strong></p>
         <nav>
