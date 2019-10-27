@@ -699,15 +699,15 @@ export default {
       return rewardDestination;
     },
     hasIdentity(stashId) {
-      let filteredArray = this.$store.state.identities.list.some(obj => {
+      return this.$store.state.identities.list.some(obj => {
         return obj.stashId === stashId;
       });
-      return filteredArray[0];
     },
     getIdentity(stashId) {
-      return this.$store.state.identities.list.filter(obj => {
+      let filteredArray =  this.$store.state.identities.list.filter(obj => {
         return obj.stashId === stashId
       });
+      return filteredArray[0];
     }
   },
   watch: {
