@@ -689,15 +689,13 @@ export default {
       return rewardDestination;
     },
     hasIdentity(stashId) {
-      return this.$store.state.identities.list.some(function (obj) {
+      return this.$store.state.identities.list.some(obj => {
         return obj.stashId === stashId;
       });
     },
     getIdentity(stashId) {
-      return this.$store.state.identities.list.some(function (obj) {
-        if (obj.stashId === stashId) {
-          return obj;
-        }
+      return this.$store.state.identities.list.filter(obj => {
+        return obj.stashId === stashId
       });
     } 
   },
