@@ -4,7 +4,8 @@
       <b-container>
         <div class="row text-center">
           <div class="col-md-12 pt-5 pb-5">
-            <h3>Want to have your validator name, logo, website url and social links included in PolkaStats?</h3>
+            <h3>Want to have your validator name, logo, website url<br />
+            and social links included in PolkaStats?</h3>
           </div>
         </div>
       </b-container>
