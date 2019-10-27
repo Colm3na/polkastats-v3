@@ -15,7 +15,7 @@
         </nav>
         <div class="tab-content mb-2" id="nav-tabContent">
           <div class="tab-pane fade show active" id="intention-validators" role="tabpanel" aria-labelledby="nav-intention-validators">
-            <div class="validator card mb-3" v-for="(validator, index) in intentions" :key="intentions.accountId">
+            <div class="validator card mb-3" v-for="(validator, index) in intentions" v-bind:key="validator.accountId">
               <div class="card-body">
                 <p class="text-right mb-0">
                   <a class="favorite" v-on:click="toggleFavorite(validator.accountId)" v-b-tooltip.hover title="Mark as Favorite">
@@ -117,7 +117,7 @@
                     </template>
                     <template v-if="validator.nextSessionIds.length > 0">
                       <div class="nominator collapse pt-2 pb-3"  v-bind:id="'session-id-' + index">
-                        <div v-for="(sessionId, index) in validator.nextSessionIds" class="row">
+                        <div v-for="(sessionId, index) in validator.nextSessionIds" class="row" v-bind:key="index">
                           <div class="col-12 who">
                             {{ index+1 }}.                      
                             <a v-bind:href="blockExplorer.account + sessionId" target="_blank">
@@ -135,7 +135,7 @@
                     </template>
                     <template v-if="validator.stakers.others.length > 0">
                       <div class="nominator collapse pt-2 pb-3"  v-bind:id="'staker' + index">
-                        <div v-for="staker in validator.stakers.others" class="row">
+                        <div v-for="(staker, index) in validator.stakers.others" class="row" v-bind:key="index">
                           <div class="col-8 who">                      
                             <a v-bind:href="blockExplorer.account + staker.who" target="_blank">
                               <span class="d-block d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="staker.who">{{ shortAddess(staker.who) }}</span>
@@ -154,7 +154,7 @@
             </div>
           </div>
           <div class="tab-pane fade show" id="active-validators" role="tabpanel" aria-labelledby="nav-active-validators">
-            <div class="validator card mb-3" v-for="(validator, index) in validators" :key="validators.accountId">
+            <div class="validator card mb-3" v-for="(validator, index) in validators" v-bind:key="validator.accountId">
               <div class="card-body">
                 <div class="row">
                   <div class="col-md-3 text-center">
@@ -286,7 +286,7 @@
                         </template>
                         <template v-if="validator.nextSessionIds.length > 0">
                           <div class="nominator collapse pt-2 pb-3"  v-bind:id="'session-id-' + index">
-                            <div v-for="(sessionId, index) in validator.nextSessionIds" class="row">
+                            <div v-for="(sessionId, index) in validator.nextSessionIds" class="row" v-bind:key="index">
                               <div class="col-12 who">
                                 {{ index+1 }}.                      
                                 <a v-bind:href="blockExplorer.account + sessionId" target="_blank">
@@ -304,7 +304,7 @@
                         </template>
                         <template v-if="validator.stakers.others.length > 0">
                           <div class="nominator collapse pt-2 pb-3"  v-bind:id="'staker' + index">
-                            <div v-for="staker in validator.stakers.others" class="row">
+                            <div v-for="(staker, index) in validator.stakers.others" class="row" v-bind:key="index">
                               <div class="col-8 who">                      
                                 <a v-bind:href="blockExplorer.account + staker.who" target="_blank">
                                   <span class="d-block d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="staker.who">{{ shortAddess(staker.who) }}</span>

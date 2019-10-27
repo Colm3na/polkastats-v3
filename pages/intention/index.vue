@@ -13,7 +13,7 @@
                 </template>
               </div>
               <div class="col-8 col-lg-10 text-center">
-                <h4 class="mb-1">Intention <span v-if="favorites[getIndex(validator.accountId)] !== undefined"><span v-if="favorites[getIndex(validator.accountId)].name != 'Edit validator name...'">{{ favorites[getIndex(validator.accountId)].name }}</span><span v-else>{{ accountId }}</span></span><span v-else>{{ accountId }}</span></a></h4>
+                <h4 class="mb-1">Intention <span v-if="favorites[getIndex(validator.accountId)] !== undefined"><span v-if="favorites[getIndex(validator.accountId)].name != 'Edit validator name...'">{{ favorites[getIndex(validator.accountId)].name }}</span><span v-else>{{ accountId }}</span></span><span v-else>{{ accountId }}</span></h4>
               </div>
               <div class="col-2 col-lg-1 text-right">
                 <template v-if="index < intentions.length - 1">
@@ -118,7 +118,7 @@
                     </template>
                     <template v-if="validator.nextSessionIds.length > 0">
                       <div class="nominator collapse pt-2 pb-3"  v-bind:id="'session-id-' + index">
-                        <div v-for="(sessionId, index) in validator.nextSessionIds" class="row">
+                        <div v-for="(sessionId, index) in validator.nextSessionIds" class="row" v-bind:key="index">
                           <div class="col-12 who">
                             {{ index+1 }}.                      
                             <a v-bind:href="blockExplorer.account + sessionId" target="_blank">
@@ -135,7 +135,7 @@
                       </a>
                     </template>
                     <div class="nominator collapse pt-2 pb-3"  v-bind:id="'staker' + index">
-                      <div v-for="staker in validator.stakers.others" class="row">
+                      <div v-for="(staker, index) in validator.stakers.others" class="row" v-bind:key="index">
                         <div class="col-8 who">                      
                           <a v-bind:href="blockExplorer.account + staker.who" target="_blank">
                             <span class="d-block d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="staker.who">{{ shortAddess(staker.who) }}</span>

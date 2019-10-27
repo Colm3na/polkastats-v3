@@ -25,7 +25,6 @@
               In that folder create a new file named keybase_username with your <a href="https://keybase.io" target="_blank">Keybase</a> username on it. 
             </b-card-text>
           </b-card>
-          </b-card>
           <b-card title="Step 3">
             <b-card-text>
               Make a Pull Request to the master branch of the original repo: <a href="https://github.com/Colm3na/polkastats-v2" target="_blank">https://github.com/Colm3na/polkastats-v2</a>.
