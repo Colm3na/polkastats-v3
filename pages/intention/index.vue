@@ -123,7 +123,7 @@
                       </div>
                     </div>
                     <!-- Identity -->
-                    <div v-if="hasIdentity(validator.stashId)">
+                    <div v-if="hasIdentity(validator.stashId)" class="mb-2">
                       <!-- <div class="row mb-2">
                         <div class="col-md-3 mb-2">
                           <strong>Identity</strong>
