@@ -120,7 +120,7 @@ a:hover {
 /*----------------------- Header Styles --------------------------*/
 
 #navigation {
-  margin-bottom: 88px;
+  margin-bottom: 79px;
 }
 
 section#navigation nav {
@@ -382,11 +382,11 @@ section .section-title {
   max-width: 300px;
 }
 
-/* Media queries */
+/*----------------------- Media queries --------------------------*/
 
 @media (max-width:991px){
   #navigation {
-    margin-bottom: 70px;
+    margin-bottom: 69px;
   }
   #navigation .container {
     max-width: 100%;
@@ -398,7 +398,7 @@ section .section-title {
 
 @media (max-width:767px){
   #navigation {
-    margin-bottom: 100px;
+    margin-bottom: 93px;
   }
   .main.container {
     padding-left: 15px;
