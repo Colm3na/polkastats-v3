@@ -31,7 +31,17 @@
                 </p>
                 <div class="row">
                   <div class="col-md-3 mb-2 text-center">
-                    <Identicon :value="validator.accountId" :size="80" :theme="'polkadot'" />
+                    <div v-if="hasIdentity(validator.stashId)">
+                      <div v-if="getIdentity(validator.stashId).logo !== ''">
+                        <img v-bind:src="getIdentity(validator.stashId).logo" class="img-fluid" />
+                      </div>
+                      <div v-else>
+                        <Identicon :value="validator.accountId" :size="80" :theme="'polkadot'" />
+                      </div>
+                    </div>
+                    <div v-else>
+                      <Identicon :value="validator.accountId" :size="80" :theme="'polkadot'" />
+                    </div>
                     <p class="mb-0 rank">
                       rank #{{ index+1 }}
                       <small>
@@ -111,16 +121,25 @@
                         {{ formatRewardDest(validator.rewardDestination) }}
                       </div>
                     </div>
+                    <!-- Identity -->
                     <div v-if="hasIdentity(validator.stashId)">
-                      <div class="row mb-2">
+                      <!-- <div class="row mb-2">
                         <div class="col-md-3 mb-2">
                           <strong>Identity</strong>
                         </div>
                         <div class="col-md-9 mb-2 fee">
                           {{ getIdentity(validator.stashId) }}
                         </div>
+                      </div> -->
+                      <div class="row mb-2" v-if="getIdentity(validator.stashId).username_cased !== ''">
+                        <div class="col-md-3 mb-2">
+                          <strong>Name</strong>
+                        </div>
+                        <div class="col-md-9 mb-2 fee">
+                          {{ getIdentity(validator.stashId).username_cased }}
+                        </div>
                       </div>
-                      <div class="row mb-2">
+                      <div class="row mb-2" v-if="getIdentity(validator.stashId).bio !== ''">
                         <div class="col-md-3 mb-2">
                           <strong>Bio</strong>
                         </div>
@@ -128,7 +147,46 @@
                           {{ getIdentity(validator.stashId).bio }}
                         </div>
                       </div>
+                      <div class="row mb-2" v-if="getIdentity(validator.stashId).location !== ''">
+                        <div class="col-md-3 mb-2">
+                          <strong>Location</strong>
+                        </div>
+                        <div class="col-md-9 mb-2 fee">
+                          {{ getIdentity(validator.stashId).location }}
+                        </div>
+                      </div>
+                      <div class="row mb-2" v-if="getIdentity(validator.stashId).website !== ''">
+                        <div class="col-md-3 mb-2">
+                          <strong>Website</strong>
+                        </div>
+                        <div class="col-md-9 mb-2 fee">
+                          <a v-bind:href="getIdentity(validator.stashId).website" target="_blank">
+                            {{ getIdentity(validator.stashId).website }}
+                          </a>
+                        </div>
+                      </div>
+                      <div class="row mb-2" v-if="getIdentity(validator.stashId).twitter !== ''">
+                        <div class="col-md-3 mb-2">
+                          <strong>Twitter</strong>
+                        </div>
+                        <div class="col-md-9 mb-2 fee">
+                          <a v-bind:href="getIdentity(validator.stashId).twitter" target="_blank">
+                            {{ getIdentity(validator.stashId).twitter }}
+                          </a>
+                        </div>
+                      </div>
+                      <div class="row mb-2" v-if="getIdentity(validator.stashId).github !== ''">
+                        <div class="col-md-3 mb-2">
+                          <strong>Github</strong>
+                        </div>
+                        <div class="col-md-9 mb-2 fee">
+                          <a v-bind:href="getIdentity(validator.stashId).github" target="_blank">
+                            {{ getIdentity(validator.stashId).github }}
+                          </a>
+                        </div>
+                      </div>
                     </div>
+                    <!-- Identity End -->
                     <template v-if="validator.nextSessionIds.length > 0">
                       <a class="" data-toggle="collapse" v-bind:href="'#session-id-' + index" role="button" aria-expanded="false" v-bind:aria-controls="'session-id-' + index">
                         <h6 class="h6 nominators d-inline mr-4"><i class="fas"></i> Next session ids ({{ validator.nextSessionIds.length }})</h6>
