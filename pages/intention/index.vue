@@ -111,12 +111,22 @@
                         {{ formatRewardDest(validator.rewardDestination) }}
                       </div>
                     </div>
-                    <div class="row mb-2" v-if="hasIdentity(validator.stashId)">
-                      <div class="col-md-3 mb-2">
-                        <strong>Identity</strong>
+                    <div v-if="hasIdentity(validator.stashId)">
+                      <div class="row mb-2">
+                        <div class="col-md-3 mb-2">
+                          <strong>Identity</strong>
+                        </div>
+                        <div class="col-md-9 mb-2 fee">
+                          {{ getIdentity(validator.stashId) }}
+                        </div>
                       </div>
-                      <div class="col-md-9 mb-2 fee">
-                        {{ getIdentity(validator.stashId) }}
+                      <div class="row mb-2">
+                        <div class="col-md-3 mb-2">
+                          <strong>Bio</strong>
+                        </div>
+                        <div class="col-md-9 mb-2 fee">
+                          {{ getIdentity(validator.stashId).bio }}
+                        </div>
                       </div>
                     </div>
                     <template v-if="validator.nextSessionIds.length > 0">
@@ -689,15 +699,16 @@ export default {
       return rewardDestination;
     },
     hasIdentity(stashId) {
-      return this.$store.state.identities.list.some(obj => {
+      let filteredArray = this.$store.state.identities.list.some(obj => {
         return obj.stashId === stashId;
       });
+      return filteredArray[0];
     },
     getIdentity(stashId) {
       return this.$store.state.identities.list.filter(obj => {
         return obj.stashId === stashId
       });
-    } 
+    }
   },
   watch: {
     $route () {
