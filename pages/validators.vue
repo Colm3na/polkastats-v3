@@ -1,10 +1,10 @@
 <template>
   <div>
-    <section class="cta pt-4">
+    <section class="cta">
       <b-container>
         <div class="row text-center">
-          <div class="col-md-12 pt-5 pb-4">
-            <h3>Own a kusama validator and want to have your name, logo, website url and social links included in PolkaStats?</h3>
+          <div class="col-md-12 pt-5 pb-5">
+            <h3>Want to have your validator name, logo, website url and social links included in PolkaStats?</h3>
           </div>
         </div>
       </b-container>
