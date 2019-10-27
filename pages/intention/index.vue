@@ -113,7 +113,7 @@
                         {{ formatDot(validator.validatorPrefs.validatorPayment, 6) }}
                       </div>
                     </div>
-                    <div class="row mb-2">
+                    <div class="row">
                       <div class="col-md-3 mb-2">
                         <strong>Reward destination</strong>
                       </div>
@@ -131,7 +131,7 @@
                           {{ getIdentity(validator.stashId) }}
                         </div>
                       </div> -->
-                      <div class="row mb-2" v-if="getIdentity(validator.stashId).username_cased !== ''">
+                      <div class="row" v-if="getIdentity(validator.stashId).username_cased !== ''">
                         <div class="col-md-3 mb-2">
                           <strong>Name</strong>
                         </div>
@@ -139,7 +139,7 @@
                           {{ getIdentity(validator.stashId).username_cased }}
                         </div>
                       </div>
-                      <div class="row mb-2" v-if="getIdentity(validator.stashId).bio !== ''">
+                      <div class="row" v-if="getIdentity(validator.stashId).bio !== ''">
                         <div class="col-md-3 mb-2">
                           <strong>Bio</strong>
                         </div>
@@ -147,7 +147,7 @@
                           {{ getIdentity(validator.stashId).bio }}
                         </div>
                       </div>
-                      <div class="row mb-2" v-if="getIdentity(validator.stashId).location !== ''">
+                      <div class="row" v-if="getIdentity(validator.stashId).location !== ''">
                         <div class="col-md-3 mb-2">
                           <strong>Location</strong>
                         </div>
@@ -155,7 +155,7 @@
                           {{ getIdentity(validator.stashId).location }}
                         </div>
                       </div>
-                      <div class="row mb-2" v-if="getIdentity(validator.stashId).website !== ''">
+                      <div class="row" v-if="getIdentity(validator.stashId).website !== ''">
                         <div class="col-md-3 mb-2">
                           <strong>Website</strong>
                         </div>
@@ -165,7 +165,7 @@
                           </a>
                         </div>
                       </div>
-                      <div class="row mb-2" v-if="getIdentity(validator.stashId).twitter !== ''">
+                      <div class="row" v-if="getIdentity(validator.stashId).twitter !== ''">
                         <div class="col-md-3 mb-2">
                           <strong>Twitter</strong>
                         </div>
@@ -175,7 +175,7 @@
                           </a>
                         </div>
                       </div>
-                      <div class="row mb-2" v-if="getIdentity(validator.stashId).github !== ''">
+                      <div class="row" v-if="getIdentity(validator.stashId).github !== ''">
                         <div class="col-md-3 mb-2">
                           <strong>Github</strong>
                         </div>
