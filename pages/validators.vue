@@ -10,7 +10,7 @@
       </b-container>
     </section>
     <section>
-      <b-containe class="main pb-5 text-center">
+      <b-container class="main pb-5 text-center">
         <h2 class="mt-4 mb-4">How to include your validator information in PolkaStats</h2>
         <b-alert variant="success" show>
           You will need both <a href="https://keybase.io" target="_blank">Keybase</a> and <a href="https://github.com" target="_blank">GitHub</a> accounts in order to continue.<br />
