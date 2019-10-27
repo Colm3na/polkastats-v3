@@ -111,6 +111,14 @@
                         {{ formatRewardDest(validator.rewardDestination) }}
                       </div>
                     </div>
+                    <div class="row mb-2" v-if="hasIdentity(validator.stashId)">
+                      <div class="col-md-3 mb-2">
+                        <strong>Identity</strong>
+                      </div>
+                      <div class="col-md-9 mb-2 fee">
+                        {{ getIdentity(validator.stashId) }}
+                      </div>
+                    </div>
                     <template v-if="validator.nextSessionIds.length > 0">
                       <a class="" data-toggle="collapse" v-bind:href="'#session-id-' + index" role="button" aria-expanded="false" v-bind:aria-controls="'session-id-' + index">
                         <h6 class="h6 nominators d-inline mr-4"><i class="fas"></i> Next session ids ({{ validator.nextSessionIds.length }})</h6>
@@ -376,8 +384,11 @@ export default {
     }
   },
   computed: {
-    intentions () {
+    intentions() {
       return this.$store.state.intentions.list
+    },
+    identities() {
+      return this.$store.state.identities.list
     }
   },
   created: function () {
@@ -398,9 +409,15 @@ export default {
       vm.$store.dispatch('intentions/update');
     }
 
-    // Update intention validators list every 30 seconds
+    // Force update of indentity list if empty
+    if (this.$store.state.identities.list.length == 0) {
+      vm.$store.dispatch('identities/update');
+    }
+
+    // Update intention validators and identity lists every 30 seconds
     this.polling = setInterval(() => {
       vm.$store.dispatch('intentions/update')
+      vm.$store.dispatch('identities/update')
     }, 30000);
     
     // Refresh graph data every minute
@@ -670,6 +687,18 @@ export default {
         return `Controller account`;
       }
       return rewardDestination;
+    },
+    hasIdentity(stashId) {
+      return this.$store.state.identities.list.some(function (obj) {
+        return obj.stashId === stashId;
+      });
+    },
+    getIdentity(stashId) {
+      return this.$store.state.identities.list.some(function (obj) {
+        if (obj.stashId === stashId) {
+          return obj;
+        }
+      });
     } 
   },
   watch: {
