@@ -33,7 +33,8 @@
                   <div class="col-md-3 mb-2 text-center">
                     <div v-if="hasIdentity(validator.stashId)">
                       <div v-if="getIdentity(validator.stashId).logo !== ''">
-                        <img v-bind:src="getIdentity(validator.stashId).logo" class="img-fluid" style="max-width: 80px;" />
+                        <img v-bind:src="getIdentity(validator.stashId).logo" class="img-fluid" style="max-width: 150px;" />
+                        <h4 class="mh-2" v-if="getIdentity(validator.stashId).username_cased !== ''">{{ getIdentity(validator.stashId).username_cased }}</h4>
                       </div>
                       <div v-else>
                         <Identicon :value="validator.accountId" :size="80" :theme="'polkadot'" />
