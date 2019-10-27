@@ -426,14 +426,4 @@ section .section-title {
     padding: 0.5rem;
   }
 }
-
-/* Call to action */
-
-.cta {
-  color: #fff;
-  background-color: #5bc0de;
-  border-color: #14b6e6;
-  background-image: linear-gradient(135deg, #670d35, #b1e2f1);
-  line-height: 3rem;
-}
 </style>

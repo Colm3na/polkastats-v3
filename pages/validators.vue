@@ -57,5 +57,17 @@ export default {
 .card-title {
   color: #ef1073;
 }
-</style>>
+
+/* Call to action */
+
+.cta {
+  color: #fff;
+  background-color: #5bc0de;
+  border-color: #14b6e6;
+  background-image: linear-gradient(135deg, #670d35, #b1e2f1);
+}
+
+.cta h3 {
+  line-height: 3rem;
+}
 </style>
