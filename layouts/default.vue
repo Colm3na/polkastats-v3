@@ -254,7 +254,7 @@ section#navigation nav {
 }
 
 .nav-link {
-  padding: 0 1rem;
+  padding: 0.2rem 1rem;
 }
 
 #nav-tab .nav-link {

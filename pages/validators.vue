@@ -3,16 +3,25 @@
     <section>
       <b-container class="main pt-4 pb-5 text-center">
         <h1 class="mb-4">VALIDATORS</h1>
-
-        <p>Own a kusama validator and want to have your name, logo, website url and social links included in PolkaStats? Now you can do it!</p>
-
+      </b-container>
+    </section>
+    <section class="cta">
+      <b-container>
+        <div class="row text-center">
+          <div class="col-md-12 pt-5 pb-4">
+            <h2>Own a kusama validator and want to have your name, logo, website url and social links included in PolkaStats? Now you can do it!</h2>
+            <h3>Now you can do it!</h3>
+          </div>
+        </div>
+      </b-container>
+    </section>
+    <section>
+      <b-container>
         <h2 class="mt-4 mb-4">Include your validator info in PolkaStats</h2>
-
         <b-alert variant="success" show>
           You will need both <a href="https://keybase.io" target="_blank">Keybase</a> and <a href="https://github.com" target="_blank">GitHub</a> accounts in order to continue.<br />
           Make sure you have properly filled your full name, website, social links and have uploaded a profile picture in your Keybase profile.
         </b-alert>
-
         <b-card-group deck class="mt-4 mb-4">
           <b-card title="Step 1">
             <b-card-text>
@@ -31,9 +40,7 @@
             </b-card-text>
           </b-card>
         </b-card-group>
-
         <h4 class="mt-4">Need help? Send me a message at <a target="_blank" href="mailto:polkastats@protonmail.com">polkastats@protonmail.com</a>.</h4>
-
       </b-container>
     </section>
   </div>
