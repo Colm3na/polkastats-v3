@@ -59,7 +59,7 @@
               </nuxt-link>
               <Identicon value="CoqysGbay3t3Q7hXgEmGJJquhYYpo8PqLwvW1WsUwR7KvXm" size="20" theme="polkadot" />
               <a v-bind:href="blockExplorer.account + `CoqysGbay3t3Q7hXgEmGJJquhYYpo8PqLwvW1WsUwR7KvXm`" target="_blank">
-                <span class="d-inline d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover title="CoqysGbay3t3Q7hXgEmGJJquhYYpo8PqLwvW1WsUwR7KvXm">GTzRQPzkcu .... vYfPpTMeEY</span>
+                <span class="d-inline d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover title="CoqysGbay3t3Q7hXgEmGJJquhYYpo8PqLwvW1WsUwR7KvXm">CoqysGbay3 .... WsUwR7KvXm</span>
                 <span class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline">CoqysGbay3t3Q7hXgEmGJJquhYYpo8PqLwvW1WsUwR7KvXm</span>
               </a>
             </div>
