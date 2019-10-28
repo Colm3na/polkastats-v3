@@ -17,7 +17,10 @@
               <b-navbar-nav class="navbar-nav ml-auto flex-nowrap">
                 <b-nav-item>
                   <nuxt-link to="/validators" active-class="active" class="nav-link">Validators</nuxt-link>
-                </b-nav-item>                  
+                </b-nav-item>
+                <b-nav-item>
+                  <nuxt-link to="/support-us" active-class="active" class="nav-link">Support PolkaStats</nuxt-link>
+                </b-nav-item>              
                 <b-nav-item>
                   <nuxt-link to="/about" active-class="active" class="nav-link">About</nuxt-link>
                 </b-nav-item>                              
