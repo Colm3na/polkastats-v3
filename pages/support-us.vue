@@ -21,7 +21,7 @@
             </div>
             <div class="col-md-10">
               <nuxt-link :to="{name: 'intention', query: `GTzRQPzkcuynHgkEHhsPBFpKdh4sAacVRsnd8vYfPpTMeEY` }" title="PolkaStats validator details">
-                <h3>PolkaStats validator</h3>
+                <h3 class="mt-1 mb-2">PolkaStats validator</h3>
               </nuxt-link>
               <Identicon value="GTzRQPzkcuynHgkEHhsPBFpKdh4sAacVRsnd8vYfPpTMeEY" size="20" theme="polkadot" />
               <a v-bind:href="blockExplorer.account + `GTzRQPzkcuynHgkEHhsPBFpKdh4sAacVRsnd8vYfPpTMeEY`" target="_blank">
@@ -38,7 +38,7 @@
             </div>
             <div class="col-md-10">
               <nuxt-link :to="{name: 'intention', query: `DSpbbk6HKKyS78c4KDLSxCetqbwnsemv2iocVXwNe2FAvWC` }" title="DragonStake validator details">
-                <h3>DragonStake validator</h3>
+                <h3 class="mt-1 mb-2">DragonStake validator</h3>
               </nuxt-link>
               <Identicon value="DSpbbk6HKKyS78c4KDLSxCetqbwnsemv2iocVXwNe2FAvWC" size="20" theme="polkadot" />
               <a v-bind:href="blockExplorer.account + `DSpbbk6HKKyS78c4KDLSxCetqbwnsemv2iocVXwNe2FAvWC`" target="_blank">
@@ -55,7 +55,7 @@
             </div>
             <div class="col-md-10">
               <nuxt-link :to="{name: 'intention', query: `CoqysGbay3t3Q7hXgEmGJJquhYYpo8PqLwvW1WsUwR7KvXm` }" title="Delega Networks validator details">
-                <h3>Delega Networks validator</h3>
+                <h3 class="mt-1 mb-2">Delega Networks validator</h3>
               </nuxt-link>
               <Identicon value="CoqysGbay3t3Q7hXgEmGJJquhYYpo8PqLwvW1WsUwR7KvXm" size="20" theme="polkadot" />
               <a v-bind:href="blockExplorer.account + `CoqysGbay3t3Q7hXgEmGJJquhYYpo8PqLwvW1WsUwR7KvXm`" target="_blank">
