@@ -20,7 +20,7 @@
               <img src="https://s3.amazonaws.com/keybase_processed_uploads/bd6bb92e0fa85197a2a0cf25d1a11f05_360_360.jpg" class="img-fluid" style="max-width: 80px;">
             </div>
             <div class="col-md-10">
-              <nuxt-link :to="{name: 'intention', query: `GTzRQPzkcuynHgkEHhsPBFpKdh4sAacVRsnd8vYfPpTMeEY` }" title="PolkaStats validator details">
+              <nuxt-link :to="{name: 'intention', query: { accountId: `GTzRQPzkcuynHgkEHhsPBFpKdh4sAacVRsnd8vYfPpTMeEY` }}" title="PolkaStats validator details">
                 <h3 class="mt-1 mb-2">PolkaStats validator</h3>
               </nuxt-link>
               <Identicon value="GTzRQPzkcuynHgkEHhsPBFpKdh4sAacVRsnd8vYfPpTMeEY" size="20" theme="polkadot" />
@@ -37,7 +37,7 @@
               <img src="https://s3.amazonaws.com/keybase_processed_uploads/c62c205359734ddf9af1b03777703505_360_360.jpg" class="img-fluid" style="max-width: 80px;">
             </div>
             <div class="col-md-10">
-              <nuxt-link :to="{name: 'intention', query: `DSpbbk6HKKyS78c4KDLSxCetqbwnsemv2iocVXwNe2FAvWC` }" title="DragonStake validator details">
+              <nuxt-link :to="{name: 'intention', query: { accountId: `DSpbbk6HKKyS78c4KDLSxCetqbwnsemv2iocVXwNe2FAvWC` }}" title="DragonStake validator details">
                 <h3 class="mt-1 mb-2">DragonStake validator</h3>
               </nuxt-link>
               <Identicon value="DSpbbk6HKKyS78c4KDLSxCetqbwnsemv2iocVXwNe2FAvWC" size="20" theme="polkadot" />
@@ -54,7 +54,7 @@
               <img src="https://s3.amazonaws.com/keybase_processed_uploads/9769abccf1bee6c032fb5be50d6c3c05_360_360.jpg" class="img-fluid" style="max-width: 80px;">
             </div>
             <div class="col-md-10">
-              <nuxt-link :to="{name: 'intention', query: `CoqysGbay3t3Q7hXgEmGJJquhYYpo8PqLwvW1WsUwR7KvXm` }" title="Delega Networks validator details">
+              <nuxt-link :to="{name: 'intention', query: { accountId: `CoqysGbay3t3Q7hXgEmGJJquhYYpo8PqLwvW1WsUwR7KvXm` }}" title="Delega Networks validator details">
                 <h3 class="mt-1 mb-2">Delega Networks validator</h3>
               </nuxt-link>
               <Identicon value="CoqysGbay3t3Q7hXgEmGJJquhYYpo8PqLwvW1WsUwR7KvXm" size="20" theme="polkadot" />
