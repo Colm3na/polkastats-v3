@@ -8,7 +8,7 @@
 
         <p>If you like my work and want to help me to pay the hosting or the time I spent developing and maintaining the server, you can do it in several ways.</p>
 
-        <h2 class="mt-3 mb-2">Stake in our validators</h2>
+        <h2 class="mt-5 mb-4">Stake in our validators</h2>
 
         <p>This is an easy way you can support me and the Polkadot folks at <a href="https://www.colmenalabs.org/" target="_blank">La Colmena</a> blockchain colective:</p>
 
@@ -58,7 +58,7 @@
           </div>
         </b-card>
 
-        <h2 class="mt-3 mb-2">Tip me on Brave</h2>
+        <h2 class="mt-5 mb-4">Tip me on Brave</h2>
 
         <p>Visit the site with Brave browser and send me a tip.</p>
         
