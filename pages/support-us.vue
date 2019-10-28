@@ -12,7 +12,7 @@
 
         <h2 class="mt-5 mb-4">Stake in our validators</h2>
 
-        <p>This is an easy way you can support me and the Polkadot folks at <a href="https://www.colmenalabs.org/" target="_blank">La Colmena</a> blockchain colective:</p>
+        <p>This is an easy way you can support me and the Polkadot folks at <a href="https://www.colmenalabs.org/" target="_blank">La Colmena Labs</a> blockchain colective:</p>
 
         <b-card class="mb-3">
           <div class="row">
