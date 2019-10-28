@@ -62,6 +62,13 @@ export default {
         { hid: 'description', name: 'description', content: 'Support us' }
       ]
     }
+  },
+  data: function() {
+    return {
+      blockExplorer: {
+        account: 'https://polkascan.io/pre/kusama-cc2/account/'
+      }
+    }
   }
 }
 </script>
