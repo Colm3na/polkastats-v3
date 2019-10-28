@@ -48,17 +48,17 @@
                     <p class="mb-0"><small><span v-b-tooltip.hover title="Total bonded">{{ formatDot(validator.stakingLedger.total) }}</span></small></p>
                   </div>
                   <div class="col-md-9">
-                    <h4 class="card-title mb-4 account mt-4 mt-sm-1 mt-md-1 mt-lg-1 mt-xl-1">
+                    <h4 class="card-title mb-4 account mt-4 mt-sm-0 mt-md-0 mt-lg-0 mt-xl-0">
                       <nuxt-link :to="{name: 'intention', query: { accountId: validator.accountId } }" title="Validator intention details">
                         {{ validator.accountId }}
                       </nuxt-link>
                     </h4>
                     <div v-if="validator.controllerId != validator.nextSessionId">
                       <div class="row">
-                        <div class="col-md-3 mb-2">
+                        <div class="col-md-3 mb-1">
                           <strong>Controller</strong>
                         </div>
-                        <div class="col-md-9 mb-2">
+                        <div class="col-md-9 mb-1">
                           <Identicon :value="validator.controllerId" :size="20" :theme="'polkadot'" />
                           <a v-bind:href="blockExplorer.account + validator.controllerId" target="_blank">
                             <span class="d-inline d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="validator.controllerId">{{ shortAddess(validator.controllerId) }}</span>
@@ -67,10 +67,10 @@
                         </div>
                       </div>
                       <div class="row">
-                        <div class="col-md-3 mb-2">
+                        <div class="col-md-3 mb-1">
                           <strong>Session</strong>
                         </div>
-                        <div class="col-md-9 mb-2">
+                        <div class="col-md-9 mb-1">
                           <Identicon :value="validator.nextSessionId" :size="20" :theme="'polkadot'" />              
                           <a v-bind:href="blockExplorer.account + validator.nextSessionId" target="_blank">
                             <span class="d-inline d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="validator.nextSessionId">{{ shortAddess(validator.nextSessionId) }}</span>
@@ -81,10 +81,10 @@
                     </div>
                     <div v-else>
                       <div class="row">
-                        <div class="col-md-3 mb-2">
+                        <div class="col-md-3 mb-1">
                           <strong>Controller/Session</strong>
                         </div>
-                        <div class="col-md-9 mb-2">
+                        <div class="col-md-9 mb-1">
                           <Identicon :value="validator.nextSessionId" :size="20" :theme="'polkadot'" />
                           <a v-bind:href="blockExplorer.account + validator.nextSessionId" target="_blank">
                             <span class="d-inline d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="validator.nextSessionId">{{ shortAddess(validator.nextSessionId) }}</span>
@@ -94,10 +94,10 @@
                       </div>
                     </div>
                     <div class="row">
-                      <div class="col-md-3 mb-2">
+                      <div class="col-md-3 mb-1">
                         <strong>Stash</strong>
                       </div>
-                      <div class="col-md-9 mb-2">
+                      <div class="col-md-9 mb-1">
                         <Identicon :value="validator.stashId" :size="20" :theme="'polkadot'" />
                         <a v-bind:href="blockExplorer.account + validator.stashId" target="_blank">
                           <span class="d-inline d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="validator.stashId">{{ shortAddess(validator.stashId) }}</span>
@@ -106,18 +106,18 @@
                       </div>
                     </div>
                     <div class="row">
-                      <div class="col-md-3 mb-2">
+                      <div class="col-md-3 mb-1">
                         <strong>Comission</strong>
                       </div>
-                      <div class="col-md-9 mb-2 fee">
+                      <div class="col-md-9 mb-1 fee">
                         {{ formatDot(validator.validatorPrefs.validatorPayment) }}
                       </div>
                     </div>
                     <div class="row mb-2">
-                      <div class="col-md-3 mb-2">
+                      <div class="col-md-3 mb-1">
                         <strong>Reward destination</strong>
                       </div>
-                      <div class="col-md-9 mb-2 fee">
+                      <div class="col-md-9 mb-1 fee">
                         {{ formatRewardDest(validator.rewardDestination) }}
                       </div>
                     </div>
@@ -228,17 +228,17 @@
                         <editable v-bind:favorites="favorites" v-model="favorites[getIndex(validator.accountId)].name"></editable>
                       </div>
                       <div class="col-md-9">
-                        <h4 class="card-title mb-4 account mt-4 mt-sm-1 mt-md-1 mt-lg-1 mt-xl-1">
+                        <h4 class="card-title mb-4 account mt-4 mt-sm-0 mt-md-0 mt-lg-0 mt-xl-0">
                           <nuxt-link :to="{name: 'intention', query: { accountId: validator.accountId } }" title="Validator details">
                             {{ validator.accountId }}
                           </nuxt-link>
                         </h4>                        
                         <div v-if="validator.controllerId != validator.nextSessionId">
                           <div class="row">
-                            <div class="col-md-3 mb-2">
+                            <div class="col-md-3 mb-1">
                               <strong>Controller</strong>
                             </div>
-                            <div class="col-md-9 mb-2">
+                            <div class="col-md-9 mb-1">
                               <Identicon :value="validator.controllerId" :size="20" :theme="'polkadot'" />
                               <a v-bind:href="blockExplorer.account + validator.controllerId" target="_blank">
                                 <span class="d-inline d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="validator.controllerId">{{ shortAddess(validator.controllerId) }}</span>
@@ -247,10 +247,10 @@
                             </div>
                           </div>
                           <div class="row">
-                            <div class="col-md-3 mb-2">
+                            <div class="col-md-3 mb-1">
                               <strong>Session</strong>
                             </div>
-                            <div class="col-md-9 mb-2">
+                            <div class="col-md-9 mb-1">
                               <Identicon :value="validator.nextSessionId" :size="20" :theme="'polkadot'" />            
                               <a v-bind:href="blockExplorer.account + validator.nextSessionId" target="_blank">
                                 <span class="d-inline d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="validator.nextSessionId">{{ shortAddess(validator.nextSessionId) }}</span>
@@ -261,10 +261,10 @@
                         </div>
                         <div v-else>
                           <div class="row">
-                            <div class="col-md-3 mb-2">
+                            <div class="col-md-3 mb-1">
                               <strong>Controller/Session</strong>
                             </div>
-                            <div class="col-md-9 mb-2">
+                            <div class="col-md-9 mb-1">
                               <Identicon :value="validator.nextSessionId" :size="20" :theme="'polkadot'" />
                               <a v-bind:href="blockExplorer.account + validator.nextSessionId" target="_blank">
                                 <span class="d-inline d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="validator.nextSessionId">{{ shortAddess(validator.nextSessionId) }}</span>
@@ -274,10 +274,10 @@
                           </div>
                         </div>
                         <div class="row">
-                          <div class="col-md-3 mb-2">
+                          <div class="col-md-3 mb-1">
                             <strong>Stash</strong>
                           </div>
-                          <div class="col-md-9 mb-2">
+                          <div class="col-md-9 mb-1">
                             <Identicon :value="validator.stashId" :size="20" :theme="'polkadot'" />
                             <a v-bind:href="blockExplorer.account + validator.stashId" target="_blank">
                               <span class="d-inline d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="validator.stashId">{{ shortAddess(validator.stashId) }}</span>
@@ -286,18 +286,18 @@
                           </div>
                         </div>
                         <div class="row">
-                          <div class="col-md-3 mb-2">
+                          <div class="col-md-3 mb-1">
                             <strong>Comission</strong>
                           </div>
-                          <div class="col-md-9 mb-2 fee">
+                          <div class="col-md-9 mb-1 fee">
                             {{ formatDot(validator.validatorPrefs.validatorPayment) }}
                           </div>
                         </div>
                         <div class="row mb-2">
-                          <div class="col-md-3 mb-2">
+                          <div class="col-md-3 mb-1">
                             <strong>Reward destination</strong>
                           </div>
-                          <div class="col-md-9 mb-2 fee">
+                          <div class="col-md-9 mb-1 fee">
                             {{ formatRewardDest(validator.rewardDestination) }}
                           </div>
                         </div>
