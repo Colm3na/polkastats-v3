@@ -27,7 +27,7 @@
                   <div class="col-md-3 mb-2 text-center">
                     <div v-if="hasIdentity(validator.stashId)">
                       <div v-if="getIdentity(validator.stashId).logo !== ''">
-                        <img v-bind:src="getIdentity(validator.stashId).logo" class="identity mt-1" />
+                        <img v-bind:src="getIdentity(validator.stashId).logo" class="identity mt-2" />
                         <h4 class="mt-2 mb-2" v-if="getIdentity(validator.stashId).username_cased !== ''">{{ getIdentity(validator.stashId).username_cased }}</h4>
                       </div>
                       <div v-else>
@@ -206,7 +206,7 @@
                       <div class="col-md-3 mb-2 text-center">
                         <div v-if="hasIdentity(validator.stashId)">
                           <div v-if="getIdentity(validator.stashId).logo !== ''">
-                            <img v-bind:src="getIdentity(validator.stashId).logo" class="identity mt-1" />
+                            <img v-bind:src="getIdentity(validator.stashId).logo" class="identity mt-2" />
                             <h4 class="mt-2 mb-2" v-if="getIdentity(validator.stashId).username_cased !== ''">{{ getIdentity(validator.stashId).username_cased }}</h4>
                           </div>
                           <div v-else>
