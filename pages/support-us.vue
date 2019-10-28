@@ -4,7 +4,9 @@
       <b-container class="main pt-4 pb-5">
         <h1 class="mb-4">SUPPORT POLKASTATS</h1>
 
-        <p>PolkaStats software is open source and the service hosted at https://polkastats.io is provided for free (as in free beer :-), without annoying ads and I enjoy doing it in that way :-)).</p>
+        <p>PolkaStats software is open source and the service hosted at https://polkastats.io is provided for free (as in free beer).</p>
+        
+        <p>I enjoy developing PolkaStats and providing the service without annoying ads and plant to continue doing it in that way :-).</p>
 
         <p>If you like my work and want to help me to pay the hosting or the time I spent developing and maintaining the server, you can do it in several ways.</p>
 
