@@ -1,7 +1,7 @@
 <template>
   <div>
     <section>
-      <b-container class="main pt-4 pb-5">
+      <b-container class="main pt-4 pb-5 support-us">
         <h1 class="mb-4">SUPPORT POLKASTATS</h1>
 
         <p>PolkaStats software is open source and the service hosted at https://polkastats.io is provided for free (as in free beer).</p>
@@ -98,8 +98,11 @@ export default {
   }
 }
 </script>
-<style scoped>
-.identicon {
+<style>
+.support-us .clipboard {
+  display: inline-block;
+}
+.support-us .identicon {
   display: inline;
   margin-right: .2rem;
   cursor: copy;
