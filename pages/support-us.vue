@@ -12,13 +12,13 @@
 
         <p>This is an easy way you can support me and the Polkadot folks at La Colmena blockchain colective:</p>
 
-        <b-card title="PolkaStats validator">
+        <b-card>
           <div class="row">
-            <div class="col-md-3">
-              <img src="https://s3.amazonaws.com/keybase_processed_uploads/bd6bb92e0fa85197a2a0cf25d1a11f05_360_360.jpg" class="img-fluid" style="max-width: 150px;">
-              <h3 class="mt-2 mb-2">PolkaStats</h3>
+            <div class="col-md-3 text-center">
+              <img src="https://s3.amazonaws.com/keybase_processed_uploads/bd6bb92e0fa85197a2a0cf25d1a11f05_360_360.jpg" class="img-fluid" style="max-width: 100px;">
             </div>
             <div class="col-md-6">
+                <h3 class="mt-2 mb-2">PolkaStats<br />Validator</h3>
                 <Identicon :value="`GTzRQPzkcuynHgkEHhsPBFpKdh4sAacVRsnd8vYfPpTMeEY`" :size="20" :theme="`polkadot`" />
                 <a v-bind:href="blockExplorer.account + `GTzRQPzkcuynHgkEHhsPBFpKdh4sAacVRsnd8vYfPpTMeEY`" target="_blank">
                   <span class="d-inline d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover title="GTzRQPzkcuynHgkEHhsPBFpKdh4sAacVRsnd8vYfPpTMeEY">GTzRQPzkcu .... vYfPpTMeEY</span>
@@ -27,13 +27,13 @@
             </div>
           </div>
         </b-card>
-        <b-card title="DragonStake validator">
+        <b-card>
           <div class="row">
-            <div class="col-md-3">
-              <img src="https://s3.amazonaws.com/keybase_processed_uploads/c62c205359734ddf9af1b03777703505_360_360.jpg" class="img-fluid" style="max-width: 150px;">
-              <h3 class="mt-2 mb-2">DragonStake</h3>
+            <div class="col-md-3 text-center">
+              <img src="https://s3.amazonaws.com/keybase_processed_uploads/c62c205359734ddf9af1b03777703505_360_360.jpg" class="img-fluid" style="max-width: 100px;">
             </div>
             <div class="col-md-6">
+                <h3 class="mt-2 mb-2">DragonStake<br />Validator</h3>
                 <Identicon :value="`DSpbbk6HKKyS78c4KDLSxCetqbwnsemv2iocVXwNe2FAvWC`" :size="20" :theme="`polkadot`" />
                 <a v-bind:href="blockExplorer.account + `DSpbbk6HKKyS78c4KDLSxCetqbwnsemv2iocVXwNe2FAvWC`" target="_blank">
                   <span class="d-inline d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover title="DSpbbk6HKKyS78c4KDLSxCetqbwnsemv2iocVXwNe2FAvWC">DSpbbk6HKK .... XwNe2FAvWC</span>
