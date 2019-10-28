@@ -19,7 +19,7 @@
               <h3 class="mt-2 mb-2">PolkaStats</h3>
             </div>
             <div class="col-md-6">
-                <Identicon value="GTzRQPzkcuynHgkEHhsPBFpKdh4sAacVRsnd8vYfPpTMeEY" size="20" theme="polkadot" />
+                <Identicon :value="`GTzRQPzkcuynHgkEHhsPBFpKdh4sAacVRsnd8vYfPpTMeEY`" :size="20" :theme="`polkadot`" />
                 <a v-bind:href="blockExplorer.account + `GTzRQPzkcuynHgkEHhsPBFpKdh4sAacVRsnd8vYfPpTMeEY`" target="_blank">
                   <span class="d-inline d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover title="GTzRQPzkcuynHgkEHhsPBFpKdh4sAacVRsnd8vYfPpTMeEY">GTzRQPzkcu .... vYfPpTMeEY</span>
                   <span class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline">GTzRQPzkcuynHgkEHhsPBFpKdh4sAacVRsnd8vYfPpTMeEY</span>
@@ -34,7 +34,7 @@
               <h3 class="mt-2 mb-2">DragonStake</h3>
             </div>
             <div class="col-md-6">
-                <Identicon value="DSpbbk6HKKyS78c4KDLSxCetqbwnsemv2iocVXwNe2FAvWC" size="20" theme="polkadot" />
+                <Identicon :value="`DSpbbk6HKKyS78c4KDLSxCetqbwnsemv2iocVXwNe2FAvWC`" :size="20" :theme="`polkadot`" />
                 <a v-bind:href="blockExplorer.account + `DSpbbk6HKKyS78c4KDLSxCetqbwnsemv2iocVXwNe2FAvWC`" target="_blank">
                   <span class="d-inline d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover title="DSpbbk6HKKyS78c4KDLSxCetqbwnsemv2iocVXwNe2FAvWC">DSpbbk6HKK .... XwNe2FAvWC</span>
                   <span class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline">DSpbbk6HKKyS78c4KDLSxCetqbwnsemv2iocVXwNe2FAvWC</span>
