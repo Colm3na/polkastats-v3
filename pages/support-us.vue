@@ -10,7 +10,7 @@
 
         <h2>Stake in our validators</h2>
 
-        <p>This is an easy way you can support me and the polkadot folks at La Colmena, a Seville blockchain colective I belong.</p>
+        <p>This is an easy way you can support me and the Polkadot folks at La Colmena blockchain colective:</p>
 
         <b-card title="PolkaStats validator">
           <div class="row">
@@ -27,6 +27,21 @@
             </div>
           </div>
         </b-card>
+        <b-card title="DragonStake validator">
+          <div class="row">
+            <div class="col-md-3">
+              <img src="https://s3.amazonaws.com/keybase_processed_uploads/c62c205359734ddf9af1b03777703505_360_360.jpg" class="img-fluid" style="max-width: 150px;">
+              <h3 class="mt-2 mb-2">DragonStake</h3>
+            </div>
+            <div class="col-md-6">
+                <Identicon value="DSpbbk6HKKyS78c4KDLSxCetqbwnsemv2iocVXwNe2FAvWC" size="20" theme="polkadot" />
+                <a v-bind:href="blockExplorer.account + `DSpbbk6HKKyS78c4KDLSxCetqbwnsemv2iocVXwNe2FAvWC`" target="_blank">
+                  <span class="d-inline d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover title="DSpbbk6HKKyS78c4KDLSxCetqbwnsemv2iocVXwNe2FAvWC">DSpbbk6HKK .... XwNe2FAvWC</span>
+                  <span class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline">DSpbbk6HKKyS78c4KDLSxCetqbwnsemv2iocVXwNe2FAvWC</span>
+                </a>
+            </div>
+          </div>
+        </b-card>
 
         <h2>Tip me on Brave</h2>
 
@@ -37,7 +52,7 @@
   </div>
 </template>
 <script>
-import Identicon from "../../components/identicon.vue";
+import Identicon from "../components/identicon.vue";
 
 export default {
   head () {
