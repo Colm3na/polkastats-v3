@@ -483,10 +483,9 @@ export default {
       vm.$store.dispatch('identities/update');
     }
 
-    // Update intention validators and identity lists every 30 seconds
+    // Update intention validators every 30 seconds
     this.polling = setInterval(() => {
-      vm.$store.dispatch('intentions/update')
-      vm.$store.dispatch('identities/update')
+      vm.$store.dispatch('intentions/update');
     }, 30000);
     
     // Refresh graph data every minute

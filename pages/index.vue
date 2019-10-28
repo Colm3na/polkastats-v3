@@ -429,6 +429,11 @@ export default {
       vm.$store.dispatch('validators/update');
     }
 
+    // Force update of indentity list if empty
+    if (this.$store.state.identities.list.length == 0) {
+      vm.$store.dispatch('identities/update');
+    }
+
     // Force update of intention validators list if empty
     if (this.$store.state.intentions.list.length == 0) {
       vm.$store.dispatch('intentions/update');
