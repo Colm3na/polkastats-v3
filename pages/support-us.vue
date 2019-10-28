@@ -69,6 +69,9 @@ export default {
         account: 'https://polkascan.io/pre/kusama-cc2/account/'
       }
     }
+  },
+  components: {
+    Identicon
   }
 }
 </script>
