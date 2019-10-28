@@ -25,7 +25,18 @@
                 </p>
                 <div class="row">
                   <div class="col-md-3 mb-2 text-center">
-                    <Identicon :value="validator.accountId" :size="80" :theme="'polkadot'" />
+                    <div v-if="hasIdentity(validator.stashId)">
+                      <div v-if="getIdentity(validator.stashId).logo !== ''">
+                        <img v-bind:src="getIdentity(validator.stashId).logo" class="img-fluid" style="max-width: 80px;" />
+                        <h3 class="mt-2 mb-2" v-if="getIdentity(validator.stashId).username_cased !== ''">{{ getIdentity(validator.stashId).username_cased }}</h3>
+                      </div>
+                      <div v-else>
+                        <Identicon :value="validator.accountId" :size="80" :theme="'polkadot'" />
+                      </div>
+                    </div>
+                    <div v-else>
+                      <Identicon :value="validator.accountId" :size="80" :theme="'polkadot'" />
+                    </div>
                     <p class="mb-0 rank">
                       rank #{{ index+1 }}
                       <small>
@@ -193,7 +204,18 @@
                   <div class="card-body">
                     <div class="row">
                       <div class="col-md-3 mb-2 text-center">
-                        <Identicon :value="validator.accountId" :size="80" :theme="'polkadot'" />
+                        <div v-if="hasIdentity(validator.stashId)">
+                          <div v-if="getIdentity(validator.stashId).logo !== ''">
+                            <img v-bind:src="getIdentity(validator.stashId).logo" class="img-fluid" style="max-width: 80px;" />
+                            <h3 class="mt-2 mb-2" v-if="getIdentity(validator.stashId).username_cased !== ''">{{ getIdentity(validator.stashId).username_cased }}</h3>
+                          </div>
+                          <div v-else>
+                            <Identicon :value="validator.accountId" :size="80" :theme="'polkadot'" />
+                          </div>
+                        </div>
+                        <div v-else>
+                          <Identicon :value="validator.accountId" :size="80" :theme="'polkadot'" />
+                        </div>
                         <p class="mb-0 rank">
                           rank #{{ index+1 }}
                           <small>
@@ -385,6 +407,9 @@ export default {
     },
     intentions () {
       return this.$store.state.intentions.list
+    },
+    identities() {
+      return this.$store.state.identities.list
     }
   },
   created: function () {
@@ -505,6 +530,17 @@ export default {
         return `Controller account`;
       }
       return rewardDestination;
+    },
+    hasIdentity(stashId) {
+      return this.$store.state.identities.list.some(obj => {
+        return obj.stashId === stashId;
+      });
+    },
+    getIdentity(stashId) {
+      let filteredArray =  this.$store.state.identities.list.filter(obj => {
+        return obj.stashId === stashId
+      });
+      return filteredArray[0];
     }
   },
   watch: {
