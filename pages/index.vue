@@ -37,7 +37,7 @@
                     <div v-else>
                       <Identicon :value="validator.accountId" :size="80" :theme="'polkadot'" />
                     </div>
-                    <p class="mb-0 rank">
+                    <p class="mt-3 mb-0 rank">
                       rank #{{ index+1 }}
                       <small>
                         <i v-if="index < 50" class="fas fa-shield-alt" style="color: #f1bd23" v-b-tooltip.hover title="Ready to validate!"></i>
@@ -216,7 +216,7 @@
                         <div v-else>
                           <Identicon :value="validator.accountId" :size="80" :theme="'polkadot'" />
                         </div>
-                        <p class="mb-0 rank">
+                        <p class="mt-3 mb-0 rank">
                           rank #{{ index+1 }}
                           <small>
                             <i v-if="index < 50" class="fas fa-shield-alt" style="color: #f1bd23" v-b-tooltip.hover title="Ready to validate!"></i>
