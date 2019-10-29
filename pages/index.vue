@@ -44,8 +44,13 @@
                         <i v-else class="fas fa-shield-alt" style="color: #e6dfdf;" v-b-tooltip.hover title="Out of first 50 validator slots!"></i><i class=""></i>
                       </small>
                     </p>
-                    <p class="bonded mb-0" v-b-tooltip.hover title="Active bonded">{{ formatDot(validator.stakingLedger.active) }}</p>
-                    <p class="mb-0"><small><span v-b-tooltip.hover title="Total bonded">{{ formatDot(validator.stakingLedger.total) }}</span></small></p>
+                    <p class="bonded mb-0" v-b-tooltip.hover title="Total bonded">{{ formatDot(validator.stakingLedger.total) }}</p>
+                    <p class="mb-0">
+                      <small>
+                        <span v-b-tooltip.hover title="Self bonded" v-if="validator.stakers.own > 0">{{ formatDot(validator.stakers.own) }}</span>
+                        <span v-b-tooltip.hover title="Bonded by nominators" v-if="(validator.stakers.total - validator.stakers.own) > 0">(+{{ formatDot(validator.stakers.total - validator.stakers.own) }})</span>
+                      </small>
+                    </p>
                   </div>
                   <div class="col-md-9">
                     <h4 class="card-title mb-4 account mt-4 mt-sm-0 mt-md-0 mt-lg-0 mt-xl-0">
