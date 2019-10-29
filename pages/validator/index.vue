@@ -602,7 +602,7 @@ export default {
       }
     },
     shortAddess(address) {
-      return (address).substring(0,10) + ' .... ' + (address).substring(address.length - 10)
+      return (address).substring(0,5) + ' .... ' + (address).substring(address.length - 5)
     },
     thousandsSeparator(n) {
         return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
