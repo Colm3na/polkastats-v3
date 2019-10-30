@@ -14,7 +14,7 @@
       <b-container class="main pb-5 text-center">
         <h2 class="mt-4 mb-4">How to include your validator information in PolkaStats</h2>
         <b-alert variant="success" show>
-          You will need both <a href="https://keybase.io" target="_blank">Keybase</a> and <a href="https://github.com" target="_blank">GitHub</a> accounts in order to continue.<br />
+          You will need both, <a href="https://keybase.io" target="_blank">Keybase</a> and <a href="https://github.com" target="_blank">GitHub</a> accounts in order to continue.<br />
           Make sure you have properly filled your full name, website, social links and have uploaded a profile picture in your Keybase profile.
         </b-alert>
         <b-card-group deck class="mt-4 mb-4">
@@ -25,8 +25,8 @@
           </b-card>
           <b-card title="Step 2">
             <b-card-text>
-              In your fork, create a new folder named "stash_address_of_your_validator" in <a href="https://github.com/Colm3na/polkastats-v2/tree/master/identities" target="_blank">identities folder</a>.
-              In that folder create a new file named keybase_username with your <a href="https://keybase.io" target="_blank">Keybase</a> username on it. 
+              Create a new folder named "stash_address_of_your_validator" inside <a href="https://github.com/Colm3na/polkastats-v2/tree/master/identities" target="_blank">identities folder</a>.
+              In that folder place 3 new files with exactly this names, keybase_username with your <a href="https://keybase.io" target="_blank">Keybase</a> username on it. A logo.png (512x512 max) and <a href="https://raw.githubusercontent.com/derfredy/polkastats-v2/master/identities/DSpbbk6HKKyS78c4KDLSxCetqbwnsemv2iocVXwNe2FAvWC/validator_info.json" target="_blank">validator_info.json</a> following this schema. 
             </b-card-text>
           </b-card>
           <b-card title="Step 3">
