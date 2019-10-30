@@ -4,11 +4,11 @@
       <b-container class="main pt-4 pb-5 support-us">
         <h1 class="mb-4">SUPPORT POLKASTATS</h1>
 
-        <p>PolkaStats software is open source and the service hosted at https://polkastats.io is provided for free (as in free beer).</p>
+        <p>PolkaStats software is open source and the services hosted at https://polkastats.io are provided for free (as in free beer).</p>
         
-        <p>I enjoy developing PolkaStats and providing the service without annoying ads and plant to continue doing it in that way :-).</p>
+        <p>I enjoy developing PolkaStats and providing the services without annoying ads and I plan to continue doing it in that way :-).</p>
 
-        <p>If you like my work and want to help me to pay the hosting or the time I spent developing and maintaining the server, you can do it in several ways.</p>
+        <p>If you like my work and want to support the hosting payments or the time I spend developing and maintaining the server, you can do it in several ways.</p>
 
         <h2 class="mt-5 mb-4">Stake in our validators</h2>
 
@@ -54,8 +54,8 @@
               <img src="https://s3.amazonaws.com/keybase_processed_uploads/9769abccf1bee6c032fb5be50d6c3c05_360_360.jpg" class="img-fluid" style="max-width: 80px;">
             </div>
             <div class="col-md-10">
-              <nuxt-link :to="{name: 'intention', query: { accountId: `CoqysGbay3t3Q7hXgEmGJJquhYYpo8PqLwvW1WsUwR7KvXm` }}" title="Delega Networks validator details">
-                <h3 class="mt-1 mb-2">Delega Networks validator</h3>
+              <nuxt-link :to="{name: 'intention', query: { accountId: `CoqysGbay3t3Q7hXgEmGJJquhYYpo8PqLwvW1WsUwR7KvXm` }}" title="DelegaNetworks validator details">
+                <h3 class="mt-1 mb-2">DelegaNetworks validator</h3>
               </nuxt-link>
               <Identicon value="CoqysGbay3t3Q7hXgEmGJJquhYYpo8PqLwvW1WsUwR7KvXm" size="20" theme="polkadot" />
               <a v-bind:href="blockExplorer.account + `CoqysGbay3t3Q7hXgEmGJJquhYYpo8PqLwvW1WsUwR7KvXm`" target="_blank">
