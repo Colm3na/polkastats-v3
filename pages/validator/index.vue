@@ -156,7 +156,7 @@
                           {{ getIdentity(validator.stashId).location }}
                         </div>
                       </div>
-                      <div class="row" v-if="getIdentity(validator.stashId).website">
+                      <div class="row" v-if="getIdentity(validator.stashId).website !== `` && getIdentity(validator.stashId).website !== `null`">
                         <div class="col-md-3 mb-2">
                           <strong>Website</strong>
                         </div>
@@ -166,7 +166,7 @@
                           </a>
                         </div>
                       </div>
-                      <div class="row" v-if="getIdentity(validator.stashId).twitter">
+                      <div class="row" v-if="getIdentity(validator.stashId).twitter !== `` && getIdentity(validator.stashId).twitter  !== `null`">
                         <div class="col-md-3 mb-2">
                           <strong>Twitter</strong>
                         </div>
@@ -176,7 +176,7 @@
                           </a>
                         </div>
                       </div>
-                      <div class="row" v-if="getIdentity(validator.stashId).github">
+                      <div class="row" v-if="getIdentity(validator.stashId).github !== `` && getIdentity(validator.stashId).github  !== `null`">
                         <div class="col-md-3 mb-2">
                           <strong>Github</strong>
                         </div>
