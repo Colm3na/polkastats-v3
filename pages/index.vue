@@ -28,7 +28,7 @@
                     <div v-if="hasIdentity(validator.stashId)">
                       <div v-if="getIdentity(validator.stashId).logo !== ''">
                         <img v-bind:src="getIdentity(validator.stashId).logo" class="identity mt-2" />
-                        <h4 class="mt-2 mb-2" v-if="getIdentity(validator.stashId).username_cased !== ''">{{ getIdentity(validator.stashId).username_cased }}</h4>
+                        <h4 class="mt-2 mb-2" v-if="getIdentity(validator.stashId).full_name !== ''">{{ getIdentity(validator.stashId).full_name }}</h4>
                       </div>
                       <div v-else>
                         <Identicon :value="validator.accountId" :size="80" :theme="'polkadot'" />
@@ -184,7 +184,7 @@
                     <div v-if="hasIdentity(validator.stashId)">
                       <div v-if="getIdentity(validator.stashId).logo !== ''">
                         <img v-bind:src="getIdentity(validator.stashId).logo" class="identity mt-2" />
-                        <h4 class="mt-2 mb-2" v-if="getIdentity(validator.stashId).username_cased !== ''">{{ getIdentity(validator.stashId).username_cased }}</h4>
+                        <h4 class="mt-2 mb-2" v-if="getIdentity(validator.stashId).full_name !== ''">{{ getIdentity(validator.stashId).full_name }}</h4>
                       </div>
                       <div v-else>
                         <Identicon :value="validator.accountId" :size="80" :theme="'polkadot'" />
@@ -346,7 +346,7 @@
                         <div v-if="hasIdentity(validator.stashId)">
                           <div v-if="getIdentity(validator.stashId).logo !== ''">
                             <img v-bind:src="getIdentity(validator.stashId).logo" class="identity mt-2" />
-                            <h4 class="mt-2 mb-2" v-if="getIdentity(validator.stashId).username_cased !== ''">{{ getIdentity(validator.stashId).username_cased }}</h4>
+                            <h4 class="mt-2 mb-2" v-if="getIdentity(validator.stashId).full_name !== ''">{{ getIdentity(validator.stashId).full_name }}</h4>
                           </div>
                           <div v-else>
                             <Identicon :value="validator.accountId" :size="80" :theme="'polkadot'" />

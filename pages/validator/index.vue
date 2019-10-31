@@ -34,7 +34,7 @@
                     <div v-if="hasIdentity(validator.stashId)">
                       <div v-if="getIdentity(validator.stashId).logo !== ''">
                         <img v-bind:src="getIdentity(validator.stashId).logo" class="img-fluid" style="max-width: 150px;" />
-                        <h3 class="mt-2 mb-2" v-if="getIdentity(validator.stashId).username_cased !== ''">{{ getIdentity(validator.stashId).username_cased }}</h3>
+                        <h3 class="mt-2 mb-2" v-if="getIdentity(validator.stashId).full_name !== ''">{{ getIdentity(validator.stashId).full_name }}</h3>
                       </div>
                       <div v-else>
                         <Identicon :value="validator.accountId" :size="80" :theme="'polkadot'" />
@@ -132,12 +132,12 @@
                           {{ getIdentity(validator.stashId) }}
                         </div>
                       </div> -->
-                      <div class="row" v-if="getIdentity(validator.stashId).username_cased !== ''">
+                      <div class="row" v-if="getIdentity(validator.stashId).full_name !== ''">
                         <div class="col-md-3 mb-2">
                           <strong>Name</strong>
                         </div>
                         <div class="col-md-9 mb-2 fee">
-                          {{ getIdentity(validator.stashId).username_cased }}
+                          {{ getIdentity(validator.stashId).full_name }}
                         </div>
                       </div>
                       <div class="row" v-if="getIdentity(validator.stashId).bio !== ''">
