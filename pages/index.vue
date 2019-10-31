@@ -14,8 +14,8 @@
           </div>
         </nav>
         <div class="tab-content mb-2" id="nav-tabContent">
-          <div class="tab-pane fade show active" id="intention-validators" role="tabpanel" aria-labelledby="nav-intention-validators">
-            <div class="validator card mb-3" v-for="(validator, index) in intentions" v-bind:key="validator.accountId">
+          <div class="tab-pane fade show" id="active-validators" role="tabpanel" aria-labelledby="nav-active-validators">
+            <div class="validator card mb-3" v-for="(validator, index) in validators" v-bind:key="validator.accountId">
               <div class="card-body">
                 <p class="text-right mb-0">
                   <a class="favorite" v-on:click="toggleFavorite(validator.accountId)" v-b-tooltip.hover title="Mark as Favorite">
@@ -39,10 +39,6 @@
                     </div>
                     <p class="mt-3 mb-0 rank">
                       rank #{{ index+1 }}
-                      <small>
-                        <i v-if="index < 50" class="fas fa-shield-alt" style="color: #f1bd23" v-b-tooltip.hover title="Ready to validate!"></i>
-                        <i v-else class="fas fa-shield-alt" style="color: #e6dfdf;" v-b-tooltip.hover title="Out of first 50 validator slots!"></i><i class=""></i>
-                      </small>
                     </p>
                     <p v-if="validator.stakers.total > 0" class="bonded mb-0" v-b-tooltip.hover title="Total bonded">{{ formatDot(validator.stakers.total) }}</p>
                     <p v-else class="bonded mb-0" v-b-tooltip.hover title="Total bonded">{{ formatDot(validator.stakingLedger.total) }}</p>
@@ -55,7 +51,7 @@
                   </div>
                   <div class="col-md-9">
                     <h4 class="card-title mb-4 account mt-4 mt-sm-0 mt-md-0 mt-lg-0 mt-xl-0">
-                      <nuxt-link :to="{name: 'intention', query: { accountId: validator.accountId } }" title="Validator intention details">
+                      <nuxt-link :to="{name: 'validator', query: { accountId: validator.accountId } }" title="Validator details">
                         {{ validator.accountId }}
                       </nuxt-link>
                     </h4>
@@ -170,8 +166,8 @@
               </div>
             </div>
           </div>
-          <div class="tab-pane fade show" id="active-validators" role="tabpanel" aria-labelledby="nav-active-validators">
-            <div class="validator card mb-3" v-for="(validator, index) in validators" v-bind:key="validator.accountId">
+          <div class="tab-pane fade show active" id="intention-validators" role="tabpanel" aria-labelledby="nav-intention-validators">
+            <div class="validator card mb-3" v-for="(validator, index) in intentions" v-bind:key="validator.accountId">
               <div class="card-body">
                 <p class="text-right mb-0">
                   <a class="favorite" v-on:click="toggleFavorite(validator.accountId)" v-b-tooltip.hover title="Mark as Favorite">
@@ -195,6 +191,10 @@
                     </div>
                     <p class="mt-3 mb-0 rank">
                       rank #{{ index+1 }}
+                      <small>
+                        <i v-if="index < 50" class="fas fa-shield-alt" style="color: #f1bd23" v-b-tooltip.hover title="Ready to validate!"></i>
+                        <i v-else class="fas fa-shield-alt" style="color: #e6dfdf;" v-b-tooltip.hover title="Out of first 50 validator slots!"></i><i class=""></i>
+                      </small>
                     </p>
                     <p v-if="validator.stakers.total > 0" class="bonded mb-0" v-b-tooltip.hover title="Total bonded">{{ formatDot(validator.stakers.total) }}</p>
                     <p v-else class="bonded mb-0" v-b-tooltip.hover title="Total bonded">{{ formatDot(validator.stakingLedger.total) }}</p>
@@ -207,7 +207,7 @@
                   </div>
                   <div class="col-md-9">
                     <h4 class="card-title mb-4 account mt-4 mt-sm-0 mt-md-0 mt-lg-0 mt-xl-0">
-                      <nuxt-link :to="{name: 'validator', query: { accountId: validator.accountId } }" title="Validator details">
+                      <nuxt-link :to="{name: 'intention', query: { accountId: validator.accountId } }" title="Validator intention details">
                         {{ validator.accountId }}
                       </nuxt-link>
                     </h4>
