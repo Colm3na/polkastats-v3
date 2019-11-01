@@ -251,9 +251,10 @@ import { mapMutations } from 'vuex'
 import axios from 'axios';
 import moment from 'moment';
 import VueApexCharts from 'vue-apexcharts';
-import Identicon from "../../components/identicon.vue";
+import Identicon from ''../../components/identicon.vue';
 import { formatBalance, isHex } from '@polkadot/util';
-import BN from "bn.js"
+import BN from 'bn.js';
+import { Unit, unitDecimals, backendBaseURL, blockExplorer} from '../../../polkastats.config.js';
 
 formatBalance.setDefaults({ decimals: 12, unit: 'KSM' });
 

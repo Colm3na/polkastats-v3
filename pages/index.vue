@@ -496,10 +496,11 @@
 import { mapMutations } from 'vuex';
 import axios from 'axios';
 import bootstrap from 'bootstrap';
-import Identicon from "../components/identicon.vue";
-import editable from "../components/editable.vue";
+import Identicon from '../components/identicon.vue';
+import editable from '../components/editable.vue';
 import { formatBalance, isHex } from '@polkadot/util';
-import BN from "bn.js"
+import BN from 'bn.js';
+import { Unit, unitDecimals, backendBaseURL, blockExplorer} from '../../../polkastats.config.js';
 
 formatBalance.setDefaults({ decimals: 12, unit: 'KSM' });
 
