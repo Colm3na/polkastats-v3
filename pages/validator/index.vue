@@ -251,12 +251,12 @@ import { mapMutations } from 'vuex'
 import axios from 'axios';
 import moment from 'moment';
 import VueApexCharts from 'vue-apexcharts';
-import Identicon from ''../../components/identicon.vue';
+import Identicon from '../../components/identicon.vue';
 import { formatBalance, isHex } from '@polkadot/util';
 import BN from 'bn.js';
-import { Unit, unitDecimals, backendBaseURL, blockExplorer} from '../../../polkastats.config.js';
+import { decimals, unit, backendBaseURL, blockExplorer} from '../../polkastats.config.js';
 
-formatBalance.setDefaults({ decimals: 12, unit: 'KSM' });
+formatBalance.setDefaults({ decimals, unit });
 
 export default {
   head () {
@@ -270,10 +270,8 @@ export default {
   data: function() {
     return {
       accountId: this.$route.query.accountId,
-      blockExplorer: {
-        block: 'https://polkascan.io/pre/kusama-cc2/block/',
-        account: 'https://polkascan.io/pre/kusama-cc2/account/'
-      },
+      blockExplorer,
+      backendBaseURL,
       polling: null,
       graphPolling: null,
       favorites: [],
@@ -504,7 +502,7 @@ export default {
   methods: {
     getValidatorDailyGraphData: function () {
       var vm = this;
-      axios.get('https://polkastats.io:8443/validator/graph/daily/' + this.accountId)
+      axios.get(`${this.backendBaseURL}/validator/graph/daily/${this.accountId}`)
         .then(function (response) {
 
           // Update chart data
@@ -571,7 +569,7 @@ export default {
     },
     getValidatorWeeklyGraphData: function () {
       var vm = this;
-      axios.get('https://polkastats.io:8443/validator/graph/weekly/' + this.accountId)
+      axios.get(`${this.backendBaseURL}/validator/graph/weekly/${this.accountId}`)
         .then(function (response) {
 
           // Update chart data
@@ -634,7 +632,7 @@ export default {
     },
     getValidatorMonthlyGraphData: function () {
       var vm = this;
-      axios.get('https://polkastats.io:8443/validator/graph/monthly/' + this.accountId)
+      axios.get(`${this.backendBaseURL}/validator/graph/monthly/${this.accountId}`)
         .then(function (response) {
 
           // Update chart data
@@ -702,7 +700,6 @@ export default {
       } else {
         bn = new BN(amount.toString());
       }
-      formatBalance.setDefaults({ decimals: 12, unit: 'KSM' });
       return formatBalance(bn.toString(10));
     },
     shortAddress(address) {

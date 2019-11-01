@@ -191,10 +191,10 @@
                     </div>
                     <p class="mt-3 mb-0 rank">
                       rank #{{ index+1 }}
-                      <small>
+                      <!-- <small>
                         <i v-if="index < 50" class="fas fa-shield-alt" style="color: #f1bd23" v-b-tooltip.hover title="Ready to validate!"></i>
                         <i v-else class="fas fa-shield-alt" style="color: #e6dfdf;" v-b-tooltip.hover title="Out of first 50 validator slots!"></i><i class=""></i>
-                      </small>
+                      </small> -->
                     </p>
                     <p v-if="validator.stakers.total > 0" class="bonded mb-0" v-b-tooltip.hover title="Total bonded">{{ formatDot(validator.stakers.total) }}</p>
                     <p v-else class="bonded mb-0" v-b-tooltip.hover title="Total bonded">{{ formatDot(validator.stakingLedger.total) }}</p>
@@ -357,10 +357,10 @@
                         </div>
                         <p class="mt-3 mb-0 rank">
                           rank #{{ index+1 }}
-                          <small>
+                          <!-- <small>
                             <i v-if="index < 50" class="fas fa-shield-alt" style="color: #f1bd23" v-b-tooltip.hover title="Ready to validate!"></i>
                             <i v-else class="fas fa-shield-alt" style="color: #e6dfdf;" v-b-tooltip.hover title="Out of first 50 validator slots!"></i><i class=""></i>
-                          </small>
+                          </small> -->
                         </p>
                         <p class="bonded mb-0" v-b-tooltip.hover title="Active bonded">{{ formatDot(validator.stakingLedger.active) }}</p>
                         <p class="mb-0"><small><span v-b-tooltip.hover title="Total bonded">{{ formatDot(validator.stakingLedger.total) }}</span></small></p>
@@ -500,9 +500,9 @@ import Identicon from '../components/identicon.vue';
 import editable from '../components/editable.vue';
 import { formatBalance, isHex } from '@polkadot/util';
 import BN from 'bn.js';
-import { Unit, unitDecimals, backendBaseURL, blockExplorer} from '../../../polkastats.config.js';
+import { decimals, unit, backendBaseURL, blockExplorer} from '../polkastats.config.js';
 
-formatBalance.setDefaults({ decimals: 12, unit: 'KSM' });
+formatBalance.setDefaults({ decimals, unit });
 
 export default {
   head () {
@@ -521,10 +521,7 @@ export default {
         client_version: "",
         timestamp: 0
       },
-      blockExplorer: {
-        block: 'https://polkascan.io/pre/kusama-cc2/block/',
-        account: 'https://polkascan.io/pre/kusama-cc2/account/'
-      },
+      blockExplorer: blockExplorer,
       favorites: [],
       polling: null,
       bestblocknumber: 0,
