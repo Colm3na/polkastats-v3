@@ -37,7 +37,7 @@ Make sure you have properly filled your full name, website, social links and hav
 
 Login with your GitHub user and make a Fork of PolkaStats v2 repo: https://github.com/Colm3na/polkastats-v2.
 
-###Step 2
+### Step 2
 
 In your fork, create a new folder named "stash_address_of_your_validator" in identities folder. In that folder create a new file named keybase_username with your Keybase username on it.
 
