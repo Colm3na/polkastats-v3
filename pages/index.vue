@@ -8,13 +8,13 @@
         <p class="session text-right">Last block: <strong>#{{ formatNumber(bestblocknumber) }}</strong> | Session: <strong>{{ formatNumber(session.sessionProgress) }}/{{ formatNumber(session.sessionLength) }}</strong> | Era: <strong>{{ formatNumber(session.eraProgress) }}/{{ formatNumber(session.eraLength) }}</strong></p>
         <nav>
           <div class="nav nav-tabs" id="nav-tab" role="tablist">
-            <a class="nav-item nav-link" id="nav-active-validators" data-toggle="tab" href="#active-validators" role="tab" aria-controls="nav-active-validators" aria-selected="true">VALIDATORS ({{ validators.length }})</a>
-            <a class="nav-item nav-link active" id="nav-intention-validators" data-toggle="tab" href="#intention-validators" role="tab" aria-controls="nav-intention-validators" aria-selected="true">INTENTIONS ({{ intentions.length }})</a>
+            <a class="nav-item nav-link active" id="nav-active-validators" data-toggle="tab" href="#active-validators" role="tab" aria-controls="nav-active-validators" aria-selected="true">VALIDATORS ({{ validators.length }})</a>
+            <a class="nav-item nav-link" id="nav-intention-validators" data-toggle="tab" href="#intention-validators" role="tab" aria-controls="nav-intention-validators" aria-selected="false">INTENTIONS ({{ intentions.length }})</a>
             <a class="nav-item nav-link" id="nav-favorites" data-toggle="tab" href="#favorites" role="tab" aria-controls="nav-favorites" aria-selected="false"> <i class="far fa-star" style="color: rgb(241, 189, 35);"></i> FAVORITES ({{ favorites.length }})</a>
           </div>
         </nav>
         <div class="tab-content mb-2" id="nav-tabContent">
-          <div class="tab-pane fade show" id="active-validators" role="tabpanel" aria-labelledby="nav-active-validators">
+          <div class="tab-pane fade show active" id="active-validators" role="tabpanel" aria-labelledby="nav-active-validators">
             <div class="validator card mb-3" v-for="(validator, index) in validators" v-bind:key="validator.accountId">
               <div class="card-body">
                 <p class="text-right mb-0">
@@ -166,7 +166,7 @@
               </div>
             </div>
           </div>
-          <div class="tab-pane fade show active" id="intention-validators" role="tabpanel" aria-labelledby="nav-intention-validators">
+          <div class="tab-pane fade show" id="intention-validators" role="tabpanel" aria-labelledby="nav-intention-validators">
             <div class="validator card mb-3" v-for="(validator, index) in intentions" v-bind:key="validator.accountId">
               <div class="card-body">
                 <p class="text-right mb-0">
@@ -191,10 +191,10 @@
                     </div>
                     <p class="mt-3 mb-0 rank">
                       rank #{{ index+1 }}
-                      <small>
+                      <!-- <small>
                         <i v-if="index < 50" class="fas fa-shield-alt" style="color: #f1bd23" v-b-tooltip.hover title="Ready to validate!"></i>
                         <i v-else class="fas fa-shield-alt" style="color: #e6dfdf;" v-b-tooltip.hover title="Out of first 50 validator slots!"></i><i class=""></i>
-                      </small>
+                      </small> -->
                     </p>
                     <p v-if="validator.stakers.total > 0" class="bonded mb-0" v-b-tooltip.hover title="Total bonded">{{ formatDot(validator.stakers.total) }}</p>
                     <p v-else class="bonded mb-0" v-b-tooltip.hover title="Total bonded">{{ formatDot(validator.stakingLedger.total) }}</p>
@@ -357,10 +357,10 @@
                         </div>
                         <p class="mt-3 mb-0 rank">
                           rank #{{ index+1 }}
-                          <small>
+                          <!-- <small>
                             <i v-if="index < 50" class="fas fa-shield-alt" style="color: #f1bd23" v-b-tooltip.hover title="Ready to validate!"></i>
                             <i v-else class="fas fa-shield-alt" style="color: #e6dfdf;" v-b-tooltip.hover title="Out of first 50 validator slots!"></i><i class=""></i>
-                          </small>
+                          </small> -->
                         </p>
                         <p class="bonded mb-0" v-b-tooltip.hover title="Active bonded">{{ formatDot(validator.stakingLedger.active) }}</p>
                         <p class="mb-0"><small><span v-b-tooltip.hover title="Total bonded">{{ formatDot(validator.stakingLedger.total) }}</span></small></p>
@@ -496,12 +496,13 @@
 import { mapMutations } from 'vuex';
 import axios from 'axios';
 import bootstrap from 'bootstrap';
-import Identicon from "../components/identicon.vue";
-import editable from "../components/editable.vue";
+import Identicon from '../components/identicon.vue';
+import editable from '../components/editable.vue';
 import { formatBalance, isHex } from '@polkadot/util';
-import BN from "bn.js"
+import BN from 'bn.js';
+import { decimals, unit, backendBaseURL, blockExplorer} from '../polkastats.config.js';
 
-formatBalance.setDefaults({ decimals: 12, unit: 'KSM' });
+formatBalance.setDefaults({ decimals, unit });
 
 export default {
   head () {
@@ -520,10 +521,8 @@ export default {
         client_version: "",
         timestamp: 0
       },
-      blockExplorer: {
-        block: 'https://polkascan.io/pre/kusama-cc2/block/',
-        account: 'https://polkascan.io/pre/kusama-cc2/account/'
-      },
+      blockExplorer,
+      backendBaseURL,
       favorites: [],
       polling: null,
       bestblocknumber: 0,
@@ -593,14 +592,14 @@ export default {
   methods: {
     getSystemData: function () {
       var vm = this;
-      axios.get('https://polkastats.io:8443/system')
+      axios.get(`${backendBaseURL}/system`)
         .then(function (response) {
           vm.system = response.data;
         })
     },
     getChainData: function () {
       var vm = this;
-      axios.get('https://polkastats.io:8443/chain')
+      axios.get(`${backendBaseURL}/chain`)
         .then(function (response) {
           vm.bestblocknumber = response.data.block_height;
           vm.session = response.data.session;
@@ -620,7 +619,6 @@ export default {
       } else {
         bn = new BN(amount.toString());
       }
-      formatBalance.setDefaults({ decimals: 12, unit: 'KSM' });
       return formatBalance(bn.toString(10));
     },  
     shortAddress(address) {
