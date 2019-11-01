@@ -32,9 +32,9 @@
                 <div class="row">
                   <div class="col-md-3 mb-2 text-center">
                     <div v-if="hasIdentity(validator.stashId)">
-                      <div v-if="getIdentity(validator.stashId).logo !== ''">
+                      <div v-if="getIdentity(validator.stashId).logo">
                         <img v-bind:src="getIdentity(validator.stashId).logo" class="img-fluid" style="max-width: 150px;" />
-                        <h3 class="mt-2 mb-2" v-if="getIdentity(validator.stashId).full_name !== ''">{{ getIdentity(validator.stashId).full_name }}</h3>
+                        <h3 class="mt-2 mb-2" v-if="getIdentity(validator.stashId).full_name">{{ getIdentity(validator.stashId).full_name }}</h3>
                       </div>
                       <div v-else>
                         <Identicon :value="validator.accountId" :size="80" :theme="'polkadot'" />
@@ -132,7 +132,7 @@
                           {{ getIdentity(validator.stashId) }}
                         </div>
                       </div> -->
-                      <div class="row" v-if="getIdentity(validator.stashId).full_name !== ''">
+                      <div class="row" v-if="getIdentity(validator.stashId).full_name !== `` && getIdentity(validator.stashId).full_name !== `null`">
                         <div class="col-md-3 mb-2">
                           <strong>Name</strong>
                         </div>
@@ -140,7 +140,7 @@
                           {{ getIdentity(validator.stashId).full_name }}
                         </div>
                       </div>
-                      <div class="row" v-if="getIdentity(validator.stashId).bio !== ''">
+                      <div class="row" v-if="getIdentity(validator.stashId).bio">
                         <div class="col-md-3 mb-2">
                           <strong>Bio</strong>
                         </div>
@@ -148,7 +148,7 @@
                           {{ getIdentity(validator.stashId).bio }}
                         </div>
                       </div>
-                      <div class="row" v-if="getIdentity(validator.stashId).location !== ''">
+                      <div class="row" v-if="getIdentity(validator.stashId).location !== `` && getIdentity(validator.stashId).location !== `null`">
                         <div class="col-md-3 mb-2">
                           <strong>Location</strong>
                         </div>
@@ -156,7 +156,7 @@
                           {{ getIdentity(validator.stashId).location }}
                         </div>
                       </div>
-                      <div class="row" v-if="getIdentity(validator.stashId).website !== ''">
+                      <div class="row" v-if="getIdentity(validator.stashId).website !== `` && getIdentity(validator.stashId).website !== `null`">
                         <div class="col-md-3 mb-2">
                           <strong>Website</strong>
                         </div>
@@ -166,7 +166,7 @@
                           </a>
                         </div>
                       </div>
-                      <div class="row" v-if="getIdentity(validator.stashId).twitter !== ''">
+                      <div class="row" v-if="getIdentity(validator.stashId).twitter !== `` && getIdentity(validator.stashId).twitter  !== `null`">
                         <div class="col-md-3 mb-2">
                           <strong>Twitter</strong>
                         </div>
@@ -176,7 +176,7 @@
                           </a>
                         </div>
                       </div>
-                      <div class="row" v-if="getIdentity(validator.stashId).github !== ''">
+                      <div class="row" v-if="getIdentity(validator.stashId).github !== `` && getIdentity(validator.stashId).github  !== `null`">
                         <div class="col-md-3 mb-2">
                           <strong>Github</strong>
                         </div>
@@ -251,11 +251,12 @@ import { mapMutations } from 'vuex'
 import axios from 'axios';
 import moment from 'moment';
 import VueApexCharts from 'vue-apexcharts';
-import Identicon from "../../components/identicon.vue";
+import Identicon from '../../components/identicon.vue';
 import { formatBalance, isHex } from '@polkadot/util';
-import BN from "bn.js"
+import BN from 'bn.js';
+import { decimals, unit, backendBaseURL, blockExplorer} from '../../polkastats.config.js';
 
-formatBalance.setDefaults({ decimals: 12, unit: 'KSM' });
+formatBalance.setDefaults({ decimals, unit });
 
 export default {
   head () {
@@ -269,10 +270,8 @@ export default {
   data: function() {
     return {
       accountId: this.$route.query.accountId,
-      blockExplorer: {
-        block: 'https://polkascan.io/pre/kusama-cc2/block/',
-        account: 'https://polkascan.io/pre/kusama-cc2/account/'
-      },
+      blockExplorer,
+      backendBaseURL,
       polling: null,
       graphPolling: null,
       favorites: [],
@@ -503,7 +502,7 @@ export default {
   methods: {
     getValidatorDailyGraphData: function () {
       var vm = this;
-      axios.get('https://polkastats.io:8443/validator/graph/daily/' + this.accountId)
+      axios.get(`${this.backendBaseURL}/validator/graph/daily/${this.accountId}`)
         .then(function (response) {
 
           // Update chart data
@@ -570,7 +569,7 @@ export default {
     },
     getValidatorWeeklyGraphData: function () {
       var vm = this;
-      axios.get('https://polkastats.io:8443/validator/graph/weekly/' + this.accountId)
+      axios.get(`${this.backendBaseURL}/validator/graph/weekly/${this.accountId}`)
         .then(function (response) {
 
           // Update chart data
@@ -633,7 +632,7 @@ export default {
     },
     getValidatorMonthlyGraphData: function () {
       var vm = this;
-      axios.get('https://polkastats.io:8443/validator/graph/monthly/' + this.accountId)
+      axios.get(`${this.backendBaseURL}/validator/graph/monthly/${this.accountId}`)
         .then(function (response) {
 
           // Update chart data
@@ -701,7 +700,6 @@ export default {
       } else {
         bn = new BN(amount.toString());
       }
-      formatBalance.setDefaults({ decimals: 12, unit: 'KSM' });
       return formatBalance(bn.toString(10));
     },
     shortAddress(address) {
