@@ -118,7 +118,7 @@
                         {{ formatDot(validator.validatorPrefs.validatorPayment, 6) }}
                       </div>
                     </div>
-                    <div class="row">
+                    <div class="row mb-2">
                       <div class="col-md-3 mb-2">
                         <strong>Reward destination</strong>
                       </div>
