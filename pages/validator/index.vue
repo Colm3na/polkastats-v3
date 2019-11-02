@@ -202,7 +202,7 @@
                     </template>
                     <template v-if="validator.stakers.others.length > 0">
                       <a data-toggle="collapse" v-bind:href="'#staker' + index" role="button" aria-expanded="false" v-bind:aria-controls="'staker' + index">
-                        <h6 class="h6 nominators"><i class="fas"></i> Nominators ({{ validator.stakers.others.length }})</h6>
+                        <h6 class="h6 nominators d-inline mr-4"><i class="fas"></i> Nominators ({{ validator.stakers.others.length }})</h6>
                       </a>
                     </template>
                     <div class="nominator collapse pt-2 pb-3"  v-bind:id="'staker' + index">
