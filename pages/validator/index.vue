@@ -126,14 +126,6 @@
                     </div>
                     <!-- Identity -->
                     <div v-if="hasIdentity(validator.stashId)" class="mb-2">
-                      <!-- <div class="row mb-2">
-                        <div class="col-md-3 mb-2">
-                          <strong>Identity</strong>
-                        </div>
-                        <div class="col-md-9 mb-2 fee">
-                          {{ getIdentity(validator.stashId) }}
-                        </div>
-                      </div> -->
                       <div class="row" v-if="getIdentity(validator.stashId).full_name !== `` && getIdentity(validator.stashId).full_name !== `null`">
                         <div class="col-md-3 mb-2">
                           <strong>Name</strong>
