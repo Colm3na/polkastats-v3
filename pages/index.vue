@@ -52,7 +52,12 @@
                   <div class="col-md-9">
                     <h4 class="card-title mb-4 account mt-4 mt-sm-0 mt-md-0 mt-lg-0 mt-xl-0">
                       <nuxt-link :to="{name: 'validator', query: { accountId: validator.accountId } }" title="Validator details">
-                        {{ validator.accountId }}
+                        <span v-if="hasNickname(validator.accountId)">
+                          {{ getNickname(validator.accountId) }}
+                        </span>
+                        <span v-else>
+                          {{ validator.accountId }}
+                        </span>
                       </nuxt-link>
                     </h4>
                     <div v-if="validator.controllerId != validator.nextSessionId">
@@ -206,7 +211,12 @@
                   <div class="col-md-9">
                     <h4 class="card-title mb-4 account mt-4 mt-sm-0 mt-md-0 mt-lg-0 mt-xl-0">
                       <nuxt-link :to="{name: 'intention', query: { accountId: validator.accountId } }" title="Validator intention details">
-                        {{ validator.accountId }}
+                        <span v-if="hasNickname(validator.accountId)">
+                          {{ getNickname(validator.accountId) }}
+                        </span>
+                        <span v-else>
+                          {{ validator.accountId }}
+                        </span>
                       </nuxt-link>
                     </h4>
                     <div v-if="validator.controllerId != validator.nextSessionId">
@@ -371,7 +381,12 @@
                       <div class="col-md-9">
                         <h4 class="card-title mb-4 account mt-4 mt-sm-0 mt-md-0 mt-lg-0 mt-xl-0">
                           <nuxt-link :to="{name: 'intention', query: { accountId: validator.accountId } }" title="Validator details">
-                            {{ validator.accountId }}
+                            <span v-if="hasNickname(validator.accountId)">
+                              {{ getNickname(validator.accountId) }}
+                            </span>
+                            <span v-else>
+                              {{ validator.accountId }}
+                            </span>
                           </nuxt-link>
                         </h4>                        
                         <div v-if="validator.controllerId != validator.nextSessionId">
@@ -550,6 +565,9 @@ export default {
     },
     identities() {
       return this.$store.state.identities.list
+    },
+    nicknames() {
+      return this.$store.state.nicknames.list
     }
   },
   created: function () {
@@ -572,6 +590,11 @@ export default {
     // Force update of indentity list if empty
     if (this.$store.state.identities.list.length == 0) {
       vm.$store.dispatch('identities/update');
+    }
+
+    // Force update of nicknames list if empty
+    if (this.$store.state.nicknames.list.length == 0) {
+      vm.$store.dispatch('nicknames/update');
     }
 
     // Force update of intention validators list if empty
@@ -685,6 +708,17 @@ export default {
         return obj.stashId === stashId
       });
       return filteredArray[0];
+    },
+    hasNickname(accountId) {
+      return this.$store.state.nicknames.list.some(obj => {
+        return obj.accountId === accountId;
+      });
+    },
+    getNickname(accountId) {
+      let filteredArray =  this.$store.state.nicknames.list.filter(obj => {
+        return obj.accountId === accountId
+      });
+      return filteredArray[0].nickname;
     }
   },
   watch: {
