@@ -128,7 +128,7 @@
                     </div>
                     <!-- Identity -->
                     <div v-if="hasIdentity(validator.stashId)" class="mb-2">
-                      <div class="row" v-if="getIdentity(validator.stashId).full_name">
+                      <div class="row" v-if="getIdentity(validator.stashId).full_name !== `` && getIdentity(validator.stashId).full_name !== `null`">
                         <div class="col-md-3 mb-2">
                           <strong>Name</strong>
                         </div>
@@ -136,7 +136,7 @@
                           {{ getIdentity(validator.stashId).full_name }}
                         </div>
                       </div>
-                      <div class="row" v-if="getIdentity(validator.stashId).bio">
+                      <div class="row" v-if="getIdentity(validator.stashId).bio !== `` && getIdentity(validator.stashId).bio !== `null`">
                         <div class="col-md-3 mb-2">
                           <strong>Bio</strong>
                         </div>
@@ -144,7 +144,7 @@
                           {{ getIdentity(validator.stashId).bio }}
                         </div>
                       </div>
-                      <div class="row" v-if="getIdentity(validator.stashId).location">
+                      <div class="row" v-if="getIdentity(validator.stashId).location !== `` && getIdentity(validator.stashId).location !== `null`">
                         <div class="col-md-3 mb-2">
                           <strong>Location</strong>
                         </div>
@@ -152,7 +152,7 @@
                           {{ getIdentity(validator.stashId).location }}
                         </div>
                       </div>
-                      <div class="row" v-if="getIdentity(validator.stashId).website">
+                      <div class="row" v-if="getIdentity(validator.stashId).website !== `` && getIdentity(validator.stashId).website !== `null`">
                         <div class="col-md-3 mb-2">
                           <strong>Website</strong>
                         </div>
@@ -162,7 +162,7 @@
                           </a>
                         </div>
                       </div>
-                      <div class="row" v-if="getIdentity(validator.stashId).twitter">
+                      <div class="row" v-if="getIdentity(validator.stashId).twitter !== `` && getIdentity(validator.stashId).twitter !== `null`">
                         <div class="col-md-3 mb-2">
                           <strong>Twitter</strong>
                         </div>
@@ -172,7 +172,7 @@
                           </a>
                         </div>
                       </div>
-                      <div class="row" v-if="getIdentity(validator.stashId).github">
+                      <div class="row" v-if="getIdentity(validator.stashId).github !== `` && getIdentity(validator.stashId).github !== `null`">
                         <div class="col-md-3 mb-2">
                           <strong>Github</strong>
                         </div>

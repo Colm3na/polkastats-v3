@@ -134,7 +134,7 @@
                           {{ getIdentity(validator.stashId).full_name }}
                         </div>
                       </div>
-                      <div class="row" v-if="getIdentity(validator.stashId).bio">
+                      <div class="row" v-if="getIdentity(validator.stashId).bio !== `` && getIdentity(validator.stashId).bio !== `null`">
                         <div class="col-md-3 mb-2">
                           <strong>Bio</strong>
                         </div>
