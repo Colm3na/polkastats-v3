@@ -13,7 +13,7 @@
                 </template>
               </div>
               <div class="col-8 col-lg-10 text-center">
-                <h4 class="mb-1">Validator <span v-if="favorites[getIndex(validator.accountId)] !== undefined"><span v-if="favorites[getIndex(validator.accountId)].name != 'Edit validator name...'">{{ favorites[getIndex(validator.accountId)].name }}</span><span v-else>{{ accountId }}</span></span><span v-else>{{ accountId }}</span></h4>
+                <h4 class="mb-1">Validator {{ accountId }}</h4>
               </div>
               <div class="col-2 col-lg-1 text-right">
                 <template v-if="index < validators.length - 1">
@@ -56,6 +56,13 @@
                     </p>
                   </div>
                   <div class="col-md-9">
+                    <div class="row" v-if="hasNickname(validator.accountId)">
+                      <div class="col-md-12">
+                        <h4 class="card-title mb-4 account mt-4 mt-sm-0 mt-md-0 mt-lg-0 mt-xl-0">
+                          {{ getNickname(validator.accountId) }}
+                        </h4>
+                      </div>
+                    </div>
                     <div v-if="validator.controllerId != validator.nextSessionId">
                       <div class="row">
                         <div class="col-md-3 mb-2">
@@ -451,6 +458,9 @@ export default {
     },
     identities() {
       return this.$store.state.identities.list
+    },
+    nicknames() {
+      return this.$store.state.nicknames.list
     }
   },
   created: function () {
@@ -758,6 +768,17 @@ export default {
         return obj.stashId === stashId
       });
       return filteredArray[0];
+    },
+    hasNickname(accountId) {
+      return this.$store.state.nicknames.list.some(obj => {
+        return obj.accountId === accountId;
+      });
+    },
+    getNickname(accountId) {
+      let filteredArray =  this.$store.state.nicknames.list.filter(obj => {
+        return obj.accountId === accountId
+      });
+      return filteredArray[0].nickname;
     }
   },
   watch: {
