@@ -45,13 +45,17 @@
                     </div>
                     <p class="mb-0 rank">
                       rank #{{ index+1 }}
+                    </p>
+                    <p class="bonded mb-0" v-b-tooltip.hover title="Active bonded">
+                      {{ formatDot(validator.stakingLedger.active) }}
+                    </p>
+                    <p class="mb-0">
                       <small>
-                        <i v-if="index < 50" class="fas fa-shield-alt" style="color: #f1bd23" v-b-tooltip.hover title="Ready to validate!"></i>
-                        <i v-else class="fas fa-shield-alt" style="color: #e6dfdf;" v-b-tooltip.hover title="Out of first 50 validator slots!"></i><i class=""></i>
+                        <span v-b-tooltip.hover title="Total bonded">
+                          {{ formatDot(validator.stakingLedger.total) }}
+                        </span>
                       </small>
                     </p>
-                    <p class="bonded mb-0" v-b-tooltip.hover title="Active bonded">{{ formatDot(validator.stakingLedger.active) }}</p>
-                    <p class="mb-0"><small><span v-b-tooltip.hover title="Total bonded">{{ formatDot(validator.stakingLedger.total) }}</span></small></p>
                   </div>
                   <div class="col-md-9">
                     <div v-if="validator.controllerId != validator.nextSessionId">
@@ -124,14 +128,6 @@
                     </div>
                     <!-- Identity -->
                     <div v-if="hasIdentity(validator.stashId)" class="mb-2">
-                      <!-- <div class="row mb-2">
-                        <div class="col-md-3 mb-2">
-                          <strong>Identity</strong>
-                        </div>
-                        <div class="col-md-9 mb-2 fee">
-                          {{ getIdentity(validator.stashId) }}
-                        </div>
-                      </div> -->
                       <div class="row" v-if="getIdentity(validator.stashId).full_name">
                         <div class="col-md-3 mb-2">
                           <strong>Name</strong>
