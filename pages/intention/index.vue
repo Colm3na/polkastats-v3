@@ -199,8 +199,9 @@
                     <template v-if="validator.nextSessionIds.length > 0">
                       <div class="nominator collapse pt-2 pb-3"  v-bind:id="'session-id-' + index">
                         <div v-for="(sessionId, index) in validator.nextSessionIds" class="row" v-bind:key="index">
-                          <div class="col-12 who">
-                            {{ index+1 }}.                      
+                          <div class="col-12 mb-1 who">
+                            {{ index+1 }}.
+                            <Identicon :value="sessionId" :size="20" :theme="'polkadot'" />
                             <a v-bind:href="blockExplorer.account + sessionId" target="_blank">
                               <span class="d-inline-block d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="sessionId">{{ shortAddress(sessionId) }}</span>
                               <span class="d-none d-sm-inline-block d-md-inline-block d-lg-inline-block d-xl-inline-block">{{ sessionId }}</span>                        
@@ -216,10 +217,11 @@
                     </template>
                     <div class="nominator collapse pt-2 pb-3"  v-bind:id="'staker' + index">
                       <div v-for="(staker, index) in validator.stakers.others" class="row" v-bind:key="index">
-                        <div class="col-8 who">                      
+                        <div class="col-8 mb-1 who">
+                          <Identicon :value="staker.who" :size="20" :theme="'polkadot'" />                      
                           <a v-bind:href="blockExplorer.account + staker.who" target="_blank">
-                            <span class="d-block d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="staker.who">{{ shortAddress(staker.who) }}</span>
-                            <span class="d-none d-sm-block d-md-block d-lg-block d-xl-block">{{ staker.who }}</span>                        
+                            <span class="d-inline-block d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="staker.who">{{ shortAddress(staker.who) }}</span>
+                            <span class="d-none d-sm-inline-block d-md-inline-block d-lg-inline-block d-xl-inline-block">{{ staker.who }}</span>                        
                           </a>
                         </div>
                         <div class="col-4 text-right value">
