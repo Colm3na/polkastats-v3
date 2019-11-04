@@ -45,11 +45,8 @@ export default {
     ['@nuxtjs/google-analytics', {
       id: 'UA-144344973-1'
     }],
-    // Simple usage
-    '@nuxtjs/vuetify',
-
-    // With options
-    ['@nuxtjs/vuetify', { /* module options */ }]
+    // https://github.com/nuxt-community/vuetify-module
+    '@nuxtjs/vuetify'
   ],
   /*
   ** Axios module configuration
