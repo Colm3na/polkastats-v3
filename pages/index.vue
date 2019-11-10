@@ -728,12 +728,12 @@ export default {
       return this.$store.state.nicknames.list
     },
     totalStakeBondedPercen() {
-      if (this.totalStakeBonded || this.totalIssuance) {
-        return 0;
-      } else {
-        let totalIssuance = new BN(this.totalIssuance.toString(), 10);
+      if (this.totalStakeBonded !== 0 && this.totalIssuance !== "") {
+        let totalIssuance = new BN(this.totalIssuance, 10);
         let totalStakeBonded = this.totalStakeBonded.mul(new BN('100', 10));
         return totalStakeBonded.div(totalIssuance);
+      } else {
+        return 0;
       }
     }
   },
