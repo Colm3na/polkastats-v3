@@ -6,7 +6,7 @@
           Connected to chain <strong>{{system.chain}}</strong> using <strong>{{ system.client_name}}</strong> client version <strong>{{system.client_version}}</strong>
         </b-alert>
         <b-alert show dismissible variant="success" class="text-center">
-          Total stake bonded in {{system.chain}} network is now <strong>{{ formatDot(totalStakeBonded) }}</strong>
+          Total issuance is <strong>{{ formatDot(totalIssuance) }}</strong>, total stake bonded is <strong>{{ formatDot(totalStakeBonded) }} ({{ totalStakeBondedPercen.toString(10) }}% of total issuance)</strong>
         </b-alert>
         <p class="session text-right">Last block: <strong>#{{ formatNumber(bestblocknumber) }}</strong> | Session: <strong>{{ formatNumber(session.sessionProgress) }}/{{ formatNumber(session.sessionLength) }}</strong> | Era: <strong>{{ formatNumber(session.eraProgress) }}/{{ formatNumber(session.eraLength) }}</strong></p>
         <nav>
@@ -544,7 +544,8 @@ export default {
         sessionLength: 0,
         sessionsPerEra: 0,
         sessionProgress: 0
-      }
+      },
+      totalIssuance: ""
     }
   },
   computed: {
@@ -562,6 +563,15 @@ export default {
     },
     nicknames() {
       return this.$store.state.nicknames.list
+    },
+    totalStakeBondedPercen() {
+      if (this.totalStakeBonded !== 0 && this.totalStakeBonded !== 0) {
+        let totalIssuance = new BN(this.totalIssuance.toString(), 10);
+        let totalStakeBonded = this.totalStakeBonded.mul(new BN('100', 10));
+        return totalStakeBonded.div(totalIssuance);
+      } else {
+        return 0;
+      }
     }
   },
   created: function () {
@@ -622,6 +632,7 @@ export default {
         .then(function (response) {
           vm.bestblocknumber = response.data.block_height;
           vm.session = response.data.session;
+          vm.totalIssuance = response.data.total_issuance;
         });
     },
     formatNumber(n) {
