@@ -51,7 +51,7 @@
                         <span v-b-tooltip.hover title="Bonded by nominators" v-if="(validator.stakers.total - validator.stakers.own) > 0">(+{{ formatDot(validator.stakers.total - validator.stakers.own) }})</span>
                       </small>
                     </p>
-                    <p v-b-tooltip.hover title="Total stake percentage">{{ getStakePercent(validator.stakers.total) }}% of total stake</p>
+                    <p class="mb-0" v-b-tooltip.hover title="Percentage over total bonded stake">{{ getStakePercent(validator.stakers.total) }}% of total stake</p>
                   </div>
                   <div class="col-md-9">
                     <h4 class="card-title mb-4 account mt-4 mt-sm-0 mt-md-0 mt-lg-0 mt-xl-0">
@@ -364,16 +364,15 @@
                         <p class="mt-3 mb-0 rank">
                           rank #{{ index+1 }} <i class="fas fa-shield-alt" v-b-tooltip.hover title="Active validator"></i>
                         </p>
-                        <p class="bonded mb-0" v-b-tooltip.hover title="Active bonded">
-                          {{ formatDot(validator.stakingLedger.active) }}
-                        </p>
+                        <p v-if="validator.stakers.total > 0" class="bonded mb-0" v-b-tooltip.hover title="Total bonded">{{ formatDot(validator.stakers.total) }}</p>
+                        <p v-else class="bonded mb-0" v-b-tooltip.hover title="Total bonded">{{ formatDot(validator.stakingLedger.total) }}</p>
                         <p class="mb-0">
                           <small>
-                            <span v-b-tooltip.hover title="Total bonded">
-                              {{ formatDot(validator.stakingLedger.total) }}
-                            </span>
+                            <span v-b-tooltip.hover title="Self bonded" v-if="validator.stakers.own > 0">{{ formatDot(validator.stakers.own) }}</span>
+                            <span v-b-tooltip.hover title="Bonded by nominators" v-if="(validator.stakers.total - validator.stakers.own) > 0">(+{{ formatDot(validator.stakers.total - validator.stakers.own) }})</span>
                           </small>
                         </p>
+                        <p class="mb-0" v-b-tooltip.hover title="Percentage over total bonded stake">{{ getStakePercent(validator.stakers.total) }}% of total stake</p>
                         <editable v-if="!hasIdentity(validator.stashId)" v-bind:favorites="favorites" v-model="favorites[getIndex(validator.accountId)].name"></editable>
                       </div>
                       <div class="col-md-9">
