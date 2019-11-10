@@ -2,8 +2,11 @@
   <div>
     <section>
       <b-container class="main pt-4">
-        <b-alert show dismissible variant="success" class="text-center">
+        <b-alert show dismissible variant="info" class="text-center">
           Connected to chain <strong>{{system.chain}}</strong> using <strong>{{ system.client_name}}</strong> client version <strong>{{system.client_version}}</strong>
+        </b-alert>
+        <b-alert show dismissible variant="success" class="text-center">
+          Total stake bonded in {{system.chain}} network is now <strong>{{ formatDot(totalStakeBonded) }}</strong>
         </b-alert>
         <p class="session text-right">Last block: <strong>#{{ formatNumber(bestblocknumber) }}</strong> | Session: <strong>{{ formatNumber(session.sessionProgress) }}/{{ formatNumber(session.sessionLength) }}</strong> | Era: <strong>{{ formatNumber(session.eraProgress) }}/{{ formatNumber(session.eraLength) }}</strong></p>
         <nav>
@@ -48,6 +51,7 @@
                         <span v-b-tooltip.hover title="Bonded by nominators" v-if="(validator.stakers.total - validator.stakers.own) > 0">(+{{ formatDot(validator.stakers.total - validator.stakers.own) }})</span>
                       </small>
                     </p>
+                    <p v-b-tooltip.hover title="Total stake percentage">{{ getStakePercent(validator.stakers.total) }}% of total stake</p>
                   </div>
                   <div class="col-md-9">
                     <h4 class="card-title mb-4 account mt-4 mt-sm-0 mt-md-0 mt-lg-0 mt-xl-0">
@@ -547,6 +551,9 @@ export default {
     validators () {
       return this.$store.state.validators.list
     },
+    totalStakeBonded () {
+      return this.$store.state.validators.totalStakeBonded
+    },
     intentions () {
       return this.$store.state.intentions.list
     },
@@ -706,6 +713,16 @@ export default {
         return obj.accountId === accountId
       });
       return filteredArray[0].nickname;
+    },
+    getStakePercent(amount) {
+      let bn;
+      if (isHex(amount)) {
+        bn = new BN(amount.substring(2, amount.length), 16);
+      } else {
+        bn = new BN(amount.toString(), 10);
+      }
+      bn = bn.mul(new BN('100', 10));
+      return bn.div(this.totalStakeBonded);
     }
   },
   watch: {
