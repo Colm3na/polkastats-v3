@@ -54,6 +54,7 @@
                         <span v-b-tooltip.hover title="Bonded by nominators" v-if="(validator.stakers.total - validator.stakers.own) > 0">(+{{ formatDot(validator.stakers.total - validator.stakers.own) }})</span>
                       </small>
                     </p>
+                    <p class="mb-0" v-b-tooltip.hover title="Percentage over total bonded stake">{{ getStakePercent(validator.stakers.total) }}% of total stake</p>
                   </div>
                   <div class="col-md-9">
                     <div class="row" v-if="hasNickname(validator.accountId)">
@@ -446,7 +447,8 @@ export default {
             }
           }       
         }
-      }
+      },
+      totalIssuance: ""
     }
   },
   computed: {
@@ -458,6 +460,18 @@ export default {
     },
     nicknames() {
       return this.$store.state.nicknames.list
+    },
+    totalStakeBonded () {
+      return this.$store.state.validators.totalStakeBonded
+    },
+    totalStakeBondedPercen() {
+      if (this.totalStakeBonded !== 0 && this.totalIssuance !== "") {
+        let totalIssuance = new BN(this.totalIssuance, 10);
+        let totalStakeBonded = this.totalStakeBonded.mul(new BN('100000', 10));
+        return totalStakeBonded.div(totalIssuance);
+      } else {
+        return 0;
+      }
     }
   },
   created: function () {
@@ -776,7 +790,25 @@ export default {
         return obj.accountId === accountId
       });
       return filteredArray[0].nickname;
-    }
+    },
+    getStakePercent(amount) {
+      let amountBN;
+      if (isHex(amount)) {
+        amountBN = new BN(amount.substring(2, amount.length), 16);
+      } else {
+        amountBN = new BN(amount.toString(), 10);
+      }
+      amountBN = amountBN.mul(new BN('100000', 10));
+      let result = amountBN.div(this.totalStakeBonded);
+      return this.formatNumber(parseInt(result.toString(10), 10) / 1000);
+    },
+    formatNumber(n) {
+      if (isHex(n)) {
+        return (parseInt(n, 16).toString()).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+      } else {
+        return (n.toString()).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+      }
+    },
   },
   watch: {
     $route () {

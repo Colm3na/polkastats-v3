@@ -889,14 +889,15 @@ export default {
       return filteredArray[0].nickname;
     },
     getStakePercent(amount) {
-      let bn;
+      let amountBN;
       if (isHex(amount)) {
-        bn = new BN(amount.substring(2, amount.length), 16);
+        amountBN = new BN(amount.substring(2, amount.length), 16);
       } else {
-        bn = new BN(amount.toString(), 10);
+        amountBN = new BN(amount.toString(), 10);
       }
-      bn = bn.mul(new BN('100', 10));
-      return bn.div(this.totalStakeBonded);
+      amountBN = amountBN.mul(new BN('100000', 10));
+      let result = amountBN.div(this.totalStakeBonded);
+      return this.formatNumber(parseInt(result.toString(10), 10) / 1000);
     }
   },
   watch: {
