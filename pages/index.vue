@@ -377,7 +377,7 @@
                       </div>
                       <div class="col-md-9">
                         <h4 class="card-title mb-4 account mt-4 mt-sm-0 mt-md-0 mt-lg-0 mt-xl-0">
-                          <nuxt-link :to="{name: 'intention', query: { accountId: validator.accountId } }" title="Validator details">
+                          <nuxt-link :to="{name: 'validator', query: { accountId: validator.accountId } }" title="Validator details">
                             <span v-if="hasNickname(validator.accountId)">
                               {{ getNickname(validator.accountId) }}
                             </span>
