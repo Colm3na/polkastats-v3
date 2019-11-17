@@ -8,7 +8,7 @@
         <b-alert show dismissible variant="success" class="text-center">
           Total issuance is <strong>{{ formatDot(totalIssuance) }}</strong>, total stake bonded is <strong>{{ formatDot(totalStakeBonded) }} ({{ totalStakeBondedPercen.toString(10) }}% of total issuance)</strong>
         </b-alert>
-        <p class="session text-right">Last block: <strong>#{{ formatNumber(bestblocknumber) }}</strong> | Session: <strong>{{ formatNumber(session.sessionProgress) }}/{{ formatNumber(session.sessionLength) }}</strong> | Era: <strong>{{ formatNumber(session.eraProgress) }}/{{ formatNumber(session.eraLength) }}</strong></p>
+        <p class="session text-right">Last block: <strong>{{ formatNumber(bestblocknumber) }}</strong> | Last finalized: <strong>{{ formatNumber(bestBlockFinalized) }}</strong> | Session: <strong>{{ formatNumber(session.sessionProgress) }}/{{ formatNumber(session.sessionLength) }}</strong> | Era: <strong>{{ formatNumber(session.eraProgress) }}/{{ formatNumber(session.eraLength) }}</strong></p>
         <nav>
           <div class="nav nav-tabs" id="nav-tab" role="tablist">
             <a class="nav-item nav-link active" id="nav-active-validators" data-toggle="tab" href="#active-validators" role="tab" aria-controls="nav-active-validators" aria-selected="true">VALIDATORS ({{ validators.length }})</a>
@@ -697,6 +697,7 @@ export default {
       favorites: [],
       polling: null,
       bestblocknumber: 0,
+      bestBlockFinalized: 0,
       session: {  
         currentEra: 0,
         currentIndex: 0,
@@ -794,6 +795,7 @@ export default {
       axios.get(`${backendBaseURL}/chain`)
         .then(function (response) {
           vm.bestblocknumber = response.data.block_height;
+          vm.bestBlockFinalized = response.data.block_height_finalized;
           vm.session = response.data.session;
           vm.totalIssuance = response.data.total_issuance;
         });
