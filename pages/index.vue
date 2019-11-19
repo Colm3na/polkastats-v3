@@ -8,56 +8,7 @@
         <b-alert show dismissible variant="success" class="text-center">
           Total issuance is <strong>{{ formatDot(totalIssuance) }}</strong>, total stake bonded is <strong>{{ formatDot(totalStakeBonded) }} ({{ totalStakeBondedPercen.toString(10) }}% of total issuance)</strong>
         </b-alert>
-        <div class="network row text-center mt-4">
-          <div class="col-6 col-md-4 col-xl-2 mb-4">
-            <div class="card">
-              <div class="card-body">
-                <p>Last block</p>
-                <h5>{{ formatNumber(bestblocknumber) }}</h5>
-              </div>
-            </div>
-          </div>
-          <div class="col-6 col-md-4 col-xl-2 mb-4">
-            <div class="card">
-              <div class="card-body">
-                <p>Last finalized</p>
-                <h5>{{ formatNumber(bestBlockFinalized) }}</h5>
-              </div>
-            </div>
-          </div>
-          <div class="col-6 col-md-4 col-xl-2 mb-4">
-            <div class="card">
-              <div class="card-body">
-                <p>Current session</p>
-                <h5>{{ formatNumber(session.currentIndex) }}</h5>
-              </div>
-            </div>
-          </div>
-          <div class="col-6 col-md-4 col-xl-2 mb-4">
-            <div class="card">
-              <div class="card-body">
-                <p>Epoch</p>
-                <h5>{{ formatNumber(session.sessionProgress) }}/{{ formatNumber(session.sessionLength) }}</h5>
-              </div>
-            </div>
-          </div>
-          <div class="col-6 col-md-4 col-xl-2 mb-4">
-            <div class="card">
-              <div class="card-body">
-                <p>Current era</p>
-                <h5>{{ formatNumber(session.currentEra) }}</h5>
-              </div>
-            </div>
-          </div>
-          <div class="col-6 col-md-4 col-xl-2 mb-4">
-            <div class="card">
-              <div class="card-body">
-                <p>Era</p>
-                <h5>{{ formatNumber(session.eraProgress) }}/{{ formatNumber(session.eraLength) }}</h5>
-              </div>
-            </div>
-          </div>      
-        </div>
+        <Network :bestblocknumber="bestblocknumber" :bestBlockFinalized="bestBlockFinalized" :session="session" />
         <nav>
           <div class="nav nav-tabs" id="nav-tab" role="tablist">
             <a class="nav-item nav-link active" id="nav-active-validators" data-toggle="tab" href="#active-validators" role="tab" aria-controls="nav-active-validators" aria-selected="true">VALIDATORS ({{ validators.length }})</a>
@@ -718,6 +669,7 @@ import axios from 'axios';
 import bootstrap from 'bootstrap';
 import Identicon from '../components/identicon.vue';
 import editable from '../components/editable.vue';
+import Network from '../components/network.vue';
 import { formatBalance, isHex } from '@polkadot/util';
 import BN from 'bn.js';
 import { decimals, unit, backendBaseURL, blockExplorer} from '../polkastats.config.js';
@@ -962,7 +914,8 @@ export default {
   },
   components: {
     editable,
-    Identicon
+    Identicon,
+    Network
   }
 }
 </script>
@@ -1048,11 +1001,5 @@ body {
 }
 .validator .fa-exclamation-triangle {
   color: red;
-}
-.network .card h5 {
-  color: #670d35;
-}
-.network .card .card-body {
-  padding: 1rem;
 }
 </style>
