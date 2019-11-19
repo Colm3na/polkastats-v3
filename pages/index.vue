@@ -58,13 +58,6 @@
             </div>
           </div>      
         </div>
-        <!-- <p class="session text-right">
-          Last block: <strong>{{ formatNumber(bestblocknumber) }}</strong> |
-          Last finalized: <strong>{{ formatNumber(bestBlockFinalized) }}</strong> |
-          Current session: <strong>{{ formatNumber(session.currentIndex) }}</strong> |
-          Epoch: <strong>{{ formatNumber(session.sessionProgress) }}/{{ formatNumber(session.sessionLength) }}</strong> |
-          Era: <strong>{{ formatNumber(session.eraProgress) }}/{{ formatNumber(session.eraLength) }}</strong>
-        </p> -->
         <nav>
           <div class="nav nav-tabs" id="nav-tab" role="tablist">
             <a class="nav-item nav-link active" id="nav-active-validators" data-toggle="tab" href="#active-validators" role="tab" aria-controls="nav-active-validators" aria-selected="true">VALIDATORS ({{ validators.length }})</a>
@@ -1058,5 +1051,8 @@ body {
 }
 .network .card h5 {
   color: #670d35;
+}
+.network .card .card-body {
+  padding: 1rem;
 }
 </style>
