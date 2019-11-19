@@ -23,9 +23,9 @@
                 <i v-if="validator.imOnline.isOnline" class="imOnline fas fa-check-circle" v-b-tooltip.hover v-bind:title="getImOnlineMessage(validator)"></i>
                 <i v-else class="imOffline fas fa-times-circle" v-b-tooltip.hover v-bind:title="getImOnlineMessage(validator)"></i>
                 <p class="text-right mb-0">
-                  <a class="favorite" v-on:click="toggleFavorite(validator.accountId)" v-b-tooltip.hover title="Mark as Favorite">
+                  <a class="favorite" v-on:click="toggleFavorite(validator.accountId)">
                     <i v-if="isFavorite(validator.accountId)" class="fas fa-star" style="color: #f1bd23" v-b-tooltip.hover title="Unset as Favorite"></i>
-                    <i v-else class="fas fa-star" style="color: #e6dfdf;" title="Set as Favorite"></i>
+                    <i v-else class="fas fa-star" style="color: #e6dfdf;" v-b-tooltip.hover title="Set as Favorite"></i>
                   </a>
                 </p>
                 <div class="row">
@@ -178,7 +178,7 @@
             <div class="validator card mb-3" v-for="(validator, index) in intentions" v-bind:key="validator.accountId">
               <div class="card-body">
                 <p class="text-right mb-0">
-                  <a class="favorite" v-on:click="toggleFavorite(validator.accountId)" v-b-tooltip.hover title="Mark as Favorite">
+                  <a class="favorite" v-on:click="toggleFavorite(validator.accountId)">
                     <i v-if="isFavorite(validator.accountId)" class="fas fa-star" style="color: #f1bd23" v-b-tooltip.hover title="Unset as Favorite"></i>
                     <i v-else class="fas fa-star" style="color: #e6dfdf;" title="Set as Favorite"></i>
                   </a>
@@ -345,9 +345,9 @@
                   <i v-if="validator.imOnline.isOnline" class="imOnline fas fa-check-circle" v-b-tooltip.hover v-bind:title="getImOnlineMessage(validator)"></i>
                   <i v-else class="imOffline fas fa-times-circle" v-b-tooltip.hover v-bind:title="getImOnlineMessage(validator)"></i>
                   <p class="text-right mb-0">
-                    <a class="favorite" v-on:click="toggleFavorite(validator.accountId)" v-b-tooltip.hover title="Mark as Favorite">
+                    <a class="favorite" v-on:click="toggleFavorite(validator.accountId)">
                       <i v-if="isFavorite(validator.accountId)" class="fas fa-star" style="color: #f1bd23" v-b-tooltip.hover title="Unset as Favorite"></i>
-                      <i v-else class="fas fa-star" style="color: #e6dfdf;" title="Set as Favorite"></i>
+                      <i v-else class="fas fa-star" style="color: #e6dfdf;" v-b-tooltip.hover title="Set as Favorite"></i>
                     </a>
                   </p>                 
                   <div class="card-body">
@@ -504,9 +504,9 @@
               <template v-if="isFavorite(validator.accountId)">
                 <div class="validator card mb-3">
                   <p class="text-right mb-0">
-                    <a class="favorite" v-on:click="toggleFavorite(validator.accountId)" v-b-tooltip.hover title="Mark as Favorite">
+                    <a class="favorite" v-on:click="toggleFavorite(validator.accountId)">
                       <i v-if="isFavorite(validator.accountId)" class="fas fa-star" style="color: #f1bd23" v-b-tooltip.hover title="Unset as Favorite"></i>
-                      <i v-else class="fas fa-star" style="color: #e6dfdf;" title="Set as Favorite"></i>
+                      <i v-else class="fas fa-star" style="color: #e6dfdf;" v-b-tooltip.hover title="Set as Favorite"></i>
                     </a>
                   </p>                 
                   <div class="card-body">
