@@ -20,6 +20,8 @@
           <div class="tab-pane fade show active" id="active-validators" role="tabpanel" aria-labelledby="nav-active-validators">
             <div class="validator card mb-3" v-for="(validator, index) in validators" v-bind:key="validator.accountId">
               <div class="card-body">
+                <i v-if="validator.imOnline.isOnline" class="imOnline fas fa-check-circle" v-b-tooltip.hover v-bind:title="getImOnlineMessage(validator)"></i>
+                <i v-else class="imOffline fas fa-times-circle" v-b-tooltip.hover v-bind:title="getImOnlineMessage(validator)"></i>
                 <p class="text-right mb-0">
                   <a class="favorite" v-on:click="toggleFavorite(validator.accountId)" v-b-tooltip.hover title="Mark as Favorite">
                     <i v-if="isFavorite(validator.accountId)" class="fas fa-star" style="color: #f1bd23" v-b-tooltip.hover title="Unset as Favorite"></i>
@@ -340,6 +342,8 @@
             <template  v-for="(validator, index) in validators">
               <template v-if="isFavorite(validator.accountId)">
                 <div class="validator card mb-3">
+                  <i v-if="validator.imOnline.isOnline" class="imOnline fas fa-check-circle" v-b-tooltip.hover v-bind:title="getImOnlineMessage(validator)"></i>
+                  <i v-else class="imOffline fas fa-times-circle" v-b-tooltip.hover v-bind:title="getImOnlineMessage(validator)"></i>
                   <p class="text-right mb-0">
                     <a class="favorite" v-on:click="toggleFavorite(validator.accountId)" v-b-tooltip.hover title="Mark as Favorite">
                       <i v-if="isFavorite(validator.accountId)" class="fas fa-star" style="color: #f1bd23" v-b-tooltip.hover title="Unset as Favorite"></i>
@@ -901,7 +905,22 @@ export default {
       amountBN = amountBN.mul(new BN('100000', 10));
       let result = amountBN.div(this.totalStakeBonded);
       return this.formatNumber(parseInt(result.toString(10), 10) / 1000);
-    }
+    },
+    getImOnlineMessage(validator) {
+      let message = "";
+      if (validator.imOnline.isOnline) {
+        message = "Active with ";
+      } else {
+        message = "Inactive with ";
+      }
+      message = `${message} ${validator.imOnline.blockCount} blocks authored, `;
+      if (validator.imOnline.hasMessage) {
+        message = message + "has heartbeat message!";
+      } else {
+        message = message + "no heartbeat message";
+      }
+      return message;
+    },
   },
   watch: {
     favorites: function (val) {
@@ -1000,6 +1019,20 @@ body {
   color: green;
 }
 .validator .fa-exclamation-triangle {
+  color: red;
+}
+.imOnline {
+  position: absolute;
+  top: 0.4rem;
+  left: 0.4rem;
+  font-size: 1.1rem;
+  color: green;
+}
+.imOffline {
+  position: absolute;
+  top: 0.4rem;
+  left: 0.4rem;
+  font-size: 1.1rem;
   color: red;
 }
 </style>
