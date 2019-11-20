@@ -8,63 +8,7 @@
         <b-alert show dismissible variant="success" class="text-center">
           Total issuance is <strong>{{ formatDot(totalIssuance) }}</strong>, total stake bonded is <strong>{{ formatDot(totalStakeBonded) }} ({{ totalStakeBondedPercen.toString(10) }}% of total issuance)</strong>
         </b-alert>
-        <div class="network row text-center mt-4">
-          <div class="col-6 col-md-4 col-xl-2 mb-4">
-            <div class="card">
-              <div class="card-body">
-                <p>Last block</p>
-                <h5>{{ formatNumber(bestblocknumber) }}</h5>
-              </div>
-            </div>
-          </div>
-          <div class="col-6 col-md-4 col-xl-2 mb-4">
-            <div class="card">
-              <div class="card-body">
-                <p>Last finalized</p>
-                <h5>{{ formatNumber(bestBlockFinalized) }}</h5>
-              </div>
-            </div>
-          </div>
-          <div class="col-6 col-md-4 col-xl-2 mb-4">
-            <div class="card">
-              <div class="card-body">
-                <p>Current session</p>
-                <h5>{{ formatNumber(session.currentIndex) }}</h5>
-              </div>
-            </div>
-          </div>
-          <div class="col-6 col-md-4 col-xl-2 mb-4">
-            <div class="card">
-              <div class="card-body">
-                <p>Epoch</p>
-                <h5>{{ formatNumber(session.sessionProgress) }}/{{ formatNumber(session.sessionLength) }}</h5>
-              </div>
-            </div>
-          </div>
-          <div class="col-6 col-md-4 col-xl-2 mb-4">
-            <div class="card">
-              <div class="card-body">
-                <p>Current era</p>
-                <h5>{{ formatNumber(session.currentEra) }}</h5>
-              </div>
-            </div>
-          </div>
-          <div class="col-6 col-md-4 col-xl-2 mb-4">
-            <div class="card">
-              <div class="card-body">
-                <p>Era</p>
-                <h5>{{ formatNumber(session.eraProgress) }}/{{ formatNumber(session.eraLength) }}</h5>
-              </div>
-            </div>
-          </div>      
-        </div>
-        <!-- <p class="session text-right">
-          Last block: <strong>{{ formatNumber(bestblocknumber) }}</strong> |
-          Last finalized: <strong>{{ formatNumber(bestBlockFinalized) }}</strong> |
-          Current session: <strong>{{ formatNumber(session.currentIndex) }}</strong> |
-          Epoch: <strong>{{ formatNumber(session.sessionProgress) }}/{{ formatNumber(session.sessionLength) }}</strong> |
-          Era: <strong>{{ formatNumber(session.eraProgress) }}/{{ formatNumber(session.eraLength) }}</strong>
-        </p> -->
+        <Network :bestblocknumber="bestblocknumber" :bestBlockFinalized="bestBlockFinalized" :session="session" />
         <nav>
           <div class="nav nav-tabs" id="nav-tab" role="tablist">
             <a class="nav-item nav-link active" id="nav-active-validators" data-toggle="tab" href="#active-validators" role="tab" aria-controls="nav-active-validators" aria-selected="true">VALIDATORS ({{ validators.length }})</a>
@@ -76,10 +20,12 @@
           <div class="tab-pane fade show active" id="active-validators" role="tabpanel" aria-labelledby="nav-active-validators">
             <div class="validator card mb-3" v-for="(validator, index) in validators" v-bind:key="validator.accountId">
               <div class="card-body">
+                <i v-if="validator.imOnline.isOnline" class="imOnline fas fa-check-circle" v-b-tooltip.hover v-bind:title="getImOnlineMessage(validator)"></i>
+                <i v-else class="imOffline fas fa-times-circle" v-b-tooltip.hover v-bind:title="getImOnlineMessage(validator)"></i>
                 <p class="text-right mb-0">
-                  <a class="favorite" v-on:click="toggleFavorite(validator.accountId)" v-b-tooltip.hover title="Mark as Favorite">
+                  <a class="favorite" v-on:click="toggleFavorite(validator.accountId)">
                     <i v-if="isFavorite(validator.accountId)" class="fas fa-star" style="color: #f1bd23" v-b-tooltip.hover title="Unset as Favorite"></i>
-                    <i v-else class="fas fa-star" style="color: #e6dfdf;" title="Set as Favorite"></i>
+                    <i v-else class="fas fa-star" style="color: #e6dfdf;" v-b-tooltip.hover title="Set as Favorite"></i>
                   </a>
                 </p>
                 <div class="row">
@@ -232,9 +178,9 @@
             <div class="validator card mb-3" v-for="(validator, index) in intentions" v-bind:key="validator.accountId">
               <div class="card-body">
                 <p class="text-right mb-0">
-                  <a class="favorite" v-on:click="toggleFavorite(validator.accountId)" v-b-tooltip.hover title="Mark as Favorite">
+                  <a class="favorite" v-on:click="toggleFavorite(validator.accountId)">
                     <i v-if="isFavorite(validator.accountId)" class="fas fa-star" style="color: #f1bd23" v-b-tooltip.hover title="Unset as Favorite"></i>
-                    <i v-else class="fas fa-star" style="color: #e6dfdf;" title="Set as Favorite"></i>
+                    <i v-else class="fas fa-star" style="color: #e6dfdf;" v-b-tooltip.hover title="Set as Favorite"></i>
                   </a>
                 </p>
                 <div class="row">
@@ -396,10 +342,12 @@
             <template  v-for="(validator, index) in validators">
               <template v-if="isFavorite(validator.accountId)">
                 <div class="validator card mb-3">
+                  <i v-if="validator.imOnline.isOnline" class="imOnline fas fa-check-circle" v-b-tooltip.hover v-bind:title="getImOnlineMessage(validator)"></i>
+                  <i v-else class="imOffline fas fa-times-circle" v-b-tooltip.hover v-bind:title="getImOnlineMessage(validator)"></i>
                   <p class="text-right mb-0">
-                    <a class="favorite" v-on:click="toggleFavorite(validator.accountId)" v-b-tooltip.hover title="Mark as Favorite">
+                    <a class="favorite" v-on:click="toggleFavorite(validator.accountId)">
                       <i v-if="isFavorite(validator.accountId)" class="fas fa-star" style="color: #f1bd23" v-b-tooltip.hover title="Unset as Favorite"></i>
-                      <i v-else class="fas fa-star" style="color: #e6dfdf;" title="Set as Favorite"></i>
+                      <i v-else class="fas fa-star" style="color: #e6dfdf;" v-b-tooltip.hover title="Set as Favorite"></i>
                     </a>
                   </p>                 
                   <div class="card-body">
@@ -556,9 +504,9 @@
               <template v-if="isFavorite(validator.accountId)">
                 <div class="validator card mb-3">
                   <p class="text-right mb-0">
-                    <a class="favorite" v-on:click="toggleFavorite(validator.accountId)" v-b-tooltip.hover title="Mark as Favorite">
+                    <a class="favorite" v-on:click="toggleFavorite(validator.accountId)">
                       <i v-if="isFavorite(validator.accountId)" class="fas fa-star" style="color: #f1bd23" v-b-tooltip.hover title="Unset as Favorite"></i>
-                      <i v-else class="fas fa-star" style="color: #e6dfdf;" title="Set as Favorite"></i>
+                      <i v-else class="fas fa-star" style="color: #e6dfdf;" v-b-tooltip.hover title="Set as Favorite"></i>
                     </a>
                   </p>                 
                   <div class="card-body">
@@ -725,6 +673,7 @@ import axios from 'axios';
 import bootstrap from 'bootstrap';
 import Identicon from '../components/identicon.vue';
 import editable from '../components/editable.vue';
+import Network from '../components/network.vue';
 import { formatBalance, isHex } from '@polkadot/util';
 import BN from 'bn.js';
 import { decimals, unit, backendBaseURL, blockExplorer} from '../polkastats.config.js';
@@ -956,7 +905,22 @@ export default {
       amountBN = amountBN.mul(new BN('100000', 10));
       let result = amountBN.div(this.totalStakeBonded);
       return this.formatNumber(parseInt(result.toString(10), 10) / 1000);
-    }
+    },
+    getImOnlineMessage(validator) {
+      let message = "";
+      if (validator.imOnline.isOnline) {
+        message = "Active with ";
+      } else {
+        message = "Inactive with ";
+      }
+      message = `${message} ${validator.imOnline.blockCount} blocks authored, `;
+      if (validator.imOnline.hasMessage) {
+        message = message + "has heartbeat message!";
+      } else {
+        message = message + "no heartbeat message";
+      }
+      return message;
+    },
   },
   watch: {
     favorites: function (val) {
@@ -969,7 +933,8 @@ export default {
   },
   components: {
     editable,
-    Identicon
+    Identicon,
+    Network
   }
 }
 </script>
@@ -1056,7 +1021,18 @@ body {
 .validator .fa-exclamation-triangle {
   color: red;
 }
-.network .card h5 {
-  color: #670d35;
+.imOnline {
+  position: absolute;
+  top: 0.4rem;
+  left: 0.4rem;
+  font-size: 1.1rem;
+  color: green;
+}
+.imOffline {
+  position: absolute;
+  top: 0.4rem;
+  left: 0.4rem;
+  font-size: 1.1rem;
+  color: red;
 }
 </style>

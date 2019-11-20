@@ -25,6 +25,8 @@
             </div>
             <div class="validator-detail card mt-4 mb-3">
               <div class="card-body">
+                <i v-if="validator.imOnline.isOnline" class="imOnline fas fa-check-circle" v-b-tooltip.hover v-bind:title="getImOnlineMessage(validator)"></i>
+                <i v-else class="imOffline fas fa-times-circle" v-b-tooltip.hover v-bind:title="getImOnlineMessage(validator)"></i>
                 <p class="text-right">
                   <i v-if="isFavorite(validator.accountId)" class="favorite fas fa-star" style="color: #f1bd23" v-b-tooltip.hover title="In Favorites"></i>
                   <i v-else class="favorite fas fa-star" style="color: #e6dfdf;" v-b-tooltip.hover title="Not in Favorites"></i>       
@@ -809,6 +811,21 @@ export default {
         return (n.toString()).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
       }
     },
+    getImOnlineMessage(validator) {
+      let message = "";
+      if (validator.imOnline.isOnline) {
+        message = "Active with ";
+      } else {
+        message = "Inactive with ";
+      }
+      message = `${message} ${validator.imOnline.blockCount} blocks authored, `;
+      if (validator.imOnline.hasMessage) {
+        message = message + "has heartbeat message!";
+      } else {
+        message = message + "no heartbeat message";
+      }
+      return message;
+    }
   },
   watch: {
     $route () {
@@ -860,5 +877,19 @@ export default {
 }
 .validator-detail .col-md-9 .identicon div {
   display: inline;
+}
+.imOnline {
+  position: absolute;
+  top: 0.4rem;
+  left: 0.4rem;
+  font-size: 1.1rem;
+  color: green;
+}
+.imOffline {
+  position: absolute;
+  top: 0.4rem;
+  left: 0.4rem;
+  font-size: 1.1rem;
+  color: red;
 }
 </style>
