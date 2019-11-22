@@ -2,30 +2,33 @@
   <div>
     <section>
       <b-container class="main pt-4">
-        <b-alert show dismissible variant="success" class="text-center">
+        <b-alert show dismissible variant="info" class="text-center">
           Connected to chain <strong>{{system.chain}}</strong> using <strong>{{ system.client_name}}</strong> client version <strong>{{system.client_version}}</strong>
         </b-alert>
-        <p class="session text-right">Last block: <strong>#{{ formatNumber(bestblocknumber) }}</strong> | Session: <strong>{{ formatNumber(session.sessionProgress) }}/{{ formatNumber(session.sessionLength) }}</strong> | Era: <strong>{{ formatNumber(session.eraProgress) }}/{{ formatNumber(session.eraLength) }}</strong></p>
-        
+        <b-alert show dismissible variant="success" class="text-center">
+          Total issuance is <strong>{{ formatDot(totalIssuance) }}</strong>, total stake bonded is <strong>{{ formatDot(totalStakeBonded) }} ({{ totalStakeBondedPercen.toString(10) }}% of total issuance)</strong>
+        </b-alert>
+        <Network :bestblocknumber="bestblocknumber" :bestBlockFinalized="bestBlockFinalized" :session="session" />
         <!-- Table with sorting and pagination-->
         <div class="table-responsive">
           <b-table
-            id="validators-table"
+            id="intentions-table"
             head-variant="dark"
-            :fields="validatorsTableFields"
-            :items="validators"
+            :fields="Fields"
+            :items="intentions"
             :per-page="perPage"
-            :current-page="validatorsTableCurrentPage"
-            :sort-by.sync="validatorsTableSortBy"
-            :sort-desc.sync="validatorsTableSortDesc"
+            :current-page="CurrentPage"
+            :sort-by.sync="SortBy"
+            :sort-desc.sync="SortDesc"
           >
-            
             <template slot="rank" slot-scope="data">
-              {{ getRank(data.item.accountId) }}
+              <p class="text-right mb-0">
+                {{ data.item.rank }}
+              </p>
             </template>
             <template slot="accountId" slot-scope="data">
               <Identicon :value="data.item.accountId" :size="20" :theme="'polkadot'" />
-              <nuxt-link :to="{name: 'validator', query: { accountId: data.item.accountId } }" title="Validator details">
+              <nuxt-link :to="{name: 'intention', query: { accountId: data.item.accountId } }" title="Intention details">
                 <span v-if="hasNickname(data.item.accountId)">
                   {{ getNickname(data.item.accountId) }}
                 </span>
@@ -35,31 +38,31 @@
               </nuxt-link>
             </template>
             <template slot="stake" slot-scope="data">
-              <p class="text-right mb-0" v-if="data.item.stakers.total > 0" v-b-tooltip.hover title="Total bonded">{{ formatDot(data.item.stakers.total) }}</p>
-              <p class="text-right mb-0" v-else v-b-tooltip.hover title="Total bonded">{{ formatDot(data.item.stakingLedger.total) }}</p>
+              <p class="text-right mb-0">
+                {{ formatDot(data.item.stake) }}
+              </p>
             </template> 
             <template slot="comission" slot-scope="data">
               <p class="text-right mb-0">
-                {{ formatDot(data.item.validatorPrefs.validatorPayment) }}
+                {{ formatDot(data.item.comission) }}
               </p>
             </template>
-            <template slot="reward" slot-scope="data">
-              {{ formatRewardDest(data.item.rewardDestination) }}
+            <template slot="favorite" slot-scope="data">
+              <p class="text-center mb-0">
+                <a class="favorite" v-on:click="toggleFavorite(data.item.accountId)">
+                  <i v-if="data.item.favorite" class="fas fa-star" style="color: #f1bd23" v-b-tooltip.hover title="Remove from Favorites"></i>
+                  <i v-else class="fas fa-star" style="color: #e6dfdf;" v-b-tooltip.hover title="Add to Favorites"></i>
+                </a>
+              </p>
             </template>
-            <!-- <template slot="data" slot-scope="data">
-              <pre>{{ JSON.stringify(data.item, null, 2) }}</pre>
-            </template> -->
-
           </b-table>
           <b-pagination
-            v-model="validatorsTableCurrentPage"
-            :total-rows="validatorsTableRows"
+            v-model="CurrentPage"
+            :total-rows="Rows"
             :per-page="perPage"
             aria-controls="validators-table"
           ></b-pagination>
         </div>
-        
-        <p>&nbsp;</p>
       </b-container>
     </section>
   </div>
@@ -69,7 +72,7 @@ import { mapMutations } from 'vuex';
 import axios from 'axios';
 import bootstrap from 'bootstrap';
 import Identicon from '../components/identicon.vue';
-import editable from '../components/editable.vue';
+import Network from '../components/network.vue';
 import { formatBalance, isHex } from '@polkadot/util';
 import BN from 'bn.js';
 import { decimals, unit, backendBaseURL, blockExplorer} from '../polkastats.config.js';
@@ -87,22 +90,17 @@ export default {
   },
   data: function() {
     return {
-
-      // Data table pagination
-      perPage: 10,
-      validatorsTableCurrentPage: 1,
-      validatorsTableSortBy: 'height',
-      validatorsTableSortDesc: true,
-      validatorsTableFields: [
+      perPage: 20,
+      CurrentPage: 1,
+      SortBy: 'rank',
+      SortDesc: false,
+      Fields: [
         { key: 'rank', label: 'Rank', sortable: true },
-        { key: 'accountId', label: 'Account ID', sortable: true },
+        { key: 'accountId', label: 'Intention', sortable: true },
         { key: 'stake', label: 'Total Stake', sortable: true },
         { key: 'comission', label: 'Comission', sortable: true },
-        { key: 'reward', label: 'Reward destination', sortable: true },
-        // { key: 'data', label: 'JSON data', sortable: true }
+        { key: 'favorite', label: 'Fav', sortable: true }
       ],
-      // End data table pagination
-
       system: {
         chain: "",
         client_name: "",
@@ -114,6 +112,7 @@ export default {
       favorites: [],
       polling: null,
       bestblocknumber: 0,
+      bestBlockFinalized: 0,
       session: {  
         currentEra: 0,
         currentIndex: 0,
@@ -124,25 +123,46 @@ export default {
         sessionLength: 0,
         sessionsPerEra: 0,
         sessionProgress: 0
-      }
+      },
+      totalIssuance: ""
     }
   },
   computed: {
-    validators () {
-      return this.$store.state.validators.list
-    },
     intentions () {
-      return this.$store.state.intentions.list
+      let intentionsObject = [];
+      for(let i = 0; i < this.$store.state.intentions.list.length; i++) {
+        let intention = this.$store.state.intentions.list[i];
+        intentionsObject.push({
+          rank: i+1,
+          accountId: intention.accountId,
+          stake: intention.stakingLedger.total,
+          comission: intention.validatorPrefs.validatorPayment,
+          favorite: this.isFavorite(intention.accountId)
+        });
+      }
+      return intentionsObject;
     },
     identities() {
-      return this.$store.state.identities.list
+      return this.$store.state.identities.list;
     },
     nicknames() {
-      return this.$store.state.nicknames.list
+      return this.$store.state.nicknames.list;
     },
-    validatorsTableRows() {
-      return this.$store.state.validators.list.length
-    }
+    Rows() {
+      return this.$store.state.intentions.list.length;
+    },
+    totalStakeBondedPercen() {
+      if (this.totalStakeBonded !== 0 && this.totalIssuance !== "") {
+        let totalIssuance = new BN(this.totalIssuance, 10);
+        let totalStakeBonded = this.totalStakeBonded.mul(new BN('100', 10));
+        return totalStakeBonded.div(totalIssuance);
+      } else {
+        return 0;
+      }
+    },
+    totalStakeBonded () {
+      return this.$store.state.validators.totalStakeBonded
+    },
   },
   created: function () {
     var vm = this;
@@ -156,9 +176,9 @@ export default {
     this.getSystemData();
     this.getChainData();
     
-    // Force update of validators list if empty
-    if (this.$store.state.validators.list.length == 0) {
-      vm.$store.dispatch('validators/update');
+    // Force update of intentions list if empty
+    if (this.$store.state.intentions.list.length == 0) {
+      vm.$store.dispatch('intentions/update');
     }
 
     // Force update of indentity list if empty
@@ -171,14 +191,8 @@ export default {
       vm.$store.dispatch('nicknames/update');
     }
 
-    // Force update of intention validators list if empty
-    if (this.$store.state.intentions.list.length == 0) {
-      vm.$store.dispatch('intentions/update');
-    }
-
-    /* Update validators, intention validators, best block and session info every 10 seconds */
+    /* Update intention validators, best block and session info every 10 seconds */
     this.polling = setInterval(() => {
-      vm.$store.dispatch('validators/update');
       vm.$store.dispatch('intentions/update');
       this.getChainData();
     }, 10000);
@@ -201,7 +215,9 @@ export default {
       axios.get(`${backendBaseURL}/chain`)
         .then(function (response) {
           vm.bestblocknumber = response.data.block_height;
+          vm.bestBlockFinalized = response.data.block_height_finalized;
           vm.session = response.data.session;
+          vm.totalIssuance = response.data.total_issuance;
         });
     },
     formatNumber(n) {
@@ -314,8 +330,8 @@ export default {
     }
   },
   components: {
-    editable,
-    Identicon
+    Identicon,
+    Network
   }
 }
 </script>
@@ -323,7 +339,7 @@ export default {
 body {
   font-size: 0.9rem;
 }
-.favorite {
+.page-intentions .favorite {
   cursor: pointer;
   position: absolute;
   top: 0.4rem;
@@ -388,12 +404,43 @@ body {
 .identity {
   max-width: 80px;
 }
-#validators-table .identicon {
+#intentions-table th:first-child {
+  width: 10%;
+}
+#intentions-table th:nth-child(2) {
+  width: 40%;
+}
+#intentions-table th:nth-child(3) {
+  width: 20%;
+}
+#intentions-table th:nth-child(4) {
+  width: 20%;
+}
+#intentions-table th:nth-child(5) {
+  width: 10%;
+}
+#intentions-table .identicon {
   display: inline;
   margin-right: 0.2rem;
   cursor: copy;
 }
-#validators-table .identicon div {
+#intentions-table .identicon div {
   display: inline;
+}
+.page-item.active .page-link {
+    z-index: 1;
+    color: #fff;
+    background-color: #343a40;
+    border-color: #343a40;
+}
+.page-link {
+    position: relative;
+    display: block;
+    padding: 0.5rem 0.75rem;
+    margin-left: -1px;
+    line-height: 1.25;
+    color: #343a40;
+    background-color: #fff;
+    border: 1px solid #dee2e6;
 }
 </style>

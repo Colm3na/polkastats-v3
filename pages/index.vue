@@ -9,660 +9,71 @@
           Total issuance is <strong>{{ formatDot(totalIssuance) }}</strong>, total stake bonded is <strong>{{ formatDot(totalStakeBonded) }} ({{ totalStakeBondedPercen.toString(10) }}% of total issuance)</strong>
         </b-alert>
         <Network :bestblocknumber="bestblocknumber" :bestBlockFinalized="bestBlockFinalized" :session="session" />
-        <nav>
-          <div class="nav nav-tabs" id="nav-tab" role="tablist">
-            <a class="nav-item nav-link active" id="nav-active-validators" data-toggle="tab" href="#active-validators" role="tab" aria-controls="nav-active-validators" aria-selected="true">VALIDATORS ({{ validators.length }})</a>
-            <a class="nav-item nav-link" id="nav-intention-validators" data-toggle="tab" href="#intention-validators" role="tab" aria-controls="nav-intention-validators" aria-selected="false">INTENTIONS ({{ intentions.length }})</a>
-            <a class="nav-item nav-link" id="nav-favorites" data-toggle="tab" href="#favorites" role="tab" aria-controls="nav-favorites" aria-selected="false"> <i class="far fa-star" style="color: rgb(241, 189, 35);"></i> FAVORITES ({{ favorites.length }})</a>
-          </div>
-        </nav>
-        <div class="tab-content mb-2" id="nav-tabContent">
-          <div class="tab-pane fade show active" id="active-validators" role="tabpanel" aria-labelledby="nav-active-validators">
-            <div class="validator card mb-3" v-for="(validator, index) in validators" v-bind:key="validator.accountId">
-              <div class="card-body">
-                <i v-if="validator.imOnline.isOnline" class="imOnline fas fa-check-circle" v-b-tooltip.hover v-bind:title="getImOnlineMessage(validator)"></i>
-                <i v-else class="imOffline fas fa-times-circle" v-b-tooltip.hover v-bind:title="getImOnlineMessage(validator)"></i>
-                <p class="text-right mb-0">
-                  <a class="favorite" v-on:click="toggleFavorite(validator.accountId)">
-                    <i v-if="isFavorite(validator.accountId)" class="fas fa-star" style="color: #f1bd23" v-b-tooltip.hover title="Unset as Favorite"></i>
-                    <i v-else class="fas fa-star" style="color: #e6dfdf;" v-b-tooltip.hover title="Set as Favorite"></i>
-                  </a>
-                </p>
-                <div class="row">
-                  <div class="col-md-3 mb-2 text-center">
-                    <div v-if="hasIdentity(validator.stashId)">
-                      <div v-if="getIdentity(validator.stashId).logo !== ''">
-                        <img v-bind:src="getIdentity(validator.stashId).logo" class="identity mt-2" />
-                        <h4 class="mt-2 mb-2" v-if="getIdentity(validator.stashId).full_name !== ''">{{ getIdentity(validator.stashId).full_name }}</h4>
-                      </div>
-                      <div v-else>
-                        <Identicon :value="validator.accountId" :size="80" :theme="'polkadot'" />
-                      </div>
-                    </div>
-                    <div v-else>
-                      <Identicon :value="validator.accountId" :size="80" :theme="'polkadot'" />
-                    </div>
-                    <p class="mt-3 mb-0 rank">
-                      rank #{{ index+1 }}
-                    </p>
-                    <p v-if="validator.stakers.total > 0" class="bonded mb-0" v-b-tooltip.hover title="Total bonded">{{ formatDot(validator.stakers.total) }}</p>
-                    <p v-else class="bonded mb-0" v-b-tooltip.hover title="Total bonded">{{ formatDot(validator.stakingLedger.total) }}</p>
-                    <p class="mb-0">
-                      <small>
-                        <span v-b-tooltip.hover title="Self bonded" v-if="validator.stakers.own > 0">{{ formatDot(validator.stakers.own) }}</span>
-                        <span v-b-tooltip.hover title="Bonded by nominators" v-if="(validator.stakers.total - validator.stakers.own) > 0">(+{{ formatDot(validator.stakers.total - validator.stakers.own) }})</span>
-                      </small>
-                    </p>
-                    <p class="mb-0" v-b-tooltip.hover title="Percentage over total bonded stake">{{ getStakePercent(validator.stakers.total) }}% of total stake</p>
-                  </div>
-                  <div class="col-md-9">
-                    <h4 class="card-title mb-4 account mt-4 mt-sm-0 mt-md-0 mt-lg-0 mt-xl-0">
-                      <nuxt-link :to="{name: 'validator', query: { accountId: validator.accountId } }" title="Validator details">
-                        <span v-if="hasNickname(validator.accountId)">
-                          {{ getNickname(validator.accountId) }}
-                        </span>
-                        <span v-else>
-                          {{ validator.accountId }}
-                        </span>
-                      </nuxt-link>
-                    </h4>
-                    <div class="row">
-                      <div class="col-md-3 mb-1">
-                        <strong>Controller</strong>
-                      </div>
-                      <div class="col-md-9 mb-1">
-                        <Identicon :value="validator.controllerId" :size="20" :theme="'polkadot'" />
-                        <a v-bind:href="blockExplorer.account + validator.controllerId" target="_blank">
-                          <span class="d-inline d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="validator.controllerId">{{ shortAddress(validator.controllerId) }}</span>
-                          <span class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline">{{ validator.controllerId }}</span>
-                        </a>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-md-3 mb-1">
-                        <strong>Stash</strong>
-                      </div>
-                      <div class="col-md-9 mb-1">
-                        <Identicon :value="validator.stashId" :size="20" :theme="'polkadot'" />
-                        <a v-bind:href="blockExplorer.account + validator.stashId" target="_blank">
-                          <span class="d-inline d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="validator.stashId">{{ shortAddress(validator.stashId) }}</span>
-                          <span class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline">{{ validator.stashId }}</span>
-                        </a>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-md-3 mb-1">
-                        <strong>Comission</strong>
-                      </div>
-                      <div class="col-md-9 mb-1 fee">
-                        {{ formatDot(validator.validatorPrefs.validatorPayment) }}
-                      </div>
-                    </div>
-                    <div class="row mb-2">
-                      <div class="col-md-3 mb-1">
-                        <strong>Reward destination</strong>
-                      </div>
-                      <div class="col-md-9 mb-1 fee">
-                        {{ formatRewardDest(validator.rewardDestination) }}
-                      </div>
-                    </div>
-
-                    <div v-bind:id="'validator-info-' + index">
-                      <template v-if="validator.stakers.others.length > 0">
-                        <a class="" data-toggle="collapse" v-bind:href="'#staker' + index" role="button" aria-expanded="false" v-bind:aria-controls="'staker' + index">
-                          <h6 class="h6 nominators d-inline mr-4"><i class="fas"></i> Stakers ({{ validator.stakers.others.length }})</h6>
-                        </a>
-                      </template>
-                      <template v-if="validator.sessionIds.length > 0">
-                        <a class="" data-toggle="collapse" v-bind:href="'#current-session-id-' + index" role="button" aria-expanded="false" v-bind:aria-controls="'current-session-id-' + index">
-                          <h6 class="h6 nominators d-inline mr-4"><i class="fas"></i> Current session ids ({{ validator.sessionIds.length }})</h6>
-                        </a>
-                      </template>
-                      <template v-if="validator.nextSessionIds.length > 0">
-                        <a class="" data-toggle="collapse" v-bind:href="'#session-id-' + index" role="button" aria-expanded="false" v-bind:aria-controls="'session-id-' + index">
-                          <h6 class="h6 nominators d-inline mr-4"><i class="fas"></i> Next session ids ({{ validator.nextSessionIds.length }})</h6>
-                        </a>
-                      </template>
-                      <template v-if="validator.sessionIds.length > 0">
-                        <div class="nominator collapse pt-2 pb-3"  v-bind:id="'current-session-id-' + index" v-bind:data-parent="'#validator-info-' + index">
-                          <div v-for="(sessionId, index) in validator.sessionIds" class="row" v-bind:key="index">
-                            <div class="col-12 mb-1 who">
-                              {{ index+1 }}.
-                              <Identicon :value="sessionId" :size="20" :theme="'polkadot'" />                      
-                              <a v-bind:href="blockExplorer.account + sessionId" target="_blank">
-                                <span class="d-inline-block d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="sessionId">{{ shortAddress(sessionId) }}</span>
-                                <span class="d-none d-sm-inline-block d-md-inline-block d-lg-inline-block d-xl-inline-block">{{ sessionId }}</span>                        
-                              </a>
-                            </div>
-                          </div>
-                        </div>
-                      </template>
-                      <template v-if="validator.nextSessionIds.length > 0">
-                        <div class="nominator collapse pt-2 pb-3"  v-bind:id="'session-id-' + index" v-bind:data-parent="'#validator-info-' + index">
-                          <div v-for="(sessionId, index) in validator.nextSessionIds" class="row" v-bind:key="index">
-                            <div class="col-12 mb-1 who">
-                              {{ index+1 }}.
-                              <Identicon :value="sessionId" :size="20" :theme="'polkadot'" />                      
-                              <a v-bind:href="blockExplorer.account + sessionId" target="_blank">
-                                <span class="d-inline-block d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="sessionId">{{ shortAddress(sessionId) }}</span>
-                                <span class="d-none d-sm-inline-block d-md-inline-block d-lg-inline-block d-xl-inline-block">{{ sessionId }}</span>                        
-                              </a>
-                            </div>
-                          </div>
-                        </div>
-                      </template>
-                      <template v-if="validator.stakers.others.length > 0">
-                        <div class="nominator collapse pt-2 pb-3"  v-bind:id="'staker' + index" v-bind:data-parent="'#validator-info-' + index">
-                          <div v-for="(staker, index) in validator.stakers.others" class="row" v-bind:key="index">
-                            <div class="col-8 mb-1 who">
-                              <Identicon :value="staker.who" :size="20" :theme="'polkadot'" />                      
-                              <a v-bind:href="blockExplorer.account + staker.who" target="_blank">
-                                <span class="d-inline-block d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="staker.who">{{ shortAddress(staker.who) }}</span>
-                                <span class="d-none d-sm-inline-block d-md-inline-block d-lg-inline-block d-xl-inline-block">{{ staker.who }}</span>                        
-                              </a>
-                            </div>
-                            <div class="col-4 text-right value">
-                              {{ formatDot(staker.value) }}
-                            </div>
-                          </div>
-                        </div>
-                      </template>
-                    </div>
-
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="tab-pane fade show" id="intention-validators" role="tabpanel" aria-labelledby="nav-intention-validators">
-            <div class="validator card mb-3" v-for="(validator, index) in intentions" v-bind:key="validator.accountId">
-              <div class="card-body">
-                <p class="text-right mb-0">
-                  <a class="favorite" v-on:click="toggleFavorite(validator.accountId)">
-                    <i v-if="isFavorite(validator.accountId)" class="fas fa-star" style="color: #f1bd23" v-b-tooltip.hover title="Unset as Favorite"></i>
-                    <i v-else class="fas fa-star" style="color: #e6dfdf;" v-b-tooltip.hover title="Set as Favorite"></i>
-                  </a>
-                </p>
-                <div class="row">
-                  <div class="col-md-3 mb-2 text-center">
-                    <div v-if="hasIdentity(validator.stashId)">
-                      <div v-if="getIdentity(validator.stashId).logo !== ''">
-                        <img v-bind:src="getIdentity(validator.stashId).logo" class="identity mt-2" />
-                        <h4 class="mt-2 mb-2" v-if="getIdentity(validator.stashId).full_name !== ''">{{ getIdentity(validator.stashId).full_name }}</h4>
-                      </div>
-                      <div v-else>
-                        <Identicon :value="validator.accountId" :size="80" :theme="'polkadot'" />
-                      </div>
-                    </div>
-                    <div v-else>
-                      <Identicon :value="validator.accountId" :size="80" :theme="'polkadot'" />
-                    </div>
-                    <p class="mt-3 mb-0 rank">
-                      rank #{{ index+1 }}
-                    </p>
-                    <p class="bonded mb-0" v-b-tooltip.hover title="Active bonded">
-                      {{ formatDot(validator.stakingLedger.active) }}
-                    </p>
-                    <p class="mb-0">
-                      <small>
-                        <span v-b-tooltip.hover title="Total bonded">
-                          {{ formatDot(validator.stakingLedger.total) }}
-                        </span>
-                      </small>
-                    </p>
-                  </div>
-                  <div class="col-md-9">
-                    <h4 class="card-title mb-4 account mt-4 mt-sm-0 mt-md-0 mt-lg-0 mt-xl-0">
-                      <nuxt-link :to="{name: 'intention', query: { accountId: validator.accountId } }" title="Validator intention details">
-                        <span v-if="hasNickname(validator.accountId)">
-                          {{ getNickname(validator.accountId) }}
-                        </span>
-                        <span v-else>
-                          {{ validator.accountId }}
-                        </span>
-                      </nuxt-link>
-                    </h4>
-                    <div class="row">
-                      <div class="col-md-3 mb-1">
-                        <strong>Controller</strong>
-                      </div>
-                      <div class="col-md-9 mb-1">
-                        <Identicon :value="validator.controllerId" :size="20" :theme="'polkadot'" />
-                        <a v-bind:href="blockExplorer.account + validator.controllerId" target="_blank">
-                          <span class="d-inline d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="validator.controllerId">{{ shortAddress(validator.controllerId) }}</span>
-                          <span class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline">{{ validator.controllerId }}</span>
-                        </a>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-md-3 mb-1">
-                        <strong>Stash</strong>
-                      </div>
-                      <div class="col-md-9 mb-1">
-                        <Identicon :value="validator.stashId" :size="20" :theme="'polkadot'" />
-                        <a v-bind:href="blockExplorer.account + validator.stashId" target="_blank">
-                          <span class="d-inline d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="validator.stashId">{{ shortAddress(validator.stashId) }}</span>
-                          <span class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline">{{ validator.stashId }}</span>
-                        </a>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-md-3 mb-1">
-                        <strong>Comission</strong>
-                      </div>
-                      <div class="col-md-9 mb-1 fee">
-                        {{ formatDot(validator.validatorPrefs.validatorPayment) }}
-                      </div>
-                    </div>
-                    <div class="row mb-2">
-                      <div class="col-md-3 mb-1">
-                        <strong>Reward destination</strong>
-                      </div>
-                      <div class="col-md-9 mb-1 fee">
-                        {{ formatRewardDest(validator.rewardDestination) }}
-                      </div>
-                    </div>
-                    <div v-bind:id="'validator-info-' + index">
-                      <template v-if="validator.stakers.others.length > 0">
-                        <a class="" data-toggle="collapse" v-bind:href="'#staker' + index" role="button" aria-expanded="false" v-bind:aria-controls="'staker' + index">
-                          <h6 class="h6 nominators d-inline mr-4"><i class="fas"></i> Stakers ({{ validator.stakers.others.length }})</h6>
-                        </a>
-                      </template>
-                      <template v-if="validator.sessionIds.length > 0">
-                        <a class="" data-toggle="collapse" v-bind:href="'#current-session-id-' + index" role="button" aria-expanded="false" v-bind:aria-controls="'current-session-id-' + index">
-                          <h6 class="h6 nominators d-inline mr-4"><i class="fas"></i> Current session ids ({{ validator.sessionIds.length }})</h6>
-                        </a>
-                      </template>
-                      <template v-if="validator.nextSessionIds.length > 0">
-                        <a class="" data-toggle="collapse" v-bind:href="'#session-id-' + index" role="button" aria-expanded="false" v-bind:aria-controls="'session-id-' + index">
-                          <h6 class="h6 nominators d-inline mr-4"><i class="fas"></i> Next session ids ({{ validator.nextSessionIds.length }})</h6>
-                        </a>
-                      </template>
-                      <template v-if="validator.sessionIds.length > 0">
-                        <div class="nominator collapse pt-2 pb-3"  v-bind:id="'current-session-id-' + index" v-bind:data-parent="'#validator-info-' + index">
-                          <div v-for="(sessionId, index) in validator.sessionIds" class="row" v-bind:key="index">
-                            <div class="col-12 mb-1 who">
-                              {{ index+1 }}.
-                              <Identicon :value="sessionId" :size="20" :theme="'polkadot'" />                      
-                              <a v-bind:href="blockExplorer.account + sessionId" target="_blank">
-                                <span class="d-inline-block d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="sessionId">{{ shortAddress(sessionId) }}</span>
-                                <span class="d-none d-sm-inline-block d-md-inline-block d-lg-inline-block d-xl-inline-block">{{ sessionId }}</span>                        
-                              </a>
-                            </div>
-                          </div>
-                        </div>
-                      </template>
-                      <template v-if="validator.nextSessionIds.length > 0">
-                        <div class="nominator collapse pt-2 pb-3"  v-bind:id="'session-id-' + index" v-bind:data-parent="'#validator-info-' + index">
-                          <div v-for="(sessionId, index) in validator.nextSessionIds" class="row" v-bind:key="index">
-                            <div class="col-12 mb-1 who">
-                              {{ index+1 }}.
-                              <Identicon :value="sessionId" :size="20" :theme="'polkadot'" />                      
-                              <a v-bind:href="blockExplorer.account + sessionId" target="_blank">
-                                <span class="d-inline-block d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="sessionId">{{ shortAddress(sessionId) }}</span>
-                                <span class="d-none d-sm-inline-block d-md-inline-block d-lg-inline-block d-xl-inline-block">{{ sessionId }}</span>                        
-                              </a>
-                            </div>
-                          </div>
-                        </div>
-                      </template>
-                      <template v-if="validator.stakers.others.length > 0">
-                        <div class="nominator collapse pt-2 pb-3"  v-bind:id="'staker' + index" v-bind:data-parent="'#validator-info-' + index">
-                          <div v-for="(staker, index) in validator.stakers.others" class="row" v-bind:key="index">
-                            <div class="col-8 mb-1 who">
-                              <Identicon :value="staker.who" :size="20" :theme="'polkadot'" />                      
-                              <a v-bind:href="blockExplorer.account + staker.who" target="_blank">
-                                <span class="d-inline-block d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="staker.who">{{ shortAddress(staker.who) }}</span>
-                                <span class="d-none d-sm-inline-block d-md-inline-block d-lg-inline-block d-xl-inline-block">{{ staker.who }}</span>                        
-                              </a>
-                            </div>
-                            <div class="col-4 text-right value">
-                              {{ formatDot(staker.value) }}
-                            </div>
-                          </div>
-                        </div>
-                      </template>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="tab-pane fade show" id="favorites" role="tabpanel" aria-labelledby="nav-favorites">
-            <template v-if="favorites.length == 0">
-              <div class="alert alert-warning alert-dismissible fade show mt-3" role="alert">
-                <strong>Hi there!</strong> You can click in the star icon <i class="fas fa-star"></i> of a validator to track it on this tab.
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
+        <!-- Table with sorting and pagination-->
+        <div class="table-responsive">
+          <b-table
+            id="validators-table"
+            head-variant="dark"
+            :fields="Fields"
+            :items="validators"
+            :per-page="perPage"
+            :current-page="CurrentPage"
+            :sort-by.sync="SortBy"
+            :sort-desc.sync="SortDesc"
+          >
+            <template slot="rank" slot-scope="data">
+              <p class="text-right mb-0">
+                {{ data.item.rank }}
+              </p>
             </template>
-
-            <!-- START FAVORITE VALIDATORS -->
-            <template  v-for="(validator, index) in validators">
-              <template v-if="isFavorite(validator.accountId)">
-                <div class="validator card mb-3">
-                  <i v-if="validator.imOnline.isOnline" class="imOnline fas fa-check-circle" v-b-tooltip.hover v-bind:title="getImOnlineMessage(validator)"></i>
-                  <i v-else class="imOffline fas fa-times-circle" v-b-tooltip.hover v-bind:title="getImOnlineMessage(validator)"></i>
-                  <p class="text-right mb-0">
-                    <a class="favorite" v-on:click="toggleFavorite(validator.accountId)">
-                      <i v-if="isFavorite(validator.accountId)" class="fas fa-star" style="color: #f1bd23" v-b-tooltip.hover title="Unset as Favorite"></i>
-                      <i v-else class="fas fa-star" style="color: #e6dfdf;" v-b-tooltip.hover title="Set as Favorite"></i>
-                    </a>
-                  </p>                 
-                  <div class="card-body">
-                    <div class="row">
-                      <div class="col-md-3 mb-2 text-center">
-                        <div v-if="hasIdentity(validator.stashId)">
-                          <div v-if="getIdentity(validator.stashId).logo !== ''">
-                            <img v-bind:src="getIdentity(validator.stashId).logo" class="identity mt-2" />
-                            <h4 class="mt-2 mb-2" v-if="getIdentity(validator.stashId).full_name !== ''">{{ getIdentity(validator.stashId).full_name }}</h4>
-                          </div>
-                          <div v-else>
-                            <Identicon :value="validator.accountId" :size="80" :theme="'polkadot'" />
-                          </div>
-                        </div>
-                        <div v-else>
-                          <Identicon :value="validator.accountId" :size="80" :theme="'polkadot'" />
-                        </div>
-                        <p class="mt-3 mb-0 rank">
-                          rank #{{ index+1 }} <i class="fas fa-shield-alt" v-b-tooltip.hover title="Active validator"></i>
-                        </p>
-                        <p v-if="validator.stakers.total > 0" class="bonded mb-0" v-b-tooltip.hover title="Total bonded">{{ formatDot(validator.stakers.total) }}</p>
-                        <p v-else class="bonded mb-0" v-b-tooltip.hover title="Total bonded">{{ formatDot(validator.stakingLedger.total) }}</p>
-                        <p class="mb-0">
-                          <small>
-                            <span v-b-tooltip.hover title="Self bonded" v-if="validator.stakers.own > 0">{{ formatDot(validator.stakers.own) }}</span>
-                            <span v-b-tooltip.hover title="Bonded by nominators" v-if="(validator.stakers.total - validator.stakers.own) > 0">(+{{ formatDot(validator.stakers.total - validator.stakers.own) }})</span>
-                          </small>
-                        </p>
-                        <p class="mb-0" v-b-tooltip.hover title="Percentage over total bonded stake">{{ getStakePercent(validator.stakers.total) }}% of total stake</p>
-                        <editable v-if="!hasIdentity(validator.stashId)" v-bind:favorites="favorites" v-model="favorites[getIndex(validator.accountId)].name"></editable>
-                      </div>
-                      <div class="col-md-9">
-                        <h4 class="card-title mb-4 account mt-4 mt-sm-0 mt-md-0 mt-lg-0 mt-xl-0">
-                          <nuxt-link :to="{name: 'validator', query: { accountId: validator.accountId } }" title="Validator details">
-                            <span v-if="hasNickname(validator.accountId)">
-                              {{ getNickname(validator.accountId) }}
-                            </span>
-                            <span v-else>
-                              {{ validator.accountId }}
-                            </span>
-                          </nuxt-link>
-                        </h4>
-                        <div class="row">
-                          <div class="col-md-3 mb-1">
-                            <strong>Controller</strong>
-                          </div>
-                          <div class="col-md-9 mb-1">
-                            <Identicon :value="validator.controllerId" :size="20" :theme="'polkadot'" />
-                            <a v-bind:href="blockExplorer.account + validator.controllerId" target="_blank">
-                              <span class="d-inline d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="validator.controllerId">{{ shortAddress(validator.controllerId) }}</span>
-                              <span class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline">{{ validator.controllerId }}</span>
-                            </a>
-                          </div>
-                        </div>
-                        <div class="row">
-                          <div class="col-md-3 mb-1">
-                            <strong>Stash</strong>
-                          </div>
-                          <div class="col-md-9 mb-1">
-                            <Identicon :value="validator.stashId" :size="20" :theme="'polkadot'" />
-                            <a v-bind:href="blockExplorer.account + validator.stashId" target="_blank">
-                              <span class="d-inline d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="validator.stashId">{{ shortAddress(validator.stashId) }}</span>
-                              <span class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline">{{ validator.stashId }}</span>
-                            </a>
-                          </div>
-                        </div>
-                        <div class="row">
-                          <div class="col-md-3 mb-1">
-                            <strong>Comission</strong>
-                          </div>
-                          <div class="col-md-9 mb-1 fee">
-                            {{ formatDot(validator.validatorPrefs.validatorPayment) }}
-                          </div>
-                        </div>
-                        <div class="row mb-2">
-                          <div class="col-md-3 mb-1">
-                            <strong>Reward destination</strong>
-                          </div>
-                          <div class="col-md-9 mb-1 fee">
-                            {{ formatRewardDest(validator.rewardDestination) }}
-                          </div>
-                        </div>
-                        <div v-bind:id="'validator-info-' + index">
-                          <template v-if="validator.stakers.others.length > 0">
-                            <a class="" data-toggle="collapse" v-bind:href="'#staker' + index" role="button" aria-expanded="false" v-bind:aria-controls="'staker' + index">
-                              <h6 class="h6 nominators d-inline mr-4"><i class="fas"></i> Stakers ({{ validator.stakers.others.length }})</h6>
-                            </a>
-                          </template>
-                          <template v-if="validator.sessionIds.length > 0">
-                            <a class="" data-toggle="collapse" v-bind:href="'#current-session-id-' + index" role="button" aria-expanded="false" v-bind:aria-controls="'current-session-id-' + index">
-                              <h6 class="h6 nominators d-inline mr-4"><i class="fas"></i> Current session ids ({{ validator.sessionIds.length }})</h6>
-                            </a>
-                          </template>
-                          <template v-if="validator.nextSessionIds.length > 0">
-                            <a class="" data-toggle="collapse" v-bind:href="'#session-id-' + index" role="button" aria-expanded="false" v-bind:aria-controls="'session-id-' + index">
-                              <h6 class="h6 nominators d-inline mr-4"><i class="fas"></i> Next session ids ({{ validator.nextSessionIds.length }})</h6>
-                            </a>
-                          </template>
-                          <template v-if="validator.sessionIds.length > 0">
-                            <div class="nominator collapse pt-2 pb-3"  v-bind:id="'current-session-id-' + index" v-bind:data-parent="'#validator-info-' + index">
-                              <div v-for="(sessionId, index) in validator.sessionIds" class="row" v-bind:key="index">
-                                <div class="col-12 mb-1 who">
-                                  {{ index+1 }}.
-                                  <Identicon :value="sessionId" :size="20" :theme="'polkadot'" />                      
-                                  <a v-bind:href="blockExplorer.account + sessionId" target="_blank">
-                                    <span class="d-inline-block d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="sessionId">{{ shortAddress(sessionId) }}</span>
-                                    <span class="d-none d-sm-inline-block d-md-inline-block d-lg-inline-block d-xl-inline-block">{{ sessionId }}</span>                        
-                                  </a>
-                                </div>
-                              </div>
-                            </div>
-                          </template>
-                          <template v-if="validator.nextSessionIds.length > 0">
-                            <div class="nominator collapse pt-2 pb-3"  v-bind:id="'session-id-' + index" v-bind:data-parent="'#validator-info-' + index">
-                              <div v-for="(sessionId, index) in validator.nextSessionIds" class="row" v-bind:key="index">
-                                <div class="col-12 mb-1 who">
-                                  {{ index+1 }}.
-                                  <Identicon :value="sessionId" :size="20" :theme="'polkadot'" />                      
-                                  <a v-bind:href="blockExplorer.account + sessionId" target="_blank">
-                                    <span class="d-inline-block d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="sessionId">{{ shortAddress(sessionId) }}</span>
-                                    <span class="d-none d-sm-inline-block d-md-inline-block d-lg-inline-block d-xl-inline-block">{{ sessionId }}</span>                        
-                                  </a>
-                                </div>
-                              </div>
-                            </div>
-                          </template>
-                          <template v-if="validator.stakers.others.length > 0">
-                            <div class="nominator collapse pt-2 pb-3"  v-bind:id="'staker' + index" v-bind:data-parent="'#validator-info-' + index">
-                              <div v-for="(staker, index) in validator.stakers.others" class="row" v-bind:key="index">
-                                <div class="col-8 mb-1 who">
-                                  <Identicon :value="staker.who" :size="20" :theme="'polkadot'" />                      
-                                  <a v-bind:href="blockExplorer.account + staker.who" target="_blank">
-                                    <span class="d-inline-block d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="staker.who">{{ shortAddress(staker.who) }}</span>
-                                    <span class="d-none d-sm-inline-block d-md-inline-block d-lg-inline-block d-xl-inline-block">{{ staker.who }}</span>                        
-                                  </a>
-                                </div>
-                                <div class="col-4 text-right value">
-                                  {{ formatDot(staker.value) }}
-                                </div>
-                              </div>
-                            </div>
-                          </template>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </template>
+            <template slot="imOnline" slot-scope="data">
+              <p class="text-center mb-0">
+                <i v-if="data.item.imOnline" class="imOnline fas fa-check-circle" v-b-tooltip.hover v-bind:title="data.item.imOnlineMessage"></i>
+                <i v-else class="imOffline fas fa-times-circle" v-b-tooltip.hover v-bind:title="data.item.imOnlineMessage"></i>
+              </p>
             </template>
-            <!-- END FAVORITE VALIDATORS -->
-
-            <!-- START FAVORITE INTENTIONS -->
-            <template  v-for="(validator, index) in intentions">
-              <template v-if="isFavorite(validator.accountId)">
-                <div class="validator card mb-3">
-                  <p class="text-right mb-0">
-                    <a class="favorite" v-on:click="toggleFavorite(validator.accountId)">
-                      <i v-if="isFavorite(validator.accountId)" class="fas fa-star" style="color: #f1bd23" v-b-tooltip.hover title="Unset as Favorite"></i>
-                      <i v-else class="fas fa-star" style="color: #e6dfdf;" v-b-tooltip.hover title="Set as Favorite"></i>
-                    </a>
-                  </p>                 
-                  <div class="card-body">
-                    <div class="row">
-                      <div class="col-md-3 mb-2 text-center">
-                        <div v-if="hasIdentity(validator.stashId)">
-                          <div v-if="getIdentity(validator.stashId).logo !== ''">
-                            <img v-bind:src="getIdentity(validator.stashId).logo" class="identity mt-2" />
-                            <h4 class="mt-2 mb-2" v-if="getIdentity(validator.stashId).full_name !== ''">{{ getIdentity(validator.stashId).full_name }}</h4>
-                          </div>
-                          <div v-else>
-                            <Identicon :value="validator.accountId" :size="80" :theme="'polkadot'" />
-                          </div>
-                        </div>
-                        <div v-else>
-                          <Identicon :value="validator.accountId" :size="80" :theme="'polkadot'" />
-                        </div>
-                        <p class="mt-3 mb-0 rank">
-                          rank #{{ index+1 }} <i class="fas fa-exclamation-triangle" v-b-tooltip.hover title="Intention"></i>
-                        </p>
-                        <p class="bonded mb-0" v-b-tooltip.hover title="Active bonded">
-                          {{ formatDot(validator.stakingLedger.active) }}
-                        </p>
-                        <p class="mb-0">
-                          <small>
-                            <span v-b-tooltip.hover title="Total bonded">
-                              {{ formatDot(validator.stakingLedger.total) }}
-                            </span>
-                          </small>
-                        </p>
-                        <editable v-if="!hasIdentity(validator.stashId)" v-bind:favorites="favorites" v-model="favorites[getIndex(validator.accountId)].name"></editable>
-                      </div>
-                      <div class="col-md-9">
-                        <h4 class="card-title mb-4 account mt-4 mt-sm-0 mt-md-0 mt-lg-0 mt-xl-0">
-                          <nuxt-link :to="{name: 'intention', query: { accountId: validator.accountId } }" title="Validator details">
-                            <span v-if="hasNickname(validator.accountId)">
-                              {{ getNickname(validator.accountId) }}
-                            </span>
-                            <span v-else>
-                              {{ validator.accountId }}
-                            </span>
-                          </nuxt-link>
-                        </h4>
-                        <div class="row">
-                          <div class="col-md-3 mb-1">
-                            <strong>Controller</strong>
-                          </div>
-                          <div class="col-md-9 mb-1">
-                            <Identicon :value="validator.controllerId" :size="20" :theme="'polkadot'" />
-                            <a v-bind:href="blockExplorer.account + validator.controllerId" target="_blank">
-                              <span class="d-inline d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="validator.controllerId">{{ shortAddress(validator.controllerId) }}</span>
-                              <span class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline">{{ validator.controllerId }}</span>
-                            </a>
-                          </div>
-                        </div>
-                        <div class="row">
-                          <div class="col-md-3 mb-1">
-                            <strong>Stash</strong>
-                          </div>
-                          <div class="col-md-9 mb-1">
-                            <Identicon :value="validator.stashId" :size="20" :theme="'polkadot'" />
-                            <a v-bind:href="blockExplorer.account + validator.stashId" target="_blank">
-                              <span class="d-inline d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="validator.stashId">{{ shortAddress(validator.stashId) }}</span>
-                              <span class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline">{{ validator.stashId }}</span>
-                            </a>
-                          </div>
-                        </div>
-                        <div class="row">
-                          <div class="col-md-3 mb-1">
-                            <strong>Comission</strong>
-                          </div>
-                          <div class="col-md-9 mb-1 fee">
-                            {{ formatDot(validator.validatorPrefs.validatorPayment) }}
-                          </div>
-                        </div>
-                        <div class="row mb-2">
-                          <div class="col-md-3 mb-1">
-                            <strong>Reward destination</strong>
-                          </div>
-                          <div class="col-md-9 mb-1 fee">
-                            {{ formatRewardDest(validator.rewardDestination) }}
-                          </div>
-                        </div>
-                        <div v-bind:id="'validator-info-' + index">
-                          <template v-if="validator.stakers.others.length > 0">
-                            <a class="" data-toggle="collapse" v-bind:href="'#staker' + index" role="button" aria-expanded="false" v-bind:aria-controls="'staker' + index">
-                              <h6 class="h6 nominators d-inline mr-4"><i class="fas"></i> Stakers ({{ validator.stakers.others.length }})</h6>
-                            </a>
-                          </template>
-                          <template v-if="validator.sessionIds.length > 0">
-                            <a class="" data-toggle="collapse" v-bind:href="'#current-session-id-' + index" role="button" aria-expanded="false" v-bind:aria-controls="'current-session-id-' + index">
-                              <h6 class="h6 nominators d-inline mr-4"><i class="fas"></i> Current session ids ({{ validator.sessionIds.length }})</h6>
-                            </a>
-                          </template>
-                          <template v-if="validator.nextSessionIds.length > 0">
-                            <a class="" data-toggle="collapse" v-bind:href="'#session-id-' + index" role="button" aria-expanded="false" v-bind:aria-controls="'session-id-' + index">
-                              <h6 class="h6 nominators d-inline mr-4"><i class="fas"></i> Next session ids ({{ validator.nextSessionIds.length }})</h6>
-                            </a>
-                          </template>
-                          <template v-if="validator.sessionIds.length > 0">
-                            <div class="nominator collapse pt-2 pb-3"  v-bind:id="'current-session-id-' + index" v-bind:data-parent="'#validator-info-' + index">
-                              <div v-for="(sessionId, index) in validator.sessionIds" class="row" v-bind:key="index">
-                                <div class="col-12 mb-1 who">
-                                  {{ index+1 }}.
-                                  <Identicon :value="sessionId" :size="20" :theme="'polkadot'" />                      
-                                  <a v-bind:href="blockExplorer.account + sessionId" target="_blank">
-                                    <span class="d-inline-block d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="sessionId">{{ shortAddress(sessionId) }}</span>
-                                    <span class="d-none d-sm-inline-block d-md-inline-block d-lg-inline-block d-xl-inline-block">{{ sessionId }}</span>                        
-                                  </a>
-                                </div>
-                              </div>
-                            </div>
-                          </template>
-                          <template v-if="validator.nextSessionIds.length > 0">
-                            <div class="nominator collapse pt-2 pb-3"  v-bind:id="'session-id-' + index" v-bind:data-parent="'#validator-info-' + index">
-                              <div v-for="(sessionId, index) in validator.nextSessionIds" class="row" v-bind:key="index">
-                                <div class="col-12 mb-1 who">
-                                  {{ index+1 }}.
-                                  <Identicon :value="sessionId" :size="20" :theme="'polkadot'" />                      
-                                  <a v-bind:href="blockExplorer.account + sessionId" target="_blank">
-                                    <span class="d-inline-block d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="sessionId">{{ shortAddress(sessionId) }}</span>
-                                    <span class="d-none d-sm-inline-block d-md-inline-block d-lg-inline-block d-xl-inline-block">{{ sessionId }}</span>                        
-                                  </a>
-                                </div>
-                              </div>
-                            </div>
-                          </template>
-                          <template v-if="validator.stakers.others.length > 0">
-                            <div class="nominator collapse pt-2 pb-3"  v-bind:id="'staker' + index" v-bind:data-parent="'#validator-info-' + index">
-                              <div v-for="(staker, index) in validator.stakers.others" class="row" v-bind:key="index">
-                                <div class="col-8 mb-1 who">
-                                  <Identicon :value="staker.who" :size="20" :theme="'polkadot'" />                      
-                                  <a v-bind:href="blockExplorer.account + staker.who" target="_blank">
-                                    <span class="d-inline-block d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="staker.who">{{ shortAddress(staker.who) }}</span>
-                                    <span class="d-none d-sm-inline-block d-md-inline-block d-lg-inline-block d-xl-inline-block">{{ staker.who }}</span>                        
-                                  </a>
-                                </div>
-                                <div class="col-4 text-right value">
-                                  {{ formatDot(staker.value) }}
-                                </div>
-                              </div>
-                            </div>
-                          </template>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </template>
+            <template slot="accountId" slot-scope="data">
+              <Identicon :value="data.item.accountId" :size="20" :theme="'polkadot'" />
+              <nuxt-link :to="{name: 'validator', query: { accountId: data.item.accountId } }" title="Validator details">
+                <span v-if="hasNickname(data.item.accountId)">
+                  {{ getNickname(data.item.accountId) }}
+                </span>
+                <span v-else>
+                  {{ data.item.accountId }}
+                </span>
+              </nuxt-link>
             </template>
-            <!-- END FAVORITE INTENTIONS -->
-
-            <p>&nbsp;</p>
-          </div>
+            <template slot="stake" slot-scope="data">
+              <p class="text-right mb-0">
+                {{ formatDot(data.item.stake) }}
+              </p>
+            </template> 
+            <template slot="comission" slot-scope="data">
+              <p class="text-right mb-0">
+                {{ formatDot(data.item.comission) }}
+              </p>
+            </template>
+            <template slot="percent" slot-scope="data">
+              <p class="text-right mb-0">
+                {{ formatRewardDest(data.item.percent) }}%
+              </p>
+            </template>
+            <template slot="favorite" slot-scope="data">
+              <p class="text-center mb-0">
+                <a class="favorite" v-on:click="toggleFavorite(data.item.accountId)">
+                  <i v-if="data.item.favorite" class="fas fa-star" style="color: #f1bd23" v-b-tooltip.hover title="Remove from Favorites"></i>
+                  <i v-else class="fas fa-star" style="color: #e6dfdf;" v-b-tooltip.hover title="Add to Favorites"></i>
+                </a>
+              </p>
+            </template>
+          </b-table>
+          <b-pagination
+            v-model="CurrentPage"
+            :total-rows="Rows"
+            :per-page="perPage"
+            aria-controls="validators-table"
+          ></b-pagination>
         </div>
-        <p>&nbsp;</p>
       </b-container>
     </section>
   </div>
@@ -672,7 +83,6 @@ import { mapMutations } from 'vuex';
 import axios from 'axios';
 import bootstrap from 'bootstrap';
 import Identicon from '../components/identicon.vue';
-import editable from '../components/editable.vue';
 import Network from '../components/network.vue';
 import { formatBalance, isHex } from '@polkadot/util';
 import BN from 'bn.js';
@@ -691,6 +101,19 @@ export default {
   },
   data: function() {
     return {
+      perPage: 20,
+      CurrentPage: 1,
+      SortBy: 'rank',
+      SortDesc: false,
+      Fields: [
+        { key: 'rank', label: 'Rank', sortable: true },
+        { key: 'imOnline', label: 'Online', sortable: true },
+        { key: 'accountId', label: 'Validator', sortable: true },
+        { key: 'stake', label: 'Total Stake', sortable: true },
+        { key: 'comission', label: 'Comission', sortable: true },
+        { key: 'percent', label: 'Stake %', sortable: true },
+        { key: 'favorite', label: 'Fav', sortable: true }
+      ],
       system: {
         chain: "",
         client_name: "",
@@ -719,19 +142,39 @@ export default {
   },
   computed: {
     validators () {
-      return this.$store.state.validators.list
-    },
-    totalStakeBonded () {
-      return this.$store.state.validators.totalStakeBonded
+      let validatorsObject = [];
+      for(let i = 0; i < this.$store.state.validators.list.length; i++) {
+        let validator = this.$store.state.validators.list[i];
+        let stake = 0;
+        if (validator.stakers.total > 0) {
+          stake = validator.stakers.total;
+        } else {
+          stake = validator.stakingLedger.total;
+        }
+        validatorsObject.push({
+          rank: i+1,
+          imOnline: validator.imOnline.isOnline,
+          imOnlineMessage: this.getImOnlineMessage(validator),
+          accountId: validator.accountId,
+          stake: stake,
+          comission: validator.validatorPrefs.validatorPayment,
+          percent: this.getStakePercent(validator.stakers.total),
+          favorite: this.isFavorite(validator.accountId)
+        });
+      }
+      return validatorsObject;
     },
     intentions () {
-      return this.$store.state.intentions.list
+      return this.$store.state.intentions.list;
     },
     identities() {
-      return this.$store.state.identities.list
+      return this.$store.state.identities.list;
     },
     nicknames() {
-      return this.$store.state.nicknames.list
+      return this.$store.state.nicknames.list;
+    },
+    Rows() {
+      return this.$store.state.validators.list.length;
     },
     totalStakeBondedPercen() {
       if (this.totalStakeBonded !== 0 && this.totalIssuance !== "") {
@@ -741,7 +184,10 @@ export default {
       } else {
         return 0;
       }
-    }
+    },
+    totalStakeBonded () {
+      return this.$store.state.validators.totalStakeBonded
+    },
   },
   created: function () {
     var vm = this;
@@ -770,15 +216,9 @@ export default {
       vm.$store.dispatch('nicknames/update');
     }
 
-    // Force update of intention validators list if empty
-    if (this.$store.state.intentions.list.length == 0) {
-      vm.$store.dispatch('intentions/update');
-    }
-
     /* Update validators, intention validators, best block and session info every 10 seconds */
     this.polling = setInterval(() => {
       vm.$store.dispatch('validators/update');
-      vm.$store.dispatch('intentions/update');
       this.getChainData();
     }, 10000);
 
@@ -854,6 +294,15 @@ export default {
       }
       return false;
     },
+    getRank(validator) {
+      // Receives validator accountId
+      for (var i=0; i < this.validators.length; i++) {
+        if (this.validators[i].accountId == validator) {
+          return i + 1;
+        }
+      }
+      return false;
+    },
     makeToast(content = '', title = '', variant = null, solid = false) {
       this.$bvToast.toast(content, {
         title: title,
@@ -863,10 +312,10 @@ export default {
     },
     formatRewardDest(rewardDestination) {
       if (rewardDestination === 0) {
-        return `Stash account (increase the amount at stake)`;
+        return `Stash account (increase stake)`;
       }
       if (rewardDestination === 1) {
-        return `Stash account (do not increase the amount at stake)`;
+        return `Stash account (do not increase stake)`;
       }
       if (rewardDestination === 2) {
         return `Controller account`;
@@ -932,7 +381,6 @@ export default {
     }
   },
   components: {
-    editable,
     Identicon,
     Network
   }
@@ -944,10 +392,6 @@ body {
 }
 .favorite {
   cursor: pointer;
-  position: absolute;
-  top: 0.4rem;
-  right: 0.4rem;
-  z-index: 10;
   font-size: 1.1rem;
 }
 .validator .bg-offline {
@@ -1004,34 +448,59 @@ body {
   font-size: 0.9rem;
   margin-left: 0.1rem;
 }
-.validator .col-md-9 .identicon {
+.identity {
+  max-width: 80px;
+}
+#validators-table th:first-child {
+  width: 7%;
+}
+#validators-table th:nth-child(2) {
+  width: 7%;
+}
+#validators-table th:nth-child(3) {
+  width: 43%;
+}
+#validators-table th:nth-child(4) {
+  width: 15%;
+}
+#validators-table th:nth-child(5) {
+  width: 13%;
+}
+#validators-table th:nth-child(6) {
+  width: 8%;
+}
+#validators-table th:nth-child(7) {
+  width: 10%;
+}
+#validators-table .identicon {
   display: inline;
   margin-right: 0.2rem;
   cursor: copy;
 }
-.validator .col-md-9 .identicon div {
+#validators-table .identicon div {
   display: inline;
 }
-.identity {
-  max-width: 80px;
+.page-item.active .page-link {
+    z-index: 1;
+    color: #fff;
+    background-color: #343a40;
+    border-color: #343a40;
 }
-.validator .fa-shield-alt {
-  color: green;
-}
-.validator .fa-exclamation-triangle {
-  color: red;
+.page-link {
+    position: relative;
+    display: block;
+    padding: 0.5rem 0.75rem;
+    margin-left: -1px;
+    line-height: 1.25;
+    color: #343a40;
+    background-color: #fff;
+    border: 1px solid #dee2e6;
 }
 .imOnline {
-  position: absolute;
-  top: 0.4rem;
-  left: 0.4rem;
   font-size: 1.1rem;
   color: green;
 }
 .imOffline {
-  position: absolute;
-  top: 0.4rem;
-  left: 0.4rem;
   font-size: 1.1rem;
   color: red;
 }

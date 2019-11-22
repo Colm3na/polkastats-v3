@@ -16,16 +16,22 @@
             <b-collapse id="nav-collapse" is-nav class="flex-grow-1 text-center text-sx-right text-md-right text-lg-right">
               <b-navbar-nav class="navbar-nav ml-auto flex-nowrap">
                 <b-nav-item>
-                  <nuxt-link to="/validators" active-class="active" class="nav-link">Validators</nuxt-link>
+                  <nuxt-link to="/" active-class="nuxt-link-exact-active" class="nav-link">Validators</nuxt-link>
                 </b-nav-item>
                 <b-nav-item>
-                  <nuxt-link to="/validators-table" active-class="active" class="nav-link">Validators Table</nuxt-link>
+                  <nuxt-link to="/intentions" active-class="nuxt-link-exact-active" class="nav-link">Intentions</nuxt-link>
                 </b-nav-item>
                 <b-nav-item>
-                  <nuxt-link to="/support-us" active-class="active" class="nav-link">Support PolkaStats</nuxt-link>
+                  <nuxt-link to="/favorites" active-class="nuxt-link-exact-active" class="nav-link">Favorites</nuxt-link>
+                </b-nav-item>
+                <b-nav-item>
+                  <nuxt-link to="/for-validators" active-class="nuxt-link-exact-active" class="nav-link">For validators</nuxt-link>
+                </b-nav-item>
+                <b-nav-item>
+                  <nuxt-link to="/support-us" active-class="nuxt-link-exact-active" class="nav-link">Support PolkaStats</nuxt-link>
                 </b-nav-item>              
                 <b-nav-item>
-                  <nuxt-link to="/about" active-class="active" class="nav-link">About</nuxt-link>
+                  <nuxt-link to="/about" active-class="nuxt-link-exact-active" class="nav-link">About</nuxt-link>
                 </b-nav-item>                              
               </b-navbar-nav>
             </b-collapse>
@@ -244,19 +250,23 @@ section#navigation nav {
 }
 
 .dropdown-item.active, .dropdown-item:active {
-    color: #fff;
-    background-color: #000000;
+  color: #fff;
+  background-color: #000000;
+}
+
+.navbar-nav .nav-link.nuxt-link-exact-active {
+  color: rgba(255, 255, 255, 1);
 }
 
 .btn-outline-white {
-    color: #ffffff;
-    border-color: #ffffff;
+  color: #ffffff;
+  border-color: #ffffff;
 }
 
 .btn-outline-white:hover {
-    color: #000000;
-    background-color: #ffffff;
-    border-color: #ffffff;
+  color: #000000;
+  background-color: #ffffff;
+  border-color: #ffffff;
 }
 
 .nav-link {

@@ -1,7 +1,7 @@
 <template>
   <div>
     <section>
-      <b-container class="main pt-3 pb-5">
+      <b-container class="validator-page main pt-3 pb-5">
         <template v-for="(validator, index) in validators">
           <template v-if="validator.accountId == accountId">
             <div class="row">
@@ -878,14 +878,14 @@ export default {
 .validator-detail .col-md-9 .identicon div {
   display: inline;
 }
-.imOnline {
+.validator-page .imOnline {
   position: absolute;
   top: 0.4rem;
   left: 0.4rem;
   font-size: 1.1rem;
   color: green;
 }
-.imOffline {
+.validator-page .imOffline {
   position: absolute;
   top: 0.4rem;
   left: 0.4rem;
