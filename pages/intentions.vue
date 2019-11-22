@@ -12,6 +12,7 @@
         <!-- Table with sorting and pagination-->
         <div class="table-responsive">
           <b-table
+            stacked="md"
             id="intentions-table"
             head-variant="dark"
             :fields="Fields"
@@ -33,7 +34,8 @@
                   {{ getNickname(data.item.accountId) }}
                 </span>
                 <span v-else>
-                  {{ data.item.accountId }}
+                  <span class="d-inline d-sm-inline d-md-inline d-lg-inline d-xl-none">{{ shortAddress(data.item.accountId) }}</span>
+                  <span class="d-none d-sm-none d-md-none d-lg-none d-xl-inline">{{ data.item.accountId }}</span>
                 </span>
               </nuxt-link>
             </template>
@@ -405,10 +407,10 @@ body {
   max-width: 80px;
 }
 #intentions-table th:first-child {
-  width: 10%;
+  width: 8%;
 }
 #intentions-table th:nth-child(2) {
-  width: 40%;
+  width: 42%;
 }
 #intentions-table th:nth-child(3) {
   width: 20%;

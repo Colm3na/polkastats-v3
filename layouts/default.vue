@@ -441,5 +441,11 @@ section .section-title {
   #top-bar {
     padding: 0.5rem;
   }
+  .table.b-table.b-table-stacked-md > tbody > tr > [data-label]::before {
+    width: 30%;
+  }
+  .table.b-table.b-table-stacked-md > tbody > tr > [data-label] > div {
+    width: calc(100% - 30%);
+  }
 }
 </style>

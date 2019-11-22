@@ -12,6 +12,7 @@
         <!-- Table with sorting and pagination-->
         <div class="table-responsive">
           <b-table
+            stacked="md"
             id="validators-table"
             head-variant="dark"
             :fields="Fields"
@@ -39,7 +40,8 @@
                   {{ getNickname(data.item.accountId) }}
                 </span>
                 <span v-else>
-                  {{ data.item.accountId }}
+                  <span class="d-inline d-sm-inline d-md-inline d-lg-inline d-xl-none">{{ shortAddress(data.item.accountId) }}</span>
+                  <span class="d-none d-sm-none d-md-none d-lg-none d-xl-inline">{{ data.item.accountId }}</span>
                 </span>
               </nuxt-link>
             </template>
