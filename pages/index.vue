@@ -35,7 +35,6 @@
             </template>
             <template slot="accountId" slot-scope="data">
               <div class="d-block d-sm-block d-md-none d-lg-none d-xl-none text-center">
-
                 <div v-if="hasIdentity(data.item.accountId)">
                   <div v-if="getIdentity(data.item.accountId).logo !== ''">
                     <img v-bind:src="getIdentity(data.item.accountId).logo" class="identity mt-2" />
@@ -66,13 +65,14 @@
                   </small>
                 </p>
                 <p class="mb-0" v-b-tooltip.hover title="Percentage over total bonded stake">{{ getStakePercent(data.item.stakers.total) }}% of total stake</p>
-              
               </div>
               <div class="d-none d-sm-none d-md-block d-lg-block d-xl-block">
-
                 <Identicon :value="data.item.accountId" :size="20" :theme="'polkadot'" />
                 <nuxt-link :to="{name: 'validator', query: { accountId: data.item.accountId } }" title="Validator details">
-                  <span v-if="hasNickname(data.item.accountId)">
+                  <span v-if="hasIdentity(data.item.accountId)">
+                    {{ getIdentity(data.item.accountId).full_name }}
+                  </span>
+                  <span v-else-if="hasNickname(data.item.accountId)">
                     {{ getNickname(data.item.accountId) }}
                   </span>
                   <span v-else>

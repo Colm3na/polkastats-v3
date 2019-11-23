@@ -70,7 +70,10 @@
               <div class="d-none d-sm-none d-md-block d-lg-block d-xl-block">
                 <Identicon :value="data.item.accountId" :size="20" :theme="'polkadot'" />
                 <nuxt-link :to="{name: 'intention', query: { accountId: data.item.accountId } }" title="Intention details">
-                  <span v-if="hasNickname(data.item.accountId)">
+                  <span v-if="hasIdentity(data.item.accountId)">
+                    {{ getIdentity(data.item.accountId).full_name }}
+                  </span>
+                  <span v-else-if="hasNickname(data.item.accountId)">
                     {{ getNickname(data.item.accountId) }}
                   </span>
                   <span v-else>
