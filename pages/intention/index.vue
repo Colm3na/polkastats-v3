@@ -1,7 +1,7 @@
 <template>
   <div>
     <section>
-      <b-container class="main pt-3 pb-5">
+      <b-container class="page-intention main pt-3 pb-5">
         <template v-for="(validator, index) in intentions">
           <template v-if="validator.accountId == accountId">
             <div class="row">
@@ -25,10 +25,8 @@
             </div>
             <div class="validator-detail card mt-4 mb-3">
               <div class="card-body">
-                <p class="text-right">
-                  <i v-if="isFavorite(validator.accountId)" class="favorite fas fa-star" style="color: #f1bd23" v-b-tooltip.hover title="In Favorites"></i>
-                  <i v-else class="favorite fas fa-star" style="color: #e6dfdf;" v-b-tooltip.hover title="Not in Favorites"></i>       
-                </p>
+                <i v-if="isFavorite(validator.accountId)" class="favorite fas fa-star" style="color: #f1bd23" v-b-tooltip.hover title="In Favorites"></i>
+                <i v-else class="favorite fas fa-star" style="color: #e6dfdf;" v-b-tooltip.hover title="Not in Favorites"></i>
                 <div class="row">
                   <div class="col-md-3 mb-2 text-center">
                     <div v-if="hasIdentity(validator.stashId)">
@@ -67,18 +65,6 @@
                     </div>
                     <div class="row">
                       <div class="col-md-3 mb-2">
-                        <strong>Controller</strong>
-                      </div>
-                      <div class="col-md-9 mb-2">
-                        <Identicon :value="validator.controllerId" :size="20" :theme="'polkadot'" />
-                        <a v-bind:href="blockExplorer.account + validator.controllerId" target="_blank">
-                          <span class="d-inline d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="validator.controllerId">{{ shortAddress(validator.controllerId) }} </span>
-                          <span class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline">{{ validator.controllerId }}</span>
-                        </a>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-md-3 mb-2">
                         <strong>Stash</strong>
                       </div>
                       <div class="col-md-9 mb-2">
@@ -86,6 +72,18 @@
                         <a v-bind:href="blockExplorer.account + validator.stashId" target="_blank">
                           <span class="d-inline d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="validator.stashId">{{ shortAddress(validator.stashId) }}</span>
                           <span class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline">{{ validator.stashId }}</span>
+                        </a>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-3 mb-2">
+                        <strong>Controller</strong>
+                      </div>
+                      <div class="col-md-9 mb-2">
+                        <Identicon :value="validator.controllerId" :size="20" :theme="'polkadot'" />
+                        <a v-bind:href="blockExplorer.account + validator.controllerId" target="_blank">
+                          <span class="d-inline d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="validator.controllerId">{{ shortAddress(validator.controllerId) }} </span>
+                          <span class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline">{{ validator.controllerId }}</span>
                         </a>
                       </div>
                     </div>
@@ -816,13 +814,9 @@ export default {
   font-size: 1.4rem;
   color: #7d7378;
 }
-.validator-detail .favorite {
-  cursor: initial;
-}
 .change {
   vertical-align: middle;
 }
-
 .validator-detail .col-md-9 .identicon {
   display: inline;
   margin-right: 0.2rem;
@@ -830,5 +824,11 @@ export default {
 }
 .validator-detail .col-md-9 .identicon div {
   display: inline;
+}
+.page-intention .favorite {
+  position: absolute;
+  top: 0.4rem;
+  right: 0.4rem;
+  cursor: initial;
 }
 </style>

@@ -3,7 +3,7 @@
     <section>
       <b-container class="validator-page main pt-3 pb-5">
         <template v-for="(validator, index) in validators">
-          <template v-if="validator.accountId == accountId">
+          <template v-if="validator.accountId === accountId">
             <div class="row">
               <div class="col-2 col-lg-1">
                 <template v-if="index > 0">
@@ -27,10 +27,8 @@
               <div class="card-body">
                 <i v-if="validator.imOnline.isOnline" class="imOnline fas fa-check-circle" v-b-tooltip.hover v-bind:title="getImOnlineMessage(validator)"></i>
                 <i v-else class="imOffline fas fa-times-circle" v-b-tooltip.hover v-bind:title="getImOnlineMessage(validator)"></i>
-                <p class="text-right">
-                  <i v-if="isFavorite(validator.accountId)" class="favorite fas fa-star" style="color: #f1bd23" v-b-tooltip.hover title="In Favorites"></i>
-                  <i v-else class="favorite fas fa-star" style="color: #e6dfdf;" v-b-tooltip.hover title="Not in Favorites"></i>       
-                </p>
+                <i v-if="isFavorite(validator.accountId)" class="favorite fas fa-star" style="color: #f1bd23" v-b-tooltip.hover title="In Favorites"></i>
+                <i v-else class="favorite fas fa-star" style="color: #e6dfdf;" v-b-tooltip.hover title="Not in Favorites"></i>       
                 <div class="row">
                   <div class="col-md-3 mb-2 text-center">
                     <div v-if="hasIdentity(validator.stashId)">
@@ -68,18 +66,6 @@
                     </div>
                     <div class="row">
                       <div class="col-md-3 mb-2">
-                        <strong>Controller</strong>
-                      </div>
-                      <div class="col-md-9 mb-2">
-                        <Identicon :value="validator.controllerId" :size="20" :theme="'polkadot'" />
-                        <a v-bind:href="blockExplorer.account + validator.controllerId" target="_blank">
-                          <span class="d-inline d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="validator.controllerId">{{ shortAddress(validator.controllerId) }} </span>
-                          <span class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline">{{ validator.controllerId }}</span>
-                        </a>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-md-3 mb-2">
                         <strong>Stash</strong>
                       </div>
                       <div class="col-md-9 mb-2">
@@ -87,6 +73,18 @@
                         <a v-bind:href="blockExplorer.account + validator.stashId" target="_blank">
                           <span class="d-inline d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="validator.stashId">{{ shortAddress(validator.stashId) }}</span>
                           <span class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline">{{ validator.stashId }}</span>
+                        </a>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-3 mb-2">
+                        <strong>Controller</strong>
+                      </div>
+                      <div class="col-md-9 mb-2">
+                        <Identicon :value="validator.controllerId" :size="20" :theme="'polkadot'" />
+                        <a v-bind:href="blockExplorer.account + validator.controllerId" target="_blank">
+                          <span class="d-inline d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="validator.controllerId">{{ shortAddress(validator.controllerId) }} </span>
+                          <span class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline">{{ validator.controllerId }}</span>
                         </a>
                       </div>
                     </div>
@@ -891,5 +889,10 @@ export default {
   left: 0.4rem;
   font-size: 1.1rem;
   color: red;
+}
+.validator-page .favorite {
+  position: absolute;
+  top: 0.4rem;
+  right: 0.4rem;
 }
 </style>
