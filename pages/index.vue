@@ -41,7 +41,7 @@
                   </div>
                 </div>
                 <div v-else>
-                  <Identicon :value="data.item.accountId" :size="80" :theme="'polkadot'" />
+                  <Identicon :value="data.item.accountId" :size="80" :theme="'polkadot'" :key="data.item.accountId" />
                 </div>
                 <nuxt-link :to="{name: 'intention', query: { accountId: data.item.accountId } }" title="Validator details">
                   <h4 v-if="hasIdentity(data.item.accountId)" class="mt-2 mb-2">
@@ -67,7 +67,7 @@
                 <p class="mb-0" v-b-tooltip.hover title="Percentage over total bonded stake">{{ getStakePercent(data.item.stakers.total) }}% of total stake</p>
               </div>
               <div class="d-none d-sm-none d-md-block d-lg-block d-xl-block">
-                <Identicon :value="data.item.accountId" :size="20" :theme="'polkadot'" />
+                <Identicon :value="data.item.accountId" :size="20" :theme="'polkadot'" :key="data.item.accountId" />
                 <nuxt-link :to="{name: 'validator', query: { accountId: data.item.accountId } }" title="Validator details">
                   <span v-if="hasIdentity(data.item.accountId)">
                     {{ getIdentity(data.item.accountId).full_name }}
@@ -197,7 +197,6 @@ export default {
           favorite: this.isFavorite(validator.accountId)
         });
       }
-      console.log(validatorsObject)
       return validatorsObject;
     },
     intentions () {

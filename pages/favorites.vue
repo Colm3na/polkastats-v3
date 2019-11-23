@@ -31,11 +31,11 @@
                         <h4 class="mt-2 mb-2" v-if="getIdentity(validator.stashId).full_name !== ''">{{ getIdentity(validator.stashId).full_name }}</h4>
                       </div>
                       <div v-else>
-                        <Identicon :value="validator.accountId" :size="80" :theme="'polkadot'" />
+                        <Identicon :value="validator.accountId" :size="80" :theme="'polkadot'" :key="validator.accountId" />
                       </div>
                     </div>
                     <div v-else>
-                      <Identicon :value="validator.accountId" :size="80" :theme="'polkadot'" />
+                      <Identicon :value="validator.accountId" :size="80" :theme="'polkadot'" :key="validator.accountId" />
                     </div>
                     <p class="mt-3 mb-0 rank">
                       rank #{{ index+1 }} <i class="fas fa-shield-alt" v-b-tooltip.hover title="Active validator"></i>
@@ -67,7 +67,7 @@
                         <strong>Stash</strong>
                       </div>
                       <div class="col-md-9 mb-1">
-                        <Identicon :value="validator.stashId" :size="20" :theme="'polkadot'" />
+                        <Identicon :value="validator.stashId" :size="20" :theme="'polkadot'" :key="validator.stashId" />
                         <a v-bind:href="blockExplorer.account + validator.stashId" target="_blank">
                           <span class="d-inline d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="validator.stashId">{{ shortAddress(validator.stashId) }}</span>
                           <span class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline">{{ validator.stashId }}</span>
@@ -79,7 +79,7 @@
                         <strong>Controller</strong>
                       </div>
                       <div class="col-md-9 mb-1">
-                        <Identicon :value="validator.controllerId" :size="20" :theme="'polkadot'" />
+                        <Identicon :value="validator.controllerId" :size="20" :theme="'polkadot'" :key="validator.controllerId" />
                         <a v-bind:href="blockExplorer.account + validator.controllerId" target="_blank">
                           <span class="d-inline d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="validator.controllerId">{{ shortAddress(validator.controllerId) }}</span>
                           <span class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline">{{ validator.controllerId }}</span>
@@ -137,7 +137,7 @@
                           <div v-for="(sessionId, index) in validator.nextSessionIds" class="row" v-bind:key="index">
                             <div class="col-12 mb-1 who">
                               {{ index+1 }}.
-                              <Identicon :value="sessionId" :size="20" :theme="'polkadot'" />                      
+                              <Identicon :value="sessionId" :size="20" :theme="'polkadot'" :key="sessionId" />                      
                               <a v-bind:href="blockExplorer.account + sessionId" target="_blank">
                                 <span class="d-inline-block d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="sessionId">{{ shortAddress(sessionId) }}</span>
                                 <span class="d-none d-sm-inline-block d-md-inline-block d-lg-inline-block d-xl-inline-block">{{ sessionId }}</span>                        
@@ -150,7 +150,7 @@
                         <div class="nominator collapse pt-2 pb-3"  v-bind:id="'staker' + index" v-bind:data-parent="'#validator-info-' + index">
                           <div v-for="(staker, index) in validator.stakers.others" class="row" v-bind:key="index">
                             <div class="col-8 mb-1 who">
-                              <Identicon :value="staker.who" :size="20" :theme="'polkadot'" />                      
+                              <Identicon :value="staker.who" :size="20" :theme="'polkadot'" :key="staker.who" />                      
                               <a v-bind:href="blockExplorer.account + staker.who" target="_blank">
                                 <span class="d-inline-block d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="staker.who">{{ shortAddress(staker.who) }}</span>
                                 <span class="d-none d-sm-inline-block d-md-inline-block d-lg-inline-block d-xl-inline-block">{{ staker.who }}</span>                        
@@ -190,11 +190,11 @@
                         <h4 class="mt-2 mb-2" v-if="getIdentity(validator.stashId).full_name !== ''">{{ getIdentity(validator.stashId).full_name }}</h4>
                       </div>
                       <div v-else>
-                        <Identicon :value="validator.accountId" :size="80" :theme="'polkadot'" />
+                        <Identicon :value="validator.accountId" :size="80" :theme="'polkadot'" :key="validator.accountId" />
                       </div>
                     </div>
                     <div v-else>
-                      <Identicon :value="validator.accountId" :size="80" :theme="'polkadot'" />
+                      <Identicon :value="validator.accountId" :size="80" :theme="'polkadot'" :key="validator.accountId" />
                     </div>
                     <p class="mt-3 mb-0 rank">
                       rank #{{ index+1 }} <i class="fas fa-exclamation-triangle" v-b-tooltip.hover title="Intention"></i>
@@ -227,7 +227,7 @@
                         <strong>Stash</strong>
                       </div>
                       <div class="col-md-9 mb-1">
-                        <Identicon :value="validator.stashId" :size="20" :theme="'polkadot'" />
+                        <Identicon :value="validator.stashId" :size="20" :theme="'polkadot'" :key="validator.stashId" />
                         <a v-bind:href="blockExplorer.account + validator.stashId" target="_blank">
                           <span class="d-inline d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="validator.stashId">{{ shortAddress(validator.stashId) }}</span>
                           <span class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline">{{ validator.stashId }}</span>
@@ -239,7 +239,7 @@
                         <strong>Controller</strong>
                       </div>
                       <div class="col-md-9 mb-1">
-                        <Identicon :value="validator.controllerId" :size="20" :theme="'polkadot'" />
+                        <Identicon :value="validator.controllerId" :size="20" :theme="'polkadot'" :key="validator.controllerId" />
                         <a v-bind:href="blockExplorer.account + validator.controllerId" target="_blank">
                           <span class="d-inline d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="validator.controllerId">{{ shortAddress(validator.controllerId) }}</span>
                           <span class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline">{{ validator.controllerId }}</span>
@@ -283,7 +283,7 @@
                           <div v-for="(sessionId, index) in validator.sessionIds" class="row" v-bind:key="index">
                             <div class="col-12 mb-1 who">
                               {{ index+1 }}.
-                              <Identicon :value="sessionId" :size="20" :theme="'polkadot'" />                      
+                              <Identicon :value="sessionId" :size="20" :theme="'polkadot'" :key="sessionId" />                      
                               <a v-bind:href="blockExplorer.account + sessionId" target="_blank">
                                 <span class="d-inline-block d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="sessionId">{{ shortAddress(sessionId) }}</span>
                                 <span class="d-none d-sm-inline-block d-md-inline-block d-lg-inline-block d-xl-inline-block">{{ sessionId }}</span>                        
@@ -297,7 +297,7 @@
                           <div v-for="(sessionId, index) in validator.nextSessionIds" class="row" v-bind:key="index">
                             <div class="col-12 mb-1 who">
                               {{ index+1 }}.
-                              <Identicon :value="sessionId" :size="20" :theme="'polkadot'" />                      
+                              <Identicon :value="sessionId" :size="20" :theme="'polkadot'" :key="sessionId" />                      
                               <a v-bind:href="blockExplorer.account + sessionId" target="_blank">
                                 <span class="d-inline-block d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="sessionId">{{ shortAddress(sessionId) }}</span>
                                 <span class="d-none d-sm-inline-block d-md-inline-block d-lg-inline-block d-xl-inline-block">{{ sessionId }}</span>                        
@@ -310,7 +310,7 @@
                         <div class="nominator collapse pt-2 pb-3"  v-bind:id="'staker' + index" v-bind:data-parent="'#validator-info-' + index">
                           <div v-for="(staker, index) in validator.stakers.others" class="row" v-bind:key="index">
                             <div class="col-8 mb-1 who">
-                              <Identicon :value="staker.who" :size="20" :theme="'polkadot'" />                      
+                              <Identicon :value="staker.who" :size="20" :theme="'polkadot'" :key="staker.who" />                      
                               <a v-bind:href="blockExplorer.account + staker.who" target="_blank">
                                 <span class="d-inline-block d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="staker.who">{{ shortAddress(staker.who) }}</span>
                                 <span class="d-none d-sm-inline-block d-md-inline-block d-lg-inline-block d-xl-inline-block">{{ staker.who }}</span>                        
