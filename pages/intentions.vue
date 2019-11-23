@@ -28,20 +28,61 @@
               </p>
             </template>
             <template slot="accountId" slot-scope="data">
-              <Identicon :value="data.item.accountId" :size="20" :theme="'polkadot'" />
-              <nuxt-link :to="{name: 'intention', query: { accountId: data.item.accountId } }" title="Intention details">
-                <span v-if="hasNickname(data.item.accountId)">
-                  {{ getNickname(data.item.accountId) }}
-                </span>
-                <span v-else>
-                  <span class="d-inline d-sm-inline d-md-inline d-lg-inline d-xl-none">{{ shortAddress(data.item.accountId) }}</span>
-                  <span class="d-none d-sm-none d-md-none d-lg-none d-xl-inline">{{ data.item.accountId }}</span>
-                </span>
-              </nuxt-link>
+              <div class="d-block d-sm-block d-md-none d-lg-none d-xl-none text-center">
+
+                <div v-if="hasIdentity(data.item.accountId)">
+                  <div v-if="getIdentity(data.item.accountId).logo !== ''">
+                    <img v-bind:src="getIdentity(data.item.accountId).logo" class="identity mt-2" />
+                    <h4 class="mt-2 mb-2" v-if="getIdentity(data.item.accountId).full_name !== ''">{{ getIdentity(data.item.accountId).full_name }}</h4>
+                  </div>
+                </div>
+                <div v-else>
+                  <Identicon :value="data.item.accountId" :size="80" :theme="'polkadot'" />
+                </div>
+                <nuxt-link :to="{name: 'intention', query: { accountId: data.item.accountId } }" title="Intention details">
+                  <h4 v-if="hasIdentity(data.item.accountId)" class="mt-2 mb-2">
+                    {{ getIdentity(data.item.accountId).full_name }}
+                  </h4>
+                  <h4 v-else-if="hasNickname(data.item.accountId)" class="mt-2 mb-2">
+                    {{ getNickname(data.item.accountId) }}
+                  </h4>
+                  <h4 v-else class="mt-2 mb-2">
+                    <span class="d-inline d-sm-inline d-md-inline d-lg-inline d-xl-none">{{ shortAddress(data.item.accountId) }}</span>
+                    <span class="d-none d-sm-none d-md-none d-lg-none d-xl-inline"></span>
+                  </h4>
+                </nuxt-link>
+
+                <p class="mt-3 mb-0 rank">
+                  rank #{{ data.item.rank }}
+                </p>
+                <p class="bonded mb-0" v-b-tooltip.hover title="Active bonded">
+                  {{ formatDot(data.item.activeStake) }}
+                </p>
+                <p class="mb-0">
+                  <small>
+                    <span v-b-tooltip.hover title="Total bonded">
+                      {{ formatDot(data.item.totalStake) }}
+                    </span>
+                  </small>
+                </p>
+              
+              </div>
+              <div class="d-none d-sm-none d-md-block d-lg-block d-xl-block">
+                <Identicon :value="data.item.accountId" :size="20" :theme="'polkadot'" />
+                <nuxt-link :to="{name: 'intention', query: { accountId: data.item.accountId } }" title="Intention details">
+                  <span v-if="hasNickname(data.item.accountId)">
+                    {{ getNickname(data.item.accountId) }}
+                  </span>
+                  <span v-else>
+                    <span class="d-inline d-sm-inline d-md-inline d-lg-inline d-xl-none">{{ shortAddress(data.item.accountId) }}</span>
+                    <span class="d-none d-sm-none d-md-none d-lg-none d-xl-inline">{{ data.item.accountId }}</span>
+                  </span>
+                </nuxt-link>
+              </div>
             </template>
-            <template slot="stake" slot-scope="data">
+            <template slot="totalStake" slot-scope="data">
               <p class="text-right mb-0">
-                {{ formatDot(data.item.stake) }}
+                {{ formatDot(data.item.totalStake) }}
               </p>
             </template> 
             <template slot="comission" slot-scope="data">
@@ -97,11 +138,11 @@ export default {
       SortBy: 'rank',
       SortDesc: false,
       Fields: [
-        { key: 'rank', label: 'Rank', sortable: true },
+        { key: 'rank', label: 'Rank', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` },
         { key: 'accountId', label: 'Intention', sortable: true },
-        { key: 'stake', label: 'Total Stake', sortable: true },
-        { key: 'comission', label: 'Comission', sortable: true },
-        { key: 'favorite', label: 'Fav', sortable: true }
+        { key: 'totalStake', label: 'Total Stake', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` },
+        { key: 'comission', label: 'Comission', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` },
+        { key: 'favorite', label: 'Fav', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` }
       ],
       system: {
         chain: "",
@@ -137,7 +178,8 @@ export default {
         intentionsObject.push({
           rank: i+1,
           accountId: intention.accountId,
-          stake: intention.stakingLedger.total,
+          totalStake: intention.stakingLedger.total,
+          activeStake: intention.stakingLedger.active,
           comission: intention.validatorPrefs.validatorPayment,
           favorite: this.isFavorite(intention.accountId)
         });

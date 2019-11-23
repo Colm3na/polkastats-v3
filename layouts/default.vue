@@ -442,10 +442,10 @@ section .section-title {
     padding: 0.5rem;
   }
   .table.b-table.b-table-stacked-md > tbody > tr > [data-label]::before {
-    width: 30%;
+    display: none;
   }
   .table.b-table.b-table-stacked-md > tbody > tr > [data-label] > div {
-    width: calc(100% - 30%);
+    width: 100%;
   }
 }
 </style>
