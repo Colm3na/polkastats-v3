@@ -82,19 +82,14 @@
                 </nuxt-link>
               </div>
             </template>
-            <template slot="stake" slot-scope="data">
+            <template slot="stakeIndex" slot-scope="data">
               <p class="text-right mb-0">
-                {{ formatDot(data.item.stake) }}
+                {{ formatDot(data.item.stake) }} ({{ formatNumber(data.item.percent) }}%)
               </p>
             </template> 
             <template slot="comission" slot-scope="data">
               <p class="text-right mb-0">
                 {{ formatDot(data.item.comission) }}
-              </p>
-            </template>
-            <template slot="percent" slot-scope="data">
-              <p class="text-right mb-0">
-                {{ formatRewardDest(data.item.percent) }}%
               </p>
             </template>
             <template slot="favorite" slot-scope="data">
@@ -145,13 +140,12 @@ export default {
       SortBy: 'rank',
       SortDesc: false,
       Fields: [
-        { key: 'rank', label: 'Rank', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` },
+        { key: 'rank', label: '#', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` },
         { key: 'imOnline', label: 'Online', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` },
         { key: 'accountId', label: 'Validator', sortable: true },
-        { key: 'stake', label: 'Total Stake', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` },
+        { key: 'stakeIndex', label: 'Stake', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` },
         { key: 'comission', label: 'Comission', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` },
-        { key: 'percent', label: 'Stake %', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` },
-        { key: 'favorite', label: 'Fav', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` }
+        { key: 'favorite', label: '⭐', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` }
       ],
       system: {
         chain: "",
@@ -196,12 +190,14 @@ export default {
           imOnlineMessage: this.getImOnlineMessage(validator),
           accountId: validator.accountId,
           stake: stake,
+          stakeIndex: i+1,
           stakers: validator.stakers,
           comission: validator.validatorPrefs.validatorPayment,
           percent: this.getStakePercent(validator.stakers.total),
           favorite: this.isFavorite(validator.accountId)
         });
       }
+      console.log(validatorsObject)
       return validatorsObject;
     },
     intentions () {
@@ -490,6 +486,9 @@ body {
 }
 .identity {
   max-width: 80px;
+}
+#validators-table th {
+  text-align: center;
 }
 #validators-table th:first-child {
   width: 7%;
