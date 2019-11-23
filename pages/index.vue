@@ -2,13 +2,36 @@
   <div>
     <section>
       <b-container class="main pt-4">
-        <!-- <b-alert show dismissible variant="info" class="text-center">
-          Connected to chain <strong>{{system.chain}}</strong> using <strong>{{ system.client_name}}</strong> client version <strong>{{system.client_version}}</strong>
-        </b-alert> -->
         <b-alert show dismissible variant="success" class="text-center">
           Total issuance is <strong>{{ formatDot(totalIssuance) }}</strong>, total stake bonded is <strong>{{ formatDot(totalStakeBonded) }} ({{ totalStakeBondedPercen.toString(10) }}% of total issuance)</strong>
         </b-alert>
         <Network :bestblocknumber="bestblocknumber" :bestBlockFinalized="bestBlockFinalized" :session="session" />
+
+        <div class="row d-block d-sm-block d-md-block d-lg-none d-xl-none">
+          <b-col lg="6" class="my-1">
+            <b-form-group
+              label="Sort"
+              label-cols-sm="3"
+              label-align-sm="right"
+              label-size="sm"
+              label-for="sortBySelect"
+              class="mb-4"
+            >
+              <b-input-group size="sm">
+                <b-form-select v-model="SortBy" id="sortBySelect" :options="sortOptions" class="w-75">
+                  <template v-slot:first>
+                    <option value="">-- none --</option>
+                  </template>
+                </b-form-select>
+                <b-form-select v-model="SortDesc" size="sm" :disabled="!SortBy" class="w-25">
+                  <option :value="false">Asc</option>
+                  <option :value="true">Desc</option>
+                </b-form-select>
+              </b-input-group>
+            </b-form-group>
+          </b-col>
+        </div>
+
         <!-- Table with sorting and pagination-->
         <div class="table-responsive">
           <b-table
@@ -57,6 +80,8 @@
                 </nuxt-link>
                 <p class="mt-3 mb-0 rank">
                   rank #{{ data.item.rank }}
+                  <i v-if="data.item.imOnline" class="imOnline fas fa-check-circle ml-1" v-b-tooltip.hover v-bind:title="data.item.imOnlineMessage"></i>
+                  <i v-else class="imOffline fas fa-times-circle ml-1" v-b-tooltip.hover v-bind:title="data.item.imOnlineMessage"></i>
                 </p>
                 <p class="mb-0">
                   <small>
@@ -137,7 +162,7 @@ export default {
     return {
       perPage: 20,
       CurrentPage: 1,
-      SortBy: 'rank',
+      SortBy: ``,
       SortDesc: false,
       Fields: [
         { key: 'rank', label: '#', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` },
@@ -223,6 +248,14 @@ export default {
     totalStakeBonded () {
       return this.$store.state.validators.totalStakeBonded
     },
+    sortOptions() {
+      // Create an options list from our fields
+      return this.Fields
+        .filter(f => f.sortable)
+        .map(f => {
+          return { text: f.label, value: f.key }
+        })
+    }
   },
   created: function () {
     var vm = this;
@@ -541,5 +574,13 @@ body {
 .imOffline {
   font-size: 1.1rem;
   color: red;
+}
+@media (max-width:767px){
+  #validators-table td[data-label="Validator"] {
+    background-color: white;
+    border-left: 1px solid #dee2e6;
+    border-right: 1px solid #dee2e6;
+    padding: 1rem 0 1rem 0;
+  }
 }
 </style>
