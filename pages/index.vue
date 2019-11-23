@@ -6,7 +6,6 @@
           Total issuance is <strong>{{ formatDot(totalIssuance) }}</strong>, total stake bonded is <strong>{{ formatDot(totalStakeBonded) }} ({{ totalStakeBondedPercen.toString(10) }}% of total issuance)</strong>
         </b-alert>
         <Network :bestblocknumber="bestblocknumber" :bestBlockFinalized="bestBlockFinalized" :session="session" />
-
         <div class="row d-block d-sm-block d-md-block d-lg-none d-xl-none">
           <b-col lg="6" class="my-1">
             <b-form-group
@@ -31,7 +30,6 @@
             </b-form-group>
           </b-col>
         </div>
-
         <!-- Table with sorting and pagination-->
         <div class="table-responsive">
           <b-table
@@ -266,7 +264,7 @@ export default {
     }
 
     // First time
-    this.getSystemData();
+    // this.getSystemData();
     this.getChainData();
     
     // Force update of validators list if empty
