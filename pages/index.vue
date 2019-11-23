@@ -81,13 +81,17 @@
                   <i v-if="data.item.imOnline" class="imOnline fas fa-check-circle ml-1" v-b-tooltip.hover v-bind:title="data.item.imOnlineMessage"></i>
                   <i v-else class="imOffline fas fa-times-circle ml-1" v-b-tooltip.hover v-bind:title="data.item.imOnlineMessage"></i>
                 </p>
-                <p class="mb-0">
+
+                <p v-if="data.item.stakers.total > 0" class="bonded mb-0" v-b-tooltip.hover title="Total bonded">{{ formatDot(data.item.stakers.total) }}</p>
+                <p v-else class="bonded mb-0" v-b-tooltip.hover title="Total bonded">{{ formatDot(data.item.stake) }}</p>
+                <p class="mb-0" v-if="data.item.stakers.own !== data.item.stake">
                   <small>
                     <span v-b-tooltip.hover title="Self bonded" v-if="data.item.stakers.own > 0">{{ formatDot(data.item.stakers.own) }}</span>
                     <span v-b-tooltip.hover title="Bonded by nominators" v-if="(data.item.stakers.total - data.item.stakers.own) > 0">(+{{ formatDot(data.item.stakers.total - data.item.stakers.own) }})</span>
                   </small>
                 </p>
                 <p class="mb-0" v-b-tooltip.hover title="Percentage over total bonded stake">{{ getStakePercent(data.item.stakers.total) }}% of total stake</p>
+
               </div>
               <div class="d-none d-sm-none d-md-block d-lg-block d-xl-block">
                 <Identicon :value="data.item.accountId" :size="20" :theme="'polkadot'" :key="data.item.accountId" />
