@@ -2,9 +2,9 @@
   <div>
     <section>
       <b-container class="page-favorites main pt-4">
-        <b-alert show dismissible variant="info" class="text-center">
+        <!-- <b-alert show dismissible variant="info" class="text-center">
           Connected to chain <strong>{{system.chain}}</strong> using <strong>{{ system.client_name}}</strong> client version <strong>{{system.client_version}}</strong>
-        </b-alert>
+        </b-alert> -->
         <b-alert show dismissible variant="success" class="text-center">
           Total issuance is <strong>{{ formatDot(totalIssuance) }}</strong>, total stake bonded is <strong>{{ formatDot(totalStakeBonded) }} ({{ totalStakeBondedPercen.toString(10) }}% of total issuance)</strong>
         </b-alert>
