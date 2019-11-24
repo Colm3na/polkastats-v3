@@ -99,7 +99,6 @@
                   <i v-if="data.item.imOnline" class="imOnline fas fa-check-circle ml-1" v-b-tooltip.hover v-bind:title="data.item.imOnlineMessage"></i>
                   <i v-else class="imOffline fas fa-times-circle ml-1" v-b-tooltip.hover v-bind:title="data.item.imOnlineMessage"></i>
                 </p>
-
                 <p v-if="data.item.stakers.total > 0" class="bonded mb-0" v-b-tooltip.hover title="Total bonded">{{ formatDot(data.item.stakers.total) }}</p>
                 <p v-else class="bonded mb-0" v-b-tooltip.hover title="Total bonded">{{ formatDot(data.item.stake) }}</p>
                 <p class="mb-0" v-if="data.item.stakers.own !== data.item.stake">
@@ -109,10 +108,16 @@
                   </small>
                 </p>
                 <p class="mb-0" v-b-tooltip.hover title="Percentage over total bonded stake">{{ getStakePercent(data.item.stakers.total) }}% of total stake</p>
-
               </div>
               <div class="d-none d-sm-none d-md-block d-lg-block d-xl-block">
-                <Identicon :value="data.item.accountId" :size="20" :theme="'polkadot'" :key="data.item.accountId" />
+                <div v-if="hasIdentity(data.item.accountId)" class="d-inline-block">
+                  <div v-if="getIdentity(data.item.accountId).logo !== ''" class="d-inline-block">
+                    <img v-bind:src="getIdentity(data.item.accountId).logo" class="identity-small d-inline-block" />
+                  </div>
+                </div>
+                <div v-else class="d-inline-block">
+                  <Identicon :value="data.item.accountId" :size="20" :theme="'polkadot'" :key="data.item.accountId" />
+                </div>
                 <nuxt-link :to="{name: 'validator', query: { accountId: data.item.accountId } }" title="Validator details">
                   <span v-if="hasIdentity(data.item.accountId)">
                     {{ getIdentity(data.item.accountId).full_name }}
@@ -312,6 +317,7 @@ export default {
     /* Update validators, intention validators, best block and session info every 10 seconds */
     this.polling = setInterval(() => {
       vm.$store.dispatch('validators/update');
+      if (!this.filter) this.totalRows = this.$store.state.validators.list.length;      
       this.getChainData();
     }, 10000);
 
@@ -548,6 +554,10 @@ body {
 }
 .identity {
   max-width: 80px;
+}
+.identity-small {
+  max-width: 25px;
+  margin-right: 0.2rem;
 }
 #validators-table th {
   text-align: center;
