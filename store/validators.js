@@ -14,11 +14,24 @@ export const mutations = {
     this.$ga.event('vuex-store', 'update-validators');
 
     // Sort validators by total bonded desc
-    validators.sort((a, b) => (a.stakers.total < b.stakers.total) ? 1 : -1);
+    validators.sort((a, b) => {
+      let stakeA = 0;
+      let stakeB = 0;
+      if (a.stakers.total > 0) {
+        stakeA = a.stakers.total;
+      } else {
+        stakeA = a.stakingLedger.total
+      }
+      if (b.stakers.total > 0) {
+        stakeB = b.stakers.total;
+      } else {
+        stakeB = b.stakingLedger.total
+      }
+      return (stakeA < stakeB) ? 1 : -1;
+    });
 
     // Update validator list
     state.list = validators;
-
     // Calculate and update active total bonded funds
     let accum = new BN('0', 10);
     for (let i = 0; i < validators.length; i++) {
