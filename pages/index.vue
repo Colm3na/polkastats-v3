@@ -64,7 +64,7 @@
                 <div v-else>
                   <Identicon :value="data.item.accountId" :size="80" :theme="'polkadot'" :key="data.item.accountId" />
                 </div>
-                <nuxt-link :to="{name: 'intention', query: { accountId: data.item.accountId } }" title="Validator details">
+                <nuxt-link :to="{name: 'validator', query: { accountId: data.item.accountId } }" title="Validator details">
                   <h4 v-if="hasIdentity(data.item.accountId)" class="mt-2 mb-2">
                     {{ getIdentity(data.item.accountId).full_name }}
                   </h4>

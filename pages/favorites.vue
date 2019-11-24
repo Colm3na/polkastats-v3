@@ -6,6 +6,15 @@
           Total issuance is <strong>{{ formatDot(totalIssuance) }}</strong>, total stake bonded is <strong>{{ formatDot(totalStakeBonded) }} ({{ totalStakeBondedPercen.toString(10) }}% of total issuance)</strong>
         </b-alert>
         <Network :bestblocknumber="bestblocknumber" :bestBlockFinalized="bestBlockFinalized" :session="session" />
+
+        <template v-if="favorites.length == 0">
+          <div class="alert alert-warning alert-dismissible fade show mt-3 mb-4" role="alert">
+            <strong>Hi there!</strong> You can click in the star icon <i class="fas fa-star"></i> of a validator or intention to track it on this page.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        </template>
        
         <!-- START FAVORITE VALIDATORS -->
         <template  v-for="(validator, index) in validators">
