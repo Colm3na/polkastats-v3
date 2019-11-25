@@ -27,8 +27,10 @@
               <div class="card-body">
                 <i v-if="validator.imOnline.isOnline" class="imOnline fas fa-check-circle" v-b-tooltip.hover v-bind:title="getImOnlineMessage(validator)"></i>
                 <i v-else class="imOffline fas fa-times-circle" v-b-tooltip.hover v-bind:title="getImOnlineMessage(validator)"></i>
+                <i v-if="validator.currentElected" class="elected fas fa-chevron-circle-right" v-b-tooltip.hover title="Elected for next session"></i>
+                <i v-else class="notElected fas fa-times-circle" v-b-tooltip.hover title="Not elected for next session"></i>
                 <i v-if="isFavorite(validator.accountId)" class="favorite fas fa-star" style="color: #f1bd23" v-b-tooltip.hover title="In Favorites"></i>
-                <i v-else class="favorite fas fa-star" style="color: #e6dfdf;" v-b-tooltip.hover title="Not in Favorites"></i>       
+                <i v-else class="favorite fas fa-star" style="color: #e6dfdf;" v-b-tooltip.hover title="Not in Favorites"></i>
                 <div class="row">
                   <div class="col-md-3 mb-2 text-center">
                     <div v-if="hasIdentity(validator.stashId)">
@@ -55,6 +57,7 @@
                       </small>
                     </p>
                     <p class="mb-0" v-b-tooltip.hover title="Percentage over total bonded stake">{{ getStakePercent(validator.stakers.total) }}% of total stake</p>
+                    <p class="mb-0">{{ validator.currentEraPointsEarned }} era points</p>
                   </div>
                   <div class="col-md-9">
                     <div class="row" v-if="hasNickname(validator.accountId)">
@@ -260,9 +263,9 @@ formatBalance.setDefaults({ decimals, unit });
 export default {
   head () {
     return {
-      title: 'PolkaStats - Validator ' + this.$route.query.accountId,
+      title: 'PolkaStats - Kusama validator ' + this.$route.query.accountId,
       meta: [
-        { hid: 'description', name: 'description', content: 'Validator ' + this.$route.query.accountId }
+        { hid: 'description', name: 'description', content: 'Kusama validator ' + this.$route.query.accountId }
       ]
     }
   },
@@ -867,7 +870,6 @@ export default {
 .change {
   vertical-align: middle;
 }
-
 .validator-detail .col-md-9 .identicon {
   display: inline;
   margin-right: 0.2rem;
@@ -887,6 +889,20 @@ export default {
   position: absolute;
   top: 0.4rem;
   left: 0.4rem;
+  font-size: 1.1rem;
+  color: red;
+}
+.validator-page .elected {
+  position: absolute;
+  top: 0.4rem;
+  left: 2rem;
+  font-size: 1.1rem;
+  color: #2697e2;
+}
+.validator-page .notElected {
+  position: absolute;
+  top: 0.4rem;
+  left: 2rem;
   font-size: 1.1rem;
   color: red;
 }

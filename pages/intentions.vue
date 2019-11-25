@@ -125,9 +125,9 @@ formatBalance.setDefaults({ decimals, unit });
 export default {
   head () {
     return {
-      title: 'PolkaStats - Polkadot network statistics',
+      title: 'PolkaStats -  Kusama intention validators',
       meta: [
-        { hid: 'description', name: 'description', content: 'Polkadot network statistics' }
+        { hid: 'description', name: 'description', content: 'Kusama intention validators' }
       ]
     }
   },

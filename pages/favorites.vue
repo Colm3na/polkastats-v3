@@ -22,6 +22,8 @@
             <div class="validator card mb-3">
               <i v-if="validator.imOnline.isOnline" class="imOnline fas fa-check-circle" v-b-tooltip.hover v-bind:title="getImOnlineMessage(validator)"></i>
               <i v-else class="imOffline fas fa-times-circle" v-b-tooltip.hover v-bind:title="getImOnlineMessage(validator)"></i>
+              <i v-if="validator.currentElected" class="elected fas fa-chevron-circle-right" v-b-tooltip.hover title="Elected for next session"></i>
+              <i v-else class="notElected fas fa-times-circle" v-b-tooltip.hover title="Not elected for next session"></i>
               <p class="text-right mb-0">
                 <a class="favorite" v-on:click="toggleFavorite(validator.accountId)">
                   <i v-if="isFavorite(validator.accountId)" class="fas fa-star" style="color: #f1bd23" v-b-tooltip.hover title="Unset as Favorite"></i>
@@ -55,7 +57,7 @@
                       </small>
                     </p>
                     <p class="mb-0" v-b-tooltip.hover title="Percentage over total bonded stake">{{ getStakePercent(validator.stakers.total) }}% of total stake</p>
-                    <editable v-if="!hasIdentity(validator.stashId)" v-bind:favorites="favorites" v-model="favorites[getIndex(validator.accountId)].name"></editable>
+                    <p class="mb-0">{{ validator.currentEraPointsEarned }} era points</p>
                   </div>
                   <div class="col-md-9">
                     <h4 class="card-title mb-4 account mt-4 mt-sm-0 mt-md-0 mt-lg-0 mt-xl-0">
@@ -215,7 +217,6 @@
                         </span>
                       </small>
                     </p>
-                    <editable v-if="!hasIdentity(validator.stashId)" v-bind:favorites="favorites" v-model="favorites[getIndex(validator.accountId)].name"></editable>
                   </div>
                   <div class="col-md-9">
                     <h4 class="card-title mb-4 account mt-4 mt-sm-0 mt-md-0 mt-lg-0 mt-xl-0">
@@ -346,7 +347,6 @@ import { mapMutations } from 'vuex';
 import axios from 'axios';
 import bootstrap from 'bootstrap';
 import Identicon from '../components/identicon.vue';
-import editable from '../components/editable.vue';
 import Network from '../components/network.vue';
 import { formatBalance, isHex } from '@polkadot/util';
 import BN from 'bn.js';
@@ -357,9 +357,9 @@ formatBalance.setDefaults({ decimals, unit });
 export default {
   head () {
     return {
-      title: 'PolkaStats - Polkadot network statistics',
+      title: 'PolkaStats - Favorite Kusama validators and intentions',
       meta: [
-        { hid: 'description', name: 'description', content: 'Polkadot network statistics' }
+        { hid: 'description', name: 'description', content: 'Favorite Kusama validators and intentions' }
       ]
     }
   },
@@ -606,7 +606,6 @@ export default {
     }
   },
   components: {
-    editable,
     Identicon,
     Network
   }
@@ -702,6 +701,20 @@ body {
   position: absolute;
   top: 0.4rem;
   left: 0.4rem;
+  font-size: 1.1rem;
+  color: red;
+}
+.page-favorites .elected {
+  position: absolute;
+  top: 0.4rem;
+  left: 2rem;
+  font-size: 1.1rem;
+  color: #2697e2;
+}
+.page-favorites .notElected {
+  position: absolute;
+  top: 0.4rem;
+  left: 2rem;
   font-size: 1.1rem;
   color: red;
 }

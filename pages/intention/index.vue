@@ -259,9 +259,9 @@ formatBalance.setDefaults({ decimals, unit });
 export default {
   head () {
     return {
-      title: 'PolkaStats - Intention validator ' + this.$route.query.accountId,
+      title: 'PolkaStats - Kusama intention validator ' + this.$route.query.accountId,
       meta: [
-        { hid: 'description', name: 'description', content: 'Intention validator ' + this.$route.query.accountId }
+        { hid: 'description', name: 'description', content: 'Kusama intention validator ' + this.$route.query.accountId }
       ]
     }
   },
