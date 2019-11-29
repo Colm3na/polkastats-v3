@@ -266,7 +266,7 @@ export default {
     //   return this.$store.state.validators.list.length;
     // },
     totalStakeBondedPercen() {
-      if (this.totalStakeBonded !== 0 && this.totalIssuance !== "") {
+      if (this.totalStakeBonded !== 0 && this.totalIssuance !== "" && this.totalIssuance !== "0") {
         let totalIssuance = new BN(this.totalIssuance, 10);
         let totalStakeBonded = this.totalStakeBonded.mul(new BN('100', 10));
         return totalStakeBonded.div(totalIssuance);
