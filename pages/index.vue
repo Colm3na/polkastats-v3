@@ -4,7 +4,6 @@
       <b-container class="main pt-4">
         <b-alert show dismissible variant="info" class="text-center">
           <strong>We are on Kusama CC3! Happy kaos everyone, welcome tranfers! ;-)</strong>
-          <p class="mt-2 mb-0">Some stats may not show actual values until network migration was completed</p>
         </b-alert>
         <b-alert show dismissible variant="success" class="text-center">
           Total issuance is <strong>{{ formatDot(totalIssuance) }}</strong>, total stake bonded is <strong>{{ formatDot(totalStakeBonded) }} ({{ totalStakeBondedPercen.toString(10) }}% of total issuance)</strong>
