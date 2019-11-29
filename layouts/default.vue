@@ -5,7 +5,7 @@
         <div class="container">
           <div id="top-bar">
             <p>
-              Network: <a href="https://polkastats.io" class="active"><i class="fas fa-check"></i> Kusama CC2</a> | <a href="https://alexander.polkastats.io" target="_blank">Alexander</a>
+              Network: <a href="https://polkastats.io" class="active"><i class="fas fa-check"></i> Kusama CC3</a> | <a href="https://alexander.polkastats.io" target="_blank">Alexander</a>
             </p>
           </div>
           <b-navbar toggleable="lg" type="dark" class="row">
