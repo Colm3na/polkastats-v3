@@ -4,6 +4,7 @@
       <b-container class="main pt-4">
         <b-alert show dismissible variant="info" class="text-center">
           <strong>We are on Kusama CC3! Happy kaos everyone, welcome tranfers! ;-)</strong>
+          <p class="mt-2 mb-0">Expect some <strong>kaos</strong> until network migration was completed</p>
         </b-alert>
         <b-alert show dismissible variant="success" class="text-center">
           Total issuance is <strong>{{ formatDot(totalIssuance) }}</strong>, total stake bonded is <strong>{{ formatDot(totalStakeBonded) }} ({{ totalStakeBondedPercen.toString(10) }}% of total issuance)</strong>
@@ -180,9 +181,9 @@ formatBalance.setDefaults({ decimals, unit });
 export default {
   head () {
     return {
-      title: 'PolkaStats - Polkadot Kusama network statistics',
+      title: 'PolkaStats - Polkadot network statistics',
       meta: [
-        { hid: 'description', name: 'description', content: 'Polkadot Kusama network statistics' }
+        { hid: 'description', name: 'description', content: 'Polkadot network statistics' }
       ]
     }
   },
