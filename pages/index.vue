@@ -25,7 +25,7 @@
               v-model="filter"
               type="search"
               id="filterInput"
-              placeholder="Search by address, nickname or keybase name"
+              placeholder="Search validator by address, nickname or keybase name"
             ></b-form-input>
           </b-col>
         </b-row>
