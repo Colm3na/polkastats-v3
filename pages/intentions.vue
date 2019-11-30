@@ -33,7 +33,7 @@
                   </div>
                 </div>
                 <div v-else>
-                  <Identicon :value="data.item.accountId" :size="80" :theme="'polkadot'" />
+                  <Identicon :value="data.item.accountId" :size="80" :theme="'polkadot'" :key="data.item.accountId" />
                 </div>
                 <nuxt-link :to="{name: 'intention', query: { accountId: data.item.accountId } }" title="Intention details">
                   <h4 v-if="hasIdentity(data.item.accountId)" class="mt-2 mb-2">
@@ -66,7 +66,7 @@
                 </div>
               </div>
               <div class="d-none d-sm-none d-md-block d-lg-block d-xl-block">
-                <Identicon :value="data.item.accountId" :size="20" :theme="'polkadot'" />
+                <Identicon :value="data.item.accountId" :size="20" :theme="'polkadot'" :key="data.item.accountId" />
                 <nuxt-link :to="{name: 'intention', query: { accountId: data.item.accountId } }" title="Intention details">
                   <span v-if="hasIdentity(data.item.accountId)">
                     {{ getIdentity(data.item.accountId).full_name }}
@@ -88,10 +88,10 @@
                 </p>
               </div>
             </template> 
-            <template slot="comission" slot-scope="data">
-              <div v-if="data.item.comission">
+            <template slot="commission" slot-scope="data">
+              <div v-if="typeof data.item.commission == 'number'">
                 <p class="text-right mb-0">
-                  {{ formatDot(data.item.comission) }}
+                  {{ (data.item.commission / 10000000).toFixed(2) }}%
                 </p>
               </div>
             </template>
@@ -146,7 +146,7 @@ export default {
         { key: 'rank', label: '#', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` },
         { key: 'accountId', label: 'Intention', sortable: true },
         { key: 'totalStake', label: 'Total Stake', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` },
-        { key: 'comission', label: 'Comission', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` },
+        { key: 'commission', label: 'Commission', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` },
         { key: 'favorite', label: '⭐', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` }
       ],
       system: {
@@ -185,7 +185,7 @@ export default {
           accountId: intention.accountId,
           totalStake: intention.stakingLedger.total,
           activeStake: intention.stakingLedger.active,
-          comission: intention.validatorPrefs.validatorPayment,
+          commission: intention.validatorPrefs.commission,
           favorite: this.isFavorite(intention.accountId)
         });
       }

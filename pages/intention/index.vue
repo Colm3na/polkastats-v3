@@ -87,12 +87,12 @@
                         </a>
                       </div>
                     </div>
-                    <div class="row" v-if="validator.validatorPrefs.validatorPayment">
+                    <div class="row" v-if="typeof validator.validatorPrefs.commission == 'number'">
                       <div class="col-md-3 mb-2">
-                        <strong>Comission</strong>
+                        <strong>Commission</strong>
                       </div>
                       <div class="col-md-9 mb-2 fee">
-                        {{ formatDot(validator.validatorPrefs.validatorPayment, 6) }}
+                        {{ (validator.validatorPrefs.commission / 10000000).toFixed(2) }}%
                       </div>
                     </div>
                     <div class="row mb-2">

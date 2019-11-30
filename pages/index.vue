@@ -150,9 +150,9 @@
                 {{ formatDot(data.item.stake) }} ({{ formatNumber(data.item.percent) }}%)
               </p>
             </template> 
-            <template slot="comission" slot-scope="data">
-              <p class="text-right mb-0" v-if="data.item.comission">
-                {{ formatDot(data.item.comission) }}
+            <template slot="commission" slot-scope="data">
+              <p class="text-right mb-0" v-if="typeof data.item.commission == 'number'">
+                {{ (data.item.commission / 10000000).toFixed(2) }}%
               </p>
             </template>
             <template slot="favorite" slot-scope="data">
@@ -200,17 +200,17 @@ export default {
     return {
       perPage: 20,
       currentPage: 1,
-      sortBy: ``,
+      sortBy: `rank`,
       sortDesc: false,
       filter: null,
       filterOn: [],
       totalRows: 1,
       fields: [
         { key: 'rank', label: '#', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` },
-        { key: 'imOnline', label: 'Online', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` },
+        { key: 'imOnline', label: '✔️', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` },
         { key: 'accountId', label: 'Validator', sortable: true, filterByFormatted: true },
         { key: 'stakeIndex', label: 'Stake', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` },
-        { key: 'comission', label: 'Comission', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` },
+        { key: 'commission', label: 'Commission', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` },
         { key: 'favorite', label: '⭐', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` }
       ],
       system: {
@@ -257,9 +257,9 @@ export default {
           stakePercent = this.getStakePercent(validator.stakers.total);
         }
 
-        let comission = 0;
+        let commission = 0;
         if (validator.validatorPrefs) {
-          comission = validator.validatorPrefs.validatorPayment;
+          commission = validator.validatorPrefs.commission;
         }
 
         validatorsObject.push({
@@ -270,7 +270,7 @@ export default {
           stake: stake,
           stakeIndex: i+1,
           stakers: validator.stakers,
-          comission,
+          commission,
           percent: stakePercent,
           favorite: this.isFavorite(validator.accountId)
         });
@@ -594,10 +594,10 @@ body {
   width: 7%;
 }
 #validators-table th:nth-child(3) {
-  width: 43%;
+  width: 42%;
 }
 #validators-table th:nth-child(4) {
-  width: 15%;
+  width: 16%;
 }
 #validators-table th:nth-child(5) {
   width: 13%;
