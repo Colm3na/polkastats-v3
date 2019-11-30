@@ -17,17 +17,23 @@ export const mutations = {
     validators.sort((a, b) => {
       let stakeA = 0;
       let stakeB = 0;
-      if (a.stakers.total > 0) {
-        stakeA = a.stakers.total;
+
+      if (a.stakers && b.stakers) {
+
+        if (a.stakers.total > 0) {
+          stakeA = a.stakers.total;
+        } else {
+          stakeA = a.stakingLedger.total
+        }
+        if (b.stakers.total > 0) {
+          stakeB = b.stakers.total;
+        } else {
+          stakeB = b.stakingLedger.total
+        }
+        return (stakeA < stakeB) ? 1 : -1;
       } else {
-        stakeA = a.stakingLedger.total
+        return 1;
       }
-      if (b.stakers.total > 0) {
-        stakeB = b.stakers.total;
-      } else {
-        stakeB = b.stakingLedger.total
-      }
-      return (stakeA < stakeB) ? 1 : -1;
     });
 
     // Update validator list
@@ -37,12 +43,14 @@ export const mutations = {
     for (let i = 0; i < validators.length; i++) {
       let validator = validators[i];
       let bn;
-      if (isHex(validator.stakers.total)) {
-        bn = new BN(validator.stakers.total.substring(2, validator.stakers.total.length), 16);
-      } else {
-        bn = new BN(validator.stakers.total.toString(), 10);
+      if (validator.stakers) {
+        if (isHex(validator.stakers.total)) {
+          bn = new BN(validator.stakers.total.substring(2, validator.stakers.total.length), 16);
+        } else {
+          bn = new BN(validator.stakers.total.toString(), 10);
+        }
+        accum = accum.add(bn);
       }
-      accum = accum.add(bn);
     }
     state.totalStakeBonded = accum;
     

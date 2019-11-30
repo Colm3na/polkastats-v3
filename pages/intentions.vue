@@ -26,7 +26,6 @@
             </template>
             <template slot="accountId" slot-scope="data">
               <div class="d-block d-sm-block d-md-none d-lg-none d-xl-none text-center">
-
                 <div v-if="hasIdentity(data.item.accountId)">
                   <div v-if="getIdentity(data.item.accountId).logo !== ''">
                     <img v-bind:src="getIdentity(data.item.accountId).logo" class="identity mt-2" />
@@ -48,21 +47,23 @@
                     <span class="d-none d-sm-none d-md-none d-lg-none d-xl-inline"></span>
                   </h4>
                 </nuxt-link>
-
                 <p class="mt-3 mb-0 rank">
                   rank #{{ data.item.rank }}
                 </p>
-                <p class="bonded mb-0" v-b-tooltip.hover title="Active bonded">
-                  {{ formatDot(data.item.activeStake) }}
-                </p>
-                <p class="mb-0">
-                  <small>
-                    <span v-b-tooltip.hover title="Total bonded">
-                      {{ formatDot(data.item.totalStake) }}
-                    </span>
-                  </small>
-                </p>
-              
+                <div v-if="data.item.activeStake">
+                  <p class="bonded mb-0" v-b-tooltip.hover title="Active bonded">
+                    {{ formatDot(data.item.activeStake) }}
+                  </p>
+                </div>
+                <div v-if="data.item.totalStake">
+                  <p class="mb-0">
+                    <small>
+                      <span v-b-tooltip.hover title="Total bonded">
+                        {{ formatDot(data.item.totalStake) }}
+                      </span>
+                    </small>
+                  </p>
+                </div>
               </div>
               <div class="d-none d-sm-none d-md-block d-lg-block d-xl-block">
                 <Identicon :value="data.item.accountId" :size="20" :theme="'polkadot'" />
@@ -81,14 +82,18 @@
               </div>
             </template>
             <template slot="totalStake" slot-scope="data">
-              <p class="text-right mb-0">
-                {{ formatDot(data.item.totalStake) }}
-              </p>
+              <div v-if="data.item.totalStake">
+                <p class="text-right mb-0">
+                  {{ formatDot(data.item.totalStake) }}
+                </p>
+              </div>
             </template> 
             <template slot="comission" slot-scope="data">
-              <p class="text-right mb-0">
-                {{ formatDot(data.item.comission) }}
-              </p>
+              <div v-if="data.item.comission">
+                <p class="text-right mb-0">
+                  {{ formatDot(data.item.comission) }}
+                </p>
+              </div>
             </template>
             <template slot="favorite" slot-scope="data">
               <p class="text-center mb-0">

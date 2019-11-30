@@ -7,7 +7,10 @@
           <p class="mt-2 mb-0">Expect some <strong>kaos</strong> until network migration was completed</p>
         </b-alert>
         <b-alert show dismissible variant="success" class="text-center">
-          Total issuance is <strong>{{ formatDot(totalIssuance) }}</strong>, total stake bonded is <strong>{{ formatDot(totalStakeBonded) }} ({{ totalStakeBondedPercen.toString(10) }}% of total issuance)</strong>
+          Total issuance is <strong>{{ formatDot(totalIssuance) }}</strong>
+          <span v-if="totalStakeBonded.toString() !== `0` && totalStakeBondedPercen !== 0">
+            , total stake bonded is <strong>{{ formatDot(totalStakeBonded) }} ({{ totalStakeBondedPercen.toString(10) }}% of total issuance)</strong>
+          </span>
         </b-alert>
         <Network :bestblocknumber="bestblocknumber" :bestBlockFinalized="bestBlockFinalized" :session="session" />
 
@@ -103,15 +106,21 @@
                   <i v-if="data.item.imOnline" class="imOnline fas fa-check-circle ml-1" v-b-tooltip.hover v-bind:title="data.item.imOnlineMessage"></i>
                   <i v-else class="imOffline fas fa-times-circle ml-1" v-b-tooltip.hover v-bind:title="data.item.imOnlineMessage"></i>
                 </p>
-                <p v-if="data.item.stakers.total > 0" class="bonded mb-0" v-b-tooltip.hover title="Total bonded">{{ formatDot(data.item.stakers.total) }}</p>
-                <p v-else class="bonded mb-0" v-b-tooltip.hover title="Total bonded">{{ formatDot(data.item.stake) }}</p>
-                <p class="mb-0" v-if="data.item.stakers.own !== data.item.stake">
-                  <small>
-                    <span v-b-tooltip.hover title="Self bonded" v-if="data.item.stakers.own > 0">{{ formatDot(data.item.stakers.own) }}</span>
-                    <span v-b-tooltip.hover title="Bonded by nominators" v-if="(data.item.stakers.total - data.item.stakers.own) > 0">(+{{ formatDot(data.item.stakers.total - data.item.stakers.own) }})</span>
-                  </small>
-                </p>
-                <p class="mb-0" v-b-tooltip.hover title="Percentage over total bonded stake">{{ getStakePercent(data.item.stakers.total) }}% of total stake</p>
+                <div v-if="data.item.stakers">
+
+                  <p v-if="data.item.stakers.total && data.item.stakers.total > 0" class="bonded mb-0" v-b-tooltip.hover title="Total bonded">{{ formatDot(data.item.stakers.total) }}</p>
+ 
+                  <p v-if="data.item.stake && data.item.stake > 0" class="bonded mb-0" v-b-tooltip.hover title="Total bonded">{{ formatDot(data.item.stake) }}</p>
+
+
+                  <p class="mb-0" v-if="data.item.stakers.own !== data.item.stake">
+                    <small>
+                      <span v-b-tooltip.hover title="Self bonded" v-if="data.item.stakers.own > 0">{{ formatDot(data.item.stakers.own) }}</span>
+                      <span v-b-tooltip.hover title="Bonded by nominators" v-if="(data.item.stakers.total - data.item.stakers.own) > 0">(+{{ formatDot(data.item.stakers.total - data.item.stakers.own) }})</span>
+                    </small>
+                  </p>
+                  <p class="mb-0" v-if="data.item.stakers.total" v-b-tooltip.hover title="Percentage over total bonded stake">{{ getStakePercent(data.item.stakers.total) }}% of total stake</p>
+                </div>
               </div>
               <div class="d-none d-sm-none d-md-block d-lg-block d-xl-block">
                 <div v-if="hasIdentity(data.item.accountId)" class="d-inline-block">
@@ -137,12 +146,12 @@
               </div>
             </template>
             <template slot="stakeIndex" slot-scope="data">
-              <p class="text-right mb-0">
+              <p class="text-right mb-0" v-if="data.item.stake > 0 ">
                 {{ formatDot(data.item.stake) }} ({{ formatNumber(data.item.percent) }}%)
               </p>
             </template> 
             <template slot="comission" slot-scope="data">
-              <p class="text-right mb-0">
+              <p class="text-right mb-0" v-if="data.item.comission !== 0 ">
                 {{ formatDot(data.item.comission) }}
               </p>
             </template>
@@ -236,11 +245,23 @@ export default {
       for(let i = 0; i < this.$store.state.validators.list.length; i++) {
         let validator = this.$store.state.validators.list[i];
         let stake = 0;
-        if (validator.stakers.total > 0) {
-          stake = validator.stakers.total;
-        } else {
-          stake = validator.stakingLedger.total;
+        if (validator.stakers || validator.stakingLedger) {
+          if (validator.stakers.total > 0) {
+            stake = validator.stakers.total;
+          } else {
+            stake = validator.stakingLedger.total;
+          }
         }
+        let stakePercent = 0;
+        if (validator.stakers) {
+          stakePercent = this.getStakePercent(validator.stakers.total);
+        }
+
+        let comission = 0;
+        if (validator.validatorPrefs) {
+          comission = validator.validatorPrefs.validatorPayment;
+        }
+
         validatorsObject.push({
           rank: i+1,
           imOnline: validator.imOnline.isOnline,
@@ -249,8 +270,8 @@ export default {
           stake: stake,
           stakeIndex: i+1,
           stakers: validator.stakers,
-          comission: validator.validatorPrefs.validatorPayment,
-          percent: this.getStakePercent(validator.stakers.total),
+          comission,
+          percent: stakePercent,
           favorite: this.isFavorite(validator.accountId)
         });
       }
