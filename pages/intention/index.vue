@@ -29,10 +29,10 @@
                 <i v-else class="favorite fas fa-star" style="color: #e6dfdf;" v-b-tooltip.hover title="Not in Favorites"></i>
                 <div class="row">
                   <div class="col-md-3 mb-2 text-center">
-                    <div v-if="hasIdentity(validator.stashId)">
-                      <div v-if="getIdentity(validator.stashId).logo !== ''">
-                        <img v-bind:src="getIdentity(validator.stashId).logo" class="img-fluid" style="max-width: 150px;" />
-                        <h3 class="mt-2 mb-2" v-if="getIdentity(validator.stashId).full_name !== ''">{{ getIdentity(validator.stashId).full_name }}</h3>
+                    <div v-if="hasIdentity(validator.accountId)">
+                      <div v-if="getIdentity(validator.accountId).logo !== ''">
+                        <img v-bind:src="getIdentity(validator.accountId).logo" class="img-fluid" style="max-width: 150px;" />
+                        <h3 class="mt-2 mb-2" v-if="getIdentity(validator.accountId).full_name !== ''">{{ getIdentity(validator.accountId).full_name }}</h3>
                       </div>
                       <div v-else>
                         <Identicon :value="validator.accountId" :size="80" :theme="'polkadot'" :key="validator.accountId" />
@@ -87,7 +87,7 @@
                         </a>
                       </div>
                     </div>
-                    <div class="row">
+                    <div class="row" v-if="validator.validatorPrefs.validatorPayment">
                       <div class="col-md-3 mb-2">
                         <strong>Comission</strong>
                       </div>
@@ -104,58 +104,58 @@
                       </div>
                     </div>
                     <!-- Identity -->
-                    <div v-if="hasIdentity(validator.stashId)" class="mb-2">
-                      <div class="row" v-if="getIdentity(validator.stashId).full_name !== `` && getIdentity(validator.stashId).full_name !== `null`">
+                    <div v-if="hasIdentity(validator.accountId)" class="mb-2">
+                      <div class="row" v-if="getIdentity(validator.accountId).full_name !== `` && getIdentity(validator.accountId).full_name !== `null`">
                         <div class="col-md-3 mb-2">
                           <strong>Name</strong>
                         </div>
                         <div class="col-md-9 mb-2 fee">
-                          {{ getIdentity(validator.stashId).full_name }}
+                          {{ getIdentity(validator.accountId).full_name }}
                         </div>
                       </div>
-                      <div class="row" v-if="getIdentity(validator.stashId).bio !== `` && getIdentity(validator.stashId).bio !== `null`">
+                      <div class="row" v-if="getIdentity(validator.accountId).bio !== `` && getIdentity(validator.accountId).bio !== `null`">
                         <div class="col-md-3 mb-2">
                           <strong>Bio</strong>
                         </div>
                         <div class="col-md-9 mb-2 fee">
-                          {{ getIdentity(validator.stashId).bio }}
+                          {{ getIdentity(validator.accountId).bio }}
                         </div>
                       </div>
-                      <div class="row" v-if="getIdentity(validator.stashId).location !== `` && getIdentity(validator.stashId).location !== `null`">
+                      <div class="row" v-if="getIdentity(validator.accountId).location !== `` && getIdentity(validator.accountId).location !== `null`">
                         <div class="col-md-3 mb-2">
                           <strong>Location</strong>
                         </div>
                         <div class="col-md-9 mb-2 fee">
-                          {{ getIdentity(validator.stashId).location }}
+                          {{ getIdentity(validator.accountId).location }}
                         </div>
                       </div>
-                      <div class="row" v-if="getIdentity(validator.stashId).website !== `` && getIdentity(validator.stashId).website !== `null`">
+                      <div class="row" v-if="getIdentity(validator.accountId).website !== `` && getIdentity(validator.accountId).website !== `null`">
                         <div class="col-md-3 mb-2">
                           <strong>Website</strong>
                         </div>
                         <div class="col-md-9 mb-2 fee">
-                          <a v-bind:href="getIdentity(validator.stashId).website" target="_blank">
-                            {{ getIdentity(validator.stashId).website }}
+                          <a v-bind:href="getIdentity(validator.accountId).website" target="_blank">
+                            {{ getIdentity(validator.accountId).website }}
                           </a>
                         </div>
                       </div>
-                      <div class="row" v-if="getIdentity(validator.stashId).twitter !== `` && getIdentity(validator.stashId).twitter !== `null`">
+                      <div class="row" v-if="getIdentity(validator.accountId).twitter !== `` && getIdentity(validator.accountId).twitter !== `null`">
                         <div class="col-md-3 mb-2">
                           <strong>Twitter</strong>
                         </div>
                         <div class="col-md-9 mb-2 fee">
-                          <a v-bind:href="getIdentity(validator.stashId).twitter" target="_blank">
-                            {{ getIdentity(validator.stashId).twitter }}
+                          <a v-bind:href="getIdentity(validator.accountId).twitter" target="_blank">
+                            {{ getIdentity(validator.accountId).twitter }}
                           </a>
                         </div>
                       </div>
-                      <div class="row" v-if="getIdentity(validator.stashId).github !== `` && getIdentity(validator.stashId).github !== `null`">
+                      <div class="row" v-if="getIdentity(validator.accountId).github !== `` && getIdentity(validator.accountId).github !== `null`">
                         <div class="col-md-3 mb-2">
                           <strong>Github</strong>
                         </div>
                         <div class="col-md-9 mb-2 fee">
-                          <a v-bind:href="getIdentity(validator.stashId).github" target="_blank">
-                            {{ getIdentity(validator.stashId).github }}
+                          <a v-bind:href="getIdentity(validator.accountId).github" target="_blank">
+                            {{ getIdentity(validator.accountId).github }}
                           </a>
                         </div>
                       </div>
