@@ -3,8 +3,7 @@
     <section>
       <b-container class="main pt-4">
         <b-alert show dismissible variant="info" class="text-center">
-          <strong>We are on Kusama CC3! Happy kaos everyone, welcome tranfers! ;-)</strong>
-          <p class="mt-2 mb-0">Expect some <strong>kaos</strong> until network migration was completed</p>
+          <strong>We are on Kusama CC3! Happy kaos everyone! ;-)</strong>
         </b-alert>
         <b-alert show dismissible variant="success" class="text-center">
           Total issuance is <strong>{{ formatDot(totalIssuance) }}</strong>
@@ -14,9 +13,9 @@
         </b-alert>
 
         <b-alert show dismissible variant="success" class="text-center">
-          Currently there are <strong>{{ session.validatorCount }}</strong> validator slots, <strong>{{ validators.length }}</strong> validators and <strong>{{ intentions.length }}</strong> intentions.
+          Currently there are <strong>{{ validators.length }}</strong> active validators of <strong>{{ session.validatorCount }}</strong> available slots and <strong>{{ intentions.length }}</strong> waiting
         </b-alert>
-
+        
         <Network :bestblocknumber="bestblocknumber" :bestBlockFinalized="bestBlockFinalized" :session="session" />
 
         <!-- Filter -->

@@ -1,5 +1,6 @@
 <template>
-  <div class="network row text-center mt-4">
+  <div class="network row text-center mt-4" v-if="showNetworkStats">
+    <div class="col-12 text-right"><button type="button" class="close" @click="showNetworkStats = false">×</button></div>
     <div class="col-6 col-md-4 col-xl-2 mb-4">
       <div class="card">
         <div class="card-body">
@@ -55,6 +56,11 @@
 import { isHex } from '@polkadot/util';
 export default {
   props: ["bestblocknumber", "bestBlockFinalized", "session"],
+  data: function() {
+    return {
+      showNetworkStats: true
+    }
+  },
   methods: {
     formatNumber(n) {
       if (isHex(n)) {
