@@ -26,7 +26,7 @@
               v-model="filter"
               type="search"
               id="filterInput"
-              placeholder="Search by validator stash address"
+              placeholder="Search by address, nickname or keybase name"
             ></b-form-input>
           </b-col>
         </b-row>
@@ -269,6 +269,16 @@ export default {
           commission = validator.validatorPrefs.commission;
         }
 
+        let identity = null;
+        if (this.hasIdentity(validator.accountId)) {
+          identity = this.getIdentity(validator.accountId);
+        }
+
+        let nickname = null;
+        if (this.hasNickname(validator.accountId)) {
+          nickname = this.getNickname(validator.accountId);
+        }
+
         validatorsObject.push({
           rank: i+1,
           imOnline: validator.imOnline.isOnline,
@@ -280,7 +290,9 @@ export default {
           commission,
           percent: stakePercent,
           favorite: this.isFavorite(validator.accountId),
-          currentElected: validator.currentElected
+          currentElected: validator.currentElected,
+          nickname,
+          identity
         });
       }
       // console.log(validatorsObject);
