@@ -81,6 +81,10 @@
             </template>
             <template slot="accountId" slot-scope="data">
               <div class="d-block d-sm-block d-md-none d-lg-none d-xl-none text-center">
+                <a class="favorite" v-on:click="toggleFavorite(data.item.accountId)">
+                  <i v-if="data.item.favorite" class="fas fa-star" style="color: #f1bd23" v-b-tooltip.hover title="Remove from Favorites"></i>
+                  <i v-else class="fas fa-star" style="color: #e6dfdf;" v-b-tooltip.hover title="Add to Favorites"></i>
+                </a>
                 <div v-if="hasIdentity(data.item.accountId)">
                   <div v-if="getIdentity(data.item.accountId).logo !== ''">
                     <img v-bind:src="getIdentity(data.item.accountId).logo" class="identity mt-2" />
@@ -105,14 +109,11 @@
                   rank #{{ data.item.rank }}
                   <i v-if="data.item.imOnline" class="imOnline fas fa-check-circle ml-1" v-b-tooltip.hover v-bind:title="data.item.imOnlineMessage"></i>
                   <i v-else class="imOffline fas fa-times-circle ml-1" v-b-tooltip.hover v-bind:title="data.item.imOnlineMessage"></i>
+                  <i v-if="data.item.currentElected" class="elected fas fa-chevron-circle-right" v-b-tooltip.hover title="Elected for next session"></i>
+                  <i v-else class="notElected fas fa-times-circle" v-b-tooltip.hover title="Not elected for next session"></i>
                 </p>
                 <div v-if="data.item.stakers">
-
-                  <p v-if="data.item.stakers.total && data.item.stakers.total > 0" class="bonded mb-0" v-b-tooltip.hover title="Total bonded">{{ formatDot(data.item.stakers.total) }}</p>
- 
                   <p v-if="data.item.stake && data.item.stake > 0" class="bonded mb-0" v-b-tooltip.hover title="Total bonded">{{ formatDot(data.item.stake) }}</p>
-
-
                   <p class="mb-0" v-if="data.item.stakers.own !== data.item.stake">
                     <small>
                       <span v-b-tooltip.hover title="Self bonded" v-if="data.item.stakers.own > 0">{{ formatDot(data.item.stakers.own) }}</span>
@@ -272,7 +273,8 @@ export default {
           stakers: validator.stakers,
           commission,
           percent: stakePercent,
-          favorite: this.isFavorite(validator.accountId)
+          favorite: this.isFavorite(validator.accountId),
+          currentElected: validator.currentElected
         });
       }
       // console.log(validatorsObject);
@@ -608,6 +610,7 @@ body {
 #validators-table th:nth-child(7) {
   width: 10%;
 }
+
 #validators-table .identicon {
   display: inline;
   margin-right: 0.2rem;
@@ -616,6 +619,7 @@ body {
 #validators-table .identicon div {
   display: inline;
 }
+
 .page-item.active .page-link {
     z-index: 1;
     color: #fff;
@@ -646,6 +650,41 @@ body {
     border-left: 1px solid #dee2e6;
     border-right: 1px solid #dee2e6;
     padding: 1rem 0 1rem 0;
+  }
+  #validators-table tr td:nth-child(3) div {
+    padding: 0 1rem;
+  }
+  #validators-table tr td:nth-child(3) div .d-block {
+    position: relative;
+  }
+  #validators-table tr td:nth-child(3) div .d-block .favorite {
+    position: absolute;
+    top: 0rem;
+    right: 0rem;
+  }
+  #validators-table .elected {
+    position: absolute;
+    top: 0rem;
+    left: 1.8rem;
+    font-size: 1.1rem;
+    color: #2697e2;
+  }
+  #validators-table .notElected {
+    position: absolute;
+    top: 0rem;
+    left: 1.8rem;
+    font-size: 1.1rem;
+    color: red;
+  }
+  #validators-table .imOnline {
+    position: absolute;
+    top: 0rem;
+    left: 0rem;
+  }
+  #validators-table .imOffline {
+    position: absolute;
+    top: 0rem;
+    left: 0rem;
   }
 }
 </style>
