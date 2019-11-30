@@ -12,6 +12,11 @@
             , total stake bonded is <strong>{{ formatDot(totalStakeBonded) }} ({{ totalStakeBondedPercen.toString(10) }}% of total issuance)</strong>
           </span>
         </b-alert>
+
+        <b-alert show dismissible variant="success" class="text-center">
+          Currently there are <strong>{{ session.validatorCount }}</strong> validator slots, <strong>{{ validators.length }}</strong> validators and <strong>{{ intentions.length }}</strong> intentions.
+        </b-alert>
+
         <Network :bestblocknumber="bestblocknumber" :bestBlockFinalized="bestBlockFinalized" :session="session" />
 
         <!-- Filter -->
@@ -235,7 +240,8 @@ export default {
         lastLengthChange: 0,
         sessionLength: 0,
         sessionsPerEra: 0,
-        sessionProgress: 0
+        sessionProgress: 0,
+        validatorCount: 0
       },
       totalIssuance: ""
     }
@@ -643,6 +649,9 @@ body {
 .imOffline {
   font-size: 1.1rem;
   color: red;
+}
+.table.b-table > thead > tr > th[aria-sort]::before, .table.b-table > tfoot > tr > th[aria-sort]::before {
+  margin-left: -0.5em;
 }
 @media (max-width:767px){
   #validators-table td[data-label="Validator"] {
