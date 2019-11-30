@@ -151,7 +151,7 @@
               </p>
             </template> 
             <template slot="comission" slot-scope="data">
-              <p class="text-right mb-0" v-if="data.item.comission !== 0 ">
+              <p class="text-right mb-0" v-if="data.item.comission">
                 {{ formatDot(data.item.comission) }}
               </p>
             </template>
