@@ -333,6 +333,11 @@ export default {
     }
     this.totalRows = this.$store.state.validators.list.length;
 
+    // Force update of intentions list if empty
+    if (this.$store.state.intentions.list.length == 0) {
+      vm.$store.dispatch('intentions/update');
+    }
+
     // Force update of indentity list if empty
     if (this.$store.state.identities.list.length === 0) {
       vm.$store.dispatch('identities/update');
@@ -343,10 +348,11 @@ export default {
       vm.$store.dispatch('nicknames/update');
     }
 
-    // Update network info and validators every 10 seconds
+    // Update network info validators and intentions every 10 seconds
     this.polling = setInterval(() => {
       vm.$store.dispatch('network/update');
       vm.$store.dispatch('validators/update');
+      vm.$store.dispatch('intentions/update');
       if (!this.filter) this.totalRows = this.$store.state.validators.list.length; 
     }, 10000);
 
