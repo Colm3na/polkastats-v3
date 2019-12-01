@@ -8,7 +8,7 @@
               Network: <a href="https://polkastats.io" class="active"><i class="fas fa-check"></i> Kusama CC3</a> | <a href="https://alexander.polkastats.io" target="_blank">Alexander</a>
             </p>
           </div>
-          <b-navbar toggleable="lg" type="dark" class="row">
+          <b-navbar toggleable="xl" type="dark" class="row">
             <b-navbar-brand>
               <nuxt-link to="/" class="navbar-brand" title="PolkaStats | Polkadot Kusama CC2 network statistics"><span class="logo"></span>PolkaStats <small>v2</small></nuxt-link>
             </b-navbar-brand>
@@ -31,7 +31,7 @@
                   <nuxt-link to="/for-validators" active-class="nuxt-link-exact-active" class="nav-link">For validators</nuxt-link>
                 </b-nav-item>
                 <b-nav-item>
-                  <nuxt-link to="/support-us" active-class="nuxt-link-exact-active" class="nav-link">Support PolkaStats</nuxt-link>
+                  <nuxt-link to="/support-us" active-class="nuxt-link-exact-active" class="nav-link">Support us</nuxt-link>
                 </b-nav-item>              
                 <b-nav-item>
                   <nuxt-link to="/about" active-class="nuxt-link-exact-active" class="nav-link">About</nuxt-link>

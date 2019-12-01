@@ -13,10 +13,16 @@
               <h5>{{ nominator.staking.length }} nominations</h5>
               <hr>
               <div class="row">
-                <div class="col-2" v-for="nomination in nominator.staking" :key="nomination.validator">
+                <div class="col-md-2" v-for="nomination in nominator.staking" :key="nomination.validator">
                   <Identicon :value="nomination.validator" :size="50" :theme="'polkadot'" :key="nomination.validator" />
-                  <p class="my-2">{{ nomination.validator }}</p>
-                  <p>{{ formatDot(nomination.amount) }}</p>
+                  <a v-if="hasNickname(nomination.validator)" v-bind:href="blockExplorer.account + nomination.validator" target="_blank" class="mt-2 mb-0 d-block">
+                    {{ getNickname(nomination.validator) }}
+                  </a>
+                  <a v-else v-bind:href="blockExplorer.account + nomination.validator" target="_blank" class="mt-2 mb-0 d-block">
+                    <span v-b-tooltip.hover v-bind:title="nomination.validator">{{ shortAddress(nomination.validator) }}</span>
+                  </a>
+                  <p>rank #{{ getRank(nomination.validator) }}</p>
+                  <p class="amount">{{ formatDot(nomination.amount) }}</p>
                 </div>
               </div>
             </div>
@@ -258,176 +264,9 @@ export default {
 }
 </script>
 <style>
-body {
-  font-size: 0.9rem;
-}
-.favorite {
-  cursor: pointer;
-  font-size: 1.1rem;
-}
-.validator .bg-offline {
-  background-color: rgba(239, 57, 74, 0.12) !important;
-}
-.validator .bg-candidate {
-  background-color: rgba(21, 240, 86, 0.12) !important;
-}
-.rank {
-  font-size: 1.6rem;
-  color: #7d7378;
-}
-.account {
-  color: #670d35;
-}
-.bonded {
-  color: #d75ea1;
+.amount {
+  color: #ef1073;
   font-weight: 700;
-  font-size: 1.3rem;
-}
-[data-toggle="collapse"] .fas:before {   
-  content: "\f078";
-}
-[data-toggle="collapse"][aria-expanded="false"] .fas:before {
-  content: "\f054";
-}
-.nominators {
-  color: #670d35;
-}
-.nominator {
-  font-size: 0.9rem;
-}
-.nominator .value {
-  color: #d75ea1;
-  font-weight: 700;
-}
-.fee, .unstake {
-  color: #d75ea1;
-  font-weight: 700;
-}
-.block {
-  color: #d75ea1;
-  font-weight: bold;
-}
-.block:hover {
-  color: #d75ea1;
-}
-.tab-content .validator:nth-child(1) {
-  border-top: 0;
-}
-.fas.fa-copy {
-  cursor: pointer;
-  color: #d75ea1;
-  font-size: 0.9rem;
-  margin-left: 0.1rem;
-}
-.identity {
-  max-width: 80px;
-}
-.identity-small {
-  max-width: 25px;
-  margin-right: 0.2rem;
-}
-#validators-table th {
-  text-align: center;
-}
-#validators-table th:first-child {
-  width: 7%;
-}
-#validators-table th:nth-child(2) {
-  width: 7%;
-}
-#validators-table th:nth-child(3) {
-  width: 42%;
-}
-#validators-table th:nth-child(4) {
-  width: 16%;
-}
-#validators-table th:nth-child(5) {
-  width: 13%;
-}
-#validators-table th:nth-child(6) {
-  width: 8%;
-}
-#validators-table th:nth-child(7) {
-  width: 10%;
-}
-
-#validators-table .identicon {
-  display: inline;
-  margin-right: 0.2rem;
-  cursor: copy;
-}
-#validators-table .identicon div {
-  display: inline;
-}
-
-.page-item.active .page-link {
-    z-index: 1;
-    color: #fff;
-    background-color: #343a40;
-    border-color: #343a40;
-}
-.page-link {
-    position: relative;
-    display: block;
-    padding: 0.5rem 0.75rem;
-    margin-left: -1px;
-    line-height: 1.25;
-    color: #343a40;
-    background-color: #fff;
-    border: 1px solid #dee2e6;
-}
-.imOnline {
-  font-size: 1.1rem;
-  color: green;
-}
-.imOffline {
-  font-size: 1.1rem;
-  color: red;
-}
-.table.b-table > thead > tr > th[aria-sort]::before, .table.b-table > tfoot > tr > th[aria-sort]::before {
-  margin-left: -0.5em;
-}
-@media (max-width:767px){
-  #validators-table td[data-label="Validator"] {
-    background-color: white;
-    border-left: 1px solid #dee2e6;
-    border-right: 1px solid #dee2e6;
-    padding: 1rem 0 1rem 0;
-  }
-  #validators-table tr td:nth-child(3) div {
-    padding: 0 1rem;
-  }
-  #validators-table tr td:nth-child(3) div .d-block {
-    position: relative;
-  }
-  #validators-table tr td:nth-child(3) div .d-block .favorite {
-    position: absolute;
-    top: 0rem;
-    right: 0rem;
-  }
-  #validators-table .elected {
-    position: absolute;
-    top: 0rem;
-    left: 1.8rem;
-    font-size: 1.1rem;
-    color: #2697e2;
-  }
-  #validators-table .notElected {
-    position: absolute;
-    top: 0rem;
-    left: 1.8rem;
-    font-size: 1.1rem;
-    color: red;
-  }
-  #validators-table .imOnline {
-    position: absolute;
-    top: 0rem;
-    left: 0rem;
-  }
-  #validators-table .imOffline {
-    position: absolute;
-    top: 0rem;
-    left: 0rem;
-  }
+  font-size: 1rem;
 }
 </style>
