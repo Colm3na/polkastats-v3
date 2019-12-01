@@ -408,11 +408,18 @@ section .section-title {
     max-width: 100%;
   }
   .navbar {
-    padding: 0 0.5rem;
+    padding: 0.5rem;
+  }
+  .navbar-nav {
+    font-size: 1.4rem;
+    text-align: center;
   }
 }
 
 @media (max-width:767px){
+  .navbar-nav {
+    font-size: 1.4rem;
+  }
   #navigation {
     margin-bottom: 93px;
   }
