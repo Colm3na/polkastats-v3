@@ -10,9 +10,14 @@
                 <span class="d-inline d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="nominator.accountId">{{ shortAddress(nominator.accountId) }} </span>
                 <span class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline">{{ nominator.accountId }}</span>
               </a>
-              <h5>Nominations</h5>
-              <div v-for="nomination in nominator.staking" :key="nomination.validator">
-                <p>{{ nomination.validator }}: {{ formatDot(nomination.amount) }}</p>
+              <h5>{{ nominator.staking.length }} nominations</h5>
+              <hr>
+              <div class="row">
+                <div class="col-2" v-for="nomination in nominator.staking" :key="nomination.validator">
+                  <Identicon :value="nomination.validator" :size="50" :theme="'polkadot'" :key="nomination.validator" />
+                  <p class="my-2">{{ nomination.validator }}</p>
+                  <p>{{ formatDot(nomination.amount) }}</p>
+                </div>
               </div>
             </div>
           </div>
@@ -60,27 +65,21 @@ export default {
     },
     nominators () {
       let nominatorStaking = [];
-
       for(let i = 0; i < this.validators.length; i++) {
         let validator = this.validators[i];
         // console.log(validator);
         if (validator.stakers.others.length > 0) {
           for (let j = 0; j < validator.stakers.others.length; j++) {
             let nominator = validator.stakers.others[j];
-
             if (nominatorStaking.find(nom => nom.accountId === nominator.who)) {
-
-              var nominatorTmp = nominatorStaking.filter(nom => {
+              let nominatorTmp = nominatorStaking.filter(nom => {
                 return nom.accountId === nominator.who
               })
-
               nominatorTmp[0].staking.push({
                 validator: validator.accountId,
                 amount: nominator.value
               });
-
             } else {
-
               nominatorStaking.push({
                 accountId: nominator.who,
                 staking: [{
@@ -88,14 +87,11 @@ export default {
                   amount: nominator.value
                 }]
               })
-
             }
-
           }
-
         }
       }
-      console.log(nominatorStaking);
+      // console.log(nominatorStaking);
       return nominatorStaking;
     }
   },
