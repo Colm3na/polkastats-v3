@@ -14,8 +14,8 @@
               <h5>{{ nominator.staking.length }} nomination<span v-if="nominator.staking.length > 1">s</span>:</h5>
               <hr>
               <div class="row">
-                <div class="col-md-2" v-for="nomination in nominator.staking" :key="nomination.validator">
-                  <Identicon :value="nomination.validator" :size="50" :theme="'polkadot'" :key="nomination.validator" />
+                <div class="col-6 col-md-4 col-lg-3 col-xl-2" v-for="nomination in nominator.staking" :key="nomination.validator">
+                  <Identicon :value="nomination.validator" :size="40" :theme="'polkadot'" :key="nomination.validator" />
                   <nuxt-link v-if="hasNickname(nomination.validator)" :to="{name: 'validator', query: { accountId: nomination.validator } }" title="Validator details" class="mt-2 mb-0 d-block">
                     {{ getNickname(nomination.validator) }}
                   </nuxt-link>
