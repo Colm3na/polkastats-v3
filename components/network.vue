@@ -5,7 +5,7 @@
       <div class="card">
         <div class="card-body">
           <p>Last block</p>
-          <h5>{{ formatNumber(bestblocknumber) }}</h5>
+          <h5>{{ formatNumber(network.bestblocknumber) }}</h5>
         </div>
       </div>
     </div>
@@ -13,7 +13,7 @@
       <div class="card">
         <div class="card-body">
           <p>Last finalized</p>
-          <h5>{{ formatNumber(bestBlockFinalized) }}</h5>
+          <h5>{{ formatNumber(network.bestBlockFinalized) }}</h5>
         </div>
       </div>
     </div>
@@ -21,7 +21,7 @@
       <div class="card">
         <div class="card-body">
           <p>Current session</p>
-          <h5>{{ formatNumber(session.currentIndex) }}</h5>
+          <h5>{{ formatNumber(network.session.currentIndex) }}</h5>
         </div>
       </div>
     </div>
@@ -29,7 +29,7 @@
       <div class="card">
         <div class="card-body">
           <p>Epoch</p>
-          <h5>{{ formatNumber(session.sessionProgress) }}/{{ formatNumber(session.sessionLength) }}</h5>
+          <h5>{{ formatNumber(network.session.sessionProgress) }}/{{ formatNumber(network.session.sessionLength) }}</h5>
         </div>
       </div>
     </div>
@@ -37,7 +37,7 @@
       <div class="card">
         <div class="card-body">
           <p>Current era</p>
-          <h5>{{ formatNumber(session.currentEra) }}</h5>
+          <h5>{{ formatNumber(network.session.currentEra) }}</h5>
         </div>
       </div>
     </div>
@@ -45,7 +45,7 @@
       <div class="card">
         <div class="card-body">
           <p>Era</p>
-          <h5>{{ formatNumber(session.eraProgress) }}/{{ formatNumber(session.eraLength) }}</h5>
+          <h5>{{ formatNumber(network.session.eraProgress) }}/{{ formatNumber(network.session.eraLength) }}</h5>
         </div>
       </div>
     </div>      
@@ -55,7 +55,7 @@
 <script>
 import { isHex } from '@polkadot/util';
 export default {
-  props: ["bestblocknumber", "bestBlockFinalized", "session"],
+  props: ["network"],
   data: function() {
     return {
       showNetworkStats: true

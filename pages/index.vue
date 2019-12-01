@@ -2,22 +2,23 @@
   <div>
     <section>
       <b-container class="main pt-4">
+        <!-- Kusama CC3 message -->
         <b-alert show dismissible variant="info" class="text-center">
           <strong>We are on Kusama CC3! Happy kaos everyone! ;-)</strong>
         </b-alert>
+        <!-- Economics info message -->
         <b-alert show dismissible variant="success" class="text-center">
-          Total issuance is <strong>{{ formatDot(totalIssuance) }}</strong>
+          Total issuance is <strong>{{ formatDot(network.totalIssuance) }}</strong>
           <span v-if="totalStakeBonded.toString() !== `0` && totalStakeBondedPercen !== 0">
-            , total stake bonded is <strong>{{ formatDot(totalStakeBonded) }} ({{ totalStakeBondedPercen.toString(10) }}% of total issuance)</strong>
+            , total stake bonded is <strong>{{ formatDot(totalStakeBonded) }} ({{ totalStakeBondedPercen.toString(10) }}% of total)</strong>
           </span>
         </b-alert>
-
+        <!-- Validators info message -->
         <b-alert show dismissible variant="success" class="text-center">
-          Currently there are <strong>{{ validators.length }}</strong> active validators of <strong>{{ session.validatorCount }}</strong> available slots and <strong>{{ intentions.length }}</strong> waiting
+          Currently there are <strong>{{ validators.length }}</strong> active validators of <strong>{{ network.session.validatorCount }}</strong> available slots and <strong>{{ intentions.length }}</strong> waiting
         </b-alert>
-        
-        <Network :bestblocknumber="bestblocknumber" :bestBlockFinalized="bestBlockFinalized" :session="session" />
-
+        <!-- Network component -->
+        <Network :network="network" />
         <!-- Filter -->
         <b-row>
           <b-col lg="12" class="mb-4">
@@ -29,7 +30,6 @@
             ></b-form-input>
           </b-col>
         </b-row>
-
         <!-- Mobile sorting -->
         <div class="row d-block d-sm-block d-md-block d-lg-none d-xl-none">
           <b-col lg="6" class="my-1">
@@ -55,7 +55,6 @@
             </b-form-group>
           </b-col>
         </div>
-
         <!-- Table with sorting and pagination-->
         <div class="table-responsive">
           <b-table
@@ -227,25 +226,13 @@ export default {
       blockExplorer,
       backendBaseURL,
       favorites: [],
-      polling: null,
-      bestblocknumber: 0,
-      bestBlockFinalized: 0,
-      session: {  
-        currentEra: 0,
-        currentIndex: 0,
-        eraLength: 0,
-        eraProgress: 0,
-        lastEraLengthChange: 0,
-        lastLengthChange: 0,
-        sessionLength: 0,
-        sessionsPerEra: 0,
-        sessionProgress: 0,
-        validatorCount: 0
-      },
-      totalIssuance: ""
+      polling: null
     }
   },
   computed: {
+    network () {
+      return this.$store.state.network.info;
+    },
     validators () {
       let validatorsObject = [];
       for(let i = 0; i < this.$store.state.validators.list.length; i++) {
@@ -307,8 +294,8 @@ export default {
       return this.$store.state.nicknames.list;
     },
     totalStakeBondedPercen() {
-      if (this.totalStakeBonded !== 0 && this.totalIssuance !== "" && this.totalIssuance !== "0") {
-        let totalIssuance = new BN(this.totalIssuance, 10);
+      if (this.totalStakeBonded !== 0 && this.network.totalIssuance !== "" && this.network.totalIssuance !== "0") {
+        let totalIssuance = new BN(this.network.totalIssuance, 10);
         let totalStakeBonded = this.totalStakeBonded.mul(new BN('100', 10));
         return totalStakeBonded.div(totalIssuance);
       } else {
@@ -335,56 +322,39 @@ export default {
       this.favorites = this.$cookies.get('favorites');
     }
 
-    // First time
-    // this.getSystemData();
-    this.getChainData();
+    // Force update of network info if null
+    if (!this.$store.state.network.info) {
+      vm.$store.dispatch('network/update');
+    }
     
     // Force update of validators list if empty
-    if (this.$store.state.validators.list.length == 0) {
+    if (this.$store.state.validators.list.length === 0) {
       vm.$store.dispatch('validators/update');
     }
     this.totalRows = this.$store.state.validators.list.length;
 
     // Force update of indentity list if empty
-    if (this.$store.state.identities.list.length == 0) {
+    if (this.$store.state.identities.list.length === 0) {
       vm.$store.dispatch('identities/update');
     }
 
     // Force update of nicknames list if empty
-    if (this.$store.state.nicknames.list.length == 0) {
+    if (this.$store.state.nicknames.list.length === 0) {
       vm.$store.dispatch('nicknames/update');
     }
 
-    /* Update validators, intention validators, best block and session info every 10 seconds */
+    // Update network info and validators every 10 seconds
     this.polling = setInterval(() => {
+      vm.$store.dispatch('network/update');
       vm.$store.dispatch('validators/update');
-      if (!this.filter) this.totalRows = this.$store.state.validators.list.length;      
-      this.getChainData();
+      if (!this.filter) this.totalRows = this.$store.state.validators.list.length; 
     }, 10000);
 
   },
   beforeDestroy: function () {
     clearInterval(this.polling);
-    clearInterval(this.sessionPolling);
   },
   methods: {
-    getSystemData: function () {
-      var vm = this;
-      axios.get(`${backendBaseURL}/system`)
-        .then(function (response) {
-          vm.system = response.data;
-        })
-    },
-    getChainData: function () {
-      var vm = this;
-      axios.get(`${backendBaseURL}/chain`)
-        .then(function (response) {
-          vm.bestblocknumber = response.data.block_height;
-          vm.bestBlockFinalized = response.data.block_height_finalized;
-          vm.session = response.data.session;
-          vm.totalIssuance = response.data.total_issuance;
-        });
-    },
     formatNumber(n) {
       if (isHex(n)) {
         return (parseInt(n, 16).toString()).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');

@@ -2,10 +2,15 @@
   <div>
     <section>
       <b-container class="main pt-4">
+        <!-- Economics info message -->
         <b-alert show dismissible variant="success" class="text-center">
-          Total issuance is <strong>{{ formatDot(totalIssuance) }}</strong>, total stake bonded is <strong>{{ formatDot(totalStakeBonded) }} ({{ totalStakeBondedPercen.toString(10) }}% of total issuance)</strong>
+          Total issuance is <strong>{{ formatDot(network.totalIssuance) }}</strong>
+          <span v-if="totalStakeBonded.toString() !== `0` && totalStakeBondedPercen !== 0">
+            , total stake bonded is <strong>{{ formatDot(totalStakeBonded) }} ({{ totalStakeBondedPercen.toString(10) }}% of total)</strong>
+          </span>
         </b-alert>
-        <Network :bestblocknumber="bestblocknumber" :bestBlockFinalized="bestBlockFinalized" :session="session" />
+        <!-- Network component -->
+        <Network :network="network" />
 
         <!-- Filter -->
         <b-row>
@@ -203,24 +208,13 @@ export default {
       blockExplorer,
       backendBaseURL,
       favorites: [],
-      polling: null,
-      bestblocknumber: 0,
-      bestBlockFinalized: 0,
-      session: {  
-        currentEra: 0,
-        currentIndex: 0,
-        eraLength: 0,
-        eraProgress: 0,
-        lastEraLengthChange: 0,
-        lastLengthChange: 0,
-        sessionLength: 0,
-        sessionsPerEra: 0,
-        sessionProgress: 0
-      },
-      totalIssuance: ""
+      polling: null
     }
   },
   computed: {
+    network () {
+      return this.$store.state.network.info;
+    },
     intentions () {
       let intentionsObject = [];
       for(let i = 0; i < this.$store.state.intentions.list.length; i++) {
@@ -256,8 +250,8 @@ export default {
       return this.$store.state.nicknames.list;
     },
     totalStakeBondedPercen() {
-      if (this.totalStakeBonded !== 0 && this.totalIssuance !== "") {
-        let totalIssuance = new BN(this.totalIssuance, 10);
+      if (this.totalStakeBonded !== 0 && this.network.totalIssuance !== "") {
+        let totalIssuance = new BN(this.network.totalIssuance, 10);
         let totalStakeBonded = this.totalStakeBonded.mul(new BN('100', 10));
         return totalStakeBonded.div(totalIssuance);
       } else {
@@ -284,9 +278,10 @@ export default {
       this.favorites = this.$cookies.get('favorites');
     }
 
-    // First time
-    // this.getSystemData();
-    this.getChainData();
+    // Force update of network info if null
+    if (!this.$store.state.network.info) {
+      vm.$store.dispatch('network/update');
+    }
     
     // Force update of intentions list if empty
     if (this.$store.state.intentions.list.length == 0) {
@@ -304,11 +299,11 @@ export default {
       vm.$store.dispatch('nicknames/update');
     }
 
-    /* Update intention validators, best block and session info every 10 seconds */
+    // Update network info and intention validators every 10 seconds
     this.polling = setInterval(() => {
+      vm.$store.dispatch('network/update');
       vm.$store.dispatch('intentions/update');
       if (!this.filter) this.totalRows = this.$store.state.intentions.list.length;
-      this.getChainData();
     }, 10000);
 
   },
@@ -317,23 +312,6 @@ export default {
     clearInterval(this.sessionPolling);
   },
   methods: {
-    getSystemData: function () {
-      var vm = this;
-      axios.get(`${backendBaseURL}/system`)
-        .then(function (response) {
-          vm.system = response.data;
-        })
-    },
-    getChainData: function () {
-      var vm = this;
-      axios.get(`${backendBaseURL}/chain`)
-        .then(function (response) {
-          vm.bestblocknumber = response.data.block_height;
-          vm.bestBlockFinalized = response.data.block_height_finalized;
-          vm.session = response.data.session;
-          vm.totalIssuance = response.data.total_issuance;
-        });
-    },
     formatNumber(n) {
       if (isHex(n)) {
         return (parseInt(n, 16).toString()).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
@@ -432,6 +410,11 @@ export default {
         return obj.accountId === accountId
       });
       return filteredArray[0].nickname;
+    },
+    onFiltered(filteredItems) {
+      // Trigger pagination to update the number of buttons/pages due to filtering
+      this.totalRows = filteredItems.length
+      this.currentPage = 1
     }
   },
   watch: {

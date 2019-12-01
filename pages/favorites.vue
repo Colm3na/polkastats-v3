@@ -2,22 +2,22 @@
   <div>
     <section>
       <b-container class="page-favorites main pt-4">
+        <!-- Economics info message -->
         <b-alert show dismissible variant="success" class="text-center">
-          Total issuance is <strong>{{ formatDot(totalIssuance) }}</strong>
+          Total issuance is <strong>{{ formatDot(network.totalIssuance) }}</strong>
           <span v-if="totalStakeBonded.toString() !== `0` && totalStakeBondedPercen !== 0">
-            , total stake bonded is <strong>{{ formatDot(totalStakeBonded) }} ({{ totalStakeBondedPercen.toString(10) }}% of total issuance)</strong>
+            , total stake bonded is <strong>{{ formatDot(totalStakeBonded) }} ({{ totalStakeBondedPercen.toString(10) }}% of total)</strong>
           </span>
         </b-alert>
-        <Network :bestblocknumber="bestblocknumber" :bestBlockFinalized="bestBlockFinalized" :session="session" />
-
-        <template v-if="favorites.length == 0">
-          <div class="alert alert-warning alert-dismissible fade show mt-3 mb-4" role="alert">
-            <strong>Hi there!</strong> You can click in the star icon <i class="fas fa-star"></i> of a validator or intention to track it on this page.
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-        </template>
+        <!-- Network component -->
+        <Network :network="network" />
+        <!-- Empty favorites message -->
+        <div class="alert alert-warning alert-dismissible fade show mt-3 mb-4" role="alert" v-if="favorites.length === 0">
+          <strong>Hi there!</strong> You can click in the star icon <i class="fas fa-star"></i> of a validator or intention to track it on this page.
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
        
         <!-- START FAVORITE VALIDATORS -->
         <template  v-for="(validator, index) in validators">
@@ -379,24 +379,13 @@ export default {
       blockExplorer,
       backendBaseURL,
       favorites: [],
-      polling: null,
-      bestblocknumber: 0,
-      bestBlockFinalized: 0,
-      session: {  
-        currentEra: 0,
-        currentIndex: 0,
-        eraLength: 0,
-        eraProgress: 0,
-        lastEraLengthChange: 0,
-        lastLengthChange: 0,
-        sessionLength: 0,
-        sessionsPerEra: 0,
-        sessionProgress: 0
-      },
-      totalIssuance: ""
+      polling: null
     }
   },
   computed: {
+    network () {
+      return this.$store.state.network.info;
+    },
     validators () {
       return this.$store.state.validators.list
     },
@@ -413,8 +402,8 @@ export default {
       return this.$store.state.nicknames.list
     },
     totalStakeBondedPercen() {
-      if (this.totalStakeBonded !== 0 && this.totalIssuance !== "") {
-        let totalIssuance = new BN(this.totalIssuance, 10);
+      if (this.totalStakeBonded !== 0 && this.network.totalIssuance !== "") {
+        let totalIssuance = new BN(this.network.totalIssuance, 10);
         let totalStakeBonded = this.totalStakeBonded.mul(new BN('100', 10));
         return totalStakeBonded.div(totalIssuance);
       } else {
@@ -430,9 +419,10 @@ export default {
       this.favorites = this.$cookies.get('favorites');
     }
 
-    // First time
-    // this.getSystemData();
-    this.getChainData();
+    // Force update of network info if null
+    if (!this.$store.state.network.info) {
+      vm.$store.dispatch('network/update');
+    }
     
     // Force update of validators list if empty
     if (this.$store.state.validators.list.length == 0) {
@@ -454,36 +444,18 @@ export default {
       vm.$store.dispatch('intentions/update');
     }
 
-    /* Update validators, intention validators, best block and session info every 10 seconds */
+    // Update network info, validators and intention validators every 10 seconds
     this.polling = setInterval(() => {
+      vm.$store.dispatch('network/update');
       vm.$store.dispatch('validators/update');
       vm.$store.dispatch('intentions/update');
-      this.getChainData();
     }, 10000);
 
   },
   beforeDestroy: function () {
     clearInterval(this.polling);
-    clearInterval(this.sessionPolling);
   },
   methods: {
-    getSystemData: function () {
-      var vm = this;
-      axios.get(`${backendBaseURL}/system`)
-        .then(function (response) {
-          vm.system = response.data;
-        })
-    },
-    getChainData: function () {
-      var vm = this;
-      axios.get(`${backendBaseURL}/chain`)
-        .then(function (response) {
-          vm.bestblocknumber = response.data.block_height;
-          vm.bestBlockFinalized = response.data.block_height_finalized;
-          vm.session = response.data.session;
-          vm.totalIssuance = response.data.total_issuance;
-        });
-    },
     formatNumber(n) {
       if (isHex(n)) {
         return (parseInt(n, 16).toString()).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
