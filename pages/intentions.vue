@@ -6,18 +6,60 @@
           Total issuance is <strong>{{ formatDot(totalIssuance) }}</strong>, total stake bonded is <strong>{{ formatDot(totalStakeBonded) }} ({{ totalStakeBondedPercen.toString(10) }}% of total issuance)</strong>
         </b-alert>
         <Network :bestblocknumber="bestblocknumber" :bestBlockFinalized="bestBlockFinalized" :session="session" />
+
+        <!-- Filter -->
+        <b-row>
+          <b-col lg="12" class="mb-4">
+            <b-form-input
+              v-model="filter"
+              type="search"
+              id="filterInput"
+              placeholder="Search intention by address, nickname or keybase name"
+            ></b-form-input>
+          </b-col>
+        </b-row>
+
+        <!-- Mobile sorting -->
+        <div class="row d-block d-sm-block d-md-block d-lg-none d-xl-none">
+          <b-col lg="6" class="my-1">
+            <b-form-group
+              label="Sort"
+              label-cols-sm="3"
+              label-align-sm="right"
+              label-size="sm"
+              label-for="sortBySelect"
+              class="mb-4"
+            >
+              <b-input-group size="sm">
+                <b-form-select v-model="sortBy" id="sortBySelect" :options="sortOptions" class="w-75">
+                  <template v-slot:first>
+                    <option value="">-- none --</option>
+                  </template>
+                </b-form-select>
+                <b-form-select v-model="sortDesc" size="sm" :disabled="!sortBy" class="w-25">
+                  <option :value="false">Asc</option>
+                  <option :value="true">Desc</option>
+                </b-form-select>
+              </b-input-group>
+            </b-form-group>
+          </b-col>
+        </div>
+
         <!-- Table with sorting and pagination-->
         <div class="table-responsive">
           <b-table
             stacked="md"
             id="intentions-table"
             head-variant="dark"
-            :fields="Fields"
+            :fields="fields"
             :items="intentions"
             :per-page="perPage"
-            :current-page="CurrentPage"
-            :sort-by.sync="SortBy"
-            :sort-desc.sync="SortDesc"
+            :current-page="currentPage"
+            :sort-by.sync="sortBy"
+            :sort-desc.sync="sortDesc"
+            :filter="filter"
+            :filterIncludedFields="filterOn"
+            @filtered="onFiltered"
           >
             <template slot="rank" slot-scope="data">
               <p class="text-right mb-0">
@@ -105,10 +147,10 @@
             </template>
           </b-table>
           <b-pagination
-            v-model="CurrentPage"
-            :total-rows="Rows"
+            v-model="currentPage"
+            :total-rows="totalRows"
             :per-page="perPage"
-            aria-controls="validators-table"
+            aria-controls="intentions-table"
           ></b-pagination>
         </div>
       </b-container>
@@ -139,10 +181,13 @@ export default {
   data: function() {
     return {
       perPage: 20,
-      CurrentPage: 1,
-      SortBy: 'rank',
-      SortDesc: false,
-      Fields: [
+      currentPage: 1,
+      sortBy: `rank`,
+      sortDesc: false,
+      filter: null,
+      filterOn: [],
+      totalRows: 1,
+      fields: [
         { key: 'rank', label: '#', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` },
         { key: 'accountId', label: 'Intention', sortable: true },
         { key: 'totalStake', label: 'Total Stake', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` },
@@ -180,13 +225,26 @@ export default {
       let intentionsObject = [];
       for(let i = 0; i < this.$store.state.intentions.list.length; i++) {
         let intention = this.$store.state.intentions.list[i];
+
+        let identity = "";
+        if (this.hasIdentity(intention.accountId)) {
+          identity = this.getIdentity(intention.accountId);
+        }
+
+        let nickname = "";
+        if (this.hasNickname(intention.accountId)) {
+          nickname = this.getNickname(intention.accountId);
+        }
+
         intentionsObject.push({
           rank: i+1,
           accountId: intention.accountId,
           totalStake: intention.stakingLedger.total,
           activeStake: intention.stakingLedger.active,
           commission: intention.validatorPrefs.commission,
-          favorite: this.isFavorite(intention.accountId)
+          favorite: this.isFavorite(intention.accountId),
+          nickname,
+          identity
         });
       }
       return intentionsObject;
@@ -196,9 +254,6 @@ export default {
     },
     nicknames() {
       return this.$store.state.nicknames.list;
-    },
-    Rows() {
-      return this.$store.state.intentions.list.length;
     },
     totalStakeBondedPercen() {
       if (this.totalStakeBonded !== 0 && this.totalIssuance !== "") {
@@ -229,6 +284,7 @@ export default {
     if (this.$store.state.intentions.list.length == 0) {
       vm.$store.dispatch('intentions/update');
     }
+    this.totalRows = this.$store.state.intentions.list.length;
 
     // Force update of indentity list if empty
     if (this.$store.state.identities.list.length == 0) {
@@ -243,6 +299,7 @@ export default {
     /* Update intention validators, best block and session info every 10 seconds */
     this.polling = setInterval(() => {
       vm.$store.dispatch('intentions/update');
+      if (!this.filter) this.totalRows = this.$store.state.intentions.list.length;
       this.getChainData();
     }, 10000);
 

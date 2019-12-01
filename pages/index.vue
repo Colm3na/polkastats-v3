@@ -268,12 +268,12 @@ export default {
           commission = validator.validatorPrefs.commission;
         }
 
-        let identity = null;
+        let identity = "";
         if (this.hasIdentity(validator.accountId)) {
           identity = this.getIdentity(validator.accountId);
         }
 
-        let nickname = null;
+        let nickname = "";
         if (this.hasNickname(validator.accountId)) {
           nickname = this.getNickname(validator.accountId);
         }
