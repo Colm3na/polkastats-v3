@@ -278,10 +278,8 @@ export default {
       this.favorites = this.$cookies.get('favorites');
     }
 
-    // Force update of network info if null
-    if (!this.$store.state.network.info) {
-      vm.$store.dispatch('network/update');
-    }
+    // Force update of network info
+    vm.$store.dispatch('network/update');
     
     // Force update of intentions list if empty
     if (this.$store.state.intentions.list.length == 0) {

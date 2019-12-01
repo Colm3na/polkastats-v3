@@ -322,10 +322,8 @@ export default {
       this.favorites = this.$cookies.get('favorites');
     }
 
-    // Force update of network info if null
-    if (!this.$store.state.network.info) {
-      vm.$store.dispatch('network/update');
-    }
+    // Force update of network info
+    vm.$store.dispatch('network/update');
     
     // Force update of validators list if empty
     if (this.$store.state.validators.list.length === 0) {
