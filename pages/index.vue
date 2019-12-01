@@ -306,9 +306,6 @@ export default {
     nicknames() {
       return this.$store.state.nicknames.list;
     },
-    // totalRows() {
-    //   return this.$store.state.validators.list.length;
-    // },
     totalStakeBondedPercen() {
       if (this.totalStakeBonded !== 0 && this.totalIssuance !== "" && this.totalIssuance !== "0") {
         let totalIssuance = new BN(this.totalIssuance, 10);

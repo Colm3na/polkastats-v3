@@ -267,6 +267,14 @@ export default {
     totalStakeBonded () {
       return this.$store.state.validators.totalStakeBonded
     },
+    sortOptions() {
+      // Create an options list from our fields
+      return this.fields
+        .filter(f => f.sortable)
+        .map(f => {
+          return { text: f.label, value: f.key }
+        })
+    }
   },
   created: function () {
     var vm = this;
