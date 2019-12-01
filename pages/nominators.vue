@@ -2,26 +2,26 @@
   <div>
     <section>
       <b-container class="main pt-4">
+        <p class="text-right">Showing {{ nominators.length}} nominators</p>
         <div v-for="nominator in nominators" :key="nominator.accountId">
           <div class="card mb-3">
             <div class="card-body text-center">
               <Identicon :value="nominator.accountId" :size="80" :theme="'polkadot'" :key="nominator.accountId" />
               <a v-bind:href="blockExplorer.account + nominator.accountId" target="_blank" class="d-block my-2">
-                <span class="d-inline d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="nominator.accountId">{{ shortAddress(nominator.accountId) }} </span>
-                <span class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline">{{ nominator.accountId }}</span>
+                Nominator <span v-b-tooltip.hover v-bind:title="nominator.accountId">{{ shortAddress(nominator.accountId) }}</span>
               </a>
-              <p>{{ formatDot(getTotalStake(nominator.staking)) }}</p>
-              <h5>{{ nominator.staking.length }} nominations</h5>
+              <p class="amount" v-b-tooltip.hover title="Total bonded">{{ formatDot(getTotalStake(nominator.staking)) }}</p>
+              <h5>{{ nominator.staking.length }} nomination<span v-if="nominator.staking.length > 1">s</span>:</h5>
               <hr>
               <div class="row">
                 <div class="col-md-2" v-for="nomination in nominator.staking" :key="nomination.validator">
                   <Identicon :value="nomination.validator" :size="50" :theme="'polkadot'" :key="nomination.validator" />
-                  <a v-if="hasNickname(nomination.validator)" v-bind:href="blockExplorer.account + nomination.validator" target="_blank" class="mt-2 mb-0 d-block">
+                  <nuxt-link v-if="hasNickname(nomination.validator)" :to="{name: 'validator', query: { accountId: nomination.validator } }" title="Validator details" class="mt-2 mb-0 d-block">
                     {{ getNickname(nomination.validator) }}
-                  </a>
-                  <a v-else v-bind:href="blockExplorer.account + nomination.validator" target="_blank" class="mt-2 mb-0 d-block">
+                  </nuxt-link>
+                  <nuxt-link v-else :to="{name: 'validator', query: { accountId: nomination.validator } }" title="Validator details" class="mt-2 mb-0 d-block">
                     <span v-b-tooltip.hover v-bind:title="nomination.validator">{{ shortAddress(nomination.validator) }}</span>
-                  </a>
+                  </nuxt-link>
                   <p class="mt-0 mb-0">rank #{{ getRank(nomination.validator) }}</p>
                   <p class="mt-0 mb-2">
                     commission {{ (validators[getIndex(nomination.validator)].validatorPrefs.commission / 10000000).toFixed(2) }}%
@@ -251,5 +251,8 @@ export default {
   color: #ef1073;
   font-weight: 700;
   font-size: 1rem;
+}
+.identicon {
+  cursor: pointer;
 }
 </style>
