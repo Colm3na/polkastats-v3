@@ -268,12 +268,12 @@ export default {
           commission = validator.validatorPrefs.commission;
         }
 
-        let identity = null;
+        let identity = "";
         if (this.hasIdentity(validator.accountId)) {
           identity = this.getIdentity(validator.accountId);
         }
 
-        let nickname = null;
+        let nickname = "";
         if (this.hasNickname(validator.accountId)) {
           nickname = this.getNickname(validator.accountId);
         }
@@ -306,9 +306,6 @@ export default {
     nicknames() {
       return this.$store.state.nicknames.list;
     },
-    // totalRows() {
-    //   return this.$store.state.validators.list.length;
-    // },
     totalStakeBondedPercen() {
       if (this.totalStakeBonded !== 0 && this.totalIssuance !== "" && this.totalIssuance !== "0") {
         let totalIssuance = new BN(this.totalIssuance, 10);
