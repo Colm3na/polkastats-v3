@@ -10,6 +10,7 @@
                 <span class="d-inline d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="nominator.accountId">{{ shortAddress(nominator.accountId) }} </span>
                 <span class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline">{{ nominator.accountId }}</span>
               </a>
+              <p>{{ formatDot(getTotalStake(nominator.staking)) }}</p>
               <h5>{{ nominator.staking.length }} nominations</h5>
               <hr>
               <div class="row">
@@ -21,8 +22,11 @@
                   <a v-else v-bind:href="blockExplorer.account + nomination.validator" target="_blank" class="mt-2 mb-0 d-block">
                     <span v-b-tooltip.hover v-bind:title="nomination.validator">{{ shortAddress(nomination.validator) }}</span>
                   </a>
-                  <p>rank #{{ getRank(nomination.validator) }}</p>
-                  <p class="amount">{{ formatDot(nomination.amount) }}</p>
+                  <p class="mt-0 mb-0">rank #{{ getRank(nomination.validator) }}</p>
+                  <p class="mt-0 mb-2">
+                    commission {{ (validators[getIndex(nomination.validator)].validatorPrefs.commission / 10000000).toFixed(2) }}%
+                  </p>
+                  <p class="amount">{{ formatDot(nomination.amount) }} <small>({{ (getTotalStakePercen(nominator.staking, nomination.amount) / 100).toFixed(2) }}%)</small></p>
                 </div>
               </div>
             </div>
@@ -153,28 +157,10 @@ export default {
     thousandsSeparator(n) {
       return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     },
-    toggleFavorite(validator) {
-      // Receives validator accountId
-      if (this.isFavorite(validator)) {
-        this.favorites.splice(this.getIndex(validator), 1);
-      } else {
-        this.favorites.push({ accountId: validator, name: 'Edit validator name...'});
-      }
-      return true;
-    },
-    isFavorite(validator) {
-      // Receives validator accountId
-      for (var i=0; i < this.favorites.length; i++) {
-        if (this.favorites[i].accountId == validator) {
-          return true;
-        }
-      }
-      return false;
-    },
     getIndex(validator) {
       // Receives validator accountId
-      for (var i=0; i < this.favorites.length; i++) {
-        if (this.favorites[i].accountId == validator) {
+      for (var i=0; i < this.validators.length; i++) {
+        if (this.validators[i].accountId === validator) {
           return i;
         }
       }
@@ -195,18 +181,6 @@ export default {
         variant: variant,
         solid: solid
       })
-    },
-    formatRewardDest(rewardDestination) {
-      if (rewardDestination === 0) {
-        return `Stash account (increase stake)`;
-      }
-      if (rewardDestination === 1) {
-        return `Stash account (do not increase stake)`;
-      }
-      if (rewardDestination === 2) {
-        return `Controller account`;
-      }
-      return rewardDestination;
     },
     hasIdentity(stashId) {
       return this.$store.state.identities.list.some(obj => {
@@ -230,31 +204,40 @@ export default {
       });
       return filteredArray[0].nickname;
     },
-    getStakePercent(amount) {
-      let amountBN;
-      if (isHex(amount)) {
-        amountBN = new BN(amount.substring(2, amount.length), 16);
+    getTotalStake(stake) {
+      let totalStake = new BN('0', 10)
+      if (stake.length > 0) {
+        for(let i = 0; i < stake.length; i++) {
+          let nomination = stake[i];
+          let bn;
+          if (isHex(nomination.amount)) {
+            bn = new BN(nomination.amount.substring(2, nomination.amount.length), 16);
+          } else {
+            bn = new BN(nomination.amount.toString(), 10);
+          }
+          totalStake = totalStake.add(bn);
+        }
+        return totalStake;
       } else {
-        amountBN = new BN(amount.toString(), 10);
+        return 0;
       }
-      amountBN = amountBN.mul(new BN('100000', 10));
-      let result = amountBN.div(this.totalStakeBonded);
-      return this.formatNumber(parseInt(result.toString(10), 10) / 1000);
     },
-    getImOnlineMessage(validator) {
-      let message = "";
-      if (validator.imOnline.isOnline) {
-        message = "Active with ";
+    getTotalStakePercen(stake, amount) {
+
+      let totalStake = this.getTotalStake(stake);
+
+      if (totalStake && amount) {
+        let bn;
+        if (isHex(amount)) {
+          bn = new BN(amount.substring(2, amount.length), 16);
+        } else {
+          bn = new BN(amount.toString(), 10);
+        }
+        bn = bn.mul(new BN('10000', 10));
+        return bn.div(totalStake);
       } else {
-        message = "Inactive with ";
+        return 0;
       }
-      message = `${message} ${validator.imOnline.blockCount} blocks authored, `;
-      if (validator.imOnline.hasMessage) {
-        message = message + "has heartbeat message!";
-      } else {
-        message = message + "no heartbeat message";
-      }
-      return message;
     },
   },
   components: {
