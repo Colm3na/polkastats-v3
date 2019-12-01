@@ -77,7 +77,6 @@ export default {
       let nominatorStaking = [];
       for(let i = 0; i < this.validators.length; i++) {
         let validator = this.validators[i];
-        // console.log(validator);
         if (validator.stakers.others.length > 0) {
           for (let j = 0; j < validator.stakers.others.length; j++) {
             let nominator = validator.stakers.others[j];
@@ -101,7 +100,6 @@ export default {
           }
         }
       }
-      // console.log(nominatorStaking);
       return nominatorStaking;
     }
   },
@@ -113,7 +111,7 @@ export default {
       vm.$store.dispatch('validators/update');
     }
 
-    // Force update of indentity list if empty
+    // Force update of indentities list if empty
     if (this.$store.state.identities.list.length === 0) {
       vm.$store.dispatch('identities/update');
     }
