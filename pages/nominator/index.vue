@@ -1,125 +1,87 @@
 <template>
   <div>
     <section>
-      <b-container class="main pt-4">
-
-        <!-- Filter -->
-        <b-row>
-          <b-col lg="12" class="mb-4">
-            <b-form-input
-              v-model="filter"
-              type="search"
-              id="filterInput"
-              placeholder="Search nominator by address"
-            ></b-form-input>
-          </b-col>
-        </b-row>
-        <!-- Mobile sorting -->
-        <div class="row d-block d-sm-block d-md-block d-lg-none d-xl-none">
-          <b-col lg="6" class="my-1">
-            <b-form-group
-              label="Sort"
-              label-cols-sm="3"
-              label-align-sm="right"
-              label-size="sm"
-              label-for="sortBySelect"
-              class="mb-4"
-            >
-              <b-input-group size="sm">
-                <b-form-select v-model="sortBy" id="sortBySelect" :options="sortOptions" class="w-75">
-                  <template v-slot:first>
-                    <option value="">-- none --</option>
-                  </template>
-                </b-form-select>
-                <b-form-select v-model="sortDesc" size="sm" :disabled="!sortBy" class="w-25">
-                  <option :value="false">Asc</option>
-                  <option :value="true">Desc</option>
-                </b-form-select>
-              </b-input-group>
-            </b-form-group>
-          </b-col>
-        </div>
-        <!-- Table with sorting and pagination-->
-        <div class="table-responsive">
-          <b-table
-            stacked="md"
-            id="nominators-table"
-            head-variant="dark"
-            :fields="fields"
-            :items="nominators"
-            :per-page="perPage"
-            :current-page="currentPage"
-            :sort-by.sync="sortBy"
-            :sort-desc.sync="sortDesc"
-            :filter="filter"
-            :filterIncludedFields="filterOn"
-            @filtered="onFiltered"
-          >
-            <template slot="rank" slot-scope="data">
-              {{ data.item.rank }}
-            </template>
-            <template slot="accountId" slot-scope="data">
-              <Identicon :value="data.item.accountId" :size="20" :theme="'polkadot'" :key="data.item.accountId" />
-              <nuxt-link :to="{name: 'nominator', query: { accountId: data.item.accountId } }" title="Nominator details">
-                <span class="d-inline d-sm-inline d-md-inline d-lg-inline d-xl-none">{{ shortAddress(data.item.accountId) }}</span>
-                <span class="d-none d-sm-none d-md-none d-lg-none d-xl-inline">{{ data.item.accountId }}</span>
-              </nuxt-link>
-            </template>
-            <template slot="totalStake" slot-scope="data">
-              <p class="text-right mb-0">
-                {{ formatDot(data.item.totalStake) }}
-              </p>
-            </template>
-          </b-table>
-          <b-pagination
-            v-model="currentPage"
-            :total-rows="totalRows"
-            :per-page="perPage"
-            aria-controls="validators-table"
-          ></b-pagination>
-        </div>
+      <b-container class="nominator-page main pt-3 pb-5">
+        <template v-for="(nominator, index) in nominators">
+          <template v-if="nominator.accountId === accountId">
+            <div class="row">
+              <div class="col-2 col-lg-1">
+                <template v-if="index > 0">
+                  <nuxt-link :to="{name: 'nominator', query: { accountId: nominators[index-1].accountId } }" :title="'Previous nominator: ' + nominators[index-1].accountId">
+                    <i class="fas fa-2x fa-chevron-left"></i>
+                  </nuxt-link>
+                </template>
+              </div>
+              <div class="col-8 col-lg-10 text-center">
+                <h4 class="mb-1">Nominator {{ accountId }}</h4>
+              </div>
+              <div class="col-2 col-lg-1 text-right">
+                <template v-if="index < nominators.length - 1">
+                  <nuxt-link :to="{name: 'nominator', query: { accountId: nominators[index+1].accountId } }" :title="'Next validator: ' + nominators[index+1].accountId">
+                    <i class="fas fa-2x fa-chevron-right"></i>
+                  </nuxt-link>  
+                </template>
+              </div>
+            </div>
+            <div class="card mt-4 mb-3">
+              <div class="card-body text-center">
+                <Identicon :value="nominator.accountId" :size="80" :theme="'polkadot'" :key="nominator.accountId" />
+                <a v-bind:href="blockExplorer.account + nominator.accountId" target="_blank" class="d-block my-2">
+                  Nominator <span v-b-tooltip.hover title="See address in PolkaScan">{{ shortAddress(nominator.accountId) }}</span>
+                </a>
+                <p class="amount" v-b-tooltip.hover title="Total bonded">{{ formatDot(getTotalStake(nominator.staking)) }}</p>
+                <h5>{{ nominator.staking.length }} nomination<span v-if="nominator.staking.length > 1">s</span>:</h5>
+                <hr>
+                <div class="row">
+                  <div class="col-6 col-md-4 col-lg-3 col-xl-2" v-for="nomination in nominator.staking" :key="nomination.validator">
+                    <Identicon :value="nomination.validator" :size="40" :theme="'polkadot'" :key="nomination.validator" />
+                    <nuxt-link v-if="hasNickname(nomination.validator)" :to="{name: 'validator', query: { accountId: nomination.validator } }" title="Validator details" class="mt-2 mb-0 d-block">
+                      {{ getNickname(nomination.validator) }}
+                    </nuxt-link>
+                    <nuxt-link v-else :to="{name: 'validator', query: { accountId: nomination.validator } }" title="Validator details" class="mt-2 mb-0 d-block">
+                      <span v-b-tooltip.hover v-bind:title="nomination.validator">{{ shortAddress(nomination.validator) }}</span>
+                    </nuxt-link>
+                    <p class="mt-0 mb-0">rank #{{ getRank(nomination.validator) }}</p>
+                    <p class="mt-0 mb-2">
+                      commission {{ (validators[getIndex(nomination.validator)].validatorPrefs.commission / 10000000).toFixed(2) }}%
+                    </p>
+                    <p class="amount">{{ formatDot(nomination.amount) }} <small>({{ (getTotalStakePercen(nominator.staking, nomination.amount) / 100).toFixed(2) }}%)</small></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </template>
+        </template>
       </b-container>
     </section>
   </div>
 </template>
 <script>
-import { mapMutations } from 'vuex';
+import { mapMutations } from 'vuex'
 import axios from 'axios';
-import bootstrap from 'bootstrap';
-import Identicon from '../components/identicon.vue';
-import Network from '../components/network.vue';
+import moment from 'moment';
+import VueApexCharts from 'vue-apexcharts';
+import Identicon from '../../components/identicon.vue';
 import { formatBalance, isHex } from '@polkadot/util';
 import BN from 'bn.js';
-import { decimals, unit, backendBaseURL, blockExplorer} from '../polkastats.config.js';
+import { decimals, unit, backendBaseURL, blockExplorer} from '../../polkastats.config.js';
 
 formatBalance.setDefaults({ decimals, unit });
 
 export default {
   head () {
     return {
-      title: 'PolkaStats - Kusama nominators',
+      title: 'PolkaStats - Kusama nominator ' + this.$route.query.accountId,
       meta: [
-        { hid: 'description', name: 'description', content: 'Kusama nominators' }
+        { hid: 'description', name: 'description', content: 'Kusama nominator ' + this.$route.query.accountId }
       ]
     }
   },
   data: function() {
     return {
+      accountId: this.$route.query.accountId,
       blockExplorer,
-      polling: null,
-
-      perPage: 10,
-      currentPage: 1,
-      sortBy: ``,
-      sortDesc: false,
-      filter: null,
-      filterOn: [],
-      totalRows: 1,
-      fields: [
-        { key: 'rank', label: 'Rank', sortable: true},
-        { key: 'accountId', label: 'Nominator', sortable: true },
-        { key: 'totalStake', label: 'Total stake', sortable: true }
-      ],
+      polling: null
     }
   },
   computed: {
@@ -143,17 +105,13 @@ export default {
               let nominatorTmp = nominatorStaking.filter(nom => {
                 return nom.accountId === nominator.who
               })
-              
               let bn;
               if (isHex(nominator.value)) {
                 bn = new BN(nominator.value.substring(2, nominator.value.length), 16);
               } else {
                 bn = new BN(nominator.value.toString(), 10);
               }
-
               nominatorTmp[0].totalStake = nominatorTmp[0].totalStake.add(bn);
-              
-
               nominatorTmp[0].staking.push({
                 validator: validator.accountId,
                 amount: nominator.value
@@ -177,10 +135,6 @@ export default {
           }
         }
       }
-      // console.log(nominatorStaking);
-
-      
-
       nominatorStaking.sort(function compare( a, b ) {
         if ( a.totalStake.lt(b.totalStake) ){
           return 1;
@@ -190,22 +144,38 @@ export default {
         }
         return 0;
       });
-
       nominatorStaking.map((nominator, index) => {
         nominator.rank = index+1;
       });
-
       this.totalRows = nominatorStaking.length;
+      // console.log(nominatorStaking);
       return nominatorStaking;
-    },
-    sortOptions() {
-      // Create an options list from our fields
-      return this.fields
-        .filter(f => f.sortable)
-        .map(f => {
-          return { text: f.label, value: f.key }
-        })
     }
+  },
+  created: function () {
+    var vm = this;
+    
+    // Force update of validators list if empty
+    if (this.$store.state.validators.list.length === 0) {
+      vm.$store.dispatch('validators/update');
+    }
+
+    // Force update of indentities list if empty
+    if (this.$store.state.identities.list.length === 0) {
+      vm.$store.dispatch('identities/update');
+    }
+
+    // Force update of nicknames list if empty
+    if (this.$store.state.nicknames.list.length === 0) {
+      vm.$store.dispatch('nicknames/update');
+    }
+
+    // Update network info validators and intentions every 10 seconds
+    this.polling = setInterval(() => {
+      vm.$store.dispatch('validators/update');
+      vm.$store.dispatch('identities/update');
+      vm.$store.dispatch('nicknames/update');
+    }, 10000);
   },
   created: function () {
     var vm = this;
@@ -245,6 +215,7 @@ export default {
       }
     },
     formatDot(amount) {
+      console.log(amount);
       let bn;
       if (isHex(amount)) {
         bn = new BN(amount.substring(2, amount.length), 16);
@@ -307,7 +278,6 @@ export default {
       return filteredArray[0].nickname;
     },
     getTotalStake(stake) {
-      console.log(stake);
       let totalStake = new BN('0', 10)
       if (stake.length > 0) {
         for(let i = 0; i < stake.length; i++) {
@@ -320,7 +290,6 @@ export default {
           }
           totalStake = totalStake.add(bn);
         }
-        console.log(totalStake);
         return totalStake;
       } else {
         return 0;
@@ -343,25 +312,24 @@ export default {
         return 0;
       }
     },
-    onFiltered(filteredItems) {
-      // Trigger pagination to update the number of buttons/pages due to filtering
-      this.totalRows = filteredItems.length
-      this.currentPage = 1
+  },
+  watch: {
+    $route () {
+      this.accountId = this.$route.query.accountId;
     }
   },
   components: {
-    Identicon,
-    Network
+    Identicon
   }
 }
 </script>
 <style>
-#nominators-table .identicon {
-  display: inline;
-  margin-right: 0.2rem;
-  cursor: copy;
+.amount {
+  color: #ef1073;
+  font-weight: 700;
+  font-size: 1rem;
 }
-#nominators-table .identicon div {
-  display: inline;
+.identicon {
+  cursor: pointer;
 }
 </style>
