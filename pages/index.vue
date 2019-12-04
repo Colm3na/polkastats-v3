@@ -202,7 +202,7 @@ export default {
   },
   data: function() {
     return {
-      perPage: 20,
+      perPage: 10,
       currentPage: 1,
       sortBy: `rank`,
       sortDesc: false,
