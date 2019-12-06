@@ -215,7 +215,6 @@ export default {
       }
     },
     formatDot(amount) {
-      console.log(amount);
       let bn;
       if (isHex(amount)) {
         bn = new BN(amount.substring(2, amount.length), 16);
