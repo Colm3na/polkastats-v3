@@ -4,8 +4,8 @@
       <div class="nav-bg-color fixed-top">
         <div class="container">
           <div id="top-bar">
-            <p>
-              Network: <a href="https://polkastats.io" class="active"><i class="fas fa-check"></i> Kusama CC3</a> | <a href="https://alexander.polkastats.io" target="_blank">Alexander</a>
+            <p class="network">
+              <i class="fas fa-project-diagram"></i> {{ system.chain }} using polkadot v{{ system.client_version }}
             </p>
           </div>
           <b-navbar toggleable="xl" type="dark" class="row">
@@ -57,7 +57,7 @@
             <p class="mt-5 text-center">Built for</p>
             <p class="text-center"><a href="https://kusama.network" target="_blank" title="Built for KUSAMA"><img src="/img/KUSAMA_logo_7.png" class="kusama-logo" alt="Built for KUSAMA"></a></p>
           </div>
-          </hr>
+          <hr />
         </div>  
       </div>
     </section>
@@ -65,7 +65,17 @@
   </div>
 </template>
 <script>
-export default {} 
+import { mapMutations } from 'vuex';
+export default {
+  computed: {
+    system () {
+      return this.$store.state.system.info;
+    }
+  },
+  created: function () {
+    this.$store.dispatch('system/update');
+  }
+} 
 </script>
 <style>
 @import url('https://use.fontawesome.com/releases/v5.6.3/css/all.css');
@@ -219,6 +229,10 @@ section#navigation nav {
 
 #top-bar a.active {
   font-weight: 700;
+}
+
+#top-bar .network {
+  color: #ef1073;
 }
 
 /* Nav bar */
