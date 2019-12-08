@@ -3,8 +3,8 @@
     <section>
       <b-container class="main pt-4">
         <!-- Kusama CC3 message -->
-        <b-alert show dismissible variant="info" class="text-center">
-          <strong>We are on Kusama CC3! Happy kaos everyone! ;-)</strong>
+        <b-alert show dismissible variant="primary" class="text-center">
+          <strong>⚡ We have a new awesome dedicated server graciously sponsored by <a href="https://www.colmenalabs.org/" target="_blank">La Colmena Labs</a>. Thanks! ⚡</strong>
         </b-alert>
         <!-- Economics info message -->
         <b-alert show dismissible variant="success" class="text-center">
