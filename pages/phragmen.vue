@@ -49,7 +49,12 @@
                 </div>
                 <div class="col-md-9">
                   <h4 class="card-title mb-4 account mt-4 mt-sm-0 mt-md-0 mt-lg-0 mt-xl-0">
-                    {{ candidate.pub_key_stash }}
+                    <span v-if="hasNickname(candidate.pub_key_stash)">
+                      {{ getNickname(candidate.pub_key_stash) }}
+                    </span>
+                    <span v-else>
+                      {{ candidate.pub_key_stash }}
+                    </span>
                   </h4>
                   <div class="row" v-if="candidate.pub_key_stash">
                     <div class="col-md-3 mb-1">
