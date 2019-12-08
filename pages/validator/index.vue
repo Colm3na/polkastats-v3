@@ -49,15 +49,15 @@
                       rank #{{ index+1 }}
                     </p>
                     <template v-if="validator.stakers">
-                      <p v-if="validator.stakers.total > 0" class="bonded mb-0" v-b-tooltip.hover title="Total bonded">{{ formatDot(validator.stakers.total) }}</p>
-                      <p v-else class="bonded mb-0" v-b-tooltip.hover title="Total bonded">{{ formatDot(validator.stakingLedger.total) }}</p>
+                      <p v-if="validator.stakers.total > 0" class="bonded mb-0" v-b-tooltip.hover title="Total bonded">{{ formatAmount(validator.stakers.total) }}</p>
+                      <p v-else class="bonded mb-0" v-b-tooltip.hover title="Total bonded">{{ formatAmount(validator.stakingLedger.total) }}</p>
                       <p class="mb-0" v-if="validator.stakers.own !== validator.stakers.total">
                         <small>
-                          <span v-b-tooltip.hover title="Self bonded" v-if="validator.stakers.own > 0">{{ formatDot(validator.stakers.own) }}</span>
-                          <span v-b-tooltip.hover title="Bonded by nominators" v-if="(validator.stakers.total - validator.stakers.own) > 0">(+{{ formatDot(validator.stakers.total - validator.stakers.own) }})</span>
+                          <span v-b-tooltip.hover title="Self bonded" v-if="validator.stakers.own > 0">{{ formatAmount(validator.stakers.own) }}</span>
+                          <span v-b-tooltip.hover title="Bonded by nominators" v-if="(validator.stakers.total - validator.stakers.own) > 0">(+{{ formatAmount(validator.stakers.total - validator.stakers.own) }})</span>
                         </small>
                       </p>
-                      <p class="mb-0" v-b-tooltip.hover title="Percentage over total bonded stake">{{ getStakePercent(validator.stakers.total) }}% of total stake</p>
+                      <p class="mb-0" v-b-tooltip.hover title="Percentage over total bonded stake">{{ getStakePercent(validator.stakers.total, totalStakeBonded) }}% of total stake</p>
                     </template>
                     <p class="mb-0" v-if="validator.currentEraPointsEarned">{{ validator.currentEraPointsEarned }} era points</p>
                   </div>
@@ -225,7 +225,7 @@
                                 </a>
                               </div>
                               <div class="col-4 text-right value">
-                                {{ formatDot(staker.value) }}
+                                {{ formatAmount(staker.value) }}
                               </div>
                             </div>
                           </div>
@@ -239,15 +239,15 @@
           </template>
         </template>
         <div class="mt-5 text-center" id="stake-evolution-monthly-chart">
-          <h3>Total bonded - Monthly chart <small class="change text-success ml-3" v-if="monthly.last - monthly.first > 0"><i class="far fa-thumbs-up"></i> +{{ formatDot(monthly.last - monthly.first) }}</small><small class="change text-danger ml-3" v-if="monthly.last - monthly.first < 0"><i class="far fa-thumbs-down"></i> {{ formatDot(monthly.last - monthly.first) }}</small></h3>
+          <h3>Total bonded - Monthly chart <small class="change text-success ml-3" v-if="monthly.last - monthly.first > 0"><i class="far fa-thumbs-up"></i> +{{ formatAmount(monthly.last - monthly.first) }}</small><small class="change text-danger ml-3" v-if="monthly.last - monthly.first < 0"><i class="far fa-thumbs-down"></i> {{ formatAmount(monthly.last - monthly.first) }}</small></h3>
           <apexchart type=line height=350 :options="StakeEvolutionMonthlyChartOptions" :series="StakeEvolutionMonthlySeries" />
         </div>
         <div class="mt-5 mb-5 text-center" id="stake-evolution-weekly-chart">
-          <h3>Total bonded - Weekly chart <small class="change text-success ml-3" v-if="weekly.last - weekly.first > 0"><i class="far fa-thumbs-up"></i> +{{ formatDot(weekly.last - weekly.first) }}</small><small class="change text-danger ml-3" v-if="weekly.last - weekly.first < 0"><i class="far fa-thumbs-down"></i> {{ formatDot(weekly.last - weekly.first) }}</small></h3>
+          <h3>Total bonded - Weekly chart <small class="change text-success ml-3" v-if="weekly.last - weekly.first > 0"><i class="far fa-thumbs-up"></i> +{{ formatAmount(weekly.last - weekly.first) }}</small><small class="change text-danger ml-3" v-if="weekly.last - weekly.first < 0"><i class="far fa-thumbs-down"></i> {{ formatAmount(weekly.last - weekly.first) }}</small></h3>
           <apexchart type=line height=350 :options="StakeEvolutionWeeklyChartOptions" :series="StakeEvolutionWeeklySeries" />
         </div>
         <div class="mb-5 text-center" id="stake-evolution-daily-chart">
-          <h3>Total bonded - Daily chart <small class="change text-success ml-3" v-if="daily.last - daily.first > 0"><i class="far fa-thumbs-up"></i> +{{ formatDot(daily.last - daily.first) }}</small><small class="change text-danger ml-3" v-if="daily.last - daily.first < 0"><i class="far fa-thumbs-down"></i> {{ formatDot(daily.last - daily.first) }}</small></h3>
+          <h3>Total bonded - Daily chart <small class="change text-success ml-3" v-if="daily.last - daily.first > 0"><i class="far fa-thumbs-up"></i> +{{ formatAmount(daily.last - daily.first) }}</small><small class="change text-danger ml-3" v-if="daily.last - daily.first < 0"><i class="far fa-thumbs-down"></i> {{ formatAmount(daily.last - daily.first) }}</small></h3>
           <apexchart type=line height=350 :options="StakeEvolutionDailyChartOptions" :series="StakeEvolutionDailySeries" />
         </div>
       </b-container>
@@ -260,21 +260,21 @@ import axios from 'axios';
 import moment from 'moment';
 import VueApexCharts from 'vue-apexcharts';
 import Identicon from '../../components/identicon.vue';
-import { formatBalance, isHex } from '@polkadot/util';
+import { isHex } from '@polkadot/util';
 import BN from 'bn.js';
-import { decimals, unit, backendBaseURL, blockExplorer} from '../../polkastats.config.js';
-
-formatBalance.setDefaults({ decimals, unit });
+import { backendBaseURL, blockExplorer } from '../../polkastats.config.js';
+import commonMixin from '../../mixins/commonMixin.js';
 
 export default {
   head () {
     return {
-      title: 'PolkaStats - Kusama validator ' + this.$route.query.accountId,
+      title: 'PolkaStats - Polkadot Kusama validator ' + this.$route.query.accountId,
       meta: [
-        { hid: 'description', name: 'description', content: 'Kusama validator ' + this.$route.query.accountId }
+        { hid: 'description', name: 'description', content: 'Polkadot Kusama validator ' + this.$route.query.accountId }
       ]
     }
   },
+  mixins: [commonMixin],
   data: function() {
     return {
       accountId: this.$route.query.accountId,
@@ -568,10 +568,6 @@ export default {
                 }
               },
               yaxis: {
-                /*
-                min: 0,
-                max: 0,
-                */
                 title: {
                   text: 'Total bonded (KSM)'
                 },
@@ -631,10 +627,6 @@ export default {
                 }
               },
               yaxis: {
-                /*
-                min: 0,
-                max: 0,
-                */
                 title: {
                   text: 'Total bonded (KSM)'
                 },
@@ -694,10 +686,6 @@ export default {
                 }
               },
               yaxis: {
-                /*
-                min: 0,
-                max: 0,
-                */
                 title: {
                   text: 'Total bonded (KSM)'
                 },
@@ -716,21 +704,6 @@ export default {
           }];
           
         })
-    },
-    formatDot(amount) {
-      let bn;
-      if (isHex(amount)) {
-        bn = new BN(amount.substring(2, amount.length), 16);
-      } else {
-        bn = new BN(amount.toString());
-      }
-      return formatBalance(bn.toString(10));
-    },
-    shortAddress(address) {
-      return (address).substring(0,5) + ' .... ' + (address).substring(address.length - 5)
-    },
-    thousandsSeparator(n) {
-        return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     },
     toggleFavorite(validator) {
       // Receives validator accountId
@@ -759,25 +732,6 @@ export default {
       }
       return false;
     },
-    makeToast(content = '', title = '', variant = null, solid = false) {
-      this.$bvToast.toast(content, {
-        title: title,
-        variant: variant,
-        solid: solid
-      })
-    },
-    formatRewardDest(rewardDestination) {
-      if (rewardDestination === 0) {
-        return `Stash account (increase the amount at stake)`;
-      }
-      if (rewardDestination === 1) {
-        return `Stash account (do not increase the amount at stake)`;
-      }
-      if (rewardDestination === 2) {
-        return `Controller account`;
-      }
-      return rewardDestination;
-    },
     hasIdentity(stashId) {
       return this.$store.state.identities.list.some(obj => {
         return obj.stashId === stashId;
@@ -799,44 +753,10 @@ export default {
         return obj.accountId === accountId
       });
       return filteredArray[0].nickname;
-    },
-    getStakePercent(amount) {
-      let amountBN;
-      if (isHex(amount)) {
-        amountBN = new BN(amount.substring(2, amount.length), 16);
-      } else {
-        amountBN = new BN(amount.toString(), 10);
-      }
-      amountBN = amountBN.mul(new BN('100000', 10));
-      let result = amountBN.div(this.totalStakeBonded);
-      return this.formatNumber(parseInt(result.toString(10), 10) / 1000);
-    },
-    formatNumber(n) {
-      if (isHex(n)) {
-        return (parseInt(n, 16).toString()).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
-      } else {
-        return (n.toString()).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
-      }
-    },
-    getImOnlineMessage(validator) {
-      let message = "";
-      if (validator.imOnline.isOnline) {
-        message = "Active with ";
-      } else {
-        message = "Inactive with ";
-      }
-      message = `${message} ${validator.imOnline.blockCount} blocks authored, `;
-      if (validator.imOnline.hasMessage) {
-        message = message + "has heartbeat message!";
-      } else {
-        message = message + "no heartbeat message";
-      }
-      return message;
     }
   },
   watch: {
     $route () {
-      //console.log('Route change!');
       this.accountId = this.$route.query.accountId;
 
       // Update graph data

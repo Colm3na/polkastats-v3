@@ -8,9 +8,9 @@
         </b-alert>
         <!-- Economics info message -->
         <b-alert show dismissible variant="success" class="text-center">
-          Total issuance is <strong>{{ formatDot(network.totalIssuance) }}</strong>
+          Total issuance is <strong>{{ formatAmount(network.totalIssuance) }}</strong>
           <span v-if="totalStakeBonded.toString() !== `0` && totalStakeBondedPercen !== 0">
-            , total stake bonded is <strong>{{ formatDot(totalStakeBonded) }} ({{ totalStakeBondedPercen.toString(10) }}% of total)</strong>
+            , total stake bonded is <strong>{{ formatAmount(totalStakeBonded) }} ({{ totalStakeBondedPercen.toString(10) }}% of total)</strong>
           </span>
         </b-alert>
         <!-- Validators info message -->
@@ -116,14 +116,14 @@
                   <i v-else class="notElected fas fa-times-circle" v-b-tooltip.hover title="Not elected for next session"></i>
                 </p>
                 <div v-if="data.item.stakers">
-                  <p v-if="data.item.stake && data.item.stake > 0" class="bonded mb-0" v-b-tooltip.hover title="Total bonded">{{ formatDot(data.item.stake) }}</p>
+                  <p v-if="data.item.stake && data.item.stake > 0" class="bonded mb-0" v-b-tooltip.hover title="Total bonded">{{ formatAmount(data.item.stake) }}</p>
                   <p class="mb-0" v-if="data.item.stakers.own !== data.item.stake">
                     <small>
-                      <span v-b-tooltip.hover title="Self bonded" v-if="data.item.stakers.own > 0">{{ formatDot(data.item.stakers.own) }}</span>
-                      <span v-b-tooltip.hover title="Bonded by nominators" v-if="(data.item.stakers.total - data.item.stakers.own) > 0">(+{{ formatDot(data.item.stakers.total - data.item.stakers.own) }})</span>
+                      <span v-b-tooltip.hover title="Self bonded" v-if="data.item.stakers.own > 0">{{ formatAmount(data.item.stakers.own) }}</span>
+                      <span v-b-tooltip.hover title="Bonded by nominators" v-if="(data.item.stakers.total - data.item.stakers.own) > 0">(+{{ formatAmount(data.item.stakers.total - data.item.stakers.own) }})</span>
                     </small>
                   </p>
-                  <p class="mb-0" v-if="data.item.stakers.total" v-b-tooltip.hover title="Percentage over total bonded stake">{{ getStakePercent(data.item.stakers.total) }}% of total stake</p>
+                  <p class="mb-0" v-if="data.item.stakers.total" v-b-tooltip.hover title="Percentage over total bonded stake">{{ getStakePercent(data.item.stakers.total, totalStakeBonded) }}% of total stake</p>
                 </div>
               </div>
               <div class="d-none d-sm-none d-md-block d-lg-block d-xl-block">
@@ -151,7 +151,7 @@
             </template>
             <template slot="stakeIndex" slot-scope="data">
               <p class="text-right mb-0" v-if="data.item.stake > 0 ">
-                {{ formatDot(data.item.stake) }} ({{ formatNumber(data.item.percent) }}%)
+                {{ formatAmount(data.item.stake) }} ({{ formatNumber(data.item.percent) }}%)
               </p>
             </template> 
             <template slot="commission" slot-scope="data">
@@ -185,21 +185,21 @@ import axios from 'axios';
 import bootstrap from 'bootstrap';
 import Identicon from '../components/identicon.vue';
 import Network from '../components/network.vue';
-import { formatBalance, isHex } from '@polkadot/util';
+import { isHex } from '@polkadot/util';
 import BN from 'bn.js';
-import { decimals, unit, backendBaseURL, blockExplorer} from '../polkastats.config.js';
-
-formatBalance.setDefaults({ decimals, unit });
+import { blockExplorer } from '../polkastats.config.js';
+import commonMixin from '../mixins/commonMixin.js';
 
 export default {
   head () {
     return {
-      title: 'PolkaStats - Polkadot network statistics',
+      title: 'PolkaStats - Polkadot Kusama network statistics',
       meta: [
-        { hid: 'description', name: 'description', content: 'Polkadot network statistics' }
+        { hid: 'description', name: 'description', content: 'Polkadot Kusama network statistics' }
       ]
     }
   },
+  mixins: [commonMixin],
   data: function() {
     return {
       perPage: 10,
@@ -217,14 +217,7 @@ export default {
         { key: 'commission', label: 'Commission', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` },
         { key: 'favorite', label: '⭐', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` }
       ],
-      system: {
-        chain: "",
-        client_name: "",
-        client_version: "",
-        timestamp: 0
-      },
       blockExplorer,
-      backendBaseURL,
       favorites: [],
       polling: null
     }
@@ -247,7 +240,7 @@ export default {
         }
         let stakePercent = 0;
         if (validator.stakers) {
-          stakePercent = this.getStakePercent(validator.stakers.total);
+          stakePercent = this.getStakePercent(validator.stakers.total, this.totalStakeBonded);
         }
 
         let commission = 0;
@@ -359,28 +352,6 @@ export default {
     clearInterval(this.polling);
   },
   methods: {
-    formatNumber(n) {
-      if (isHex(n)) {
-        return (parseInt(n, 16).toString()).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
-      } else {
-        return (n.toString()).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
-      }
-    },
-    formatDot(amount) {
-      let bn;
-      if (isHex(amount)) {
-        bn = new BN(amount.substring(2, amount.length), 16);
-      } else {
-        bn = new BN(amount.toString());
-      }
-      return formatBalance(bn.toString(10));
-    },  
-    shortAddress(address) {
-      return (address).substring(0,5) + ' .... ' + (address).substring(address.length - 5);
-    },
-    thousandsSeparator(n) {
-      return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    },
     toggleFavorite(validator) {
       // Receives validator accountId
       if (this.isFavorite(validator)) {
@@ -417,25 +388,6 @@ export default {
       }
       return false;
     },
-    makeToast(content = '', title = '', variant = null, solid = false) {
-      this.$bvToast.toast(content, {
-        title: title,
-        variant: variant,
-        solid: solid
-      })
-    },
-    formatRewardDest(rewardDestination) {
-      if (rewardDestination === 0) {
-        return `Stash account (increase stake)`;
-      }
-      if (rewardDestination === 1) {
-        return `Stash account (do not increase stake)`;
-      }
-      if (rewardDestination === 2) {
-        return `Controller account`;
-      }
-      return rewardDestination;
-    },
     hasIdentity(stashId) {
       return this.$store.state.identities.list.some(obj => {
         return obj.stashId === stashId;
@@ -457,32 +409,6 @@ export default {
         return obj.accountId === accountId
       });
       return filteredArray[0].nickname;
-    },
-    getStakePercent(amount) {
-      let amountBN;
-      if (isHex(amount)) {
-        amountBN = new BN(amount.substring(2, amount.length), 16);
-      } else {
-        amountBN = new BN(amount.toString(), 10);
-      }
-      amountBN = amountBN.mul(new BN('100000', 10));
-      let result = amountBN.div(this.totalStakeBonded);
-      return this.formatNumber(parseInt(result.toString(10), 10) / 1000);
-    },
-    getImOnlineMessage(validator) {
-      let message = "";
-      if (validator.imOnline.isOnline) {
-        message = "Active with ";
-      } else {
-        message = "Inactive with ";
-      }
-      message = `${message} ${validator.imOnline.blockCount} blocks authored, `;
-      if (validator.imOnline.hasMessage) {
-        message = message + "has heartbeat message!";
-      } else {
-        message = message + "no heartbeat message";
-      }
-      return message;
     },
     onFiltered(filteredItems) {
       // Trigger pagination to update the number of buttons/pages due to filtering

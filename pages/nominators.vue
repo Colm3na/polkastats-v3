@@ -67,7 +67,7 @@
             </template>
             <template slot="totalStake" slot-scope="data">
               <p class="text-right mb-0">
-                {{ formatDot(data.item.totalStake) }}
+                {{ formatAmount(data.item.totalStake) }}
               </p>
             </template>
           </b-table>
@@ -88,26 +88,25 @@ import axios from 'axios';
 import bootstrap from 'bootstrap';
 import Identicon from '../components/identicon.vue';
 import Network from '../components/network.vue';
-import { formatBalance, isHex } from '@polkadot/util';
+import { isHex } from '@polkadot/util';
 import BN from 'bn.js';
-import { decimals, unit, backendBaseURL, blockExplorer} from '../polkastats.config.js';
-
-formatBalance.setDefaults({ decimals, unit });
+import { blockExplorer } from '../polkastats.config.js';
+import commonMixin from '../mixins/commonMixin.js';
 
 export default {
   head () {
     return {
-      title: 'PolkaStats - Kusama nominators',
+      title: 'PolkaStats - Polkadot Kusama nominators',
       meta: [
-        { hid: 'description', name: 'description', content: 'Kusama nominators' }
+        { hid: 'description', name: 'description', content: 'Polkadot Kusama nominators' }
       ]
     }
   },
+  mixins: [commonMixin],
   data: function() {
     return {
       blockExplorer,
       polling: null,
-
       perPage: 10,
       currentPage: 1,
       sortBy: ``,
@@ -143,17 +142,13 @@ export default {
               let nominatorTmp = nominatorStaking.filter(nom => {
                 return nom.accountId === nominator.who
               })
-              
               let bn;
               if (isHex(nominator.value)) {
                 bn = new BN(nominator.value.substring(2, nominator.value.length), 16);
               } else {
                 bn = new BN(nominator.value.toString(), 10);
               }
-
               nominatorTmp[0].totalStake = nominatorTmp[0].totalStake.add(bn);
-              
-
               nominatorTmp[0].staking.push({
                 validator: validator.accountId,
                 amount: nominator.value
@@ -177,10 +172,6 @@ export default {
           }
         }
       }
-      // console.log(nominatorStaking);
-
-      
-
       nominatorStaking.sort(function compare( a, b ) {
         if ( a.totalStake.lt(b.totalStake) ){
           return 1;
@@ -190,11 +181,9 @@ export default {
         }
         return 0;
       });
-
       nominatorStaking.map((nominator, index) => {
         nominator.rank = index+1;
       });
-
       this.totalRows = nominatorStaking.length;
       return nominatorStaking;
     },
@@ -237,28 +226,6 @@ export default {
     clearInterval(this.polling);
   },
   methods: {
-    formatNumber(n) {
-      if (isHex(n)) {
-        return (parseInt(n, 16).toString()).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
-      } else {
-        return (n.toString()).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
-      }
-    },
-    formatDot(amount) {
-      let bn;
-      if (isHex(amount)) {
-        bn = new BN(amount.substring(2, amount.length), 16);
-      } else {
-        bn = new BN(amount.toString());
-      }
-      return formatBalance(bn.toString(10));
-    },  
-    shortAddress(address) {
-      return (address).substring(0,5) + ' .... ' + (address).substring(address.length - 5);
-    },
-    thousandsSeparator(n) {
-      return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    },
     getIndex(validator) {
       // Receives validator accountId
       for (var i=0; i < this.validators.length; i++) {
@@ -276,13 +243,6 @@ export default {
         }
       }
       return false;
-    },
-    makeToast(content = '', title = '', variant = null, solid = false) {
-      this.$bvToast.toast(content, {
-        title: title,
-        variant: variant,
-        solid: solid
-      })
     },
     hasIdentity(stashId) {
       return this.$store.state.identities.list.some(obj => {
@@ -305,43 +265,6 @@ export default {
         return obj.accountId === accountId
       });
       return filteredArray[0].nickname;
-    },
-    getTotalStake(stake) {
-      console.log(stake);
-      let totalStake = new BN('0', 10)
-      if (stake.length > 0) {
-        for(let i = 0; i < stake.length; i++) {
-          let nomination = stake[i];
-          let bn;
-          if (isHex(nomination.amount)) {
-            bn = new BN(nomination.amount.substring(2, nomination.amount.length), 16);
-          } else {
-            bn = new BN(nomination.amount.toString(), 10);
-          }
-          totalStake = totalStake.add(bn);
-        }
-        console.log(totalStake);
-        return totalStake;
-      } else {
-        return 0;
-      }
-    },
-    getTotalStakePercen(stake, amount) {
-
-      let totalStake = this.getTotalStake(stake);
-
-      if (totalStake && amount) {
-        let bn;
-        if (isHex(amount)) {
-          bn = new BN(amount.substring(2, amount.length), 16);
-        } else {
-          bn = new BN(amount.toString(), 10);
-        }
-        bn = bn.mul(new BN('10000', 10));
-        return bn.div(totalStake);
-      } else {
-        return 0;
-      }
     },
     onFiltered(filteredItems) {
       // Trigger pagination to update the number of buttons/pages due to filtering

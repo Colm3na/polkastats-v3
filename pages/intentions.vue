@@ -4,9 +4,9 @@
       <b-container class="main pt-4">
         <!-- Economics info message -->
         <b-alert show dismissible variant="success" class="text-center">
-          Total issuance is <strong>{{ formatDot(network.totalIssuance) }}</strong>
+          Total issuance is <strong>{{ formatAmount(network.totalIssuance) }}</strong>
           <span v-if="totalStakeBonded.toString() !== `0` && totalStakeBondedPercen !== 0">
-            , total stake bonded is <strong>{{ formatDot(totalStakeBonded) }} ({{ totalStakeBondedPercen.toString(10) }}% of total)</strong>
+            , total stake bonded is <strong>{{ formatAmount(totalStakeBonded) }} ({{ totalStakeBondedPercen.toString(10) }}% of total)</strong>
           </span>
         </b-alert>
         <!-- Network component -->
@@ -99,14 +99,14 @@
                 </p>
                 <div v-if="data.item.activeStake">
                   <p class="bonded mb-0" v-b-tooltip.hover title="Active bonded">
-                    {{ formatDot(data.item.activeStake) }}
+                    {{ formatAmount(data.item.activeStake) }}
                   </p>
                 </div>
                 <div v-if="data.item.totalStake">
                   <p class="mb-0">
                     <small>
                       <span v-b-tooltip.hover title="Total bonded">
-                        {{ formatDot(data.item.totalStake) }}
+                        {{ formatAmount(data.item.totalStake) }}
                       </span>
                     </small>
                   </p>
@@ -131,7 +131,7 @@
             <template slot="totalStake" slot-scope="data">
               <div v-if="data.item.totalStake">
                 <p class="text-right mb-0">
-                  {{ formatDot(data.item.totalStake) }}
+                  {{ formatAmount(data.item.totalStake) }}
                 </p>
               </div>
             </template> 
@@ -168,21 +168,21 @@ import axios from 'axios';
 import bootstrap from 'bootstrap';
 import Identicon from '../components/identicon.vue';
 import Network from '../components/network.vue';
-import { formatBalance, isHex } from '@polkadot/util';
+import { isHex } from '@polkadot/util';
 import BN from 'bn.js';
-import { decimals, unit, backendBaseURL, blockExplorer} from '../polkastats.config.js';
-
-formatBalance.setDefaults({ decimals, unit });
+import { blockExplorer } from '../polkastats.config.js';
+import commonMixin from '../mixins/commonMixin.js';
 
 export default {
   head () {
     return {
-      title: 'PolkaStats -  Kusama intention validators',
+      title: 'PolkaStats -  Polkadot Kusama intention validators',
       meta: [
-        { hid: 'description', name: 'description', content: 'Kusama intention validators' }
+        { hid: 'description', name: 'description', content: 'Polkadot Kusama intention validators' }
       ]
     }
   },
+  mixins: [commonMixin],
   data: function() {
     return {
       perPage: 10,
@@ -199,14 +199,7 @@ export default {
         { key: 'commission', label: 'Commission', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` },
         { key: 'favorite', label: '⭐', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` }
       ],
-      system: {
-        chain: "",
-        client_name: "",
-        client_version: "",
-        timestamp: 0
-      },
       blockExplorer,
-      backendBaseURL,
       favorites: [],
       polling: null
     }
@@ -307,31 +300,8 @@ export default {
   },
   beforeDestroy: function () {
     clearInterval(this.polling);
-    clearInterval(this.sessionPolling);
   },
   methods: {
-    formatNumber(n) {
-      if (isHex(n)) {
-        return (parseInt(n, 16).toString()).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
-      } else {
-        return (n.toString()).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
-      }
-    },
-    formatDot(amount) {
-      let bn;
-      if (isHex(amount)) {
-        bn = new BN(amount.substring(2, amount.length), 16);
-      } else {
-        bn = new BN(amount.toString());
-      }
-      return formatBalance(bn.toString(10));
-    },  
-    shortAddress(address) {
-      return (address).substring(0,5) + ' .... ' + (address).substring(address.length - 5);
-    },
-    thousandsSeparator(n) {
-        return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    },
     toggleFavorite(validator) {
       // Receives validator accountId
       if (this.isFavorite(validator)) {
@@ -367,25 +337,6 @@ export default {
         }
       }
       return false;
-    },
-    makeToast(content = '', title = '', variant = null, solid = false) {
-      this.$bvToast.toast(content, {
-        title: title,
-        variant: variant,
-        solid: solid
-      })
-    },
-    formatRewardDest(rewardDestination) {
-      if (rewardDestination === 0) {
-        return `Stash account (increase stake)`;
-      }
-      if (rewardDestination === 1) {
-        return `Stash account (do not increase stake)`;
-      }
-      if (rewardDestination === 2) {
-        return `Controller account`;
-      }
-      return rewardDestination;
     },
     hasIdentity(stashId) {
       return this.$store.state.identities.list.some(obj => {

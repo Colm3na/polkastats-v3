@@ -45,9 +45,9 @@ import axios from 'axios'
 export default {
   head () {
     return {
-      title: 'PolkaStats - For Kusama validators',
+      title: 'PolkaStats - For Polkadot Kusama validators',
       meta: [
-        { hid: 'description', name: 'description', content: 'Include your kusama validator info in PolkaStats' }
+        { hid: 'description', name: 'description', content: 'Include your Kusama validator info in PolkaStats' }
       ]
     }
   }

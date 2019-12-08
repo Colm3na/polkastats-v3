@@ -30,12 +30,12 @@
                   <p class="mt-3 mb-0 rank">
                     rank #{{ candidate.rank }}
                   </p>
-                  <p class="bonded mb-0" v-b-tooltip.hover title="Total stake">{{ formatDot(candidate.stake_total) }}</p>
+                  <p class="bonded mb-0" v-b-tooltip.hover title="Total stake">{{ formatAmount(candidate.stake_total) }}</p>
 
                   <p class="mb-0">
                     <small>
-                      <span v-b-tooltip.hover title="Self bonded">{{ formatDot(candidate.stake_validator) }}</span>
-                      <span v-b-tooltip.hover title="Bonded by nominators">(+{{ formatDot(candidate.other_stake_sum) }})</span>
+                      <span v-b-tooltip.hover title="Self bonded">{{ formatAmount(candidate.stake_validator) }}</span>
+                      <span v-b-tooltip.hover title="Bonded by nominators">(+{{ formatAmount(candidate.other_stake_sum) }})</span>
                     </small>
                   </p>
 
@@ -89,7 +89,7 @@
                               </a>
                             </div>
                             <div class="col-4 text-right value">
-                              {{ formatDot(voter.stake_nominator) }}
+                              {{ formatAmount(voter.stake_nominator) }}
                             </div>
                           </div>
                         </div>
@@ -112,21 +112,21 @@ import axios from 'axios';
 import bootstrap from 'bootstrap';
 import Identicon from '../components/identicon.vue';
 import Network from '../components/network.vue';
-import { formatBalance, isHex } from '@polkadot/util';
+import { isHex } from '@polkadot/util';
 import BN from 'bn.js';
-import { decimals, unit, backendBaseURL, blockExplorer} from '../polkastats.config.js';
-
-formatBalance.setDefaults({ decimals, unit });
+import { blockExplorer } from '../polkastats.config.js';
+import commonMixin from '../mixins/commonMixin.js';
 
 export default {
   head () {
     return {
-      title: 'PolkaStats - Kusama phragmen candidates',
+      title: 'PolkaStats - Polkadot Kusama phragmen candidates',
       meta: [
-        { hid: 'description', name: 'description', content: 'Kusama phragmen candidates' }
+        { hid: 'description', name: 'description', content: 'Polkadot Kusama phragmen candidates' }
       ]
     }
   },
+  mixins: [commonMixin],
   data: function() {
     return {
       blockExplorer,
@@ -181,46 +181,6 @@ export default {
     clearInterval(this.polling);
   },
   methods: {
-    formatNumber(n) {
-      if (isHex(n)) {
-        return (parseInt(n, 16).toString()).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
-      } else {
-        return (n.toString()).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
-      }
-    },
-    formatDot(amount) {
-      let bn;
-      if (isHex(amount)) {
-        bn = new BN(amount.substring(2, amount.length), 16);
-      } else {
-        bn = new BN(amount);
-      }
-      return formatBalance(bn.toString(10));
-    },  
-    shortAddress(address) {
-      return (address).substring(0,5) + ' .... ' + (address).substring(address.length - 5);
-    },
-    thousandsSeparator(n) {
-        return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    },
-    toggleFavorite(validator) {
-      // Receives validator accountId
-      if (this.isFavorite(validator)) {
-        this.favorites.splice(this.getIndex(validator), 1);
-      } else {
-        this.favorites.push({ accountId: validator, name: 'Edit validator name...'});
-      }
-      return true;
-    },
-    isFavorite(validator) {
-      // Receives validator accountId
-      for (var i=0; i < this.favorites.length; i++) {
-        if (this.favorites[i].accountId == validator) {
-          return true;
-        }
-      }
-      return false;
-    },
     getIndex(validator) {
       // Receives validator accountId
       for (var i=0; i < this.favorites.length; i++) {
@@ -229,25 +189,6 @@ export default {
         }
       }
       return false;
-    },
-    makeToast(content = '', title = '', variant = null, solid = false) {
-      this.$bvToast.toast(content, {
-        title: title,
-        variant: variant,
-        solid: solid
-      })
-    },
-    formatRewardDest(rewardDestination) {
-      if (rewardDestination === 0) {
-        return `Stash account (increase the amount at stake)`;
-      }
-      if (rewardDestination === 1) {
-        return `Stash account (do not increase the amount at stake)`;
-      }
-      if (rewardDestination === 2) {
-        return `Controller account`;
-      }
-      return rewardDestination;
     },
     hasIdentity(stashId) {
       return this.$store.state.identities.list.some(obj => {
@@ -270,33 +211,7 @@ export default {
         return obj.accountId === accountId
       });
       return filteredArray[0].nickname;
-    },
-    getStakePercent(amount) {
-      let amountBN;
-      if (isHex(amount)) {
-        amountBN = new BN(amount.substring(2, amount.length), 16);
-      } else {
-        amountBN = new BN(amount.toString(), 10);
-      }
-      amountBN = amountBN.mul(new BN('100000', 10));
-      let result = amountBN.div(this.totalStakeBonded);
-      return this.formatNumber(parseInt(result.toString(10), 10) / 1000);
-    },
-    getImOnlineMessage(validator) {
-      let message = "";
-      if (validator.imOnline.isOnline) {
-        message = "Active with ";
-      } else {
-        message = "Inactive with ";
-      }
-      message = `${message} ${validator.imOnline.blockCount} blocks authored, `;
-      if (validator.imOnline.hasMessage) {
-        message = message + "has heartbeat message!";
-      } else {
-        message = message + "no heartbeat message";
-      }
-      return message;
-    },
+    }
   },
   watch: {
     favorites: function (val) {

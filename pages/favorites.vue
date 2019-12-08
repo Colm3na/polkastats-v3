@@ -57,7 +57,7 @@
                         <span v-b-tooltip.hover title="Bonded by nominators" v-if="(validator.stakers.total - validator.stakers.own) > 0">(+{{ formatDot(validator.stakers.total - validator.stakers.own) }})</span>
                       </small>
                     </p>
-                    <p class="mb-0" v-b-tooltip.hover title="Percentage over total bonded stake">{{ getStakePercent(validator.stakers.total) }}% of total stake</p>
+                    <p class="mb-0" v-b-tooltip.hover title="Percentage over total bonded stake">{{ getStakePercent(validator.stakers.total, totalStakeBonded) }}% of total stake</p>
                     <p class="mb-0" v-if="validator.currentEraPointsEarned">{{ validator.currentEraPointsEarned }} era points</p>
                   </div>
                   <div class="col-md-9">
@@ -353,31 +353,24 @@ import axios from 'axios';
 import bootstrap from 'bootstrap';
 import Identicon from '../components/identicon.vue';
 import Network from '../components/network.vue';
-import { formatBalance, isHex } from '@polkadot/util';
+import { isHex } from '@polkadot/util';
 import BN from 'bn.js';
-import { decimals, unit, backendBaseURL, blockExplorer} from '../polkastats.config.js';
-
-formatBalance.setDefaults({ decimals, unit });
+import { blockExplorer } from '../polkastats.config.js';
+import commonMixin from '../mixins/commonMixin.js';
 
 export default {
   head () {
     return {
-      title: 'PolkaStats - Favorite Kusama validators and intentions',
+      title: 'PolkaStats - Polkadot Kusama favorite validators and intentions',
       meta: [
-        { hid: 'description', name: 'description', content: 'Favorite Kusama validators and intentions' }
+        { hid: 'description', name: 'description', content: 'Polkadot Kusama favorite validators and intentions' }
       ]
     }
   },
+  mixins: [commonMixin],
   data: function() {
     return {
-      system: {
-        chain: "",
-        client_name: "",
-        client_version: "",
-        timestamp: 0
-      },
       blockExplorer,
-      backendBaseURL,
       favorites: [],
       polling: null
     }
@@ -454,28 +447,6 @@ export default {
     clearInterval(this.polling);
   },
   methods: {
-    formatNumber(n) {
-      if (isHex(n)) {
-        return (parseInt(n, 16).toString()).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
-      } else {
-        return (n.toString()).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
-      }
-    },
-    formatDot(amount) {
-      let bn;
-      if (isHex(amount)) {
-        bn = new BN(amount.substring(2, amount.length), 16);
-      } else {
-        bn = new BN(amount.toString());
-      }
-      return formatBalance(bn.toString(10));
-    },  
-    shortAddress(address) {
-      return (address).substring(0,5) + ' .... ' + (address).substring(address.length - 5);
-    },
-    thousandsSeparator(n) {
-        return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    },
     toggleFavorite(validator) {
       // Receives validator accountId
       if (this.isFavorite(validator)) {
@@ -503,25 +474,6 @@ export default {
       }
       return false;
     },
-    makeToast(content = '', title = '', variant = null, solid = false) {
-      this.$bvToast.toast(content, {
-        title: title,
-        variant: variant,
-        solid: solid
-      })
-    },
-    formatRewardDest(rewardDestination) {
-      if (rewardDestination === 0) {
-        return `Stash account (increase the amount at stake)`;
-      }
-      if (rewardDestination === 1) {
-        return `Stash account (do not increase the amount at stake)`;
-      }
-      if (rewardDestination === 2) {
-        return `Controller account`;
-      }
-      return rewardDestination;
-    },
     hasIdentity(stashId) {
       return this.$store.state.identities.list.some(obj => {
         return obj.stashId === stashId;
@@ -543,33 +495,7 @@ export default {
         return obj.accountId === accountId
       });
       return filteredArray[0].nickname;
-    },
-    getStakePercent(amount) {
-      let amountBN;
-      if (isHex(amount)) {
-        amountBN = new BN(amount.substring(2, amount.length), 16);
-      } else {
-        amountBN = new BN(amount.toString(), 10);
-      }
-      amountBN = amountBN.mul(new BN('100000', 10));
-      let result = amountBN.div(this.totalStakeBonded);
-      return this.formatNumber(parseInt(result.toString(10), 10) / 1000);
-    },
-    getImOnlineMessage(validator) {
-      let message = "";
-      if (validator.imOnline.isOnline) {
-        message = "Active with ";
-      } else {
-        message = "Inactive with ";
-      }
-      message = `${message} ${validator.imOnline.blockCount} blocks authored, `;
-      if (validator.imOnline.hasMessage) {
-        message = message + "has heartbeat message!";
-      } else {
-        message = message + "no heartbeat message";
-      }
-      return message;
-    },
+    }
   },
   watch: {
     favorites: function (val) {
