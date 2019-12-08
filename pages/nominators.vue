@@ -2,7 +2,6 @@
   <div>
     <section>
       <b-container class="main pt-4">
-
         <!-- Filter -->
         <b-row>
           <b-col lg="12" class="mb-4">
