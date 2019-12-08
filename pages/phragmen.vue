@@ -2,9 +2,7 @@
   <div>
     <section>
       <b-container class="page-phragmen main pt-4">
-        
         <h1 class="text-center mb-4">Predicted candidates by phragmen election algorithm</h1>
-
         <b-alert show dismissible variant="primary" class="text-center">
           <p class="mt-3">We get validador slots and minimum validator count from the local kusama node using @polkadot/api and then run offline-phragmen with that params every 10 seconds. Output is stored in a MySQL database and served by PolkaStats backend (<a href="https://polkastats.io:8443/phragmen" target="_blank">see raw json</a>).</p>
           <p>
@@ -13,8 +11,6 @@
           </p>
           <p>Modified offline-phragmen source: <a href="https://github.com/mariopino/offline-phragmen" target="_blank">https://github.com/mariopino/offline-phragmen</a></p>     
         </b-alert>
-
-        
         <!-- START PHRAGMEN CANDIDATES -->
         <template  v-for="(candidate, index) in candidates">
           <div class="candidate card mt-4 mb-3">
@@ -37,15 +33,12 @@
                     rank #{{ candidate.rank }}
                   </p>
                   <p class="bonded mb-0" v-b-tooltip.hover title="Total stake">{{ formatAmount(candidate.stake_total) }}</p>
-
                   <p class="mb-0">
                     <small>
                       <span v-b-tooltip.hover title="Self bonded">{{ formatAmount(candidate.stake_validator) }}</span>
                       <span v-b-tooltip.hover title="Bonded by nominators">(+{{ formatAmount(candidate.other_stake_sum) }})</span>
                     </small>
                   </p>
-
-                  
                 </div>
                 <div class="col-md-9">
                   <h4 class="card-title mb-4 account mt-4 mt-sm-0 mt-md-0 mt-lg-0 mt-xl-0">
@@ -80,7 +73,7 @@
                       </a>
                     </div>
                   </div>
-                  <div class="voters mt-4">
+                  <div class="voters mt-2">
                     <template v-if="candidate.voters">
                       <template v-if="candidate.voters.length > 0">
                         <a class="" data-toggle="collapse" v-bind:href="'#candidate-voters-' + index" role="button" aria-expanded="false" v-bind:aria-controls="'candidate-voters-' + index">
