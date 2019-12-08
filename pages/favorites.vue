@@ -4,9 +4,9 @@
       <b-container class="page-favorites main pt-4">
         <!-- Economics info message -->
         <b-alert show dismissible variant="success" class="text-center">
-          Total issuance is <strong>{{ formatDot(network.totalIssuance) }}</strong>
+          Total issuance is <strong>{{ formatAmount(network.totalIssuance) }}</strong>
           <span v-if="totalStakeBonded.toString() !== `0` && totalStakeBondedPercen !== 0">
-            , total stake bonded is <strong>{{ formatDot(totalStakeBonded) }} ({{ totalStakeBondedPercen.toString(10) }}% of total)</strong>
+            , total stake bonded is <strong>{{ formatAmount(totalStakeBonded) }} ({{ totalStakeBondedPercen.toString(10) }}% of total)</strong>
           </span>
         </b-alert>
         <!-- Network component -->
@@ -49,12 +49,12 @@
                     <p class="mt-3 mb-0 rank">
                       rank #{{ index+1 }} <i class="fas fa-shield-alt" v-b-tooltip.hover title="Active validator"></i>
                     </p>
-                    <p v-if="validator.stakers.total > 0" class="bonded mb-0" v-b-tooltip.hover title="Total bonded">{{ formatDot(validator.stakers.total) }}</p>
-                    <p v-else class="bonded mb-0" v-b-tooltip.hover title="Total bonded">{{ formatDot(validator.stakingLedger.total) }}</p>
+                    <p v-if="validator.stakers.total > 0" class="bonded mb-0" v-b-tooltip.hover title="Total bonded">{{ formatAmount(validator.stakers.total) }}</p>
+                    <p v-else class="bonded mb-0" v-b-tooltip.hover title="Total bonded">{{ formatAmount(validator.stakingLedger.total) }}</p>
                     <p class="mb-0">
                       <small>
-                        <span v-b-tooltip.hover title="Self bonded" v-if="validator.stakers.own > 0">{{ formatDot(validator.stakers.own) }}</span>
-                        <span v-b-tooltip.hover title="Bonded by nominators" v-if="(validator.stakers.total - validator.stakers.own) > 0">(+{{ formatDot(validator.stakers.total - validator.stakers.own) }})</span>
+                        <span v-b-tooltip.hover title="Self bonded" v-if="validator.stakers.own > 0">{{ formatAmount(validator.stakers.own) }}</span>
+                        <span v-b-tooltip.hover title="Bonded by nominators" v-if="(validator.stakers.total - validator.stakers.own) > 0">(+{{ formatAmount(validator.stakers.total - validator.stakers.own) }})</span>
                       </small>
                     </p>
                     <p class="mb-0" v-b-tooltip.hover title="Percentage over total bonded stake">{{ getStakePercent(validator.stakers.total, totalStakeBonded) }}% of total stake</p>
@@ -169,7 +169,7 @@
                                 </a>
                               </div>
                               <div class="col-4 text-right value">
-                                {{ formatDot(staker.value) }}
+                                {{ formatAmount(staker.value) }}
                               </div>
                             </div>
                           </div>
@@ -212,12 +212,12 @@
                     </p>
                     <template v-if="validator.stakingLedger">
                       <p class="bonded mb-0" v-b-tooltip.hover title="Active bonded">
-                        {{ formatDot(validator.stakingLedger.active) }}
+                        {{ formatAmount(validator.stakingLedger.active) }}
                       </p>
                       <p class="mb-0">
                         <small>
                           <span v-b-tooltip.hover title="Total bonded">
-                            {{ formatDot(validator.stakingLedger.total) }}
+                            {{ formatAmount(validator.stakingLedger.total) }}
                           </span>
                         </small>
                       </p>
@@ -329,7 +329,7 @@
                               </a>
                             </div>
                             <div class="col-4 text-right value">
-                              {{ formatDot(staker.value) }}
+                              {{ formatAmount(staker.value) }}
                             </div>
                           </div>
                         </div>
