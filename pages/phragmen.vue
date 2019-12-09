@@ -118,6 +118,24 @@
                 </nuxt-link>
               </div>
             </template>
+            <template slot="other_stake_count" slot-scope="data">
+              <p class="text-right mb-0">
+                {{ data.item.other_stake_count }}
+              </p>
+            </template>
+
+            <template slot="stake_validator" slot-scope="data">
+              <p class="text-right mb-0">
+                {{ formatAmount(data.item.stake_validator) }}
+              </p>
+            </template>
+
+            <template slot="other_stake_sum" slot-scope="data">
+              <p class="text-right mb-0">
+                {{ formatAmount(data.item.other_stake_sum) }}
+              </p>
+            </template>
+
             <template slot="stake_total" slot-scope="data">
               <p class="text-right mb-0" v-if="data.item.stake_total > 0 ">
                 {{ formatAmount(data.item.stake_total) }}
@@ -166,8 +184,11 @@ export default {
       filterOn: [],
       totalRows: 1,
       fields: [
-        { key: 'rank', label: '#', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` },
+        { key: 'rank', label: 'Rank', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` },
         { key: 'pub_key_stash', label: 'Candidate', sortable: true, filterByFormatted: true },
+        { key: 'other_stake_count', label: 'Voters', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` },
+        { key: 'stake_validator', label: 'Self stake', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` },
+        { key: 'other_stake_sum', label: 'Voters stake', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` },
         { key: 'stake_total', label: 'Total stake', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` }
       ],
       blockExplorer,
