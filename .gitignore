@@ -87,3 +87,6 @@ sw.*
 
 # Mac OSX
 .DS_Store
+
+# Polkadot node releases
+static/polkadot
