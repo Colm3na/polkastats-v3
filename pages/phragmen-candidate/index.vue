@@ -7,7 +7,7 @@
             <div class="row">
               <div class="col-2 col-lg-1">
                 <template v-if="index > 0">
-                  <nuxt-link :to="{name: 'candidate', query: { accountId: candidates[index-1].pub_key_stash } }" :title="'Previous candidate: ' + candidates[index-1].pub_key_stash">
+                  <nuxt-link :to="{name: 'phragmen-candidate', query: { accountId: candidates[index-1].pub_key_stash } }" :title="'Previous candidate: ' + candidates[index-1].pub_key_stash">
                     <i class="fas fa-2x fa-chevron-left"></i>
                   </nuxt-link>
                 </template>
@@ -17,7 +17,7 @@
               </div>
               <div class="col-2 col-lg-1 text-right">
                 <template v-if="index < candidates.length - 1">
-                  <nuxt-link :to="{name: 'candidate', query: { accountId: candidates[index+1].pub_key_stash } }" :title="'Next candidate: ' + candidates[index+1].pub_key_stash">
+                  <nuxt-link :to="{name: 'phragmen-candidate', query: { accountId: candidates[index+1].pub_key_stash } }" :title="'Next candidate: ' + candidates[index+1].pub_key_stash">
                     <i class="fas fa-2x fa-chevron-right"></i>
                   </nuxt-link>  
                 </template>
