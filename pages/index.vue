@@ -295,7 +295,7 @@ export default {
         return 0;
       }
     },
-    totalStakeBonded () {
+    totalStakeBonded() {
       return this.$store.state.validators.totalStakeBonded
     },
     sortOptions() {
