@@ -103,7 +103,7 @@
                         {{ (validator.validatorPrefs.commission / 10000000).toFixed(2) }}%
                       </div>
                     </div>
-                    <div class="row mb-2" v-if="validator.rewardDestination">
+                    <div class="row mb-2">
                       <div class="col-md-3 mb-1">
                         <strong>Reward destination</strong>
                       </div>
