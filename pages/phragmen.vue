@@ -3,14 +3,17 @@
     <section>
       <b-container class="page-phragmen main pt-4">
         <h1 class="text-center mb-4">Predicted candidates by phragmen election algorithm</h1>
-        <!-- Phragmen alert -->
+        <!-- Phragmen alert I -->
         <b-alert show dismissible variant="primary" class="text-center">
           <p class="mt-3">We get validador slots and minimum validator count from the local kusama node using @polkadot/api and then run offline-phragmen with that params every 10 seconds. Output is stored in a MySQL database and served by PolkaStats backend (<a href="https://polkastats.io:8443/phragmen" target="_blank">see raw json</a>).</p>
           <p>
             We use a modified version of offline-phragmen by <a href="https://github.com/kianenigma" target="_blank">kianenigma</a> (<a href="https://github.com/kianenigma/offline-phragmen" target="_blank">https://github.com/kianenigma/offline-phragmen</a>).
             The modification was just change the output to json, taking most of the code from <a href="https://github.com/soc1c/offline-phragmen" target="_blank">https://github.com/soc1c/offline-phragmen</a> by <a href="https://github.com/soc1c" target="_blank">soc1c</a>.
-          </p>
-          <p>Modified offline-phragmen source: <a href="https://github.com/mariopino/offline-phragmen" target="_blank">https://github.com/mariopino/offline-phragmen</a></p>     
+            Modified source is available here: <a href="https://github.com/mariopino/offline-phragmen" target="_blank">https://github.com/mariopino/offline-phragmen</a></p>     
+        </b-alert>
+        <!-- Phragmen alert II -->
+        <b-alert show dismissible variant="warning" class="text-center">
+          Calculated over {{ validator_count }} validators and {{ nominator_count }} nominators, total issuance is {{ formatAmount(total_issuance) }}     
         </b-alert>
         <!-- Filter -->
         <b-row>
@@ -19,7 +22,7 @@
               v-model="filter"
               type="search"
               id="filterInput"
-              placeholder="Search candidate by address"
+              placeholder="Search candidate by address, nickname or keybase name"
             ></b-form-input>
           </b-col>
         </b-row>
@@ -91,8 +94,15 @@
                     <span class="d-none d-sm-none d-md-none d-lg-none d-xl-inline"></span>
                   </h4>
                 </nuxt-link>
-                <p class="mt-3 mb-0 rank">
+                <p class="mt-2 mb-2 rank">
                   rank #{{ data.item.rank }}
+                </p>
+                <p class="bonded mb-0" v-b-tooltip.hover title="Total stake">{{ formatAmount(data.item.stake_total) }}</p>
+                <p class="mb-0">
+                  <small>
+                    <span v-b-tooltip.hover title="Self bonded">{{ formatAmount(data.item.stake_validator) }}</span>
+                    <span v-b-tooltip.hover title="Bonded by nominators">(+{{ formatAmount(data.item.other_stake_sum) }})</span>
+                  </small>
                 </p>
               </div>
               <div class="d-none d-sm-none d-md-block d-lg-block d-xl-block">
@@ -123,19 +133,16 @@
                 {{ data.item.other_stake_count }}
               </p>
             </template>
-
             <template slot="stake_validator" slot-scope="data">
               <p class="text-right mb-0">
                 {{ formatAmount(data.item.stake_validator) }}
               </p>
             </template>
-
             <template slot="other_stake_sum" slot-scope="data">
               <p class="text-right mb-0">
                 {{ formatAmount(data.item.other_stake_sum) }}
               </p>
             </template>
-
             <template slot="stake_total" slot-scope="data">
               <p class="text-right mb-0" v-if="data.item.stake_total > 0 ">
                 {{ formatAmount(data.item.stake_total) }}
@@ -184,7 +191,7 @@ export default {
       filterOn: [],
       totalRows: 1,
       fields: [
-        { key: 'rank', label: 'Rank', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` },
+        { key: 'rank', label: '#', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` },
         { key: 'pub_key_stash', label: 'Candidate', sortable: true, filterByFormatted: true },
         { key: 'other_stake_count', label: 'Voters', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` },
         { key: 'stake_validator', label: 'Self stake', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` },
@@ -196,17 +203,43 @@ export default {
     }
   },
   computed: {
-    network () {
+    network() {
       return this.$store.state.network.info;
     },
-    candidates () {
-      return this.$store.state.phragmen.candidates
+    candidates() {
+      let candidates = [];
+      for(let i = 0; i < this.$store.state.phragmen.info.candidates.length; i++) {
+        let candidate = this.$store.state.phragmen.info.candidates[i];
+        let identity = "";
+        if (this.hasIdentity(candidate.pub_key_stash)) {
+          identity = this.getIdentity(candidate.pub_key_stash);
+        }
+        let nickname = "";
+        if (this.hasNickname(candidate.pub_key_stash)) {
+          nickname = this.getNickname(candidate.pub_key_stash);
+        }
+        candidates.push({
+          ...candidate,
+          identity,
+          nickname
+        });
+      }
+      return candidates;
+    },
+    validator_count() {
+      return this.$store.state.phragmen.info.validator_count;
+    },
+    nominator_count() {
+      return this.$store.state.phragmen.info.nominator_count;
+    },
+    total_issuance() {
+      return this.$store.state.phragmen.info.total_issuance;
     },
     identities() {
-      return this.$store.state.identities.list
+      return this.$store.state.identities.list;
     },
     nicknames() {
-      return this.$store.state.nicknames.list
+      return this.$store.state.nicknames.list;
     },
     sortOptions() {
       // Create an options list from our fields
@@ -214,7 +247,7 @@ export default {
         .filter(f => f.sortable)
         .map(f => {
           return { text: f.label, value: f.key }
-        })
+        });
     }
   },
   created: function () {
@@ -224,10 +257,10 @@ export default {
     vm.$store.dispatch('network/update');
     
     // Force update of phragmen candidates list if empty
-    if (this.$store.state.phragmen.candidates.length == 0) {
+    if (this.$store.state.phragmen.info.candidates.length == 0) {
       vm.$store.dispatch('phragmen/update');
     }
-    this.totalRows = this.$store.state.phragmen.candidates.length;
+    this.totalRows = this.$store.state.phragmen.info.candidates.length;
 
 
     // Force update of indentity list if empty
@@ -246,6 +279,7 @@ export default {
       vm.$store.dispatch('phragmen/update');
       vm.$store.dispatch('identities/update');
       vm.$store.dispatch('nicknames/update');
+      if (!this.filter) this.totalRows = this.$store.state.phragmen.info.candidates.length;
     }, 10000);
 
   },

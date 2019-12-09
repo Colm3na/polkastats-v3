@@ -146,188 +146,12 @@ export default {
       accountId: this.$route.query.accountId,
       blockExplorer,
       backendBaseURL,
-      polling: null,
-      graphPolling: null,
-      favorites: [],
-      daily:{
-        last: 0,
-        first: 0
-      },
-      weekly:{
-        last: 0,
-        first: 0
-      },
-      monthly:{
-        last: 0,
-        first: 0
-      },
-      StakeEvolutionDailySeries: [{
-          name: "Total bonded (KSM)",
-          data: []
-      }],
-       StakeEvolutionWeeklySeries: [{
-          name: "Total bonded (KSM)",
-          data: []
-      }],
-       StakeEvolutionMonthlySeries: [{
-          name: "Total bonded (KSM)",
-          data: []
-      }],
-      StakeEvolutionDailyChartOptions: {
-        chart: {
-          height: 500,
-          stacked: false,
-          zoom: {
-            enabled: false
-          }
-        },
-        dataLabels: {
-          enabled: false
-        },
-        stroke: {
-          curve: 'straight'
-        },
-        markers: {
-          size: 6
-        },
-        colors: ['#d75ea1'],
-        grid: {
-          row: {
-            colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
-            opacity: 0.5
-          },
-        },
-        xaxis: {
-          categories: [],
-          type: 'datetime',
-          title: {
-            text: 'Date / time (UTC)'
-          },          
-          labels: {
-            formatter: function (val) {
-              return moment.unix(val).format('MM/DD/YYYY HH:mm');
-            }
-          },
-          tooltip: {
-            enabled: false
-          }
-        },
-        yaxis: {
-          title: {
-            text: 'Total bonded (KSM)'
-          },
-          labels: {
-            formatter: function (val) {
-              return val;
-            }
-          }       
-        }
-      },
-      StakeEvolutionWeeklyChartOptions: {
-        chart: {
-          height: 500,
-          stacked: false,
-          zoom: {
-            enabled: false
-          }
-        },
-        dataLabels: {
-          enabled: false
-        },
-        stroke: {
-          curve: 'straight'
-        },
-        markers: {
-          size: 6
-        },
-        colors: ['#d75ea1'],
-        grid: {
-          row: {
-            colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
-            opacity: 0.5
-          },
-        },
-        xaxis: {
-          categories: [],
-          type: 'datetime',
-          title: {
-            text: 'Date / time (UTC)'
-          },          
-          labels: {
-            formatter: function (val) {
-              return moment.unix(val).format('MM/DD/YYYY HH:mm');
-            }
-          },
-          tooltip: {
-            enabled: false
-          }
-        },
-        yaxis: {
-          title: {
-            text: 'Total bonded (KSM)'
-          },
-          labels: {
-            formatter: function (val) {
-              return val;
-            }
-          }       
-        }
-      },
-      StakeEvolutionMonthlyChartOptions: {
-        chart: {
-          height: 500,
-          stacked: false,
-          zoom: {
-            enabled: false
-          }
-        },
-        dataLabels: {
-          enabled: false
-        },
-        stroke: {
-          curve: 'straight'
-        },
-        markers: {
-          size: 6
-        },
-        colors: ['#d75ea1'],
-        grid: {
-          row: {
-            colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
-            opacity: 0.5
-          },
-        },
-        xaxis: {
-          categories: [],
-          type: 'datetime',
-          title: {
-            text: 'Date / time (UTC)'
-          },          
-          labels: {
-            formatter: function (val) {
-              return moment.unix(val).format('MM/DD/YYYY HH:mm');
-            }
-          },
-          tooltip: {
-            enabled: false
-          }
-        },
-        yaxis: {
-          title: {
-            text: 'Total bonded (KSM)'
-          },
-          labels: {
-            formatter: function (val) {
-              return val;
-            }
-          }       
-        }
-      }
+      polling: null
     }
   },
   computed: {
     candidates () {
-      return this.$store.state.phragmen.candidates
+      return this.$store.state.phragmen.info.candidates
     },
     identities() {
       return this.$store.state.identities.list
@@ -340,7 +164,7 @@ export default {
     var vm = this;
 
     // Force update of phragmen candidates list if empty
-    if (this.$store.state.phragmen.candidates.length == 0) {
+    if (this.$store.state.phragmen.info.candidates.length == 0) {
       vm.$store.dispatch('phragmen/update');
     }
 
@@ -431,5 +255,8 @@ export default {
   top: 0.4rem;
   right: 0.4rem;
   cursor: initial;
+}
+.page-candidate .clipboard {
+  display: inline-block;
 }
 </style>
