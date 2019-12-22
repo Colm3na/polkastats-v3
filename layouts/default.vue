@@ -415,6 +415,10 @@ section .section-title {
   max-width: 300px;
 }
 
+.table {
+  background-color: white;
+}
+
 /*----------------------- Media queries --------------------------*/
 
 @media (max-width:991px){

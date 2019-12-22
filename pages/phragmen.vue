@@ -22,7 +22,7 @@
               v-model="filter"
               type="search"
               id="filterInput"
-              placeholder="Search candidate by address, nickname or keybase name"
+              placeholder="Search candidate by account, account index, nickname or keybase name"
             ></b-form-input>
           </b-col>
         </b-row>
@@ -90,8 +90,8 @@
                     {{ getNickname(data.item.pub_key_stash) }}
                   </h4>
                   <h4 v-else class="mt-2 mb-2">
-                    <span class="d-inline d-sm-inline d-md-inline d-lg-inline d-xl-none">{{ shortAddress(data.item.pub_key_stash) }}</span>
-                    <span class="d-none d-sm-none d-md-none d-lg-none d-xl-inline"></span>
+                    <span class="d-inline d-sm-inline d-md-inline d-lg-inline d-xl-none">{{ indexes[data.item.pub_key_stash] }}</span>
+                    <span class="d-none d-sm-none d-md-none d-lg-none d-xl-inline">{{ indexes[data.item.pub_key_stash] }}</span>
                   </h4>
                 </nuxt-link>
                 <p class="mt-2 mb-2 rank">
@@ -122,8 +122,8 @@
                     {{ getNickname(data.item.pub_key_stash) }}
                   </span>
                   <span v-else>
-                    <span class="d-inline d-sm-inline d-md-inline d-lg-inline d-xl-none">{{ shortAddress(data.item.pub_key_stash) }}</span>
-                    <span class="d-none d-sm-none d-md-none d-lg-none d-xl-inline">{{ data.item.pub_key_stash }}</span>
+                    <span class="d-inline d-sm-inline d-md-inline d-lg-inline d-xl-none">{{ indexes[data.item.pub_key_stash] }}</span>
+                    <span class="d-none d-sm-none d-md-none d-lg-none d-xl-inline">{{ indexes[data.item.pub_key_stash] }}</span>
                   </span>
                 </nuxt-link>
               </div>
@@ -221,7 +221,8 @@ export default {
         candidates.push({
           ...candidate,
           identity,
-          nickname
+          nickname,
+          accountIndex: this.indexes[candidate.pub_key_stash]
         });
       }
       return candidates;
@@ -240,6 +241,9 @@ export default {
     },
     nicknames() {
       return this.$store.state.nicknames.list;
+    },
+    indexes() {
+      return this.$store.state.indexes.list;
     },
     sortOptions() {
       // Create an options list from our fields
@@ -262,7 +266,6 @@ export default {
     }
     this.totalRows = this.$store.state.phragmen.info.candidates.length;
 
-
     // Force update of indentity list if empty
     if (this.$store.state.identities.list.length == 0) {
       vm.$store.dispatch('identities/update');
@@ -271,6 +274,11 @@ export default {
     // Force update of nicknames list if empty
     if (this.$store.state.nicknames.list.length == 0) {
       vm.$store.dispatch('nicknames/update');
+    }
+
+    // Force update of indexes list if empty
+    if (this.$store.state.indexes.list.length === 0) {
+      vm.$store.dispatch('indexes/update');
     }
 
     // Update data every 10 seconds

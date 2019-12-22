@@ -9,7 +9,7 @@
               v-model="filter"
               type="search"
               id="filterInput"
-              placeholder="Search nominator by address"
+              placeholder="Search nominator by account or account index"
             ></b-form-input>
           </b-col>
         </b-row>
@@ -60,8 +60,8 @@
             <template slot="accountId" slot-scope="data">
               <Identicon :value="data.item.accountId" :size="20" :theme="'polkadot'" :key="data.item.accountId" />
               <nuxt-link :to="{name: 'nominator', query: { accountId: data.item.accountId } }" title="Nominator details">
-                <span class="d-inline d-sm-inline d-md-inline d-lg-inline d-xl-none">{{ shortAddress(data.item.accountId) }}</span>
-                <span class="d-none d-sm-none d-md-none d-lg-none d-xl-inline">{{ data.item.accountId }}</span>
+                <span class="d-inline d-sm-inline d-md-inline d-lg-inline d-xl-none">{{ indexes[data.item.accountId] }}</span>
+                <span class="d-none d-sm-none d-md-none d-lg-none d-xl-inline">{{ indexes[data.item.accountId] }}</span>
               </nuxt-link>
             </template>
             <template slot="totalStake" slot-scope="data">
@@ -164,6 +164,7 @@ export default {
               }
               nominatorStaking.push({
                 accountId: nominator.who,
+                accountIndex: this.indexes[nominator.who],
                 totalStake: bn,
                 staking: [{
                   validator: validator.accountId,
