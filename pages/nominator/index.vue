@@ -13,7 +13,7 @@
                 </template>
               </div>
               <div class="col-8 col-lg-10 text-center">
-                <h4 class="mb-1">Nominator {{ accountId }}</h4>
+                <h4 class="mb-1">Nominator {{ indexes[accountId] }}</h4>
               </div>
               <div class="col-2 col-lg-1 text-right">
                 <template v-if="index < nominators.length - 1">
@@ -27,7 +27,7 @@
               <div class="card-body text-center">
                 <Identicon :value="nominator.accountId" :size="80" :theme="'polkadot'" :key="nominator.accountId" />
                 <a v-bind:href="blockExplorer.account + nominator.accountId" target="_blank" class="d-block my-2">
-                  Nominator <span v-b-tooltip.hover title="See address in PolkaScan">{{ shortAddress(nominator.accountId) }}</span>
+                  Nominator <span v-b-tooltip.hover title="See address in PolkaScan">{{ indexes[nominator.accountId] }}</span>
                 </a>
                 <p class="amount" v-b-tooltip.hover title="Total bonded">{{ formatDot(getTotalStake(nominator.staking)) }}</p>
                 <h5>{{ nominator.staking.length }} nomination<span v-if="nominator.staking.length > 1">s</span>:</h5>
@@ -39,7 +39,7 @@
                       {{ getNickname(nomination.validator) }}
                     </nuxt-link>
                     <nuxt-link v-else :to="{name: 'validator', query: { accountId: nomination.validator } }" title="Validator details" class="mt-2 mb-0 d-block">
-                      <span v-b-tooltip.hover v-bind:title="nomination.validator">{{ shortAddress(nomination.validator) }}</span>
+                      <span v-b-tooltip.hover v-bind:title="nomination.validator">{{ indexes[nomination.validator] }}</span>
                     </nuxt-link>
                     <p class="mt-0 mb-0">rank #{{ getRank(nomination.validator) }}</p>
                     <p class="mt-0 mb-2">
@@ -93,6 +93,9 @@ export default {
     },
     nicknames() {
       return this.$store.state.nicknames.list;
+    },
+    indexes() {
+      return this.$store.state.indexes.list
     },
     nominators () {
       let nominatorStaking = [];
@@ -168,6 +171,11 @@ export default {
     // Force update of nicknames list if empty
     if (this.$store.state.nicknames.list.length === 0) {
       vm.$store.dispatch('nicknames/update');
+    }
+
+    // Force update of account indexes list if empty
+    if (this.$store.state.indexes.list.length == 0) {
+      vm.$store.dispatch('indexes/update');
     }
 
     // Update network info validators and intentions every 10 seconds

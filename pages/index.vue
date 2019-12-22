@@ -307,7 +307,7 @@ export default {
         })
     }
   },
-  created: function () {
+  created: async function () {
     var vm = this;
 
     // Get favorites from cookie
@@ -337,6 +337,11 @@ export default {
     // Force update of nicknames list if empty
     if (this.$store.state.nicknames.list.length === 0) {
       vm.$store.dispatch('nicknames/update');
+    }
+
+    // Force update of indexes list if empty
+    if (this.$store.state.indexes.list.length === 0) {
+      await vm.$store.dispatch('indexes/update');
     }
 
     // Update network info validators and intentions every 10 seconds

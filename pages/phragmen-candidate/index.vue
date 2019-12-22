@@ -13,7 +13,7 @@
                 </template>
               </div>
               <div class="col-8 col-lg-10 text-center">
-                <h4 class="mb-1">Candidate {{ accountId }}</h4>
+                <h4 class="mb-1">Candidate {{ indexes[accountId] }}</h4>
               </div>
               <div class="col-2 col-lg-1 text-right">
                 <template v-if="index < candidates.length - 1">
@@ -66,8 +66,8 @@
                       <div class="col-md-9 mb-1">
                         <Identicon :value="candidate.pub_key_stash" :size="20" :theme="'polkadot'" :key="candidate.pub_key_stash" />
                         <a v-bind:href="blockExplorer.account + candidate.pub_key_stash" target="_blank">
-                          <span class="d-inline d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="candidate.pub_key_stash">{{ shortAddress(candidate.pub_key_stash) }}</span>
-                          <span class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline">{{ candidate.pub_key_stash }}</span>
+                          <span class="d-inline d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="candidate.pub_key_stash">{{ indexes[candidate.pub_key_stash] }}</span>
+                          <span class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline">{{ indexes[candidate.pub_key_stash] }}</span>
                         </a>
                       </div>
                     </div>
@@ -78,8 +78,8 @@
                       <div class="col-md-9 mb-1">
                         <Identicon :value="candidate.pub_key_controller" :size="20" :theme="'polkadot'" :key="candidate.pub_key_controller" />
                         <a v-bind:href="blockExplorer.account + candidate.pub_key_controller" target="_blank">
-                          <span class="d-inline d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="candidate.pub_key_controller">{{ shortAddress(candidate.pub_key_controller) }}</span>
-                          <span class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline">{{ candidate.pub_key_controller }}</span>
+                          <span class="d-inline d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="candidate.pub_key_controller">{{ indexes[candidate.pub_key_controller] }}</span>
+                          <span class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline">{{ indexes[candidate.pub_key_controller] }}</span>
                         </a>
                       </div>
                     </div>
@@ -98,8 +98,8 @@
                               <div class="col-8 mb-1 who">
                                 <Identicon :value="voter.pub_key_nominator" :size="20" :theme="'polkadot'" :key="voter.pub_key_nominator" />                      
                                 <a v-bind:href="blockExplorer.account + voter.pub_key_nominator" target="_blank">
-                                  <span class="d-inline-block d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="voter.pub_key_nominator">{{ shortAddress(voter.pub_key_nominator) }}</span>
-                                  <span class="d-none d-sm-inline-block d-md-inline-block d-lg-inline-block d-xl-inline-block">{{ voter.pub_key_nominator }}</span>                        
+                                  <span class="d-inline-block d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="voter.pub_key_nominator">{{ indexes[voter.pub_key_nominator] }}</span>
+                                  <span class="d-none d-sm-inline-block d-md-inline-block d-lg-inline-block d-xl-inline-block">{{ indexes[voter.pub_key_nominator] }}</span>                        
                                 </a>
                               </div>
                               <div class="col-4 text-right value">
@@ -158,6 +158,9 @@ export default {
     },
     nicknames() {
       return this.$store.state.nicknames.list
+    },
+    indexes() {
+      return this.$store.state.indexes.list
     }
   },
   created: function () {
@@ -171,6 +174,16 @@ export default {
     // Force update of indentity list if empty
     if (this.$store.state.identities.list.length == 0) {
       vm.$store.dispatch('identities/update');
+    }
+
+    // Force update of nicknames list if empty
+    if (this.$store.state.nicknames.list.length === 0) {
+      vm.$store.dispatch('nicknames/update');
+    }
+
+    // Force update of account indexes list if empty
+    if (this.$store.state.indexes.list.length == 0) {
+      vm.$store.dispatch('indexes/update');
     }
     
     // Update data every 10 seconds

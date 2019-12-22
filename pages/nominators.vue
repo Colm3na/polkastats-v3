@@ -130,6 +130,9 @@ export default {
     nicknames() {
       return this.$store.state.nicknames.list;
     },
+    indexes() {
+      return this.$store.state.indexes.list
+    },
     nominators () {
       let nominatorStaking = [];
       for(let i = 0; i < this.validators.length; i++) {
@@ -211,6 +214,11 @@ export default {
     // Force update of nicknames list if empty
     if (this.$store.state.nicknames.list.length === 0) {
       vm.$store.dispatch('nicknames/update');
+    }
+
+    // Force update of account indexes list if empty
+    if (this.$store.state.indexes.list.length == 0) {
+      vm.$store.dispatch('indexes/update');
     }
 
     // Update network info validators and intentions every 10 seconds

@@ -13,7 +13,7 @@
                 </template>
               </div>
               <div class="col-8 col-lg-10 text-center">
-                <h4 class="mb-1">Validator {{ accountId }}</h4>
+                <h4 class="mb-1">Validator {{ indexes[accountId] }}</h4>
               </div>
               <div class="col-2 col-lg-1 text-right">
                 <template v-if="index < validators.length - 1">
@@ -76,8 +76,8 @@
                       <div class="col-md-9 mb-2">
                         <Identicon :value="validator.accountId" :size="20" :theme="'polkadot'" :key="validator.accountId" />
                         <a v-bind:href="blockExplorer.account + validator.accountId" target="_blank">
-                          <span class="d-inline d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="validator.accountId">{{ shortAddress(validator.accountId) }}</span>
-                          <span class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline">{{ validator.accountId }}</span>
+                          <span class="d-inline d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="validator.accountId">{{ indexes[validator.accountId] }}</span>
+                          <span class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline">{{ indexes[validator.accountId] }}</span>
                         </a>
                       </div>
                     </div>
@@ -88,8 +88,8 @@
                       <div class="col-md-9 mb-2">
                         <Identicon :value="validator.controllerId" :size="20" :theme="'polkadot'" :key="validator.controllerId" />
                         <a v-bind:href="blockExplorer.account + validator.controllerId" target="_blank">
-                          <span class="d-inline d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="validator.controllerId">{{ shortAddress(validator.controllerId) }} </span>
-                          <span class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline">{{ validator.controllerId }}</span>
+                          <span class="d-inline d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="validator.controllerId">{{ indexes[validator.controllerId] }} </span>
+                          <span class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline">{{ indexes[validator.controllerId] }}</span>
                         </a>
                       </div>
                     </div>
@@ -220,8 +220,8 @@
                               <div class="col-8 mb-1 who">
                                 <Identicon :value="staker.who" :size="20" :theme="'polkadot'" :key="staker.who" />                      
                                 <a v-bind:href="blockExplorer.account + staker.who" target="_blank">
-                                  <span class="d-inline-block d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="staker.who">{{ shortAddress(staker.who) }}</span>
-                                  <span class="d-none d-sm-inline-block d-md-inline-block d-lg-inline-block d-xl-inline-block">{{ staker.who }}</span>                        
+                                  <span class="d-inline-block d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="staker.who">{{ indexes[staker.who] }}</span>
+                                  <span class="d-none d-sm-inline-block d-md-inline-block d-lg-inline-block d-xl-inline-block">{{ indexes[staker.who] }}</span>                        
                                 </a>
                               </div>
                               <div class="col-4 text-right value">
@@ -470,6 +470,9 @@ export default {
     nicknames() {
       return this.$store.state.nicknames.list
     },
+    indexes() {
+      return this.$store.state.indexes.list
+    },
     totalStakeBonded () {
       return this.$store.state.validators.totalStakeBonded
     },
@@ -504,6 +507,16 @@ export default {
     // Force update of indentity list if empty
     if (this.$store.state.identities.list.length == 0) {
       vm.$store.dispatch('identities/update');
+    }
+
+    // Force update of nicknames list if empty
+    if (this.$store.state.nicknames.list.length == 0) {
+      vm.$store.dispatch('nicknames/update');
+    }
+
+    // Force update of account indexes list if empty
+    if (this.$store.state.indexes.list.length == 0) {
+      vm.$store.dispatch('indexes/update');
     }
 
     // Update validators every 30 seconds
