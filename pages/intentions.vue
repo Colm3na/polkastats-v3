@@ -1,7 +1,7 @@
 <template>
   <div>
     <section>
-      <b-container class="main pt-4">
+      <b-container class="main pt-4 page-intentions">
         <!-- Economics info message -->
         <b-alert show dismissible variant="success" class="text-center">
           Total issuance is <strong>{{ formatAmount(network.totalIssuance) }}</strong>
@@ -400,6 +400,12 @@ export default {
 body {
   font-size: 0.9rem;
 }
+
+.page-intentions .table.b-table.b-table-stacked-md>tbody>tr>[data-label]>div {
+  padding: 0;
+}
+
+
 .page-intentions .favorite {
   cursor: pointer;
   position: absolute;
