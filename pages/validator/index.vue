@@ -167,71 +167,124 @@
                       </div>
                     </div>
                     <!-- Identity End -->
-                    <div v-bind:id="'validator-info-' + index">
-                      <template v-if="validator.stakers">
-                        <template v-if="validator.stakers.others.length > 0">
-                          <a class="" data-toggle="collapse" v-bind:href="'#staker' + index" role="button" aria-expanded="false" v-bind:aria-controls="'staker' + index">
-                            <h6 class="h6 nominators d-inline mr-4"><i class="fas"></i> Stakers ({{ validator.stakers.others.length }})</h6>
-                          </a>
-                        </template>
-                      </template>
-                      <template v-if="validator.sessionIds.length > 0">
-                        <a class="" data-toggle="collapse" v-bind:href="'#current-session-id-' + index" role="button" aria-expanded="false" v-bind:aria-controls="'current-session-id-' + index">
-                          <h6 class="h6 nominators d-inline mr-4"><i class="fas"></i> Current session ids ({{ validator.sessionIds.length }})</h6>
-                        </a>
-                      </template>
-                      <template v-if="validator.nextSessionIds.length > 0">
-                        <a class="" data-toggle="collapse" v-bind:href="'#session-id-' + index" role="button" aria-expanded="false" v-bind:aria-controls="'session-id-' + index">
-                          <h6 class="h6 nominators d-inline mr-4"><i class="fas"></i> Next session ids ({{ validator.nextSessionIds.length }})</h6>
-                        </a>
-                      </template>
-                      <template v-if="validator.sessionIds.length > 0">
-                        <div class="nominator collapse pt-2 pb-3"  v-bind:id="'current-session-id-' + index" v-bind:data-parent="'#validator-info-' + index">
-                          <div v-for="(sessionId, index) in validator.sessionIds" class="row" v-bind:key="index">
-                            <div class="col-12 mb-1 who">
-                              {{ index+1 }}.
-                              <Identicon :value="sessionId" :size="20" :theme="'polkadot'" :key="sessionId" />                      
-                              <a v-bind:href="blockExplorer.account + sessionId" target="_blank">
-                                <span class="d-inline-block d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="sessionId">{{ shortAddress(sessionId) }}</span>
-                                <span class="d-none d-sm-inline-block d-md-inline-block d-lg-inline-block d-xl-inline-block">{{ sessionId }}</span>                        
-                              </a>
-                            </div>
+
+                    <!-- Stakers -->
+                    <b-tabs content-class="mt-4 mb-2" class="mt-4">
+                      <!-- Stakers -->
+                      <b-tab v-if="validator.stakers.others.length > 0" :title="`Stakers (${validator.stakers.others.length})`" active>
+                        <!-- Filter -->
+                        <b-row class="mb-4">
+                          <b-col lg="12">
+                            <b-form-input
+                              v-model="filter"
+                              type="search"
+                              id="filterInput"
+                              placeholder="Search staker by account, account index or nickname"
+                            ></b-form-input>
+                          </b-col>
+                        </b-row>
+                        <!-- Mobile sorting -->
+                        <div class="row d-block d-sm-block d-md-block d-lg-none d-xl-none">
+                          <b-col lg="6" class="my-1">
+                            <b-form-group
+                              label="Sort"
+                              label-cols-sm="3"
+                              label-align-sm="right"
+                              label-size="sm"
+                              label-for="sortBySelect"
+                              class="mb-4"
+                            >
+                              <b-input-group size="sm">
+                                <b-form-select v-model="sortBy" id="sortBySelect" :options="sortOptions" class="w-75">
+                                  <template v-slot:first>
+                                    <option value="">-- none --</option>
+                                  </template>
+                                </b-form-select>
+                                <b-form-select v-model="sortDesc" size="sm" :disabled="!sortBy" class="w-25">
+                                  <option :value="false">Asc</option>
+                                  <option :value="true">Desc</option>
+                                </b-form-select>
+                              </b-input-group>
+                            </b-form-group>
+                          </b-col>
+                        </div>
+                        <!-- Table with sorting and pagination-->
+                        <div class="table-responsive">
+                          <b-table
+                            stacked="md"
+                            id="nominators-table"
+                            head-variant="dark"
+                            :fields="fields"
+                            :items="validatorStakers"
+                            :per-page="perPage"
+                            :current-page="currentPage"
+                            :sort-by.sync="sortBy"
+                            :sort-desc.sync="sortDesc"
+                            :filter="filter"
+                            :filterIncludedFields="filterOn"
+                            @filtered="onFiltered"
+                          >
+                            <template slot="rank" slot-scope="data">
+                              <p class="text-center mb-0">
+                                {{ data.item.rank }}
+                              </p>
+                            </template>
+                            <template slot="who" slot-scope="data">
+                              <p class="text-center mb-0">
+                                <Identicon :value="data.item.who" :size="20" :theme="'polkadot'" :key="data.item.who" />
+                                <nuxt-link :to="{name: 'nominator', query: { accountId: data.item.who } }" title="Nominator details">
+                                  <span class="d-inline-block d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="data.item.who">{{ indexes[data.item.who] }}</span>
+                                  <span class="d-none d-sm-inline-block d-md-inline-block d-lg-inline-block d-xl-inline-block">{{ indexes[data.item.who] }}</span>                        
+                                </nuxt-link>
+                              </p>
+                            </template>
+                            <template slot="percent" slot-scope="data">
+                              <p class="text-right mb-0">
+                                {{ data.item.percent }}%
+                              </p>
+                            </template>
+                            <template slot="amountOrder" slot-scope="data">
+                              <p class="text-right mb-0">
+                                {{ formatAmount(data.item.value) }}
+                              </p>
+                            </template>
+                          </b-table>
+                          <b-pagination
+                            v-model="currentPage"
+                            :total-rows="totalRows"
+                            :per-page="perPage"
+                            aria-controls="nominators-table"
+                          ></b-pagination>
+                        </div>
+                      </b-tab>
+                      <!-- Current session ids -->
+                      <b-tab v-if="validator.sessionIds.length > 0" :title="`Current session ids (${validator.sessionIds.length})`">
+                        <div v-for="(sessionId, index) in validator.sessionIds" class="row" v-bind:key="index">
+                          <div class="col-12 mb-1 who">
+                            {{ index+1 }}.
+                            <Identicon :value="sessionId" :size="20" :theme="'polkadot'" :key="sessionId" />                      
+                            <a v-bind:href="blockExplorer.account + sessionId" target="_blank">
+                              <span class="d-inline-block d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="sessionId">{{ shortAddress(sessionId) }}</span>
+                              <span class="d-none d-sm-inline-block d-md-inline-block d-lg-inline-block d-xl-inline-block">{{ sessionId }}</span>                        
+                            </a>
                           </div>
                         </div>
-                      </template>
-                      <template v-if="validator.nextSessionIds.length > 0">
-                        <div class="nominator collapse pt-2 pb-3"  v-bind:id="'session-id-' + index" v-bind:data-parent="'#validator-info-' + index">
-                          <div v-for="(sessionId, index) in validator.nextSessionIds" class="row" v-bind:key="index">
-                            <div class="col-12 mb-1 who">
-                              {{ index+1 }}.
-                              <Identicon :value="sessionId" :size="20" :theme="'polkadot'" :key="sessionId" />                      
-                              <a v-bind:href="blockExplorer.account + sessionId" target="_blank">
-                                <span class="d-inline-block d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="sessionId">{{ shortAddress(sessionId) }}</span>
-                                <span class="d-none d-sm-inline-block d-md-inline-block d-lg-inline-block d-xl-inline-block">{{ sessionId }}</span>                        
-                              </a>
-                            </div>
+                      </b-tab>
+                      <!-- Next session ids -->
+                      <b-tab v-if="validator.nextSessionIds.length > 0" :title="`Next session ids (${validator.nextSessionIds.length})`">
+                        <div v-for="(sessionId, index) in validator.nextSessionIds" class="row" v-bind:key="index">
+                          <div class="col-12 mb-1 who">
+                            {{ index+1 }}.
+                            <Identicon :value="sessionId" :size="20" :theme="'polkadot'" :key="sessionId" />                      
+                            <a v-bind:href="blockExplorer.account + sessionId" target="_blank">
+                              <span class="d-inline-block d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="sessionId">{{ shortAddress(sessionId) }}</span>
+                              <span class="d-none d-sm-inline-block d-md-inline-block d-lg-inline-block d-xl-inline-block">{{ sessionId }}</span>                        
+                            </a>
                           </div>
                         </div>
-                      </template>
-                      <template v-if="validator.stakers">
-                        <template v-if="validator.stakers.others.length > 0">
-                          <div class="nominator collapse pt-2 pb-3"  v-bind:id="'staker' + index" v-bind:data-parent="'#validator-info-' + index">
-                            <div v-for="(staker, index) in validator.stakers.others" class="row" v-bind:key="index">
-                              <div class="col-8 mb-1 who">
-                                <Identicon :value="staker.who" :size="20" :theme="'polkadot'" :key="staker.who" />                      
-                                <a v-bind:href="blockExplorer.account + staker.who" target="_blank">
-                                  <span class="d-inline-block d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="staker.who">{{ indexes[staker.who] }}</span>
-                                  <span class="d-none d-sm-inline-block d-md-inline-block d-lg-inline-block d-xl-inline-block">{{ indexes[staker.who] }}</span>                        
-                                </a>
-                              </div>
-                              <div class="col-4 text-right value">
-                                {{ formatAmount(staker.value) }}
-                              </div>
-                            </div>
-                          </div>
-                        </template>
-                      </template>
-                    </div>
+                      </b-tab>
+                    </b-tabs>
+
                   </div>
                 </div>
               </div>
@@ -283,6 +336,21 @@ export default {
       polling: null,
       graphPolling: null,
       favorites: [],
+
+      perPage: 10,
+      currentPage: 1,
+      sortBy: `rank`,
+      sortDesc: false,
+      filter: null,
+      filterOn: [],
+      totalRows: 1,
+      fields: [
+        { key: 'rank', label: 'Rank', sortable: true},
+        { key: 'who', label: 'Account', sortable: true},
+        { key: 'percent', label: 'Percentage', sortable: true},
+        { key: 'amountOrder', label: 'Amount', sortable: true }
+      ],
+
       daily:{
         last: 0,
         first: 0
@@ -462,19 +530,92 @@ export default {
   },
   computed: {
     validators() {
-      return this.$store.state.validators.list
+      if (this.$store.state.validators.list.length > 0) {
+        let validator = this.$store.state.validators.list
+          .find( validator => validator.accountId === this.accountId );
+        this.totalRows = validator.stakers.others.length;
+      }
+      return this.$store.state.validators.list;
+    },
+    validatorStakers() {
+      if (this.$store.state.validators.list.length > 0) {
+        let validator = this.$store.state.validators.list
+          .find( validator => validator.accountId === this.accountId );
+        // console.log(validator);
+
+
+        // Calculate others stake total amount
+        let stakeTotal, stakeOwn, stakeOthers;
+
+        if (isHex(validator.stakers.total)) {
+          stakeTotal = new BN(validator.stakers.total.toString().substring(2, validator.stakers.total.length), 16);
+        } else {
+          stakeTotal = new BN(validator.stakers.total, 10);
+        }
+        
+        if (isHex(validator.stakers.own)) {
+          stakeOwn = new BN(validator.stakers.own.toString().substring(2, validator.stakers.own.length), 16);
+        } else {
+          stakeOwn = new BN(validator.stakers.own, 10);
+        }
+        stakeOthers = stakeTotal.sub(stakeOwn);
+
+
+
+        let stakers = validator.stakers.others.slice();
+
+        stakers.sort((a, b) => {
+          if (a.value && b.value) {
+            let stakeA, stakeB;
+
+            // console.log(`a`, a.value);
+            // console.log(`b`, b.value);
+
+            if (isHex(a.value)) {
+              stakeA = new BN(a.value.toString().substring(2, a.value.length), 16);
+            } else {
+              stakeA = new BN(a.value, 10);
+            }
+            
+            if (isHex(b.value)) {
+              stakeB = new BN(b.value.toString().substring(2, b.value.length), 16);
+            } else {
+              stakeB = new BN(b.value, 10);
+            }
+
+            // console.log(`a`, stakeA.toString(10));
+            // console.log(`b`, stakeB.toString(10));
+            // console.log(`res`, stakeA.lt(stakeB));
+            
+            return stakeA.lt(stakeB) ? 1 : -1;
+
+            // return stakeA.cmp(stakeB);
+
+          }
+        });
+
+        return stakers.map((staker, index) => {
+          return {
+            ...staker,
+            rank: index+1,
+            amountOrder: index+1,
+            accountIndex: this.indexes[staker.who],
+            percent: this.getStakePercent(staker.value, stakeOthers)
+          }
+        });
+      }
     },
     identities() {
-      return this.$store.state.identities.list
+      return this.$store.state.identities.list;
     },
     nicknames() {
-      return this.$store.state.nicknames.list
+      return this.$store.state.nicknames.list;
     },
     indexes() {
-      return this.$store.state.indexes.list
+      return this.$store.state.indexes.list;
     },
     totalStakeBonded () {
-      return this.$store.state.validators.totalStakeBonded
+      return this.$store.state.validators.totalStakeBonded;
     },
     totalStakeBondedPercen() {
       if (this.totalStakeBonded !== 0 && this.totalIssuance !== "") {
@@ -484,6 +625,14 @@ export default {
       } else {
         return 0;
       }
+    },
+    sortOptions() {
+      // Create an options list from our fields
+      return this.fields
+        .filter(f => f.sortable)
+        .map(f => {
+          return { text: f.label, value: f.key }
+        })
     }
   },
   created: function () {
@@ -766,6 +915,11 @@ export default {
         return obj.accountId === accountId
       });
       return filteredArray[0].nickname;
+    },
+    onFiltered(filteredItems) {
+      // Trigger pagination to update the number of buttons/pages due to filtering
+      this.totalRows = filteredItems.length
+      this.currentPage = 1
     }
   },
   watch: {
@@ -849,5 +1003,12 @@ export default {
   position: absolute;
   top: 0.4rem;
   right: 0.4rem;
+}
+.validator-page #nominators-table th,
+.validator-page #nominators-table td {
+  padding: 0.5rem;
+}
+.validator-page #nominators-table th {
+  text-align: center;
 }
 </style>
