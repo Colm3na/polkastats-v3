@@ -179,7 +179,7 @@
                               v-model="filter"
                               type="search"
                               id="filterInput"
-                              placeholder="Search staker by account, account index or nickname"
+                              placeholder="Search staker by account or account index"
                             ></b-form-input>
                           </b-col>
                         </b-row>
@@ -230,17 +230,36 @@
                               </p>
                             </template>
                             <template slot="who" slot-scope="data">
-                              <p class="text-center mb-0">
-                                <Identicon :value="data.item.who" :size="20" :theme="'polkadot'" :key="data.item.who" />
-                                <nuxt-link :to="{name: 'nominator', query: { accountId: data.item.who } }" title="Nominator details">
-                                  <span class="d-inline-block d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="data.item.who">{{ indexes[data.item.who] }}</span>
-                                  <span class="d-none d-sm-inline-block d-md-inline-block d-lg-inline-block d-xl-inline-block">{{ indexes[data.item.who] }}</span>                        
-                                </nuxt-link>
-                              </p>
+
+                              <div class="d-block d-sm-block d-md-none d-lg-none d-xl-none text-center py-2">
+                                <p class="mb-0">
+                                  rank #{{ data.item.rank }}
+                                </p>
+                                <p class="mt-2 mb-0">
+                                  <Identicon :value="data.item.who" :size="20" :theme="'polkadot'" :key="data.item.who" />
+                                  <nuxt-link :to="{name: 'nominator', query: { accountId: data.item.who } }" title="Nominator details">
+                                    <span class="d-inline-block d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="data.item.who">{{ indexes[data.item.who] }}</span>
+                                    <span class="d-none d-sm-inline-block d-md-inline-block d-lg-inline-block d-xl-inline-block">{{ indexes[data.item.who] }}</span>                        
+                                  </nuxt-link>
+                                </p>
+                                <p class="mt-2 mb-0">
+                                  {{ formatAmount(data.item.value) }} ({{ parseFloat(data.item.percent).toFixed(3) }} %)
+                                </p>
+                              </div>
+                              <div class="d-none d-sm-none d-md-block d-lg-block d-xl-block">
+                                <p class="mb-0">
+                                  <Identicon :value="data.item.who" :size="20" :theme="'polkadot'" :key="data.item.who" />
+                                  <nuxt-link :to="{name: 'nominator', query: { accountId: data.item.who } }" title="Nominator details">
+                                    <span class="d-inline-block d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="data.item.who">{{ indexes[data.item.who] }}</span>
+                                    <span class="d-none d-sm-inline-block d-md-inline-block d-lg-inline-block d-xl-inline-block">{{ indexes[data.item.who] }}</span>                        
+                                  </nuxt-link>
+                                </p>
+                              </div>
+
                             </template>
                             <template slot="percent" slot-scope="data">
                               <p class="text-right mb-0">
-                                {{ parseFloat(data.item.percent).toFixed(3) }}%
+                                {{ parseFloat(data.item.percent).toFixed(3) }} %
                               </p>
                             </template>
                             <template slot="amountOrder" slot-scope="data">
@@ -258,7 +277,7 @@
                         </div>
                       </b-tab>
                       <!-- Current session ids -->
-                      <b-tab v-if="validator.sessionIds.length > 0" :title="`Current session ids (${validator.sessionIds.length})`">
+                      <b-tab v-if="validator.sessionIds.length > 0" :title="`Session ids (${validator.sessionIds.length})`">
                         <div v-for="(sessionId, index) in validator.sessionIds" class="row" v-bind:key="index">
                           <div class="col-12 mb-1 who">
                             {{ index+1 }}.
@@ -336,7 +355,6 @@ export default {
       polling: null,
       graphPolling: null,
       favorites: [],
-
       perPage: 10,
       currentPage: 1,
       sortBy: `rank`,
@@ -345,12 +363,11 @@ export default {
       filterOn: [],
       totalRows: 1,
       fields: [
-        { key: 'rank', label: 'Rank', sortable: true},
-        { key: 'who', label: 'Staker', sortable: true},
-        { key: 'percent', label: 'Percentage', sortable: true},
-        { key: 'amountOrder', label: 'Amount', sortable: true }
+        { key: 'rank', label: 'Rank', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` },
+        { key: 'who', label: 'Staker', sortable: true },
+        { key: 'percent', label: 'Percentage', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` },
+        { key: 'amountOrder', label: 'Amount', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` }
       ],
-
       daily:{
         last: 0,
         first: 0
