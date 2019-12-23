@@ -400,18 +400,10 @@ export default {
 body {
   font-size: 0.9rem;
 }
-
 .page-intentions .table.b-table.b-table-stacked-md>tbody>tr>[data-label]>div {
   padding: 0;
 }
-
-
 .page-intentions .favorite {
-  cursor: pointer;
-  position: absolute;
-  top: 0.4rem;
-  right: 0.4rem;
-  z-index: 10;
   font-size: 1.1rem;
 }
 .validator .bg-offline {
