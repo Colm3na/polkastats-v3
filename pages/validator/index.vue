@@ -240,7 +240,7 @@
                             </template>
                             <template slot="percent" slot-scope="data">
                               <p class="text-right mb-0">
-                                {{ data.item.percent }}%
+                                {{ parseFloat(data.item.percent).toFixed(3) }}%
                               </p>
                             </template>
                             <template slot="amountOrder" slot-scope="data">
@@ -346,7 +346,7 @@ export default {
       totalRows: 1,
       fields: [
         { key: 'rank', label: 'Rank', sortable: true},
-        { key: 'who', label: 'Account', sortable: true},
+        { key: 'who', label: 'Staker', sortable: true},
         { key: 'percent', label: 'Percentage', sortable: true},
         { key: 'amountOrder', label: 'Amount', sortable: true }
       ],
