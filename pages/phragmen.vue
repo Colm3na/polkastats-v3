@@ -290,9 +290,15 @@ export default {
       if (!this.filter) this.totalRows = this.$store.state.phragmen.info.candidates.length;
     }, 10000);
 
+    // Update account indexes every 1 min
+    this.pollingIndexes = setInterval(() => {
+      vm.$store.dispatch('indexes/update'); 
+    }, 60000);
+
   },
   beforeDestroy: function () {
     clearInterval(this.polling);
+    clearInterval(this.pollingIndexes);
   },
   methods: {
     getIndex(validator) {

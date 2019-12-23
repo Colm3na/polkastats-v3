@@ -685,16 +685,17 @@ export default {
       vm.$store.dispatch('indexes/update');
     }
 
-    // Update validators every 30 seconds
+    // Update validators every 10 seconds
     this.polling = setInterval(() => {
       vm.$store.dispatch('validators/update');
-    }, 30000);
+    }, 10000);
     
-    // Refresh graph data every minute
+    // Refresh graph data and account indexes every minute
     this.graphPolling = setInterval(() => {
       this.getValidatorDailyGraphData();
       this.getValidatorWeeklyGraphData();
       this.getValidatorMonthlyGraphData();
+      vm.$store.dispatch('indexes/update');
     }, 60000);
     
   },

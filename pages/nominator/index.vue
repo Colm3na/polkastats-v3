@@ -178,41 +178,22 @@ export default {
       vm.$store.dispatch('indexes/update');
     }
 
-    // Update network info validators and intentions every 10 seconds
+    // Update validators, identities and nicknames every 10 seconds
     this.polling = setInterval(() => {
       vm.$store.dispatch('validators/update');
       vm.$store.dispatch('identities/update');
       vm.$store.dispatch('nicknames/update');
     }, 10000);
-  },
-  created: function () {
-    var vm = this;
-    
-    // Force update of validators list if empty
-    if (this.$store.state.validators.list.length === 0) {
-      vm.$store.dispatch('validators/update');
-    }
 
-    // Force update of indentities list if empty
-    if (this.$store.state.identities.list.length === 0) {
-      vm.$store.dispatch('identities/update');
-    }
-
-    // Force update of nicknames list if empty
-    if (this.$store.state.nicknames.list.length === 0) {
-      vm.$store.dispatch('nicknames/update');
-    }
-
-    // Update network info validators and intentions every 10 seconds
-    this.polling = setInterval(() => {
-      vm.$store.dispatch('validators/update');
-      vm.$store.dispatch('identities/update');
-      vm.$store.dispatch('nicknames/update');
-    }, 10000);
+    // Update account indexes every 1 min
+    this.pollingIndexes = setInterval(() => {
+      vm.$store.dispatch('indexes/update'); 
+    }, 60000);
 
   },
   beforeDestroy: function () {
     clearInterval(this.polling);
+    clearInterval(this.pollingIndexes);
   },
   methods: {
     formatNumber(n) {

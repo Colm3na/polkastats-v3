@@ -229,9 +229,15 @@ export default {
       vm.$store.dispatch('nicknames/update');
     }, 10000);
 
+    // Update account indexes every 1 min
+    this.pollingIndexes = setInterval(() => {
+      vm.$store.dispatch('indexes/update'); 
+    }, 60000);
+
   },
   beforeDestroy: function () {
     clearInterval(this.polling);
+    clearInterval(this.pollingIndexes);
   },
   methods: {
     getIndex(validator) {
