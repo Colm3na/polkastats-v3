@@ -58,11 +58,26 @@
               {{ data.item.rank }}
             </template>
             <template slot="accountId" slot-scope="data">
-              <Identicon :value="data.item.accountId" :size="20" :theme="'polkadot'" :key="data.item.accountId" />
-              <nuxt-link :to="{name: 'nominator', query: { accountId: data.item.accountId } }" title="Nominator details">
-                <span class="d-inline d-sm-inline d-md-inline d-lg-inline d-xl-none">{{ indexes[data.item.accountId] }}</span>
-                <span class="d-none d-sm-none d-md-none d-lg-none d-xl-inline">{{ indexes[data.item.accountId] }}</span>
-              </nuxt-link>
+              <div class="d-block d-sm-block d-md-none d-lg-none d-xl-none text-center">
+                <Identicon :value="data.item.accountId" :size="20" :theme="'polkadot'" :key="data.item.accountId" />
+                <nuxt-link :to="{name: 'nominator', query: { accountId: data.item.accountId } }" title="Nominator details">
+                  <span class="d-inline d-sm-inline d-md-inline d-lg-inline d-xl-none">{{ indexes[data.item.accountId] }}</span>
+                  <span class="d-none d-sm-none d-md-none d-lg-none d-xl-inline">{{ indexes[data.item.accountId] }}</span>
+                </nuxt-link>
+                <p class="mt-2 mb-2">
+                  rank #{{ data.item.rank }}
+                </p>
+                <p class="mb-0">
+                  {{ formatAmount(data.item.totalStake) }}
+                </p>
+              </div>
+              <div class="d-none d-sm-none d-md-block d-lg-block d-xl-block">
+                <Identicon :value="data.item.accountId" :size="20" :theme="'polkadot'" :key="data.item.accountId" />
+                <nuxt-link :to="{name: 'nominator', query: { accountId: data.item.accountId } }" title="Nominator details">
+                  <span class="d-inline d-sm-inline d-md-inline d-lg-inline d-xl-none">{{ indexes[data.item.accountId] }}</span>
+                  <span class="d-none d-sm-none d-md-none d-lg-none d-xl-inline">{{ indexes[data.item.accountId] }}</span>
+                </nuxt-link>
+              </div>
             </template>
             <template slot="totalStake" slot-scope="data">
               <p class="text-right mb-0">
@@ -114,9 +129,9 @@ export default {
       filterOn: [],
       totalRows: 1,
       fields: [
-        { key: 'rank', label: 'Rank', sortable: true},
+        { key: 'rank', label: 'Rank', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` },
         { key: 'accountId', label: 'Nominator', sortable: true },
-        { key: 'totalStake', label: 'Total stake', sortable: true }
+        { key: 'totalStake', label: 'Total stake', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` }
       ],
     }
   },
