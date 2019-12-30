@@ -2,11 +2,11 @@
   <div>
     <section>
       <b-container class="page-accounts main pt-4">
-        <h1 class="text-center mb-4">Active accounts</h1>
+        <h1 class="text-center mb-4">Active Kusama accounts</h1>
 
-        <!-- Economics info message -->
+        <!-- Info message -->
         <b-alert show dismissible variant="success" class="text-center mb-4">
-          All active Kusama accounts, updated every 5 minutes
+          All active Kusama accounts, updated every 5 minutes. Click on account to see full details.
         </b-alert>
 
         <!-- Filter -->
@@ -67,21 +67,49 @@
               </p>
             </template>
             <template slot="accountId" slot-scope="data">
-              <Identicon :value="data.item.accountId" :size="20" :theme="'polkadot'" :key="data.item.accountId" />
-              <nuxt-link :to="{name: 'account', query: { accountId: data.item.accountId } }" title="Account details">
-                {{ data.item.accountIndex }}
-              </nuxt-link>
+              <div class="d-block d-sm-block d-md-none d-lg-none d-xl-none text-center">
+                <p class="mb-2">
+                  rank #{{ data.item.rank }}
+                </p>
+                <Identicon :value="data.item.accountId" :size="40" :theme="'polkadot'" :key="data.item.accountId" />
+                <nuxt-link :to="{name: 'account', query: { accountId: data.item.accountId } }" title="Account details">
+                  <h4>{{ data.item.accountIndex }}</h4>
+                </nuxt-link>
+                <p class="mb-0" v-if="data.item.nickname">
+                  {{ data.item.nickname }}
+                </p>
+                <p class="mb-0" v-if="data.item.identity.display">
+                  {{ data.item.identity.display }}
+                </p>
+                <table class="table table-striped mt-4">
+                  <tbody>
+                    <tr>
+                      <td class="text-left"><strong>Free Balance</strong></td>
+                      <td class="text-right">{{ formatAmount(data.item.freeBalance) }}</td>
+                    </tr>
+                    <tr>
+                      <td class="text-left"><strong>Available Balance</strong></td>
+                      <td class="text-right">{{ formatAmount(data.item.availableBalance) }}</td>
+                    </tr>
+                    <tr>
+                      <td class="text-left"><strong>Locked Balance</strong></td>
+                      <td class="text-right">{{ formatAmount(data.item.lockedBalance) }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="d-none d-sm-none d-md-block d-lg-block d-xl-block">
+                <Identicon :value="data.item.accountId" :size="20" :theme="'polkadot'" :key="data.item.accountId" />
+                <nuxt-link :to="{name: 'account', query: { accountId: data.item.accountId } }" title="Account details">
+                  {{ data.item.accountIndex }}
+                </nuxt-link>
+              </div>
             </template>
             <template slot="nickname" slot-scope="data">
               {{ data.item.nickname }}
             </template>
             <template slot="identity" slot-scope="data">
               {{ data.item.identity.display }}
-            </template>
-            <template slot="availableBalance" slot-scope="data">
-              <p class="text-right mb-0">
-                {{ formatAmount(data.item.availableBalance) }}
-              </p>
             </template>
             <template slot="freeBalance" slot-scope="data">
               <p class="text-right mb-0">
@@ -91,6 +119,11 @@
             <template slot="lockedBalance" slot-scope="data">
               <p class="text-right mb-0">
                 {{ formatAmount(data.item.lockedBalance) }}
+              </p>
+            </template>
+            <template slot="availableBalance" slot-scope="data">
+              <p class="text-right mb-0">
+                {{ formatAmount(data.item.availableBalance) }}
               </p>
             </template>
           </b-table>
@@ -126,19 +159,19 @@ export default {
     return {
       perPage: 10,
       currentPage: 1,
-      sortBy: `blockNumber`,
-      sortDesc: true,
+      sortBy: `rank`,
+      sortDesc: false,
       filter: null,
       filterOn: [],
       totalRows: 1,
       fields: [
-        { key: 'rank', label: 'Rank', sortable: true },
+        { key: 'rank', label: 'Rank', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` },
         { key: 'accountId', label: 'Account', sortable: true },
-        { key: 'nickname', label: 'Nickname', sortable: true },
-        { key: 'identity', label: 'Identity', sortable: true },
-        { key: 'availableBalance', label: 'Available balance', sortable: true },
-        { key: 'freeBalance', label: 'Free balance', sortable: true },
-        { key: 'lockedBalance', label: 'Locked balance', sortable: true }
+        { key: 'nickname', label: 'Nickname', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` },
+        { key: 'identity', label: 'Identity', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` },
+        { key: 'freeBalance', label: 'Free balance', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` },
+        { key: 'lockedBalance', label: 'Locked balance', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` },
+        { key: 'availableBalance', label: 'Available balance', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` }
       ],
       polling: null
     }
@@ -193,5 +226,9 @@ export default {
 }
 .page-accounts .identicon{
   display: inline-block;
+}
+
+.page-accounts td div {
+  padding: 0 !important;
 }
 </style>

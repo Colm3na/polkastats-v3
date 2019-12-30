@@ -28,6 +28,9 @@
                   <nuxt-link to="/nominators" active-class="nuxt-link-exact-active" class="nav-link">Nominators</nuxt-link>
                 </b-nav-item>
                 <b-nav-item>
+                  <nuxt-link to="/accounts" active-class="nuxt-link-exact-active" class="nav-link">Accounts</nuxt-link>
+                </b-nav-item>
+                <b-nav-item>
                   <nuxt-link to="/for-validators" active-class="nuxt-link-exact-active" class="nav-link">For validators</nuxt-link>
                 </b-nav-item>
                 <b-nav-item>

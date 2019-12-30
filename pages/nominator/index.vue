@@ -64,7 +64,7 @@ import VueApexCharts from 'vue-apexcharts';
 import Identicon from '../../components/identicon.vue';
 import { formatBalance, isHex } from '@polkadot/util';
 import BN from 'bn.js';
-import { decimals, unit, backendBaseURL, blockExplorer} from '../../polkastats.config.js';
+import { decimals, unit, backendBaseURL, blockExplorer } from '../../polkastats.config.js';
 
 formatBalance.setDefaults({ decimals, unit });
 
