@@ -6,7 +6,7 @@
 
         <!-- Info message -->
         <b-alert show dismissible variant="success" class="text-center mb-4">
-          All active Kusama accounts, updated every 5 minutes. Click on account to see full details.
+          Showing <strong>{{ accounts.length }} active Kusama accounts</strong>, updated every 5 minutes. Click on account to see full details.
         </b-alert>
 
         <!-- Filter -->
