@@ -87,6 +87,32 @@
                         </a>
                       </div>
                     </div>
+                    <div class="row" v-if="validator.sessionIdHex">
+                      <div class="col-md-3 mb-2">
+                        <strong>Session id</strong>
+                      </div>
+                      <div id="session-id-info" class="col-md-9 mb-2">
+                        <a class="" data-toggle="collapse" v-bind:href="'#sessionIdHex'" role="button" aria-expanded="false" v-bind:aria-controls="'sessionIdHex'">
+                          <i class="fas"></i> {{ shortSessionId(validator.sessionIdHex) }}
+                        </a>
+                        <div class="collapse pt-2 pb-3"  v-bind:id="'sessionIdHex'" v-bind:data-parent="'#session-id-info'">
+                          {{ validator.sessionIdHex }}
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row" v-if="validator.nextSessionIdHex">
+                      <div class="col-md-3 mb-2">
+                        <strong>Next session id</strong>
+                      </div>
+                      <div id="next-session-id-info" class="col-md-9 mb-2">
+                        <a class="" data-toggle="collapse" v-bind:href="'#nextSessionIdHex'" role="button" aria-expanded="false" v-bind:aria-controls="'nextSessionIdHex'">
+                          <i class="fas"></i> {{ shortSessionId(validator.nextSessionIdHex) }}
+                        </a>
+                        <div class="collapse pt-2 pb-3"  v-bind:id="'nextSessionIdHex'" v-bind:data-parent="'#next-session-id-info'">
+                          {{ validator.nextSessionIdHex }}
+                        </div>
+                      </div>
+                    </div>
                     <div class="row" v-if="typeof validator.validatorPrefs.commission == 'number'">
                       <div class="col-md-3 mb-2">
                         <strong>Commission</strong>

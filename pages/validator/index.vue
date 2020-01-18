@@ -93,7 +93,6 @@
                         </a>
                       </div>
                     </div>
-
                     <div class="row" v-if="validator.sessionIdHex">
                       <div class="col-md-3 mb-2">
                         <strong>Session id</strong>
@@ -107,7 +106,6 @@
                         </div>
                       </div>
                     </div>
-
                     <div class="row" v-if="validator.nextSessionIdHex">
                       <div class="col-md-3 mb-2">
                         <strong>Next session id</strong>
@@ -121,7 +119,6 @@
                         </div>
                       </div>
                     </div>
-
                     <div class="row" v-if="validator.validatorPrefs.commission">
                       <div class="col-md-3 mb-2">
                         <strong>Commission</strong>
