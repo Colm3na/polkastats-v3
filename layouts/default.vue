@@ -44,7 +44,7 @@
       <div class="container">
         <div class="row mt-4 pt-5">
           <div class="col-12 text-center">
-            <img class="logo" src="/img/PolkaStats_logo_red-white_500px.png" />
+            <img class="logo img-fluid" src="/img/PolkaStats_logo_red-white_500px.png" />
           </div>
         </div>
         <div class="row mt-4 pt-5">
