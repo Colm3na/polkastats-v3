@@ -24,6 +24,9 @@ export default {
     shortAddress(address) {
       return (address).substring(0,5) + ' .... ' + (address).substring(address.length - 5);
     },
+    shortSessionId(sessionId) {
+      return (sessionId).substring(0,10) + ' .... ' + (sessionId).substring(sessionId.length - 10);
+    },
     formatRewardDest(rewardDestination) {
       if (rewardDestination === 0) {
         return `Stash account (increase stake)`;
