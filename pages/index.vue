@@ -1,7 +1,7 @@
 <template>
   <div>
     <section>
-      <b-container class="main pt-4">
+      <b-container id="page-index" class="main pt-4">
         <!-- Kusama CC3 message -->
         <b-alert show dismissible variant="primary" class="text-center">
           <strong>⚡ We have a new awesome dedicated server graciously sponsored by <a href="https://www.colmenalabs.org/" target="_blank">La Colmena Labs</a>. Thanks! ⚡</strong>
@@ -149,14 +149,29 @@
                 </nuxt-link>
               </div>
             </template>
+            <template slot="numStakers" slot-scope="data">
+              <p class="text-right mb-0">
+                {{ data.item.numStakers }}
+              </p>
+            </template> 
             <template slot="stakeIndex" slot-scope="data">
               <p class="text-right mb-0" v-if="data.item.stake > 0 ">
-                {{ formatAmount(data.item.stake) }} ({{ formatNumber(data.item.percent) }}%)
+                {{ formatAmount(data.item.stake) }}
+              </p>
+            </template> 
+            <template slot="percent" slot-scope="data">
+              <p class="text-right mb-0">
+                {{ formatNumber(data.item.percent) }}%
               </p>
             </template> 
             <template slot="commission" slot-scope="data">
               <p class="text-right mb-0" v-if="typeof data.item.commission == 'number'">
                 {{ (data.item.commission / 10000000).toFixed(2) }}%
+              </p>
+            </template>
+            <template slot="eraPoints" slot-scope="data">
+              <p class="text-right mb-0">
+                {{ data.item.eraPoints }}
               </p>
             </template>
             <template slot="favorite" slot-scope="data">
@@ -213,8 +228,11 @@ export default {
         { key: 'rank', label: '#', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` },
         { key: 'imOnline', label: '✔️', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` },
         { key: 'accountId', label: 'Validator', sortable: true, filterByFormatted: true },
-        { key: 'stakeIndex', label: 'Stake', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` },
+        { key: 'numStakers', label: 'Stakers', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` },
+        { key: 'stakeIndex', label: 'Total stake', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` },
+        { key: 'percent', label: 'Stake %', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` },
         { key: 'commission', label: 'Commission', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` },
+        { key: 'eraPoints', label: 'Era points', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` },
         { key: 'favorite', label: '⭐', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` }
       ],
       blockExplorer,
@@ -265,8 +283,9 @@ export default {
           accountId: validator.accountId,
           accountIndex: this.indexes[validator.accountId],
           stake: stake,
-          stakeIndex: i+1,
           stakers: validator.stakers,
+          numStakers: validator.stakers.others.length,
+          eraPoints: validator.currentEraPointsEarned,
           commission,
           percent: stakePercent,
           favorite: this.isFavorite(validator.accountId),
@@ -275,7 +294,7 @@ export default {
           identity
         });
       }
-      // console.log(validatorsObject);
+      console.log(validatorsObject);
       return validatorsObject;
     },
     intentions () {
@@ -518,28 +537,6 @@ body {
 #validators-table th {
   text-align: center;
 }
-#validators-table th:first-child {
-  width: 7%;
-}
-#validators-table th:nth-child(2) {
-  width: 7%;
-}
-#validators-table th:nth-child(3) {
-  width: 42%;
-}
-#validators-table th:nth-child(4) {
-  width: 16%;
-}
-#validators-table th:nth-child(5) {
-  width: 13%;
-}
-#validators-table th:nth-child(6) {
-  width: 8%;
-}
-#validators-table th:nth-child(7) {
-  width: 10%;
-}
-
 #validators-table .identicon {
   display: inline;
   margin-right: 0.2rem;
@@ -548,7 +545,6 @@ body {
 #validators-table .identicon div {
   display: inline;
 }
-
 .page-item.active .page-link {
     z-index: 1;
     color: #fff;
@@ -619,4 +615,14 @@ body {
     left: 0rem;
   }
 }
+
+
+@media (max-width: 991px) {
+  #page-index.container {
+    max-width: 100%;
+    padding-right: 15px !important;
+    padding-left: 15px !important;
+  }
+}
+
 </style>
