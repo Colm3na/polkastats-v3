@@ -95,7 +95,6 @@
                         </a>
                       </div>
                     </div>
-
                     <div class="row" v-if="validator.sessionIdHex">
                       <div class="col-md-3 mb-1">
                         <strong>Session id</strong>
@@ -109,7 +108,6 @@
                         </div>
                       </div>
                     </div>
-
                     <div class="row" v-if="validator.nextSessionIdHex">
                       <div class="col-md-3 mb-1">
                         <strong>Next session id</strong>
@@ -123,7 +121,6 @@
                         </div>
                       </div>
                     </div>
-
                     <div class="row" v-if="validator.validatorPrefs.commission">
                       <div class="col-md-3 mb-1">
                         <strong>Commission</strong>
@@ -263,31 +260,31 @@
                         </span>
                       </nuxt-link>
                     </h4>
-                    <div class="row">
+
+                    <div class="row" v-if="validator.stashId">
                       <div class="col-md-3 mb-1">
                         <strong>Stash</strong>
                       </div>
                       <div class="col-md-9 mb-1">
                         <Identicon :value="validator.stashId" :size="20" :theme="'polkadot'" :key="validator.stashId" />
                         <a v-bind:href="blockExplorer.account + validator.stashId" target="_blank">
-                          <span class="d-inline d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="validator.stashId">{{ shortAddress(validator.stashId) }}</span>
-                          <span class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline">{{ validator.stashId }}</span>
+                          <span class="d-inline d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="validator.stashId">{{ indexes[validator.stashId] }}</span>
+                          <span class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline">{{ indexes[validator.stashId] }}</span>
                         </a>
                       </div>
                     </div>
-                    <div class="row">
+                    <div class="row" v-if="validator.controllerId">
                       <div class="col-md-3 mb-1">
                         <strong>Controller</strong>
                       </div>
                       <div class="col-md-9 mb-1">
                         <Identicon :value="validator.controllerId" :size="20" :theme="'polkadot'" :key="validator.controllerId" />
                         <a v-bind:href="blockExplorer.account + validator.controllerId" target="_blank">
-                          <span class="d-inline d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="validator.controllerId">{{ shortAddress(validator.controllerId) }}</span>
-                          <span class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline">{{ validator.controllerId }}</span>
+                          <span class="d-inline d-sm-none d-md-none d-lg-none d-xl-none" v-b-tooltip.hover v-bind:title="validator.controllerId">{{ indexes[validator.controllerId] }}</span>
+                          <span class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline">{{ indexes[validator.controllerId] }}</span>
                         </a>
                       </div>
                     </div>
-
 
                     <div class="row" v-if="validator.sessionIdHex">
                       <div class="col-md-3 mb-1">
@@ -302,7 +299,6 @@
                         </div>
                       </div>
                     </div>
-
                     <div class="row" v-if="validator.nextSessionIdHex">
                       <div class="col-md-3 mb-1">
                         <strong>Next session id</strong>
