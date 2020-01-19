@@ -95,32 +95,35 @@
                         </a>
                       </div>
                     </div>
+
                     <div class="row" v-if="validator.sessionIdHex">
                       <div class="col-md-3 mb-1">
                         <strong>Session id</strong>
                       </div>
-                      <div id="session-id-info" class="col-md-9 mb-1">
-                        <a class="" data-toggle="collapse" v-bind:href="'#sessionIdHex'" role="button" aria-expanded="false" v-bind:aria-controls="'sessionIdHex'">
+                      <div v-bind:id="'val-session-id-info-' + index" class="col-md-9 mb-1">
+                        <a class="" data-toggle="collapse" v-bind:href="'#val-session-id-' + index" role="button" aria-expanded="false" v-bind:aria-controls="'val-session-id-' + index">
                           <i class="fas"></i> {{ shortSessionId(validator.sessionIdHex) }}
                         </a>
-                        <div class="collapse pt-2 pb-3"  v-bind:id="'sessionIdHex'" v-bind:data-parent="'#session-id-info'">
+                        <div class="collapse pt-2 pb-3"  v-bind:id="'val-session-id-' + index" v-bind:data-parent="'#val-session-id-info-' + index">
                           {{ validator.sessionIdHex }}
                         </div>
                       </div>
                     </div>
+
                     <div class="row" v-if="validator.nextSessionIdHex">
                       <div class="col-md-3 mb-1">
                         <strong>Next session id</strong>
                       </div>
-                      <div id="next-session-id-info" class="col-md-9 mb-1">
-                        <a class="" data-toggle="collapse" v-bind:href="'#nextSessionIdHex'" role="button" aria-expanded="false" v-bind:aria-controls="'nextSessionIdHex'">
+                      <div v-bind:id="'val-next-session-id-info-' + index" class="col-md-9 mb-1">
+                        <a class="" data-toggle="collapse" v-bind:href="'#val-next-session-id-' + index" role="button" aria-expanded="false" v-bind:aria-controls="'val-next-session-id-' + index">
                           <i class="fas"></i> {{ shortSessionId(validator.nextSessionIdHex) }}
                         </a>
-                        <div class="collapse pt-2 pb-3"  v-bind:id="'nextSessionIdHex'" v-bind:data-parent="'#next-session-id-info'">
+                        <div class="collapse pt-2 pb-3"  v-bind:id="'val-next-session-id-' + index" v-bind:data-parent="'#val-next-session-id-info-' + index">
                           {{ validator.nextSessionIdHex }}
                         </div>
                       </div>
                     </div>
+
                     <div class="row" v-if="validator.validatorPrefs.commission">
                       <div class="col-md-3 mb-1">
                         <strong>Commission</strong>
@@ -284,32 +287,36 @@
                         </a>
                       </div>
                     </div>
+
+
                     <div class="row" v-if="validator.sessionIdHex">
                       <div class="col-md-3 mb-1">
                         <strong>Session id</strong>
                       </div>
-                      <div id="session-id-info" class="col-md-9 mb-1">
-                        <a class="" data-toggle="collapse" v-bind:href="'#sessionIdHex'" role="button" aria-expanded="false" v-bind:aria-controls="'sessionIdHex'">
+                      <div v-bind:id="'int-session-id-info-' + index" class="col-md-9 mb-1">
+                        <a class="" data-toggle="collapse" v-bind:href="'#int-session-id-' + index" role="button" aria-expanded="false" v-bind:aria-controls="'int-session-id-' + index">
                           <i class="fas"></i> {{ shortSessionId(validator.sessionIdHex) }}
                         </a>
-                        <div class="collapse pt-2 pb-3"  v-bind:id="'sessionIdHex'" v-bind:data-parent="'#session-id-info'">
+                        <div class="collapse pt-2 pb-3"  v-bind:id="'int-session-id-' + index" v-bind:data-parent="'#int-session-id-info-' + index">
                           {{ validator.sessionIdHex }}
                         </div>
                       </div>
                     </div>
+
                     <div class="row" v-if="validator.nextSessionIdHex">
                       <div class="col-md-3 mb-1">
                         <strong>Next session id</strong>
                       </div>
-                      <div id="next-session-id-info" class="col-md-9 mb-1">
-                        <a class="" data-toggle="collapse" v-bind:href="'#nextSessionIdHex'" role="button" aria-expanded="false" v-bind:aria-controls="'nextSessionIdHex'">
+                      <div v-bind:id="'int-next-session-id-info-' + index" class="col-md-9 mb-1">
+                        <a class="" data-toggle="collapse" v-bind:href="'#int-next-session-id-' + index" role="button" aria-expanded="false" v-bind:aria-controls="'int-next-session-id-' + index">
                           <i class="fas"></i> {{ shortSessionId(validator.nextSessionIdHex) }}
                         </a>
-                        <div class="collapse pt-2 pb-3"  v-bind:id="'nextSessionIdHex'" v-bind:data-parent="'#next-session-id-info'">
+                        <div class="collapse pt-2 pb-3"  v-bind:id="'int-next-session-id-' + index" v-bind:data-parent="'#int-next-session-id-info-' + index">
                           {{ validator.nextSessionIdHex }}
                         </div>
                       </div>
                     </div>
+
                     <div class="row" v-if="validator.validatorPrefs.commission">
                       <div class="col-md-3 mb-1">
                         <strong>Commission</strong>

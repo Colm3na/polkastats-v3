@@ -10,7 +10,7 @@
           </div>
           <b-navbar toggleable="xl" type="dark" class="row">
             <b-navbar-brand>
-              <nuxt-link to="/" class="navbar-brand" title="PolkaStats | Polkadot Kusama CC2 network statistics"><img class="logo" src="/img/PolkaStats_logo_red-white.png" /></nuxt-link>
+              <nuxt-link to="/" class="navbar-brand" title="PolkaStats | Polkadot Kusama CC3 network statistics"><img class="logo" src="/img/PolkaStats_logo_red-white.png" /></nuxt-link>
             </b-navbar-brand>
             <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
             <b-collapse id="nav-collapse" is-nav class="flex-grow-1 text-center text-sx-right text-md-right text-lg-right">
@@ -48,23 +48,23 @@
           </div>
         </div>
         <div class="row mt-4 pt-5">
-          <div class="col-xs-12 col-sm-12 col-md-4 mt-2 pb-4 mt-sm-2 text-center text-white">
+          <div class="col-xs-12 col-sm-12 col-md-4 mt-2 mb-4 pb-4 mt-sm-2 text-center text-white">
             <h3 class="mb-3">Get in contact</h3>
             <hr />
-            <ul class="list-unstyled list-inline social mb-5 text-center">
+            <ul class="list-unstyled list-inline social text-center">
               <li class="list-inline-item mr-2"><a target="_blank" href="https://twitter.com/polkastats"><i class="fab fa-twitter"></i> @PolkaStats</a></li>
               <li class="list-inline-item mr-2"><a target="_blank" href="https://keybase.io/encrypt#polkastats"><i class="fab fa-keybase"></i> PGP: 14C5 91D0 8ABA 03B7</a></li>
               <li class="list-inline-item"><a target="_blank" href="mailto:polkastats@protonmail.com"><i class="fa fa-envelope"></i> polkastats@protonmail.com</a></li>
             </ul>
           </div>
-          <div class="col-xs-12 col-sm-12 col-md-4 mt-2 pb-4 mt-sm-2 text-center text-white">
+          <div class="col-xs-12 col-sm-12 col-md-4 mt-2 mb-4 pb-4 mt-sm-2 text-center text-white">
             <h3 class="mb-3">PolkaStats</h3>
             <hr />
             <nuxt-link to="/about" active-class="nuxt-link-exact-active" class="nav-link">About us</nuxt-link>
             <nuxt-link to="/support-us" active-class="nuxt-link-exact-active" class="nav-link">Support PolkaStats</nuxt-link>
             <nuxt-link to="/for-validators" active-class="nuxt-link-exact-active" class="nav-link">How to include your validator info</nuxt-link>
           </div>
-          <div class="col-xs-12 col-sm-12 col-md-4 mt-2 pb-4 mt-sm-2 text-center text-white">
+          <div class="col-xs-12 col-sm-12 col-md-4 mt-2 mb-4 pb-4 mt-sm-2 text-center text-white">
             <h3 class="mb-3">Built for</h3>
             <hr />
             <a href="https://kusama.network" target="_blank" title="Built for KUSAMA">
@@ -384,6 +384,11 @@ section .section-title {
 
 #footer .small {
   font-size: 0.9rem;
+}
+
+#footer .logo {
+  max-width: 400px;
+  width: 100%;
 }
 
 .bat {
