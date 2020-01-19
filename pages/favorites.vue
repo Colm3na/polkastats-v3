@@ -18,7 +18,6 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-       
         <!-- START FAVORITE VALIDATORS -->
         <template  v-for="(validator, index) in validators">
           <template v-if="isFavorite(validator.accountId)">
@@ -43,6 +42,10 @@
                         <Identicon :value="validator.accountId" :size="80" :theme="'polkadot'" :key="validator.accountId" />
                       </div>
                     </div>
+                    <div v-else-if="hasKusamaIdentity(validator.accountId)">
+                      <Identicon :value="validator.accountId" :size="80" :theme="'polkadot'" :key="validator.accountId" />
+                      {{ getKusamaIdentity(validator.accountId).display }}
+                    </div>
                     <div v-else>
                       <Identicon :value="validator.accountId" :size="80" :theme="'polkadot'" :key="validator.accountId" />
                     </div>
@@ -63,8 +66,11 @@
                   <div class="col-md-9">
                     <h4 class="card-title mb-4 account mt-4 mt-sm-0 mt-md-0 mt-lg-0 mt-xl-0">
                       <nuxt-link :to="{name: 'validator', query: { accountId: validator.accountId } }" title="Validator details">
-                        <span v-if="hasNickname(validator.accountId)">
-                          {{ getNickname(validator.accountId) }}
+                        <span v-if="hasIdentity(validator.accountId)">
+                          {{ getIdentity(validator.accountId).full_name }}
+                        </span>
+                        <span v-else-if="hasKusamaIdentity(validator.accountId)">
+                          {{ getKusamaIdentity(validator.accountId).display }}
                         </span>
                         <span v-else>
                           {{ validator.accountId }}
@@ -209,7 +215,6 @@
           </template>
         </template>
         <!-- END FAVORITE VALIDATORS -->
-
         <!-- START FAVORITE INTENTIONS -->
         <template  v-for="(validator, index) in intentions">
           <template v-if="isFavorite(validator.accountId)">
@@ -229,6 +234,10 @@
                       <div v-else>
                         <Identicon :value="validator.accountId" :size="80" :theme="'polkadot'" :key="validator.accountId" />
                       </div>
+                    </div>
+                    <div v-else-if="hasKusamaIdentity(validator.stashId)">
+                      <Identicon :value="validator.accountId" :size="80" :theme="'polkadot'" :key="validator.accountId" />
+                      {{ getKusamaIdentity(validator.accountId).display }}
                     </div>
                     <div v-else>
                       <Identicon :value="validator.accountId" :size="80" :theme="'polkadot'" :key="validator.accountId" />
@@ -252,15 +261,17 @@
                   <div class="col-md-9">
                     <h4 class="card-title mb-4 account mt-4 mt-sm-0 mt-md-0 mt-lg-0 mt-xl-0">
                       <nuxt-link :to="{name: 'intention', query: { accountId: validator.accountId } }" title="Validator details">
-                        <span v-if="hasNickname(validator.accountId)">
-                          {{ getNickname(validator.accountId) }}
+                        <span v-if="hasIdentity(validator.accountId)">
+                          {{ getIdentity(validator.accountId).full_name }}
+                        </span>
+                        <span v-else-if="hasKusamaIdentity(validator.accountId)">
+                          {{ getKusamaIdentity(validator.accountId).display }}
                         </span>
                         <span v-else>
                           {{ validator.accountId }}
                         </span>
                       </nuxt-link>
                     </h4>
-
                     <div class="row" v-if="validator.stashId">
                       <div class="col-md-3 mb-1">
                         <strong>Stash</strong>
@@ -285,7 +296,6 @@
                         </a>
                       </div>
                     </div>
-
                     <div class="row" v-if="validator.sessionIdHex">
                       <div class="col-md-3 mb-1">
                         <strong>Session id</strong>
@@ -312,7 +322,6 @@
                         </div>
                       </div>
                     </div>
-
                     <div class="row" v-if="validator.validatorPrefs.commission">
                       <div class="col-md-3 mb-1">
                         <strong>Commission</strong>
@@ -397,7 +406,6 @@
           </template>
         </template>
         <!-- END FAVORITE INTENTIONS -->
-
       </b-container>
     </section>
   </div>
@@ -446,9 +454,6 @@ export default {
     identities() {
       return this.$store.state.identities.list
     },
-    nicknames() {
-      return this.$store.state.nicknames.list
-    },
     indexes() {
       return this.$store.state.indexes.list
     },
@@ -483,9 +488,9 @@ export default {
       vm.$store.dispatch('identities/update');
     }
 
-    // Force update of nicknames list if empty
-    if (this.$store.state.nicknames.list.length == 0) {
-      vm.$store.dispatch('nicknames/update');
+    // Force update of staking identities list if empty
+    if (this.$store.state.stakingIdentities.list.length === 0) {
+      vm.$store.dispatch('stakingIdentities/update');
     }
 
     // Force update of account indexes list if empty
@@ -503,6 +508,7 @@ export default {
       vm.$store.dispatch('network/update');
       vm.$store.dispatch('validators/update');
       vm.$store.dispatch('intentions/update');
+      vm.$store.dispatch('stakingIdentities/update');
     }, 10000);
 
     // Update account indexes every 1 min
@@ -554,16 +560,17 @@ export default {
       });
       return filteredArray[0];
     },
-    hasNickname(accountId) {
-      return this.$store.state.nicknames.list.some(obj => {
-        return obj.accountId === accountId;
+    hasKusamaIdentity(stashId) {
+      return this.$store.state.stakingIdentities.list.some(obj => {
+        return obj.accountId === stashId;
       });
     },
-    getNickname(accountId) {
-      let filteredArray =  this.$store.state.nicknames.list.filter(obj => {
-        return obj.accountId === accountId
+    getKusamaIdentity(stashId) {
+      let filteredArray =  this.$store.state.stakingIdentities.list.filter(obj => {
+        return obj.accountId === stashId
       });
-      return filteredArray[0].nickname;
+      console.log(filteredArray[0]);
+      return filteredArray[0].identity;
     }
   },
   watch: {

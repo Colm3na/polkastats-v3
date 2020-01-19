@@ -9,7 +9,7 @@
               v-model="filter"
               type="search"
               id="filterInput"
-              placeholder="Search nominator by account or account index"
+              placeholder="Search nominator by account, account index or identity display name"
             ></b-form-input>
           </b-col>
         </b-row>
@@ -61,8 +61,13 @@
               <div class="d-block d-sm-block d-md-none d-lg-none d-xl-none text-center">
                 <Identicon :value="data.item.accountId" :size="20" :theme="'polkadot'" :key="data.item.accountId" />
                 <nuxt-link :to="{name: 'nominator', query: { accountId: data.item.accountId } }" title="Nominator details">
-                  <span class="d-inline d-sm-inline d-md-inline d-lg-inline d-xl-none">{{ indexes[data.item.accountId] }}</span>
-                  <span class="d-none d-sm-none d-md-none d-lg-none d-xl-inline">{{ indexes[data.item.accountId] }}</span>
+                  <span v-if="hasKusamaIdentity(data.item.accountId)">
+                    {{ getKusamaIdentity(data.item.accountId).display }}
+                  </span>
+                  <span v-else>
+                    <span class="d-inline d-sm-inline d-md-inline d-lg-inline d-xl-none">{{ indexes[data.item.accountId] }}</span>
+                    <span class="d-none d-sm-none d-md-none d-lg-none d-xl-inline">{{ indexes[data.item.accountId] }}</span>
+                  </span>
                 </nuxt-link>
                 <p class="mt-2 mb-2">
                   rank #{{ data.item.rank }}
@@ -74,10 +79,20 @@
               <div class="d-none d-sm-none d-md-block d-lg-block d-xl-block">
                 <Identicon :value="data.item.accountId" :size="20" :theme="'polkadot'" :key="data.item.accountId" />
                 <nuxt-link :to="{name: 'nominator', query: { accountId: data.item.accountId } }" title="Nominator details">
-                  <span class="d-inline d-sm-inline d-md-inline d-lg-inline d-xl-none">{{ indexes[data.item.accountId] }}</span>
-                  <span class="d-none d-sm-none d-md-none d-lg-none d-xl-inline">{{ indexes[data.item.accountId] }}</span>
+                  <span v-if="hasKusamaIdentity(data.item.accountId)">
+                    {{ getKusamaIdentity(data.item.accountId).display }}
+                  </span>
+                  <span v-else>
+                    <span class="d-inline d-sm-inline d-md-inline d-lg-inline d-xl-none">{{ indexes[data.item.accountId] }}</span>
+                    <span class="d-none d-sm-none d-md-none d-lg-none d-xl-inline">{{ indexes[data.item.accountId] }}</span>
+                  </span>
                 </nuxt-link>
               </div>
+            </template>
+            <template slot="nominations" slot-scope="data">
+              <p class="text-right mb-0">
+                {{ data.item.nominations }}
+              </p>
             </template>
             <template slot="totalStake" slot-scope="data">
               <p class="text-right mb-0">
@@ -131,6 +146,7 @@ export default {
       fields: [
         { key: 'rank', label: 'Rank', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` },
         { key: 'accountId', label: 'Nominator', sortable: true },
+        { key: 'nominations', label: 'Nominations', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` },
         { key: 'totalStake', label: 'Total stake', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` }
       ],
     }
@@ -141,9 +157,6 @@ export default {
     },
     identities() {
       return this.$store.state.identities.list;
-    },
-    nicknames() {
-      return this.$store.state.nicknames.list;
     },
     indexes() {
       return this.$store.state.indexes.list
@@ -166,6 +179,7 @@ export default {
                 bn = new BN(nominator.value.toString(), 10);
               }
               nominatorTmp[0].totalStake = nominatorTmp[0].totalStake.add(bn);
+              nominatorTmp[0].nominations++;
               nominatorTmp[0].staking.push({
                 validator: validator.accountId,
                 amount: nominator.value
@@ -177,10 +191,18 @@ export default {
               } else {
                 bn = new BN(nominator.value.toString(), 10);
               }
+
+              let kusamaIdentity = "";
+              if (this.hasKusamaIdentity(nominator.who)) {
+                kusamaIdentity = this.hasKusamaIdentity(nominator.who);
+              }
+
               nominatorStaking.push({
                 accountId: nominator.who,
                 accountIndex: this.indexes[nominator.who],
+                kusamaIdentity,
                 totalStake: bn,
+                nominations: 1,
                 staking: [{
                   validator: validator.accountId,
                   amount: nominator.value
@@ -227,9 +249,9 @@ export default {
       vm.$store.dispatch('identities/update');
     }
 
-    // Force update of nicknames list if empty
-    if (this.$store.state.nicknames.list.length === 0) {
-      vm.$store.dispatch('nicknames/update');
+    // Force update of staking identities list if empty
+    if (this.$store.state.stakingIdentities.list.length === 0) {
+      vm.$store.dispatch('stakingIdentities/update');
     }
 
     // Force update of account indexes list if empty
@@ -237,15 +259,15 @@ export default {
       vm.$store.dispatch('indexes/update');
     }
 
-    // Update network info validators and intentions every 10 seconds
+    // Update validators and staking identities every 10 seconds
     this.polling = setInterval(() => {
       vm.$store.dispatch('validators/update');
-      vm.$store.dispatch('identities/update');
-      vm.$store.dispatch('nicknames/update');
+      vm.$store.dispatch('stakingIdentities/update');
     }, 10000);
 
-    // Update account indexes every 1 min
+    // Update PolkaStats identities and account indexes every 1 min
     this.pollingIndexes = setInterval(() => {
+      vm.$store.dispatch('identities/update');
       vm.$store.dispatch('indexes/update'); 
     }, 60000);
 
@@ -284,16 +306,17 @@ export default {
       });
       return filteredArray[0];
     },
-    hasNickname(accountId) {
-      return this.$store.state.nicknames.list.some(obj => {
-        return obj.accountId === accountId;
+    hasKusamaIdentity(stashId) {
+      return this.$store.state.stakingIdentities.list.some(obj => {
+        return obj.accountId === stashId;
       });
     },
-    getNickname(accountId) {
-      let filteredArray =  this.$store.state.nicknames.list.filter(obj => {
-        return obj.accountId === accountId
+    getKusamaIdentity(stashId) {
+      let filteredArray =  this.$store.state.stakingIdentities.list.filter(obj => {
+        return obj.accountId === stashId
       });
-      return filteredArray[0].nickname;
+      console.log(filteredArray[0]);
+      return filteredArray[0].identity;
     },
     onFiltered(filteredItems) {
       // Trigger pagination to update the number of buttons/pages due to filtering

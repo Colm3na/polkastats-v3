@@ -5,7 +5,7 @@
         <h1 class="text-center mb-4">Predicted candidates by phragmen election algorithm</h1>
         <!-- Phragmen alert I -->
         <b-alert show dismissible variant="primary" class="text-center">
-          <p class="mt-3">We get validador slots and minimum validator count from the local kusama node using @polkadot/api and then run offline-phragmen with that params every 10 seconds. Output is stored in a MySQL database and served by PolkaStats backend (<a href="https://polkastats.io:8443/phragmen" target="_blank">see raw json</a>).</p>
+          <p class="mt-3">We get validador slots and minimum validator count from the local kusama node using @polkadot/api and then run offline-phragmen with that params every 1 minute. Output is stored in a MySQL database and served by PolkaStats backend (<a href="https://polkastats.io:8443/phragmen" target="_blank">see raw json</a>).</p>
           <p>
             We use a modified version of offline-phragmen by <a href="https://github.com/kianenigma" target="_blank">kianenigma</a> (<a href="https://github.com/kianenigma/offline-phragmen" target="_blank">https://github.com/kianenigma/offline-phragmen</a>).
             The modification was just change the output to json, taking most of the code from <a href="https://github.com/soc1c/offline-phragmen" target="_blank">https://github.com/soc1c/offline-phragmen</a> by <a href="https://github.com/soc1c" target="_blank">soc1c</a>.
@@ -13,7 +13,7 @@
         </b-alert>
         <!-- Phragmen alert II -->
         <b-alert show dismissible variant="warning" class="text-center">
-          Calculated over {{ validator_count }} validators and {{ nominator_count }} nominators, total issuance is {{ formatAmount(total_issuance) }}     
+          Calculated over {{ validator_count }} validator candidates, {{ nominator_count }} nominators and total issuance of {{ formatAmount(total_issuance) }}     
         </b-alert>
         <!-- Filter -->
         <b-row>
@@ -22,7 +22,7 @@
               v-model="filter"
               type="search"
               id="filterInput"
-              placeholder="Search candidate by account, account index, nickname or keybase name"
+              placeholder="Search candidate by account, account index, identity display name or keybase name"
             ></b-form-input>
           </b-col>
         </b-row>
@@ -86,8 +86,8 @@
                   <h4 v-if="hasIdentity(data.item.pub_key_stash)" class="mt-2 mb-2">
                     {{ getIdentity(data.item.pub_key_stash).full_name }}
                   </h4>
-                  <h4 v-else-if="hasNickname(data.item.pub_key_stash)" class="mt-2 mb-2">
-                    {{ getNickname(data.item.pub_key_stash) }}
+                  <h4 v-else-if="hasKusamaIdentity(data.item.pub_key_stash)" class="mt-2 mb-2">
+                    {{ hasKusamaIdentity(data.item.pub_key_stash).display }}
                   </h4>
                   <h4 v-else class="mt-2 mb-2">
                     <span class="d-inline d-sm-inline d-md-inline d-lg-inline d-xl-none">{{ indexes[data.item.pub_key_stash] }}</span>
@@ -118,8 +118,8 @@
                   <span v-if="hasIdentity(data.item.pub_key_stash)">
                     {{ getIdentity(data.item.pub_key_stash).full_name }}
                   </span>
-                  <span v-else-if="hasNickname(data.item.pub_key_stash)">
-                    {{ getNickname(data.item.pub_key_stash) }}
+                  <span v-else-if="hasKusamaIdentity(data.item.pub_key_stash)">
+                    {{ getKusamaIdentity(data.item.pub_key_stash).display }}
                   </span>
                   <span v-else>
                     <span class="d-inline d-sm-inline d-md-inline d-lg-inline d-xl-none">{{ indexes[data.item.pub_key_stash] }}</span>
@@ -214,14 +214,14 @@ export default {
         if (this.hasIdentity(candidate.pub_key_stash)) {
           identity = this.getIdentity(candidate.pub_key_stash);
         }
-        let nickname = "";
-        if (this.hasNickname(candidate.pub_key_stash)) {
-          nickname = this.getNickname(candidate.pub_key_stash);
+        let kusamaIdentity = "";
+        if (this.hasKusamaIdentity(candidate.pub_key_stash)) {
+          kusamaIdentity = this.getKusamaIdentity(candidate.pub_key_stash);
         }
         candidates.push({
           ...candidate,
           identity,
-          nickname,
+          kusamaIdentity,
           accountIndex: this.indexes[candidate.pub_key_stash]
         });
       }
@@ -238,9 +238,6 @@ export default {
     },
     identities() {
       return this.$store.state.identities.list;
-    },
-    nicknames() {
-      return this.$store.state.nicknames.list;
     },
     indexes() {
       return this.$store.state.indexes.list;
@@ -271,9 +268,9 @@ export default {
       vm.$store.dispatch('identities/update');
     }
 
-    // Force update of nicknames list if empty
-    if (this.$store.state.nicknames.list.length == 0) {
-      vm.$store.dispatch('nicknames/update');
+    // Force update of staking identities list if empty
+    if (this.$store.state.stakingIdentities.list.length === 0) {
+      vm.$store.dispatch('stakingIdentities/update');
     }
 
     // Force update of indexes list if empty
@@ -286,7 +283,7 @@ export default {
       vm.$store.dispatch('network/update');
       vm.$store.dispatch('phragmen/update');
       vm.$store.dispatch('identities/update');
-      vm.$store.dispatch('nicknames/update');
+      vm.$store.dispatch('stakingIdentities/update');
       if (!this.filter) this.totalRows = this.$store.state.phragmen.info.candidates.length;
     }, 10000);
 
@@ -321,16 +318,17 @@ export default {
       });
       return filteredArray[0];
     },
-    hasNickname(accountId) {
-      return this.$store.state.nicknames.list.some(obj => {
-        return obj.accountId === accountId;
+    hasKusamaIdentity(stashId) {
+      return this.$store.state.stakingIdentities.list.some(obj => {
+        return obj.accountId === stashId;
       });
     },
-    getNickname(accountId) {
-      let filteredArray =  this.$store.state.nicknames.list.filter(obj => {
-        return obj.accountId === accountId
+    getKusamaIdentity(stashId) {
+      let filteredArray =  this.$store.state.stakingIdentities.list.filter(obj => {
+        return obj.accountId === stashId
       });
-      return filteredArray[0].nickname;
+      console.log(filteredArray[0]);
+      return filteredArray[0].identity;
     },
     onFiltered(filteredItems) {
       // Trigger pagination to update the number of buttons/pages due to filtering

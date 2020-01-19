@@ -19,7 +19,7 @@
               v-model="filter"
               type="search"
               id="filterInput"
-              placeholder="Search intention by account, account index, nickname or keybase name"
+              placeholder="Search intention by account, account index, identity display name or keybase name"
             ></b-form-input>
           </b-col>
         </b-row>
@@ -86,8 +86,8 @@
                   <h4 v-if="hasIdentity(data.item.accountId)" class="mt-2 mb-2">
                     {{ getIdentity(data.item.accountId).full_name }}
                   </h4>
-                  <h4 v-else-if="hasNickname(data.item.accountId)" class="mt-2 mb-2">
-                    {{ getNickname(data.item.accountId) }}
+                  <h4 v-else-if="hasKusamaIdentity(data.item.accountId)" class="mt-2 mb-2">
+                    {{ hasKusamaIdentity(data.item.accountId).display }}
                   </h4>
                   <h4 v-else class="mt-2 mb-2">
                     <span class="d-inline d-sm-inline d-md-inline d-lg-inline d-xl-none">{{ indexes[data.item.accountId] }}</span>
@@ -113,13 +113,20 @@
                 </div>
               </div>
               <div class="d-none d-sm-none d-md-block d-lg-block d-xl-block">
-                <Identicon :value="data.item.accountId" :size="20" :theme="'polkadot'" :key="data.item.accountId" />
+                <div v-if="hasIdentity(data.item.accountId)" class="d-inline-block">
+                  <div v-if="getIdentity(data.item.accountId).logo !== ''" class="d-inline-block">
+                    <img v-bind:src="getIdentity(data.item.accountId).logo" class="identity-small d-inline-block" />
+                  </div>
+                </div>
+                <div v-else class="d-inline-block">
+                  <Identicon :value="data.item.accountId" :size="20" :theme="'polkadot'" :key="data.item.accountId" />
+                </div>
                 <nuxt-link :to="{name: 'intention', query: { accountId: data.item.accountId } }" title="Intention details">
                   <span v-if="hasIdentity(data.item.accountId)">
                     {{ getIdentity(data.item.accountId).full_name }}
                   </span>
-                  <span v-else-if="hasNickname(data.item.accountId)">
-                    {{ getNickname(data.item.accountId) }}
+                  <span v-else-if="hasKusamaIdentity(data.item.accountId)">
+                    {{ getKusamaIdentity(data.item.accountId).display }}
                   </span>
                   <span v-else>
                     <span class="d-inline d-sm-inline d-md-inline d-lg-inline d-xl-none">{{ indexes[data.item.accountId] }}</span>
@@ -218,9 +225,9 @@ export default {
           identity = this.getIdentity(intention.accountId);
         }
 
-        let nickname = "";
-        if (this.hasNickname(intention.accountId)) {
-          nickname = this.getNickname(intention.accountId);
+        let kusamaIdentity = "";
+        if (this.hasKusamaIdentity(intention.accountId)) {
+          kusamaIdentity = this.hasKusamaIdentity(intention.accountId);
         }
 
         intentionsObject.push({
@@ -231,7 +238,7 @@ export default {
           activeStake: intention.stakingLedger.active,
           commission: intention.validatorPrefs.commission,
           favorite: this.isFavorite(intention.accountId),
-          nickname,
+          kusamaIdentity,
           identity
         });
       }
@@ -239,9 +246,6 @@ export default {
     },
     identities() {
       return this.$store.state.identities.list;
-    },
-    nicknames() {
-      return this.$store.state.nicknames.list;
     },
     indexes() {
       return this.$store.state.indexes.list;
@@ -289,9 +293,9 @@ export default {
       vm.$store.dispatch('identities/update');
     }
 
-    // Force update of nicknames list if empty
-    if (this.$store.state.nicknames.list.length == 0) {
-      vm.$store.dispatch('nicknames/update');
+    // Force update of staking identities list if empty
+    if (this.$store.state.stakingIdentities.list.length === 0) {
+      vm.$store.dispatch('stakingIdentities/update');
     }
 
     // Force update of indexes list if empty
@@ -303,6 +307,7 @@ export default {
     this.polling = setInterval(() => {
       vm.$store.dispatch('network/update');
       vm.$store.dispatch('intentions/update');
+      vm.$store.dispatch('stakingIdentities/update');
       if (!this.filter) this.totalRows = this.$store.state.intentions.list.length;
     }, 10000);
 
@@ -362,18 +367,20 @@ export default {
       let filteredArray =  this.$store.state.identities.list.filter(obj => {
         return obj.stashId === stashId
       });
+      console.log(filteredArray[0]);
       return filteredArray[0];
     },
-    hasNickname(accountId) {
-      return this.$store.state.nicknames.list.some(obj => {
-        return obj.accountId === accountId;
+    hasKusamaIdentity(stashId) {
+      return this.$store.state.stakingIdentities.list.some(obj => {
+        return obj.accountId === stashId;
       });
     },
-    getNickname(accountId) {
-      let filteredArray =  this.$store.state.nicknames.list.filter(obj => {
-        return obj.accountId === accountId
+    getKusamaIdentity(stashId) {
+      let filteredArray =  this.$store.state.stakingIdentities.list.filter(obj => {
+        return obj.accountId === stashId
       });
-      return filteredArray[0].nickname;
+      console.log(filteredArray[0]);
+      return filteredArray[0].identity;
     },
     onFiltered(filteredItems) {
       // Trigger pagination to update the number of buttons/pages due to filtering

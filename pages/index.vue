@@ -26,7 +26,7 @@
               v-model="filter"
               type="search"
               id="filterInput"
-              placeholder="Search validator by account, account index, nickname or keybase name"
+              placeholder="Search validator by account, account index, identity display name or keybase name"
             ></b-form-input>
           </b-col>
         </b-row>
@@ -100,8 +100,8 @@
                   <h4 v-if="hasIdentity(data.item.accountId)" class="mt-2 mb-2">
                     {{ getIdentity(data.item.accountId).full_name }}
                   </h4>
-                  <h4 v-else-if="hasNickname(data.item.accountId)" class="mt-2 mb-2">
-                    {{ getNickname(data.item.accountId) }}
+                  <h4 v-else-if="hasKusamaIdentity(data.item.accountId)" class="mt-2 mb-2">
+                    {{ hasKusamaIdentity(data.item.accountId).display }}
                   </h4>
                   <h4 v-else class="mt-2 mb-2">
                     <span class="d-inline d-sm-inline d-md-inline d-lg-inline d-xl-none">{{ indexes[data.item.accountId] }}</span>
@@ -139,8 +139,8 @@
                   <span v-if="hasIdentity(data.item.accountId)">
                     {{ getIdentity(data.item.accountId).full_name }}
                   </span>
-                  <span v-else-if="hasNickname(data.item.accountId)">
-                    {{ getNickname(data.item.accountId) }}
+                  <span v-else-if="hasKusamaIdentity(data.item.accountId)">
+                    {{ getKusamaIdentity(data.item.accountId).display }}
                   </span>
                   <span v-else>
                     <span class="d-inline d-sm-inline d-md-inline d-lg-inline d-xl-none">{{ indexes[data.item.accountId] }}</span>
@@ -271,9 +271,9 @@ export default {
           identity = this.getIdentity(validator.accountId);
         }
 
-        let nickname = "";
-        if (this.hasNickname(validator.accountId)) {
-          nickname = this.getNickname(validator.accountId);
+        let kusamaIdentity = "";
+        if (this.hasKusamaIdentity(validator.accountId)) {
+          kusamaIdentity = this.hasKusamaIdentity(validator.accountId);
         }
 
         validatorsObject.push({
@@ -290,11 +290,10 @@ export default {
           percent: stakePercent,
           favorite: this.isFavorite(validator.accountId),
           currentElected: validator.currentElected,
-          nickname,
+          kusamaIdentity,
           identity
         });
       }
-      console.log(validatorsObject);
       return validatorsObject;
     },
     intentions () {
@@ -302,9 +301,6 @@ export default {
     },
     identities() {
       return this.$store.state.identities.list;
-    },
-    nicknames() {
-      return this.$store.state.nicknames.list;
     },
     indexes() {
       return this.$store.state.indexes.list;
@@ -357,14 +353,14 @@ export default {
       vm.$store.dispatch('identities/update');
     }
 
-    // Force update of nicknames list if empty
-    if (this.$store.state.nicknames.list.length === 0) {
-      vm.$store.dispatch('nicknames/update');
-    }
-
     // Force update of indexes list if empty
     if (this.$store.state.indexes.list.length === 0) {
       vm.$store.dispatch('indexes/update');
+    }
+
+    // Force update of staking identities list if empty
+    if (this.$store.state.stakingIdentities.list.length === 0) {
+      vm.$store.dispatch('stakingIdentities/update');
     }
 
     // Update network info validators and intentions every 10 seconds
@@ -372,6 +368,7 @@ export default {
       vm.$store.dispatch('network/update');
       vm.$store.dispatch('validators/update');
       vm.$store.dispatch('intentions/update');
+      vm.$store.dispatch('stakingIdentities/update');
       if (!this.filter) this.totalRows = this.$store.state.validators.list.length; 
     }, 10000);
 
@@ -433,16 +430,17 @@ export default {
       });
       return filteredArray[0];
     },
-    hasNickname(accountId) {
-      return this.$store.state.nicknames.list.some(obj => {
-        return obj.accountId === accountId;
+    hasKusamaIdentity(stashId) {
+      return this.$store.state.stakingIdentities.list.some(obj => {
+        return obj.accountId === stashId;
       });
     },
-    getNickname(accountId) {
-      let filteredArray =  this.$store.state.nicknames.list.filter(obj => {
-        return obj.accountId === accountId
+    getKusamaIdentity(stashId) {
+      let filteredArray =  this.$store.state.stakingIdentities.list.filter(obj => {
+        return obj.accountId === stashId
       });
-      return filteredArray[0].nickname;
+      console.log(filteredArray[0]);
+      return filteredArray[0].identity;
     },
     onFiltered(filteredItems) {
       // Trigger pagination to update the number of buttons/pages due to filtering
