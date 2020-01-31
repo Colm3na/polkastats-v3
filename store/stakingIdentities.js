@@ -1,6 +1,7 @@
 import axios from 'axios';
 import BN from 'bn.js';
 import { isHex } from '@polkadot/util';
+import { backendBaseURL } from '../polkastats.config.js';
 
 export const state = () => ({
   list: []
@@ -28,7 +29,7 @@ export const mutations = {
 
 export const actions = {
   update (context) {
-    axios.get('https://polkastats.io:8443/staking_identities')
+    axios.get(`${backendBaseURL}/staking_identities`)
       .then(function (response) {
         console.log(response.data);
         context.commit('update', response.data);

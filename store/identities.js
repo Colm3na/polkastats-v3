@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { backendBaseURL } from '../polkastats.config.js';
 
 export const state = () => ({
   list: []
@@ -19,7 +20,7 @@ export const mutations = {
 
 export const actions = {
   update (context) {
-    axios.get('https://polkastats.io:8443/identities')
+    axios.get(`${backendBaseURL}/identities`)
       .then(function (response) {
         context.commit('update', response.data);
       })
