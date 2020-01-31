@@ -2,6 +2,8 @@
 
 Reference instructions to install PolkaStats platform in Ubuntu 18.04.
 
+NOTE: Run following commands as root user.
+
 ## Upgrade
 
 ```
