@@ -1,6 +1,6 @@
 # PolkaStats setup
 
-Reference instructions to install PolkaStats platform in Ubuntu 18.04.
+Reference instructions to install the complete PolkaStats platform (frontend, backend and all required software) in Ubuntu 18.04.
 
 NOTE: Run following commands as root user.
 
