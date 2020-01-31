@@ -205,61 +205,6 @@ npm install
 npm run build
 ```
 
-## Copy blockchain from other synced polkadot node
-
-```
-cd .local/share/polkadot/chains
-tar cvzf ksmcc3.tar.gz ksmcc3
-```
-
-Copy and replace `.local/share/polkadot/chains/ksmcc3` folder in target node.
-
-## Install modified offline-phragmen
-
-```
-cd /usr/local
-git clone https://github.com/mariopino/offline-phragmen
-mv offline-phragmen mario-offline-phragmen
-cd mario-offline-phragmen
-cargo build --release
-```
-
-# And once Polkadot node is synced ....
-
-## Include cron tasks
-
-Include in `/etc/crontab`:
-
-```
-## PolkaStats backend v2 crawlers
-* *  * * *   root     node /usr/local/polkastats-backend-v2/crawlers/intention.js 2>&1 >/dev/null
-* *  * * *   root     node /usr/local/polkastats-backend-v2/crawlers/validator.js 2>&1 >/dev/null
-
-# Execute chain.js crawler every 10s
-* *  * * *   root     node /usr/local/polkastats-backend-v2/crawlers/chain.js 2>&1 >/dev/null
-* *  * * *   root     sleep 10 && node /usr/local/polkastats-backend-v2/crawlers/chain.js 2>&1 >/dev/null
-* *  * * *   root     sleep 20 && node /usr/local/polkastats-backend-v2/crawlers/chain.js 2>&1 >/dev/null
-* *  * * *   root     sleep 30 && node /usr/local/polkastats-backend-v2/crawlers/chain.js 2>&1 >/dev/null
-* *  * * *   root     sleep 40 && node /usr/local/polkastats-backend-v2/crawlers/chain.js 2>&1 >/dev/null
-* *  * * *   root     sleep 50 && node /usr/local/polkastats-backend-v2/crawlers/chain.js 2>&1 >/dev/null
-
-# Execute every 1m
-*/1 *  * * *   root     node /usr/local/polkastats-backend-v2/crawlers/phragmen.js 2>&1 >/dev/null
-
-# Execute every 5m
-*/5 *  * * *   root     node /usr/local/polkastats-backend-v2/crawlers/intention_bonded.js 2>&1 >/dev/null
-*/5 *  * * *   root     node /usr/local/polkastats-backend-v2/crawlers/validator_bonded.js 2>&1 >/dev/null
-*/5 *  * * *   root     /usr/local/polkastats-backend-v2/nicknames.sh 2>&1 >/dev/null
-*/5 *  * * *   root     node /usr/local/polkastats-backend-v2/crawlers/index.js 2>&1 >/dev/null
-*/5 *  * * *   root     node /usr/local/polkastats-backend-v2/crawlers/account.js 2>&1 >/dev/null
-
-# Execute every 10m
-*/10 *  * * *   root     node /usr/local/polkastats-backend-v2/crawlers/keybase_identity.js 2>&1 >/dev/null
-
-# Execute every hour
-0 *  * * *   root     node /usr/local/polkastats-backend-v2/crawlers/system.js 2>&1 >/dev/null
-```
-
 ## Edit backend SSL configuration files
 
 ```
@@ -301,6 +246,60 @@ export const blockExplorer = {
 };
 ```
 
+## Install modified offline-phragmen
+
+```
+cd /usr/local
+git clone https://github.com/mariopino/offline-phragmen
+mv offline-phragmen mario-offline-phragmen
+cd mario-offline-phragmen
+cargo build --release
+```
+
+## Copy blockchain from other synced polkadot node
+
+```
+cd .local/share/polkadot/chains
+tar cvzf ksmcc3.tar.gz ksmcc3
+```
+
+Copy and replace `.local/share/polkadot/chains/ksmcc3` folder in target node.
+
+# And once Polkadot node is synced ....
+
+## Include cron tasks
+
+Include in `/etc/crontab`:
+
+```
+## PolkaStats backend v2 crawlers
+* *  * * *   root     node /usr/local/polkastats-backend-v2/crawlers/intention.js 2>&1 >/dev/null
+* *  * * *   root     node /usr/local/polkastats-backend-v2/crawlers/validator.js 2>&1 >/dev/null
+
+# Execute chain.js crawler every 10s
+* *  * * *   root     node /usr/local/polkastats-backend-v2/crawlers/chain.js 2>&1 >/dev/null
+* *  * * *   root     sleep 10 && node /usr/local/polkastats-backend-v2/crawlers/chain.js 2>&1 >/dev/null
+* *  * * *   root     sleep 20 && node /usr/local/polkastats-backend-v2/crawlers/chain.js 2>&1 >/dev/null
+* *  * * *   root     sleep 30 && node /usr/local/polkastats-backend-v2/crawlers/chain.js 2>&1 >/dev/null
+* *  * * *   root     sleep 40 && node /usr/local/polkastats-backend-v2/crawlers/chain.js 2>&1 >/dev/null
+* *  * * *   root     sleep 50 && node /usr/local/polkastats-backend-v2/crawlers/chain.js 2>&1 >/dev/null
+
+# Execute every 1m
+*/1 *  * * *   root     node /usr/local/polkastats-backend-v2/crawlers/phragmen.js 2>&1 >/dev/null
+
+# Execute every 5m
+*/5 *  * * *   root     node /usr/local/polkastats-backend-v2/crawlers/intention_bonded.js 2>&1 >/dev/null
+*/5 *  * * *   root     node /usr/local/polkastats-backend-v2/crawlers/validator_bonded.js 2>&1 >/dev/null
+*/5 *  * * *   root     /usr/local/polkastats-backend-v2/nicknames.sh 2>&1 >/dev/null
+*/5 *  * * *   root     node /usr/local/polkastats-backend-v2/crawlers/index.js 2>&1 >/dev/null
+*/5 *  * * *   root     node /usr/local/polkastats-backend-v2/crawlers/account.js 2>&1 >/dev/null
+
+# Execute every 10m
+*/10 *  * * *   root     node /usr/local/polkastats-backend-v2/crawlers/keybase_identity.js 2>&1 >/dev/null
+
+# Execute every hour
+0 *  * * *   root     node /usr/local/polkastats-backend-v2/crawlers/system.js 2>&1 >/dev/null
+```
 
 ## Start everything
 
@@ -309,5 +308,9 @@ systemctl start polkastats
 systemctl start polkaevents
 systemctl start polkablocks
 ```
+
+## Enjoy!
+
+Open in your browser `https//yourdomain.com` and enjoy your fresh installed PolkaStats! ;-)
 
 
