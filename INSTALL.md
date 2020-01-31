@@ -42,7 +42,7 @@ nano /etc/systemd/system/polkadot.service
 Description=Kusama full node
 
 [Service]
-ExecStart=/usr/local/polkadot/target/release/polkadot --chain=kusama --pruning=archive --name '🤖 PolkaStats v3dev1'
+ExecStart=/usr/local/polkadot/target/release/polkadot --chain=kusama --pruning=archive --name '🤖 PolkaStats'
 Restart=always
 
 [Install]
