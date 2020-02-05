@@ -1,6 +1,6 @@
 # PolkaStats setup
 
-Reference instructions to install the complete PolkaStats platform (frontend, backend and all required software) in Ubuntu 18.04.
+Instructions to install PolkaStats platform (frontend, backend and all dependencies) in Ubuntu 18.04.
 
 NOTE: Run following commands as root user.
 
@@ -17,6 +17,7 @@ reboot
 ```
 curl https://sh.rustup.rs -sSf | sh
 . ~/.profile
+rustup update
 ```
 
 ## Install Polkadot
@@ -26,7 +27,7 @@ apt -y install make clang pkg-config libssl-dev build-essential
 cd /usr/local
 git clone https://github.com/paritytech/polkadot.git
 cd polkadot
-git checkout v0.7.18
+git checkout v0.7.20
 ./scripts/init.sh 
 cargo build --release
 ```
