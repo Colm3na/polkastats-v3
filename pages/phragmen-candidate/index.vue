@@ -83,6 +83,62 @@
                         </a>
                       </div>
                     </div>
+                     <div class="row" v-if="hasIdentity(candidate.pub_key_stash)" class="mb-2">
+                      <div class="row" v-if="getIdentity(candidate.pub_key_stash).full_name !== `` && getIdentity(candidate.pub_key_stash).full_name !== `null`">
+                        <div class="col-md-3 mb-1">
+                          <strong>Name</strong>
+                        </div>
+                        <div class="col-md-9 mb-1 fee">
+                          {{ getIdentity(candidate.pub_key_stash).full_name }}
+                        </div>
+                      </div>           
+                      <div class="row" v-if="getIdentity(candidate.pub_key_stash).bio !== `` && getIdentity(candidate.pub_key_stash).bio !== `null`">
+                        <div class="col-md-3 mb-2">
+                          <strong>Bio</strong>
+                        </div>
+                        <div class="col-md-9 mb-2 fee">
+                          {{ getIdentity(candidate.pub_key_stash).bio }}
+                        </div>
+                      </div>
+                       <div class="row" v-if="getIdentity(candidate.pub_key_stash).location !== `` && getIdentity(candidate.pub_key_stash).location !== `null`">
+                        <div class="col-md-3 mb-2">
+                          <strong>Location</strong>
+                        </div>
+                        <div class="col-md-9 mb-2 fee">
+                          {{ getIdentity(candidate.pub_key_stash).location }}
+                        </div>
+                      </div>
+                      <div class="row" v-if="getIdentity(candidate.pub_key_stash).website !== `` && getIdentity(candidate.pub_key_stash).website !== `null`">
+                        <div class="col-md-3 mb-2">
+                          <strong>Website</strong>
+                        </div>
+                        <div class="col-md-9 mb-2 fee">
+                          <a v-bind:href="getIdentity(candidate.pub_key_stash).website" target="_blank">
+                            {{ getIdentity(candidate.pub_key_stash).website }}
+                          </a>
+                        </div>
+                      </div>
+                      <div class="row" v-if="getIdentity(candidate.pub_key_stash).twitter !== `` && getIdentity(candidate.pub_key_stash).twitter !== `null`">
+                        <div class="col-md-3 mb-2">
+                          <strong>Twitter</strong>
+                        </div>
+                        <div class="col-md-9 mb-2 fee">
+                          <a v-bind:href="getIdentity(candidate.pub_key_stash).twitter" target="_blank">
+                            {{ getIdentity(candidate.pub_key_stash).twitter }}
+                          </a>
+                        </div>
+                      </div>
+                      <div class="row" v-if="getIdentity(candidate.pub_key_stash).github !== `` && getIdentity(candidate.pub_key_stash).github !== `null`">
+                        <div class="col-md-3 mb-2">
+                          <strong>Github</strong>
+                        </div>
+                        <div class="col-md-9 mb-2 fee">
+                          <a v-bind:href="getIdentity(candidate.pub_key_stash).github" target="_blank">
+                            {{ getIdentity(candidate.pub_key_stash).github }}
+                          </a>
+                        </div>
+                     </div>
+                    <!-- Identity End -->
                     <div class="voters mt-2">
                       <template v-if="candidate.voters">
                         <template v-if="candidate.voters.length > 0">
