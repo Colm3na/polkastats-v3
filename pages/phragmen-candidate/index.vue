@@ -83,7 +83,8 @@
                         </a>
                       </div>
                     </div>
-                     <div class="row" v-if="hasIdentity(candidate.pub_key_stash)" class="mb-2">
+                    <!-- Identity -->
+                    <div class="row" v-if="hasIdentity(candidate.pub_key_stash)" class="mb-2">
                       <div class="row" v-if="getIdentity(candidate.pub_key_stash).full_name !== `` && getIdentity(candidate.pub_key_stash).full_name !== `null`">
                         <div class="col-md-3 mb-1">
                           <strong>Name</strong>
@@ -137,7 +138,7 @@
                             {{ getIdentity(candidate.pub_key_stash).github }}
                           </a>
                         </div>
-                     </div>
+                      </div>
                     <!-- Identity End -->
                     <div class="voters mt-2">
                       <template v-if="candidate.voters">
