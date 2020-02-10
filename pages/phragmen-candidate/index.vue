@@ -171,6 +171,7 @@
                 </div>
               </div>
             </div>
+            </div>
           </template>
         </template>
       </b-container>
