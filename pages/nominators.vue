@@ -99,7 +99,7 @@
                 {{ formatAmount(data.item.totalStake) }}
               </p>
             </template>
-             <template slot="favorite" slot-scope="data">
+            <template slot="favorite" slot-scope="data">
               <p class="text-center mb-0">
                 <a class="favorite" v-on:click="toggleFavorite(data.item.accountIndex)">
                   <i v-if="data.item.favorite" class="fas fa-star" style="color: #f1bd23" v-b-tooltip.hover title="Remove from Favorites"></i>
@@ -156,7 +156,7 @@ export default {
         { key: 'accountId', label: 'Nominator', sortable: true },
         { key: 'nominations', label: 'Nominations', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` },
         { key: 'totalStake', label: 'Total stake', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` },
-         { key: 'favorite', label: '⭐', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` }
+        { key: 'favorite', label: '⭐', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` }
       ],
       favorites: []
     }
