@@ -84,7 +84,7 @@
                       </div>
                     </div>
                     <!-- Identity -->
-                    <div class="row" v-if="hasIdentity(candidate.pub_key_stash)" class="mb-2">
+                    <div class="row mb-2" v-if="hasIdentity(candidate.pub_key_stash)">
                       <div class="row" v-if="getIdentity(candidate.pub_key_stash).full_name !== `` && getIdentity(candidate.pub_key_stash).full_name !== `null`">
                         <div class="col-md-3 mb-1">
                           <strong>Name</strong>

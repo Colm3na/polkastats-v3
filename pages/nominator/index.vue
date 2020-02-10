@@ -33,7 +33,7 @@
                 <h5>{{ nominator.staking.length }} nomination<span v-if="nominator.staking.length > 1">s</span>:</h5>
                 <hr>          
                 <!-- Identity -->
-                <div class="row" v-if="hasIdentity(nominator.accountId)" class="mb-2">
+                <div class="row mb-2" v-if="hasIdentity(nominator.accountId)">
                   <div class="row" v-if="getIdentity(nominator.accountId).full_name !== `` && getIdentity(nominator.accountId).full_name !== `null`">
                     <div class="col-md-3 mb-1">
                       <strong>Name</strong>
