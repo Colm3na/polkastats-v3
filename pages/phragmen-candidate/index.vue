@@ -83,63 +83,58 @@
                         </a>
                       </div>
                     </div>
-                    <!-- Identity -->
-                    <div class="row mb-2" v-if="hasIdentity(candidate.pub_key_stash)">
-                      <div class="row" v-if="getIdentity(candidate.pub_key_stash).full_name !== `` && getIdentity(candidate.pub_key_stash).full_name !== `null`">
-                        <div class="col-md-3 mb-1">
+                    <!-- identity start -->
+                    <div v-if="candidate.identity">
+                      <div class="row" v-if="candidate.identity">
+                        <div class="col-md-3 mb-1" v-if="candidate.identity.identity.display">
                           <strong>Name</strong>
                         </div>
                         <div class="col-md-9 mb-1 fee">
-                          {{ getIdentity(candidate.pub_key_stash).full_name }}
-                        </div>
-                      </div>           
-                      <div class="row" v-if="getIdentity(candidate.pub_key_stash).bio !== `` && getIdentity(candidate.pub_key_stash).bio !== `null`">
-                        <div class="col-md-3 mb-2">
-                          <strong>Bio</strong>
-                        </div>
-                        <div class="col-md-9 mb-2 fee">
-                          {{ getIdentity(candidate.pub_key_stash).bio }}
+                          {{ candidate.identity.identity.display }}
                         </div>
                       </div>
-                       <div class="row" v-if="getIdentity(candidate.pub_key_stash).location !== `` && getIdentity(candidate.pub_key_stash).location !== `null`">
+                      <div class="row" v-if="candidate.identity.identity.email">
                         <div class="col-md-3 mb-2">
-                          <strong>Location</strong>
+                          <strong>Email</strong>
                         </div>
                         <div class="col-md-9 mb-2 fee">
-                          {{ getIdentity(candidate.pub_key_stash).location }}
-                        </div>
-                      </div>
-                      <div class="row" v-if="getIdentity(candidate.pub_key_stash).website !== `` && getIdentity(candidate.pub_key_stash).website !== `null`">
-                        <div class="col-md-3 mb-2">
-                          <strong>Website</strong>
-                        </div>
-                        <div class="col-md-9 mb-2 fee">
-                          <a v-bind:href="getIdentity(candidate.pub_key_stash).website" target="_blank">
-                            {{ getIdentity(candidate.pub_key_stash).website }}
+                          <a v-bind:href="candidate.identity.identity.email" target="_blank">
+                            {{ candidate.identity.identity.email }}
                           </a>
                         </div>
                       </div>
-                      <div class="row" v-if="getIdentity(candidate.pub_key_stash).twitter !== `` && getIdentity(candidate.pub_key_stash).twitter !== `null`">
+                       <div class="row" v-if="candidate.identity.identity.legal">
                         <div class="col-md-3 mb-2">
-                          <strong>Twitter</strong>
+                          <strong>Legal</strong>
                         </div>
                         <div class="col-md-9 mb-2 fee">
-                          <a v-bind:href="getIdentity(candidate.pub_key_stash).twitter" target="_blank">
-                            {{ getIdentity(candidate.pub_key_stash).twitter }}
+                          <a v-bind:href="candidate.identity.identity.legal" target="_blank">
+                            {{ candidate.identity.identity.legal }}
                           </a>
                         </div>
                       </div>
-                      <div class="row" v-if="getIdentity(candidate.pub_key_stash).github !== `` && getIdentity(candidate.pub_key_stash).github !== `null`">
+                      <div class="row" v-if="candidate.identity.identity.riot">
                         <div class="col-md-3 mb-2">
-                          <strong>Github</strong>
+                          <strong>Riot</strong>
                         </div>
                         <div class="col-md-9 mb-2 fee">
-                          <a v-bind:href="getIdentity(candidate.pub_key_stash).github" target="_blank">
-                            {{ getIdentity(candidate.pub_key_stash).github }}
+                          <a v-bind:href="candidate.identity.identity.riot" target="_blank">
+                            {{ candidate.identity.identity.riot }}
                           </a>
                         </div>
                       </div>
-                    <!-- Identity End -->
+                      <div class="row" v-if="candidate.identity.identity.web">
+                        <div class="col-md-3 mb-2">
+                          <strong>Web</strong>
+                        </div>
+                        <div class="col-md-9 mb-2 fee">
+                          <a v-bind:href="candidate.identity.identity.web" target="_blank">
+                            {{ candidate.identity.identity.web }}
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- identity end -->
                     <div class="voters mt-2">
                       <template v-if="candidate.voters">
                         <template v-if="candidate.voters.length > 0">
@@ -171,7 +166,7 @@
                 </div>
               </div>
             </div>
-            </div>
+            <!-- </div> -->
           </template>
         </template>
       </b-container>
@@ -209,7 +204,15 @@ export default {
   },
   computed: {
     candidates () {
-      return this.$store.state.phragmen.info.candidates
+      // console.log('DATA', this.accountId, this.$store.state.phragmen.info.candidates)
+      for(let i = 0; i <  this.$store.state.phragmen.info.candidates.length; i++) {
+  
+        let identity = this.$store.state.stakingIdentities.list
+          .find( candidate => { console.log('account', candidate);return candidate.accountId === this.accountId });
+        if (identity) { console.log('identity', identity);this.$store.state.phragmen.info.candidates[i].identity = identity }  
+      }
+     
+      return this.$store.state.phragmen.info.candidates;
     },
     identities() {
       return this.$store.state.identities.list
@@ -227,6 +230,12 @@ export default {
     // Force update of phragmen candidates list if empty
     if (this.$store.state.phragmen.info.candidates.length == 0) {
       vm.$store.dispatch('phragmen/update');
+    }
+
+    // Force update of staking_identity list if empty
+    if (this.$store.state.stakingIdentities.list.length == 0) {
+      console.log('entra')
+      vm.$store.dispatch('staking_identities/update');
     }
 
     // Force update of indentity list if empty
