@@ -88,7 +88,7 @@
                   <i v-if="data.item.favorite" class="fas fa-star" style="color: #f1bd23" v-b-tooltip.hover title="Remove from Favorites"></i>
                   <i v-else class="fas fa-star" style="color: #e6dfdf;" v-b-tooltip.hover title="Add to Favorites"></i>
                 </a>
-                <div v-if="hasIdentity(data.item.accountId)" class="logo">
+                <div v-if="hasIdentity(data.item.accountId)" class="logo-identity">
                   <div v-if="getIdentity(data.item.accountId).logo !== ''">
                     <img v-bind:src="getIdentity(data.item.accountId).logo" class="identity mt-2" />
                   </div>
@@ -117,14 +117,13 @@
                 </p>
                 <div v-if="data.item.stakers">
                   <p v-if="data.item.stake && data.item.stake > 0" class="bonded mb-0" v-b-tooltip.hover title="Total bonded">{{ formatAmount(data.item.stake) }}</p>
-                  <p class="mb-0" v-if="data.item.stakers.own !== data.item.stake">
+                  <p class="mb-0 small-text" v-if="data.item.stakers.own !== data.item.stake">
                     <small>
                       <span v-b-tooltip.hover title="Self bonded" v-if="data.item.stakers.own > 0">{{ formatAmount(data.item.stakers.own) }}</span>
                       <span v-b-tooltip.hover title="Bonded by nominators" v-if="(data.item.stakers.total - data.item.stakers.own) > 0">(+{{ formatAmount(data.item.stakers.total - data.item.stakers.own) }})</span>
                     </small>
-                     AQUI<b-icon-alert-triangle-fill></b-icon-alert-triangle-fill>
                   </p>
-                  <p class="mb-0" v-if="data.item.stakers.total" v-b-tooltip.hover title="Percentage over total bonded stake">{{ getStakePercent(data.item.stakers.total, totalStakeBonded) }}% of total stake</p>
+                  <p class="mb-0 small-text" v-if="data.item.stakers.total" v-b-tooltip.hover title="Percentage over total bonded stake">{{ getStakePercent(data.item.stakers.total, totalStakeBonded) }}% of total stake</p>
                 </div>
               </div>
               <div class="d-none d-sm-none d-md-block d-lg-block d-xl-block">
@@ -527,7 +526,7 @@ body {
   margin-left: 0.1rem;
 }
 .identity {
-  max-width: 120px;
+  max-width: 80px;
 }
 .identity-small {
   max-width: 25px;
@@ -625,18 +624,16 @@ body {
     font-size: 1.3rem;
   }
   #validators-table .bonded {
-/*     color: #d75ea1;
-    font-weight: 700;
-    font-size: 1.3rem; */
     position: relative;
-    top: -3.5em;
-    left: 60%;
+    top: -2.5em;
+    left: 50%;
   }
   #validators-table .logo {
     position: relative;
     top: 3em;
     left: 10%;
   }
+
   #validators-table .fullname  {
     font-size: 3em;
     position: relative;
@@ -647,7 +644,7 @@ body {
     font-size: 3em;
     position: relative;
     left: 50%;
-    top: -1.5em;
+    top: -1.1em;
   }
   #validators-table .rank-detail {
     position: absolute;
@@ -655,10 +652,22 @@ body {
     left: 3.3rem;
     width: 50px;
     font-size: 1.1rem;
-
   }
-}
+  #validators-table .logo-identity {
+    position: relative;
+    top: 3em;
+    left: 3rem;
+  }
+  #validators-table .small-text {
+    /* margin-left: 30%; */
+    text-align: center!important;
+  }
 
+  #validators-table .small-text small {
+    font-size: 0.9rem;
+  }
+
+}
 
 @media (max-width: 991px) {
   #page-index.container {
@@ -668,4 +677,33 @@ body {
   }
 }
 
+@media (max-width: 470px){
+  #validators-table .logo {
+    position: relative;
+    top: 3rem;
+    left: -3rem;
+  }
+  #validators-table .validator-name {
+    top: -1em;
+    left: 40%;
+    position: relative;
+    font-size: 1.7em;
+  }
+  #validators-table .bonded {
+    position: relative;
+    top: -2.5em;
+    left: 40%;
+  }
+  #validators-table .fullname2 {
+    font-size: 3em;
+    position: relative;
+    left: 40%;
+    top: -1.1em;
+  }
+  #validators-table .logo-identity {
+    position: relative;
+    top: 3em;
+    left: -2rem;
+  }
+}
 </style>
