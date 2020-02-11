@@ -109,7 +109,7 @@
                   </h4>
                 </nuxt-link>
                 <p class="mt-3 mb-0 rank">
-                  rank #{{ data.item.rank }}
+                  <span class="rank-detail" v-b-tooltip.hover title="Rank">#{{ data.item.rank }}</span>
                   <i v-if="data.item.imOnline" class="imOnline fas fa-check-circle ml-1" v-b-tooltip.hover v-bind:title="data.item.imOnlineMessage"></i>
                   <i v-else class="imOffline fas fa-times-circle ml-1" v-b-tooltip.hover v-bind:title="data.item.imOnlineMessage"></i>
                   <i v-if="data.item.currentElected" class="elected fas fa-chevron-circle-right" v-b-tooltip.hover title="Elected for next session"></i>
@@ -586,7 +586,7 @@ body {
   }
   #validators-table tr td:nth-child(3) div .d-block .favorite {
     position: absolute;
-    top: 0rem;
+    top: -5px;
     right: 0rem;
   }
   #validators-table .elected {
@@ -623,6 +623,11 @@ body {
     color: #d75ea1;
     font-weight: 700;
     font-size: 1.3rem;
+  }
+  #validators-table .bonded {
+/*     color: #d75ea1;
+    font-weight: 700;
+    font-size: 1.3rem; */
     position: relative;
     top: -3.5em;
     left: 60%;
@@ -638,12 +643,19 @@ body {
     left: 50%;
     top: -2em;
   }
-
-    #validators-table .fullname2  {
+  #validators-table .fullname2  {
     font-size: 3em;
     position: relative;
     left: 50%;
     top: -1.5em;
+  }
+  #validators-table .rank-detail {
+    position: absolute;
+    top: -4px;
+    left: 3.3rem;
+    width: 50px;
+    font-size: 1.1rem;
+
   }
 }
 
