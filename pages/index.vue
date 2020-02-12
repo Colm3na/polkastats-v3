@@ -656,7 +656,7 @@ body {
   #validators-table .logo-identity {
     position: relative;
     top: 3em;
-    left: 3rem;
+    left: 5rem;
   }
   #validators-table .small-text {
     /* margin-left: 30%; */
