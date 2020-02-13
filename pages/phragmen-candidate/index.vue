@@ -34,7 +34,7 @@
                         <h4 class="mt-2 mb-2" v-if="getIdentity(candidate.pub_key_stash).full_name !== ''">{{ getIdentity(candidate.pub_key_stash).full_name }}</h4>
                       </div>
                       <div v-else>
-                        B<Identicon :value="candidate.pub_key_stash" :size="80" :theme="'polkadot'" :key="candidate.pub_key_stashd" />
+                        <Identicon :value="candidate.pub_key_stash" :size="80" :theme="'polkadot'" :key="candidate.pub_key_stashd" />
                       </div>
                     </div>
                     <div v-else>
@@ -264,24 +264,21 @@ export default {
     clearInterval(this.pollingIndexes);
   },
   methods: {
-    hasStashIdentity(stashId) {
-      return this.$store.state.stakingIdentities.list.some(obj => {
-        return obj.accountId === stashId;
-      });
-    },
-    
-    getStashIdentity(stashId) { // stash
+    getStashIdentity(stashId) {
       let filteredArray =  this.$store.state.stakingIdentities.list.filter(obj => {
         return obj.accountId === stashId
       });
       return filteredArray[0];
     },
+    hasStashIdentity(stashId) {
+      return this.$store.state.stakingIdentities.list.some(obj => {
+        return obj.accountId === stashId;
+      });
+    },
     getIdentity(stashId) {
-      console.log('list', this.$store.state.identities.list, stashId)
       let filteredArray =  this.$store.state.identities.list.filter(obj => {
         return obj.stashId === stashId
       });
-      console.log('filtered', filteredArray[0])
       return filteredArray[0];
     },
     hasIdentity(stashId) {
