@@ -27,6 +27,8 @@
               <div class="card-body">
                 <div class="row">
                   <div class="col-md-3 mb-2 text-center">
+                  {{ hasIdentity(candidate.pub_key_stash) }}
+                  {{ getIdentity2(candidate.pub_key_stash) }}
                     <div v-if="hasIdentity(candidate.pub_key_stash)">
                       <div v-if="getIdentity(candidate.pub_key_stash).logo !== ''">
                         <img v-bind:src="getIdentity(candidate.pub_key_stash).logo" class="identity mt-2" />
@@ -243,12 +245,13 @@ export default {
     if (this.$store.state.indexes.list.length == 0) {
       vm.$store.dispatch('indexes/update');
     }
-    
+    console.log('store', this.$store.state)
     // Update data every 10 seconds
     this.polling = setInterval(() => {
       vm.$store.dispatch('phragmen/update');
       vm.$store.dispatch('identities/update');
       vm.$store.dispatch('nicknames/update');
+      vm.$store.dispatch('stakingIdentities/update');
     }, 10000);
 
     // Update account indexes every 1 min
@@ -267,10 +270,18 @@ export default {
         return obj.accountId === stashId;
       });
     },
-    getIdentity(stashId) {
+    getIdentity(stashId) { // stash
       let filteredArray =  this.$store.state.stakingIdentities.list.filter(obj => {
         return obj.accountId === stashId
       });
+      return filteredArray[0];
+    },
+    getIdentity2(stashId) {
+      console.log('list', this.$store.state.identities.list, stashId)
+      let filteredArray =  this.$store.state.identities.list.filter(obj => {
+        return obj.stashId === stashId
+      });
+      console.log('filtered', filteredArray[0])
       return filteredArray[0];
     },
     hasNickname(accountId) {
