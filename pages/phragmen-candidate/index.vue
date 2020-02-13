@@ -27,15 +27,14 @@
               <div class="card-body">
                 <div class="row">
                   <div class="col-md-3 mb-2 text-center">
-                  {{ hasIdentity(candidate.pub_key_stash) }}
-                  {{ getIdentity2(candidate.pub_key_stash) }}
+
                     <div v-if="hasIdentity(candidate.pub_key_stash)">
                       <div v-if="getIdentity(candidate.pub_key_stash).logo !== ''">
                         <img v-bind:src="getIdentity(candidate.pub_key_stash).logo" class="identity mt-2" />
                         <h4 class="mt-2 mb-2" v-if="getIdentity(candidate.pub_key_stash).full_name !== ''">{{ getIdentity(candidate.pub_key_stash).full_name }}</h4>
                       </div>
                       <div v-else>
-                        <Identicon :value="candidate.pub_key_stash" :size="80" :theme="'polkadot'" :key="candidate.pub_key_stashd" />
+                        B<Identicon :value="candidate.pub_key_stash" :size="80" :theme="'polkadot'" :key="candidate.pub_key_stashd" />
                       </div>
                     </div>
                     <div v-else>
@@ -86,52 +85,52 @@
                       </div>
                     </div>
                     <!-- identity start -->
-                    <div v-if="hasIdentity(candidate.pub_key_stash)">
-                      <div class="row" v-if="getIdentity(candidate.pub_key_stash).identity.hasOwnProperty('display')">
+                    <div v-if="hasStashIdentity(candidate.pub_key_stash)">
+                      <div class="row" v-if="getStashIdentity(candidate.pub_key_stash).identity.hasOwnProperty('display')">
                         <div class="col-md-3 mb-1">
                           <strong>Name</strong>
                         </div>
                         <div class="col-md-9 mb-1 fee">
-                          {{ getIdentity(candidate.pub_key_stash).identity.display }}
+                          {{ getStashIdentity(candidate.pub_key_stash).identity.display }}
                         </div>
                       </div>
-                      <div class="row" v-if="getIdentity(candidate.pub_key_stash).identity.hasOwnProperty('email')">
+                      <div class="row" v-if="getStashIdentity(candidate.pub_key_stash).identity.hasOwnProperty('email')">
                         <div class="col-md-3 mb-2">
                           <strong>Email</strong>
                         </div>
                         <div class="col-md-9 mb-2 fee">
-                          <a v-bind:href="getIdentity(candidate.pub_key_stash).identity.email" target="_blank">
-                            {{ getIdentity(candidate.pub_key_stash).identity.email }}
+                          <a v-bind:href="getStashIdentity(candidate.pub_key_stash).identity.email" target="_blank">
+                            {{ getStashIdentity(candidate.pub_key_stash).identity.email }}
                           </a>
                         </div>
                       </div>
-                      <div class="row" v-if="getIdentity(candidate.pub_key_stash).identity.hasOwnProperty('legal')">
+                      <div class="row" v-if="getStashIdentity(candidate.pub_key_stash).identity.hasOwnProperty('legal')">
                         <div class="col-md-3 mb-2">
                           <strong>Legal</strong>
                         </div>
                         <div class="col-md-9 mb-2 fee">
-                          <a v-bind:href="getIdentity(candidate.pub_key_stash).identity.legal" target="_blank">
-                            {{ getIdentity(candidate.pub_key_stash).identity.legal }}
+                          <a v-bind:href="getStashIdentity(candidate.pub_key_stash).identity.legal" target="_blank">
+                            {{ getStashIdentity(candidate.pub_key_stash).identity.legal }}
                           </a>
                         </div>
                       </div>
-                      <div class="row" v-if="getIdentity(candidate.pub_key_stash).identity.hasOwnProperty('riot')">
+                      <div class="row" v-if="getStashIdentity(candidate.pub_key_stash).identity.hasOwnProperty('riot')">
                         <div class="col-md-3 mb-2">
                           <strong>Riot</strong>
                         </div>
                         <div class="col-md-9 mb-2 fee">
-                          <a v-bind:href="getIdentity(candidate.pub_key_stash).identity.riot" target="_blank">
-                            {{ getIdentity(candidate.pub_key_stash).identity.riot }}
+                          <a v-bind:href="getStashIdentity(candidate.pub_key_stash).identity.riot" target="_blank">
+                            {{ getStashIdentity(candidate.pub_key_stash).identity.riot }}
                           </a>
                         </div>
                       </div>
-                      <div class="row" v-if="getIdentity(candidate.pub_key_stash).identity.hasOwnProperty('web')">
+                      <div class="row" v-if="getStashIdentity(candidate.pub_key_stash).identity.hasOwnProperty('web')">
                         <div class="col-md-3 mb-2">
                           <strong>Web</strong>
                         </div>
                         <div class="col-md-9 mb-2 fee">
-                          <a v-bind:href="getIdentity(candidate.pub_key_stash).identity.web" target="_blank">
-                            {{ getIdentity(candidate.pub_key_stash).identity.web }}
+                          <a v-bind:href="getStashIdentity(candidate.pub_key_stash).identity.web" target="_blank">
+                            {{ getStashIdentity(candidate.pub_key_stash).identity.web }}
                           </a>
                         </div>
                       </div>
@@ -265,24 +264,30 @@ export default {
     clearInterval(this.pollingIndexes);
   },
   methods: {
-    hasIdentity(stashId) {
+    hasStashIdentity(stashId) {
       return this.$store.state.stakingIdentities.list.some(obj => {
         return obj.accountId === stashId;
       });
     },
-    getIdentity(stashId) { // stash
+    
+    getStashIdentity(stashId) { // stash
       let filteredArray =  this.$store.state.stakingIdentities.list.filter(obj => {
         return obj.accountId === stashId
       });
       return filteredArray[0];
     },
-    getIdentity2(stashId) {
+    getIdentity(stashId) {
       console.log('list', this.$store.state.identities.list, stashId)
       let filteredArray =  this.$store.state.identities.list.filter(obj => {
         return obj.stashId === stashId
       });
       console.log('filtered', filteredArray[0])
       return filteredArray[0];
+    },
+    hasIdentity(stashId) {
+      return this.$store.state.identities.list.some(obj => {
+        return obj.stashId === stashId;
+      });
     },
     hasNickname(accountId) {
       return this.$store.state.nicknames.list.some(obj => {
