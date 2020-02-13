@@ -124,6 +124,16 @@
                           </a>
                         </div>
                       </div>
+                      <div class="row" v-if="getIdentity(candidate.pub_key_stash).identity.hasOwnProperty('twitter')">
+                        <div class="col-md-3 mb-2">
+                          <strong>Twitter</strong>
+                        </div>
+                        <div class="col-md-9 mb-2 fee">
+                          <a v-bind:href="getIdentity(candidate.pub_key_stash).identity.twitter" target="_blank">
+                            {{ getIdentity(candidate.pub_key_stash).identity.twitter }}
+                          </a>
+                        </div>
+                      </div>
                       <div class="row" v-if="getIdentity(candidate.pub_key_stash).identity.hasOwnProperty('web')">
                         <div class="col-md-3 mb-2">
                           <strong>Web</strong>

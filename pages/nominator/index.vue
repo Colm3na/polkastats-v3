@@ -32,64 +32,68 @@
                 <p class="amount" v-b-tooltip.hover title="Total bonded">{{ formatDot(getTotalStake(nominator.staking)) }}</p>
                 <h5>{{ nominator.staking.length }} nomination<span v-if="nominator.staking.length > 1">s</span>:</h5>
                 <hr>          
-                <!-- Identity -->
-                <div class="row mb-2" v-if="hasIdentity(nominator.accountId)">
-                  <div class="row" v-if="getIdentity(nominator.accountId).full_name !== `` && getIdentity(nominator.accountId).full_name !== `null`">
-                    <div class="col-md-3 mb-1">
-                      <strong>Name</strong>
+                <!-- identity start -->
+                    <div v-if="hasIdentity(nominator.accountId)">
+                      <div class="row" v-if="getIdentity(nominator.accountId).identity.hasOwnProperty('display')">
+                        <div class="col-md-3 mb-1">
+                          <strong>Name</strong>
+                        </div>
+                        <div class="col-md-9 mb-1 fee">
+                          {{ getIdentity(nominator.accountId).identity.display }}
+                        </div>
+                      </div>
+                      <div class="row" v-if="getIdentity(nominator.accountId).identity.hasOwnProperty('email')">
+                        <div class="col-md-3 mb-2">
+                          <strong>Email</strong>
+                        </div>
+                        <div class="col-md-9 mb-2 fee">
+                          <a v-bind:href="getIdentity(nominator.accountId).identity.email" target="_blank">
+                            {{ getIdentity(nominator.accountId).identity.email }}
+                          </a>
+                        </div>
+                      </div>
+                      <div class="row" v-if="getIdentity(nominator.accountId).identity.hasOwnProperty('legal')">
+                        <div class="col-md-3 mb-2">
+                          <strong>Legal</strong>
+                        </div>
+                        <div class="col-md-9 mb-2 fee">
+                          <a v-bind:href="getIdentity(nominator.accountId).identity.legal" target="_blank">
+                            {{ getIdentity(nominator.accountId).identity.legal }}
+                          </a>
+                        </div>
+                      </div>
+                      <div class="row" v-if="getIdentity(nominator.accountId).identity.hasOwnProperty('riot')">
+                        <div class="col-md-3 mb-2">
+                          <strong>Riot</strong>
+                        </div>
+                        <div class="col-md-9 mb-2 fee">
+                          <a v-bind:href="getIdentity(nominator.accountId).identity.riot" target="_blank">
+                            {{ getIdentity(nominator.accountId).identity.riot }}
+                          </a>
+                        </div>
+                      </div>
+                      <div class="row" v-if="getIdentity(nominator.accountId).identity.hasOwnProperty('twitter')">
+                        <div class="col-md-3 mb-2">
+                          <strong>Twitter</strong>
+                        </div>
+                        <div class="col-md-9 mb-2 fee">
+                          <a v-bind:href="getIdentity(nominator.accountId).identity.twitter" target="_blank">
+                            {{ getIdentity(nominator.accountId).identity.twitter }}
+                          </a>
+                        </div>
+                      </div>
+                      <div class="row" v-if="getIdentity(nominator.accountId).identity.hasOwnProperty('web')">
+                        <div class="col-md-3 mb-2">
+                          <strong>Web</strong>
+                        </div>
+                        <div class="col-md-9 mb-2 fee">
+                          <a v-bind:href="getIdentity(nominator.accountId).identity.web" target="_blank">
+                            {{ getIdentity(nominator.accountId).identity.web }}
+                          </a>
+                        </div>
+                      </div>
                     </div>
-                    <div class="col-md-9 mb-1 fee">
-                      {{ getIdentity(nominator.accountId).full_name }}
-                    </div>
-                  </div>                         
-                  <div class="row" v-if="getIdentity(nominator.accountId).bio !== `` && getIdentity(nominator.accountId).bio !== `null`">
-                    <div class="col-md-3 mb-2">
-                      <strong>Bio</strong>
-                    </div>
-                    <div class="col-md-9 mb-2 fee">
-                      {{ getIdentity(nominator.accountId).bio }}
-                    </div>
-                  </div>               
-                  <div class="row" v-if="getIdentity(nominator.accountId).location !== `` && getIdentity(nominator.accountId).location !== `null`">
-                    <div class="col-md-3 mb-2">
-                      <strong>Location</strong>
-                    </div>
-                    <div class="col-md-9 mb-2 fee">
-                      {{ getIdentity(nominator.accountId).location }}
-                    </div>
-                  </div>                
-                  <div class="row" v-if="getIdentity(nominator.accountId).website !== `` && getIdentity(nominator.accountId).website !== `null`">
-                    <div class="col-md-3 mb-2">
-                      <strong>Website</strong>
-                    </div>
-                    <div class="col-md-9 mb-2 fee">
-                      <a v-bind:href="getIdentity(nominator.accountId).website" target="_blank">
-                        {{ getIdentity(nominator.accountId).website }}
-                      </a>
-                    </div>
-                  </div>
-                  <div class="row" v-if="getIdentity(nominator.accountId).twitter !== `` && getIdentity(nominator.accountId).twitter !== `null`">
-                    <div class="col-md-3 mb-2">
-                      <strong>Twitter</strong>
-                    </div>
-                    <div class="col-md-9 mb-2 fee">
-                      <a v-bind:href="getIdentity(nominator.accountId).twitter" target="_blank">
-                        {{ getIdentity(nominator.accountId).twitter }}
-                      </a>
-                    </div>
-                  </div>
-                  <div class="row" v-if="getIdentity(nominator.accountId).github !== `` && getIdentity(nominator.accountId).github !== `null`">
-                    <div class="col-md-3 mb-2">
-                      <strong>Github</strong>
-                    </div>
-                    <div class="col-md-9 mb-2 fee">
-                      <a v-bind:href="getIdentity(nominator.accountId).github" target="_blank">
-                        {{ getIdentity(nominator.accountId).github }}
-                      </a>
-                    </div>
-                  </div>
-                </div>
-                <!-- Identity End -->
+                    <!-- identity end -->
                 <div class="row">
                   <div class="col-6 col-md-4 col-lg-3 col-xl-2" v-for="nomination in nominator.staking" :key="nomination.validator">
                     <Identicon :value="nomination.validator" :size="40" :theme="'polkadot'" :key="nomination.validator" />
@@ -221,6 +225,11 @@ export default {
       vm.$store.dispatch('validators/update');
     }
 
+    // Force update of staking_identity list if empty
+    if (this.$store.state.stakingIdentities.list.length == 0) {
+      vm.$store.dispatch('stakingIdentities/update');
+    }
+
     // Force update of indentities list if empty
     if (this.$store.state.identities.list.length === 0) {
       vm.$store.dispatch('identities/update');
@@ -241,6 +250,7 @@ export default {
       vm.$store.dispatch('validators/update');
       vm.$store.dispatch('identities/update');
       vm.$store.dispatch('nicknames/update');
+      vm.$store.dispatch('stakingIdentities/update');
     }, 10000);
 
     // Update account indexes every 1 min
@@ -301,12 +311,23 @@ export default {
         solid: solid
       })
     },
+    getIdentity(stashId) {
+      let filteredArray =  this.$store.state.stakingIdentities.list.filter(obj => {
+        return obj.accountId === stashId
+      });
+      return filteredArray[0];
+    },
     hasIdentity(stashId) {
+      return this.$store.state.stakingIdentities.list.some(obj => {
+        return obj.accountId === stashId;
+      });
+    },
+    hasPolkaStatsIdentity(stashId) {
       return this.$store.state.identities.list.some(obj => {
         return obj.stashId === stashId;
       });
     },
-    getIdentity(stashId) {
+    getPolkaStatsIdentity(stashId) {
       let filteredArray =  this.$store.state.identities.list.filter(obj => {
         return obj.stashId === stashId
       });
