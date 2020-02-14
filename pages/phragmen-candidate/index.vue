@@ -99,7 +99,7 @@
                           <strong>Email</strong>
                         </div>
                         <div class="col-md-9 mb-2 fee">
-                          <a v-bind:href="getIdentity(candidate.pub_key_stash).identity.email" target="_blank">
+                          <a :href="`mailto:${getIdentity(candidate.pub_key_stash).identity.email}`" target="_blank">
                             {{ getIdentity(candidate.pub_key_stash).identity.email }}
                           </a>
                         </div>
@@ -109,27 +109,25 @@
                           <strong>Legal</strong>
                         </div>
                         <div class="col-md-9 mb-2 fee">
-                          <a v-bind:href="getIdentity(candidate.pub_key_stash).identity.legal" target="_blank">
-                            {{ getIdentity(candidate.pub_key_stash).identity.legal }}
-                          </a>
+                          {{ getIdentity(candidate.pub_key_stash).identity.legal }}
                         </div>
                       </div>
                       <div class="row" v-if="getIdentity(candidate.pub_key_stash).identity.hasOwnProperty('riot')">
                         <div class="col-md-3 mb-2">
                           <strong>Riot</strong>
                         </div>
-                        <div class="col-md-9 mb-2 fee">
-                          <a v-bind:href="getIdentity(candidate.pub_key_stash).identity.riot" target="_blank">
+                        <div class="col-md-9 mb-2 fee"
+                           <a :href="`https://riot.im/app/#/user/${getIdentity(candidate.pub_key_stash).identity.riot}`" target="_blank">
                             {{ getIdentity(candidate.pub_key_stash).identity.riot }}
                           </a>
                         </div>
                       </div>
-                      <div class="row" v-if="getIdentity(candidate.pub_key_stash).identity.hasOwnProperty('twitter')">
+                      <div class="row" v-if="getIdentity(candidate.pub_key_stash).hasOwnProperty('twitter')">
                         <div class="col-md-3 mb-2">
                           <strong>Twitter</strong>
                         </div>
                         <div class="col-md-9 mb-2 fee">
-                          <a v-bind:href="getIdentity(candidate.pub_key_stash).identity.twitter" target="_blank">
+                          <a :href="`https://twitter.com/${getIdentity(candidate.pub_key_stash).identity.twitter}`" target="_blank">
                             {{ getIdentity(candidate.pub_key_stash).identity.twitter }}
                           </a>
                         </div>

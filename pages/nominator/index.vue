@@ -47,7 +47,7 @@
                           <strong>Email</strong>
                         </div>
                         <div class="col-md-9 mb-2 fee">
-                          <a v-bind:href="getIdentity(nominator.accountId).identity.email" target="_blank">
+                           <a :href="`mailto:${getIdentity(nominator.accountId).identity.email}`" target="_blank">
                             {{ getIdentity(nominator.accountId).identity.email }}
                           </a>
                         </div>
@@ -57,9 +57,7 @@
                           <strong>Legal</strong>
                         </div>
                         <div class="col-md-9 mb-2 fee">
-                          <a v-bind:href="getIdentity(nominator.accountId).identity.legal" target="_blank">
-                            {{ getIdentity(nominator.accountId).identity.legal }}
-                          </a>
+                          {{ getIdentity(nominator.accountId).identity.legal }}
                         </div>
                       </div>
                       <div class="row" v-if="getIdentity(nominator.accountId).identity.hasOwnProperty('riot')">
@@ -67,7 +65,7 @@
                           <strong>Riot</strong>
                         </div>
                         <div class="col-md-9 mb-2 fee">
-                          <a v-bind:href="getIdentity(nominator.accountId).identity.riot" target="_blank">
+                           <a :href="`https://riot.im/app/#/user/${getIdentity(nominator.accountId).identity.riot}`" target="_blank">
                             {{ getIdentity(nominator.accountId).identity.riot }}
                           </a>
                         </div>
@@ -77,7 +75,7 @@
                           <strong>Twitter</strong>
                         </div>
                         <div class="col-md-9 mb-2 fee">
-                          <a v-bind:href="getIdentity(nominator.accountId).identity.twitter" target="_blank">
+                          <a :href="`https://twitter.com/${getIdentity(nominator.accountId).identity.twitter}`" target="_blank">
                             {{ getIdentity(nominator.accountId).identity.twitter }}
                           </a>
                         </div>

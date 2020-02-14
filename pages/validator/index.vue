@@ -150,7 +150,7 @@
                           <strong>Email</strong>
                         </div>
                         <div class="col-md-9 mb-2 fee">
-                          <a v-bind:href="getIdentity(validator.accountId).identity.email" target="_blank">
+                          <a :href="`mailto:${getIdentity(validator.accountId).identity.email}`" target="_blank">
                             {{ getIdentity(validator.accountId).identity.email }}
                           </a>
                         </div>
@@ -160,9 +160,7 @@
                           <strong>Legal</strong>
                         </div>
                         <div class="col-md-9 mb-2 fee">
-                          <a v-bind:href="getIdentity(validator.accountId).identity.legal" target="_blank">
-                            {{ getIdentity(validator.accountId).identity.legal }}
-                          </a>
+                          {{ getIdentity(validator.accountId).identity.legal }}
                         </div>
                       </div>
                       <div class="row" v-if="getIdentity(validator.accountId).identity.hasOwnProperty('riot')">
@@ -170,7 +168,7 @@
                           <strong>Riot</strong>
                         </div>
                         <div class="col-md-9 mb-2 fee">
-                          <a v-bind:href="getIdentity(validator.accountId).identity.riot" target="_blank">
+                          <a :href="`https://riot.im/app/#/user/${getIdentity(validator.accountId).identity.riot}`" target="_blank">
                             {{ getIdentity(validator.accountId).identity.riot }}
                           </a>
                         </div>
@@ -180,7 +178,7 @@
                           <strong>Twitter</strong>
                         </div>
                         <div class="col-md-9 mb-2 fee">
-                          <a v-bind:href="getIdentity(validator.accountId).identity.twitter" target="_blank">
+                          <a :href="`https://twitter.com/${getIdentity(validator.accountId).identity.twitter}`" target="_blank">
                             {{ getIdentity(validator.accountId).identity.twitter }}
                           </a>
                         </div>
@@ -700,6 +698,11 @@ export default {
       vm.$store.dispatch('validators/update');
     }
 
+    // Force update of staking_identity list if empty
+    if (this.$store.state.stakingIdentities.list.length == 0) {
+      vm.$store.dispatch('stakingIdentities/update');
+    }
+
     // Force update of indentity list if empty
     if (this.$store.state.identities.list.length == 0) {
       vm.$store.dispatch('identities/update');
@@ -718,6 +721,7 @@ export default {
     // Update validators every 10 seconds
     this.polling = setInterval(() => {
       vm.$store.dispatch('validators/update');
+      vm.$store.dispatch('stakingIdentities/update');
     }, 10000);
     
     // Refresh graph data and account indexes every minute
