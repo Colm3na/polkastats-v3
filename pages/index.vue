@@ -680,30 +680,45 @@ body {
 @media (max-width: 470px){
   #validators-table .logo {
     position: relative;
-    top: 3rem;
+    /* top: 3rem; */
     left: -3rem;
   }
   #validators-table .validator-name {
-    top: -1em;
+    top: -1.9em;
     left: 40%;
     position: relative;
     font-size: 1.7em;
   }
   #validators-table .bonded {
     position: relative;
-    top: -2.5em;
+    top: -4.7em;
     left: 40%;
   }
   #validators-table .fullname2 {
     font-size: 3em;
     position: relative;
     left: 40%;
-    top: -1.1em;
+    top: -1.8em;
   }
   #validators-table .logo-identity {
     position: relative;
-    top: 3em;
+    top: 1.5em;
     left: -2rem;
+  }
+  #validators-table tr {
+    height: 155px;
+  }
+  #validators-table .small-text {
+    text-align: center;
+    position: relative;
+    top: -6rem;
+    left: 3rem;
+  }
+  #validators-table .identicon {
+    cursor: copy;
+    position: relative;
+    top: -0.6rem;
+    left: -0.6rem;
   }
 }
 </style>
