@@ -100,7 +100,7 @@
                   <h4 v-if="hasIdentity(data.item.accountId)" class="fullname2 mt-2 mb-2">
                     {{ getIdentity(data.item.accountId).full_name }}
                   </h4>
-                  <h4 v-else-if="hasKusamaIdentity(data.item.accountId)" class="fullname mt-2 mb-2">
+                  <h4 v-else-if="hasKusamaIdentity(data.item.accountId)" class="fullname mt-2 mb-2" v-bind:class="getCss(getKusamaIdentity(data.item.accountId).display.length)">
                     {{ getKusamaIdentity(data.item.accountId).display }}
                   </h4>
                   <h4 v-else class="mt-2 mb-2">
@@ -383,6 +383,15 @@ export default {
     clearInterval(this.pollingIndexes);
   },
   methods: {
+    getCss(length) {
+      if (length <= 5) { return '' }
+      else if (length >= 6 && length <= 9) { return 'fullname6-9' }
+      else if (length >= 10 && length <= 12) { return 'fullname10-12' }
+      else if (length >= 13 && length <= 18) { return 'fullname13-18' }
+      else if (length >= 19 && length <= 24) { return 'fullname19-24' }
+      else if (length >= 25 && length <= 30) { return 'fullname25-30' }
+      else { return 'red' }
+    },
     toggleFavorite(validator) {
       // Receives validator accountId
       if (this.isFavorite(validator)) {
@@ -464,6 +473,29 @@ export default {
 }
 </script>
 <style>
+.fullname6-9 {
+  left:30% !important;
+}
+.fullname10-12 {
+  font-size: 2.5em !important;
+  left: 34% !important;
+  top: -2em !important;
+}
+.fullname13-18 {
+  font-size: 1.3em !important;
+  left: 32% !important;
+  top: -4.5em !important;
+}
+.fullname19-24 {
+  font-size: 1.2em !important;
+  left: 25% !important;
+  top: -4.4em !important;
+}
+.fullname25-30 {
+  font-size: 0.9em !important;
+  left: 28% !important;
+  top: -6.5em !important;
+}
 body {
   font-size: 0.9rem;
 }
