@@ -101,7 +101,7 @@
                     {{ getIdentity(data.item.accountId).full_name }}
                   </h4>
                   <h4 v-else-if="hasKusamaIdentity(data.item.accountId)" class="fullname mt-2 mb-2">
-                    {{ hasKusamaIdentity(data.item.accountId).display }}
+                    {{ getKusamaIdentity(data.item.accountId).display }}
                   </h4>
                   <h4 v-else class="mt-2 mb-2">
                     <span class="validator-name d-inline d-sm-inline d-md-inline d-lg-inline d-xl-none">{{ indexes[data.item.accountId] }}</span>
