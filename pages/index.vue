@@ -480,7 +480,7 @@ export default {
 }
 .fullname10-12 {
   font-size: 2.5em !important;
-  left: 13% !important;
+  left: 17% !important;
   top: -2.1em !important;
   text-align: center;
 }
@@ -491,9 +491,9 @@ export default {
   text-align: center;
 }
 .fullname19-24 {
-  font-size: 1.2em !important;
+  font-size: 1.1em !important;
   left: 11% !important;
-  top: -4.7em !important;
+  top: -5.2em !important;
   text-align: center;
 }
 .fullname25-30 {
@@ -730,6 +730,7 @@ body {
     position: relative;
     top: -4.7em;
     left: 40%;
+    width: 70%;
   }
   #validators-table .fullname2 {
     font-size: 3em;
