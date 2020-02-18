@@ -97,13 +97,13 @@
                   <Identicon :value="data.item.accountId" :size="80" :theme="'polkadot'" :key="data.item.accountId" />
                 </div>
                 <nuxt-link :to="{name: 'validator', query: { accountId: data.item.accountId } }" title="Validator details">
-                  <h4 v-if="hasIdentity(data.item.accountId)" class="fullname2 mt-2 mb-2" v-bind:class="getCss(getIdentity(data.item.accountId).full_name.length)">
+                  <h4 v-if="hasIdentity(data.item.accountId)" class="fullname2" v-bind:class="getCss(getIdentity(data.item.accountId).full_name.length)">
                     {{ getIdentity(data.item.accountId).full_name }}
                   </h4>
-                  <h4 v-else-if="hasKusamaIdentity(data.item.accountId)" class="fullname mt-2 mb-2" v-bind:class="getCss(getKusamaIdentity(data.item.accountId).display.length)">
+                  <h4 v-else-if="hasKusamaIdentity(data.item.accountId)" class="fullname" v-bind:class="getCss(getKusamaIdentity(data.item.accountId).display.length)">
                     {{ getKusamaIdentity(data.item.accountId).display }}
                   </h4>
-                  <h4 v-else class="mt-2 mb-2">
+                  <h4 v-else>
                     <span class="validator-name d-inline d-sm-inline d-md-inline d-lg-inline d-xl-none">{{ indexes[data.item.accountId] }}</span>
                     <span class="d-none d-sm-none d-md-none d-lg-none d-xl-inline">{{ indexes[data.item.accountId] }}</span>
                   </h4>
@@ -713,6 +713,11 @@ body {
     padding-left: 15px !important;
   }
 }
+@media (max-width: 767px) {
+  #validators-table td[data-label=Validator] {
+    padding-top: 0.5em;
+  }
+}
 
 @media (max-width: 470px){
   #validators-table .logo {
@@ -744,7 +749,7 @@ body {
     left: -2rem;
   }
   #validators-table tr {
-    height: 155px;
+    height: 135px;
   }
   #validators-table .small-text {
     text-align: center;
