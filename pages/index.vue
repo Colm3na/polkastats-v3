@@ -94,13 +94,13 @@
                   </div>
                 </div>
                 <div v-else class="logo">
-                  <Identicon :value="data.item.accountId" :size="80" :theme="'polkadot'" :key="data.item.accountId" />
+                  <Identicon :value="data.item.accountId" :size="48" :theme="'polkadot'" :key="data.item.accountId" />
                 </div>
                 <nuxt-link :to="{name: 'validator', query: { accountId: data.item.accountId } }" title="Validator details">
-                  <h4 v-if="hasIdentity(data.item.accountId)" class="fullname2" v-bind:class="getCss(getIdentity(data.item.accountId).full_name.length)">
+                  <h4 v-if="hasIdentity(data.item.accountId)" class="fullname2">
                     {{ getIdentity(data.item.accountId).full_name }}
                   </h4>
-                  <h4 v-else-if="hasKusamaIdentity(data.item.accountId)" class="fullname" v-bind:class="getCss(getKusamaIdentity(data.item.accountId).display.length)">
+                  <h4 v-else-if="hasKusamaIdentity(data.item.accountId)" class="fullname">
                     {{ getKusamaIdentity(data.item.accountId).display }}
                   </h4>
                   <h4 v-else>
@@ -116,14 +116,26 @@
                   <i v-else class="notElected fas fa-times-circle" v-b-tooltip.hover title="Not elected for next session"></i>
                 </p>
                 <div v-if="data.item.stakers">
-                  <p v-if="data.item.stake && data.item.stake > 0" class="bonded mb-0" v-b-tooltip.hover title="Total bonded">{{ formatAmount(data.item.stake) }}</p>
-                  <p class="mb-0 small-text" v-if="data.item.stakers.own !== data.item.stake">
+                  <p v-if="data.item.stake && data.item.stake > 0" class="bonded mb-0" v-b-tooltip.hover title="Total bonded">
+                    <i class="fab fa-twitter"></i>
+                    {{ formatAmount(data.item.stake) }}
+                  </p>
+                  <!-- <p class="mb-0 small-text" v-if="data.item.stakers.own !== data.item.stake">
                     <small>
                       <span v-b-tooltip.hover title="Self bonded" v-if="data.item.stakers.own > 0">{{ formatAmount(data.item.stakers.own) }}</span>
                       <span v-b-tooltip.hover title="Bonded by nominators" v-if="(data.item.stakers.total - data.item.stakers.own) > 0">(+{{ formatAmount(data.item.stakers.total - data.item.stakers.own) }})</span>
                     </small>
+                  </p> -->
+                  <p class="mb-0 small-text" v-if="data.item.stakers.total" v-b-tooltip.hover title="Percentage over total bonded stake">
+                    <span style="position:relative;left:-12px">
+                    <i class="fab fa-twitter"></i>
+                    {{ parseFloat(getStakePercent(data.item.stakers.total, totalStakeBonded)).toFixed(2) }}%
+                    </span>
+                    <span v-if="typeof data.item.commission == 'number'" style="position:relative;left:25%">
+                      <i class="fab fa-twitter"></i>
+                      {{ (data.item.commission / 10000000).toFixed(2) }}%
+                    </span>
                   </p>
-                  <p class="mb-0 small-text" v-if="data.item.stakers.total" v-b-tooltip.hover title="Percentage over total bonded stake">{{ getStakePercent(data.item.stakers.total, totalStakeBonded) }}% of total stake</p>
                 </div>
               </div>
               <div class="d-none d-sm-none d-md-block d-lg-block d-xl-block">
@@ -697,7 +709,7 @@ body {
   }
   #validators-table .small-text {
     /* margin-left: 30%; */
-    text-align: center!important;
+    /* text-align: center!important; */
   }
 
   #validators-table .small-text small {
@@ -726,42 +738,56 @@ body {
     left: -3rem;
   }
   #validators-table .validator-name {
-    top: -1.9em;
-    left: 40%;
+    top: -1.15em;
+    left: 20%;
     position: relative;
-    font-size: 1.7em;
+    font-size: 1.1em;
   }
   #validators-table .bonded {
     position: relative;
-    top: -4.7em;
-    left: 40%;
+    top: -3em;
+    left: 24%;
     width: 70%;
+    font-size: 1.1em;
+    color: #212529;
+    font-weight: 400;
   }
   #validators-table .fullname2 {
-    font-size: 3em;
+    font-size: 1.8em;
     position: relative;
-    left: 40%;
-    top: -1.8em;
+    left: 21%;
+    top: -1.2em;
+  }
+  #validators-table .fullname {
+    font-size: 1.5em;
+    position: relative;
+    left: 20%;
+    top: -1.5em;
   }
   #validators-table .logo-identity {
     position: relative;
     top: 1.5em;
-    left: -2rem;
+    left: -2.5rem;
+    height: 48px;
   }
   #validators-table tr {
-    height: 135px;
+    height: 110px;
   }
   #validators-table .small-text {
-    text-align: center;
+    /* text-align: center; */
     position: relative;
-    top: -6rem;
-    left: 3rem;
+    top: -3rem;
+    left: 29%;
+    font-size: 1.1em
   }
   #validators-table .identicon {
     cursor: copy;
     position: relative;
     top: -0.6rem;
     left: -0.6rem;
+  }
+  .identity {
+    max-width: 48px;
   }
 }
 </style>
