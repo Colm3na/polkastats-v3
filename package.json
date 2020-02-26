@@ -24,7 +24,7 @@
     "jdenticon": "^2.2.0",
     "jquery": "^3.4.1",
     "moment": "^2.24.0",
-    "nuxt": "^2.0.0",
+    "nuxt": "^2.11.0",
     "nuxt-clipboard2": "^0.2.1",
     "vue-apexcharts": "^1.4.0"
   },
