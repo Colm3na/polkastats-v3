@@ -117,7 +117,7 @@
                 </p>
                 <div v-if="data.item.stakers">
                   <p v-if="data.item.stake && data.item.stake > 0" class="bonded mb-0" v-b-tooltip.hover title="Total bonded">
-                    <i class="fab fa-twitter"></i>
+                    <i class="far fa-handshake"></i>
                     {{ formatAmount(data.item.stake) }}
                   </p>
                   <!-- <p class="mb-0 small-text" v-if="data.item.stakers.own !== data.item.stake">
@@ -128,11 +128,11 @@
                   </p> -->
                   <p class="mb-0 small-text" v-if="data.item.stakers.total" v-b-tooltip.hover title="Percentage over total bonded stake">
                     <span style="position:relative;left:-12px">
-                    <i class="fab fa-twitter"></i>
+                    <i class="fas fa-share-alt"></i>
                     {{ parseFloat(getStakePercent(data.item.stakers.total, totalStakeBonded)).toFixed(2) }}%
                     </span>
                     <span v-if="typeof data.item.commission == 'number'" style="position:relative;left:25%">
-                      <i class="fab fa-twitter"></i>
+                      <i class="fas fa-percentage"></i>
                       {{ (data.item.commission / 10000000).toFixed(2) }}%
                     </span>
                   </p>
@@ -738,10 +738,10 @@ body {
     left: -3rem;
   }
   #validators-table .validator-name {
-    top: -1.15em;
+    top: -1.4em;
     left: 20%;
     position: relative;
-    font-size: 1.1em;
+    font-size: .9em;
   }
   #validators-table .bonded {
     position: relative;
@@ -753,16 +753,16 @@ body {
     font-weight: 400;
   }
   #validators-table .fullname2 {
-    font-size: 1.8em;
+    font-size: 1.4em;
     position: relative;
     left: 21%;
-    top: -1.2em;
+    top: -1.65em;
   }
   #validators-table .fullname {
-    font-size: 1.5em;
+    font-size: 1.3em;
     position: relative;
     left: 20%;
-    top: -1.5em;
+    top: -1.65em;
   }
   #validators-table .logo-identity {
     position: relative;
