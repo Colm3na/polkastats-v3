@@ -395,15 +395,6 @@ export default {
     clearInterval(this.pollingIndexes);
   },
   methods: {
-    getCss(length) {
-      if (length <= 5) { return '' }
-      else if (length >= 6 && length <= 9) { return 'fullname6-9' }
-      else if (length >= 10 && length <= 12) { return 'fullname10-12' }
-      else if (length >= 13 && length <= 18) { return 'fullname13-18' }
-      else if (length >= 19 && length <= 24) { return 'fullname19-24' }
-      else if (length >= 25 && length <= 30) { return 'fullname25-30' }
-      else { return 'red' }
-    },
     toggleFavorite(validator) {
       // Receives validator accountId
       if (this.isFavorite(validator)) {
@@ -485,34 +476,6 @@ export default {
 }
 </script>
 <style>
-.fullname6-9 {
-  left: 13%!important;
-  top: -5rem !important;
-  text-align: center;
-}
-.fullname10-12 {
-  font-size: 2.5em !important;
-  left: 17% !important;
-  top: -2.1em !important;
-  text-align: center;
-}
-.fullname13-18 {
-  font-size: 1.3em !important;
-  left: 12% !important;
-  top: -4.5em !important;
-  text-align: center;
-}
-.fullname19-24 {
-  font-size: 1.1em !important;
-  left: 11% !important;
-  top: -5.2em !important;
-  text-align: center;
-}
-.fullname25-30 {
-  font-size: 0.9em !important;
-  left: 28% !important;
-  top: -6.5em !important;
-}
 body {
   font-size: 0.9rem;
 }
