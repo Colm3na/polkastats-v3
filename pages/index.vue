@@ -72,7 +72,7 @@
             @filtered="onFiltered"
           >
             <template slot="rank" slot-scope="data">
-              <p class="text-right mb-0">
+              <p class="text-center mb-0">
                 {{ data.item.rank }}
               </p>
             </template>
@@ -117,7 +117,8 @@
                 </p>
                 <div v-if="data.item.stakers">
                   <p v-if="data.item.stake && data.item.stake > 0" class="bonded mb-0" v-b-tooltip.hover title="Total bonded">
-                    <i class="far fa-handshake"></i>
+                    <!-- <i class="far fa-handshake"></i> -->
+                    <span>⊃</span>
                     {{ formatAmount(data.item.stake) }}
                   </p>
                   <!-- <p class="mb-0 small-text" v-if="data.item.stakers.own !== data.item.stake">
@@ -128,11 +129,13 @@
                   </p> -->
                   <p class="mb-0 small-text" v-if="data.item.stakers.total" v-b-tooltip.hover title="Percentage over total bonded stake">
                     <span style="position:relative;left:-12px">
-                    <i class="fas fa-share-alt"></i>
+                    <!-- <i class="fas fa-share-alt"></i>-> -->
+                    <span>⊆</span>
                     {{ parseFloat(getStakePercent(data.item.stakers.total, totalStakeBonded)).toFixed(2) }}%
                     </span>
                     <span v-if="typeof data.item.commission == 'number'" style="position:relative;left:25%">
-                      <i class="fas fa-percentage"></i>
+                      <!-- <i class="fas fa-percentage"></i> -->
+                      <span>⊇</span>
                       {{ (data.item.commission / 10000000).toFixed(2) }}%
                     </span>
                   </p>
@@ -162,27 +165,28 @@
               </div>
             </template>
             <template slot="numStakers" slot-scope="data">
-              <p class="text-right mb-0">
+              <p class="text-center mb-0">
                 {{ data.item.numStakers }}
               </p>
             </template> 
             <template slot="stakeIndex" slot-scope="data">
-              <p class="text-right mb-0" v-if="data.item.stake > 0 ">
-                {{ formatAmount(data.item.stake) }}
+              <p class="text-center mb-0" v-if="data.item.stake > 0 ">
+               {{ formatAmount(data.item.stake) }}
               </p>
             </template> 
             <template slot="percent" slot-scope="data">
-              <p class="text-right mb-0">
-                {{ formatNumber(data.item.percent) }}%
+              <p class="text-center mb-0">
+               <!-- {{ formatNumber(data.item.percent) }}% -->
+               {{ parseFloat(getStakePercent(data.item.stakers.total, totalStakeBonded)).toFixed(2) }}%
               </p>
             </template> 
             <template slot="commission" slot-scope="data">
-              <p class="text-right mb-0" v-if="typeof data.item.commission == 'number'">
+              <p class="text-center mb-0" v-if="typeof data.item.commission == 'number'">
                 {{ (data.item.commission / 10000000).toFixed(2) }}%
               </p>
             </template>
             <template slot="eraPoints" slot-scope="data">
-              <p class="text-right mb-0">
+              <p class="text-center mb-0">
                 {{ data.item.eraPoints }}
               </p>
             </template>
@@ -237,14 +241,15 @@ export default {
       filterOn: [],
       totalRows: 1,
       fields: [
+        // ≥ 
         { key: 'rank', label: '#', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` },
         { key: 'imOnline', label: '✔️', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` },
         { key: 'accountId', label: 'Validator', sortable: true, filterByFormatted: true },
-        { key: 'numStakers', label: 'Stakers', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` },
-        { key: 'stakeIndex', label: 'Total stake', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` },
-        { key: 'percent', label: 'Stake %', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` },
-        { key: 'commission', label: 'Commission', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` },
-        { key: 'eraPoints', label: 'Era points', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` },
+        { key: 'numStakers', label: '⊂ Stakers', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` },
+        { key: 'stakeIndex', label: '⊃ Total stake', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` },
+        { key: 'percent', label: '⊆ Stake %', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` },
+        { key: 'commission', label: '⊇ Commission', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` },
+        { key: 'eraPoints', label: '≅ Era points', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` },
         { key: 'favorite', label: '⭐', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` }
       ],
       blockExplorer,
@@ -478,6 +483,10 @@ export default {
 <style>
 body {
   font-size: 0.9rem;
+}
+.table td, .table th {
+    padding: 0.35rem;
+    border-top: 1px solid #dee2e6;
 }
 .favorite {
   cursor: pointer;
