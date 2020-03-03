@@ -1,4 +1,8 @@
 <template>
+  <index></index>
+</template>
+<!-- This is commented to fix temporally
+<template>
   <div>
     <section>
       <b-container class="page-candidate main pt-3 pb-5">
@@ -84,7 +88,7 @@
                         </a>
                       </div>
                     </div>
-                    <!-- identity start -->
+
                     <div v-if="hasIdentity(candidate.pub_key_stash)">
                       <div class="row" v-if="getIdentity(candidate.pub_key_stash).identity.hasOwnProperty('display')">
                         <div class="col-md-3 mb-1">
@@ -143,7 +147,7 @@
                         </div>
                       </div>
                     </div>
-                    <!-- identity end -->
+
                     <div class="voters mt-2">
                       <template v-if="candidate.voters">
                         <template v-if="candidate.voters.length > 0">
@@ -175,13 +179,14 @@
                 </div>
               </div>
             </div>
-            <!-- </div> -->
+
           </template>
         </template>
       </b-container>
     </section>
   </div>
 </template>
+-->
 <script>
 import { mapMutations } from 'vuex'
 import axios from 'axios';
