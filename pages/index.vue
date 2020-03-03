@@ -118,7 +118,7 @@
                 <div v-if="data.item.stakers">
                   <p v-if="data.item.stake && data.item.stake > 0" class="bonded mb-0" v-b-tooltip.hover title="Total bonded">
                     <!-- <i class="far fa-handshake"></i> -->
-                    <span>⊃</span>
+                    <font-awesome-icon :icon="['fas', 'plug']" :style="{color: 'black', width: '25px', height: '25px'}" />
                     {{ formatAmount(data.item.stake) }}
                   </p>
                   <!-- <p class="mb-0 small-text" v-if="data.item.stakers.own !== data.item.stake">
