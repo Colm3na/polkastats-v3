@@ -3,12 +3,6 @@
     <section>
       <b-container class="page-accounts main pt-4">
         <h1 class="text-center mb-4">Active Kusama accounts</h1>
-
-        <!-- Info message -->
-        <b-alert show dismissible variant="success" class="text-center mb-4">
-          Showing <strong>{{ formatNumber(accounts.length) }} active Kusama accounts</strong>, updated every 5 minutes. Click on account to see full details.
-        </b-alert>
-
         <!-- Filter -->
         <b-row>
           <b-col lg="12" class="mb-4">
