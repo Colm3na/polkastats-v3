@@ -475,37 +475,37 @@ export default {
         },
         {
           key: "accountId",
-          label: "Validator",
+          label: "✅ Validators",
           sortable: true,
           filterByFormatted: true
         },
         {
           key: "numStakers",
-          label: "⊂ Stakers",
+          label: "👥 Stakers",
           sortable: true,
           class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
         },
         {
           key: "stakeIndex",
-          label: "⊃ Total stake",
+          label: "💰Total stake",
           sortable: true,
           class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
         },
         {
           key: "percent",
-          label: "⊆ Stake %",
+          label: "% Stake",
           sortable: true,
           class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
         },
         {
           key: "commission",
-          label: "⊇ Commission",
+          label: "💸Commission",
           sortable: true,
           class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
         },
         {
           key: "eraPoints",
-          label: "≅ Era points",
+          label: "Era points",
           sortable: true,
           class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
         },
