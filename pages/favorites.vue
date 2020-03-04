@@ -2,8 +2,6 @@
   <div>
     <section>
       <b-container class="page-favorites main pt-4">
-        <!-- Network component -->
-        <Network :network="network" />
         <!-- Empty favorites message -->
         <div class="alert alert-warning alert-dismissible fade show mt-3 mb-4" role="alert" v-if="favorites.length === 0">
           <strong>Hi there!</strong> You can click in the star icon <i class="fas fa-star"></i> of a validator or intention to track it on this page.

@@ -2,9 +2,6 @@
   <div>
     <section>
       <b-container class="main pt-4 page-intentions">
-        <!-- Network component -->
-        <Network :network="network" />
-
         <!-- Filter -->
         <b-row>
           <b-col lg="12" class="mb-4">
