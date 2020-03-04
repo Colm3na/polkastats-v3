@@ -2,42 +2,6 @@
   <div>
     <section>
       <b-container id="page-index" class="main pt-4">
-        <!-- Kusama CC3 message -->
-        <b-alert show dismissible variant="primary" class="text-center">
-          <strong
-            >⚡ We have a new awesome dedicated server graciously sponsored by
-            <a href="https://www.colmenalabs.org/" target="_blank"
-              >La Colmena Labs</a
-            >. Thanks! ⚡</strong
-          >
-        </b-alert>
-        <!-- Economics info message -->
-        <b-alert show dismissible variant="success" class="text-center">
-          Total issuance is
-          <strong>{{ formatAmount(network.totalIssuance) }}</strong>
-          <span
-            v-if="
-              totalStakeBonded.toString() !== `0` &&
-                totalStakeBondedPercen !== 0
-            "
-          >
-            , total stake bonded is
-            <strong
-              >{{ formatAmount(totalStakeBonded) }} ({{
-                totalStakeBondedPercen.toString(10)
-              }}% of total)</strong
-            >
-          </span>
-        </b-alert>
-        <!-- Validators info message -->
-        <b-alert show dismissible variant="success" class="text-center">
-          Currently there are <strong>{{ validators.length }}</strong> active
-          validators of
-          <strong>{{ network.session.validatorCount }}</strong> available slots
-          and <strong>{{ intentions.length }}</strong> waiting
-        </b-alert>
-        <!-- Network component -->
-        <Network :network="network" />
         <!-- Filter -->
         <b-row>
           <b-col lg="12" class="mb-4">
