@@ -126,7 +126,7 @@
                 
                 <b-container>
                   <b-row>
-<p class="mt-3 mb-0 rank">
+                  <p class="mt-3 mb-0 rank">
                   <span class="rank-detail" v-b-tooltip.hover title="Rank"
                     >#{{ data.item.rank }}</span
                   >
@@ -871,6 +871,10 @@ body {
   margin-left: -0.5em;
 }
 @media (max-width: 767px) {
+  .table th, .table td {
+    border-top: 0;
+    padding: 0;
+  }
   #validators-table {
     background-color: transparent;
     padding: 0 0.5rem;
@@ -878,7 +882,7 @@ body {
   #validators-table tr {
     border-radius: 0.8rem;
     box-shadow: 1px 1px 2px 2px #a2a6a8;
-    padding: 0.5rem 1rem;
+    padding: 0.5rem 1rem 0 0;
     margin: 1rem 0;
   }
   #validators-table td[data-label="Validator"] {
@@ -957,11 +961,6 @@ body {
     top: 3em;
     left: 5rem;
   }
-  #validators-table .small-text {
-    /* margin-left: 30%; */
-    /* text-align: center!important; */
-  }
-
   #validators-table .small-text small {
     font-size: 0.9rem;
   }
@@ -980,22 +979,20 @@ body {
   }
 }
 
-@media (max-width: 470px) {
+@media (max-width: 470px) { 
+  td {
+    border-top: 0;
+  }
   #validators-table .logo {
     position: relative;
-    /* top: 3rem; */
-    left: -3rem;
+  }
+  #validators-table h4 {
+    margin-bottom: 0;
   }
   #validators-table .validator-name {
-    top: -1.4em;
-    left: 20%;
-    position: relative;
     font-size: 0.9em;
   }
   #validators-table .bonded {
-    position: relative;
-    top: -3em;
-    left: 24%;
     width: 70%;
     font-size: 1.1em;
     color: #212529;
@@ -1003,40 +1000,26 @@ body {
   }
   #validators-table .fullname2 {
     font-size: 1.4em;
-    position: relative;
-    left: 21%;
-    top: -1.65em;
   }
   #validators-table .fullname {
     font-size: 1.3em;
-    position: relative;
-    left: 20%;
-    top: -1.65em;
   }
   #validators-table .logo-identity {
-    position: relative;
-    top: 1.5em;
-    left: -2.5rem;
     height: 48px;
   }
-  #validators-table tr {
-    height: 110px;
-  }
   #validators-table .small-text {
-    /* text-align: center; */
-    position: relative;
-    top: -3rem;
-    left: 29%;
     font-size: 1.1em;
+    padding-bottom: 0;
   }
   #validators-table .identicon {
     cursor: copy;
     position: relative;
-    top: -0.6rem;
+    top: -1.5rem;
     left: -0.6rem;
   }
   .identity {
     max-width: 48px;
   }
+
 }
 </style>
