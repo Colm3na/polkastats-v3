@@ -6,3 +6,5 @@ export const blockExplorer = {
   block: `https://polkascan.io/pre/kusama-cc3/block/`,
   account: `https://polkascan.io/pre/kusama-cc3/account/`
 };
+
+export const numItemsTableOptions = [10, 50, 160];

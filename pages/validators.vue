@@ -13,17 +13,6 @@
             ></b-form-input>
           </b-col>
         </b-row>
-        <b-dropdown
-          id="dropdown"
-          variant="outline"
-          text="Show Nº Items"
-          class="dropdow"
-        >
-          <b-dropdown-item @click="handleNumFields(10)">10</b-dropdown-item>
-          <b-dropdown-item @click="handleNumFields(20)">20</b-dropdown-item>
-          <b-dropdown-item @click="handleNumFields(50)">50</b-dropdown-item>
-        </b-dropdown>
-
         <!-- Mobile sorting -->
         <div class="row d-block d-sm-block d-md-block d-lg-none d-xl-none">
           <b-col lg="6" class="my-1">
@@ -388,12 +377,18 @@
               </p>
             </template>
           </b-table>
-          <b-pagination
-            v-model="currentPage"
-            :total-rows="totalRows"
-            :per-page="perPage"
-            aria-controls="validators-table"
-          ></b-pagination>
+          <div style="display: flex">
+            <b-pagination
+              v-model="currentPage"
+              :total-rows="totalRows"
+              :per-page="perPage"
+              aria-controls="validators-table"
+            >
+            </b-pagination>
+            <b-button-group class="mx-4">
+              <b-button @click="handleNumFields(item)" v-for="(item, index) in tableOptions" v-bind:key=index>{{item}}</b-button>
+            </b-button-group>
+          </div>
         </div>
       </b-container>
     </section>
@@ -407,7 +402,7 @@ import Identicon from "../components/identicon.vue";
 import Network from "../components/network.vue";
 import { isHex } from "@polkadot/util";
 import BN from "bn.js";
-import { blockExplorer } from "../polkastats.config.js";
+import { blockExplorer, numItemsTableOptions } from "../polkastats.config.js";
 import commonMixin from "../mixins/commonMixin.js";
 
 export default {
@@ -426,7 +421,8 @@ export default {
   mixins: [commonMixin],
   data: function() {
     return {
-      perPage: 10,
+      tableOptions: numItemsTableOptions,
+      perPage: localStorage.numItemsTableSelected ? localStorage.numItemsTableSelected : 10,
       currentPage: 1,
       sortBy: `rank`,
       sortDesc: false,
@@ -646,6 +642,7 @@ export default {
   },
   methods: {
     handleNumFields(num) {
+      localStorage.numItemsTableSelected = num;
       this.perPage = num;
     },
     toggleFavorite(validator) {
@@ -847,10 +844,12 @@ body {
 .table.b-table > tfoot > tr > th[aria-sort]::before {
   margin-left: -0.5em;
 }
-.dropdown {
+.btn-group {
   margin-bottom: 1rem;
-  border: 1px solid #ced4da;
-  border-radius: 5px;
+  display: inline-flex;
+}
+.btn-secondary {
+  font-size: 0.8rem;
 }
 @media (max-width: 767px) {
   .table th,
