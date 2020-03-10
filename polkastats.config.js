@@ -7,4 +7,4 @@ export const blockExplorer = {
   account: `https://polkascan.io/pre/kusama-cc3/account/`
 };
 
-export const numItemsTableOptions = [10, 50, 160];
+export const numItemsTableOptions = [10, 80, 160];
