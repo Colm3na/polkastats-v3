@@ -108,12 +108,18 @@
               </p>
             </template>
           </b-table>
-          <b-pagination
-            v-model="currentPage"
-            :total-rows="totalRows"
-            :per-page="perPage"
-            aria-controls="validators-table"
-          ></b-pagination>
+          <div style="display: flex">
+            <b-pagination
+              v-model="currentPage"
+              :total-rows="totalRows"
+              :per-page="perPage"
+              aria-controls="validators-table"
+            >
+            </b-pagination>
+            <b-button-group class="mx-4">
+              <b-button @click="handleNumFields(item)" v-for="(item, index) in tableOptions" v-bind:key=index>{{item}}</b-button>
+            </b-button-group>
+          </div>
         </div>
       </b-container>
     </section>
@@ -127,7 +133,7 @@ import Identicon from '../components/identicon.vue';
 import Network from '../components/network.vue';
 import { isHex } from '@polkadot/util';
 import BN from 'bn.js';
-import { blockExplorer } from '../polkastats.config.js';
+import { blockExplorer, numItemsTableOptions } from '../polkastats.config.js';
 import commonMixin from '../mixins/commonMixin.js';
 
 export default {
@@ -144,7 +150,8 @@ export default {
     return {
       blockExplorer,
       polling: null,
-      perPage: 10,
+      tableOptions: numItemsTableOptions,
+      perPage: localStorage.numItemsTableSelected ? localStorage.numItemsTableSelected : 10,
       currentPage: 1,
       sortBy: ``,
       sortDesc: false,
@@ -294,6 +301,9 @@ export default {
     clearInterval(this.pollingIndexes);
   },
   methods: {
+    handleNumFields(num) {
+      this.perPage = num;
+    },
     toggleFavorite(validator) {
       // Receives validator accountId
       if (this.isFavorite(validator)) {
@@ -381,5 +391,12 @@ export default {
 }
 #nominators-table .identicon div {
   display: inline;
+}
+.btn-group {
+  margin-bottom: 1rem;
+  display: inline-flex;
+}
+.btn-secondary {
+  font-size: 0.8rem;
 }
 </style>

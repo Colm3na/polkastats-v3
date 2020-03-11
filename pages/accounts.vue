@@ -123,12 +123,18 @@
               </p>
             </template>
           </b-table>
-          <b-pagination
-            v-model="currentPage"
-            :total-rows="totalRows"
-            :per-page="perPage"
-            aria-controls="events-table"
-          ></b-pagination>
+          <div style="display: flex">
+            <b-pagination
+              v-model="currentPage"
+              :total-rows="totalRows"
+              :per-page="perPage"
+              aria-controls="validators-table"
+            >
+            </b-pagination>
+            <b-button-group class="mx-4">
+              <b-button @click="handleNumFields(item)" v-for="(item, index) in tableOptions" v-bind:key=index>{{item}}</b-button>
+            </b-button-group>
+          </div>
         </div>
       </b-container>
     </section>
@@ -140,6 +146,7 @@ import axios from 'axios';
 import bootstrap from 'bootstrap';
 import Identicon from '../components/identicon.vue';
 import commonMixin from '../mixins/commonMixin.js';
+import { numItemsTableOptions } from '../polkastats.config.js';
 
 export default {
   head () {
@@ -153,7 +160,8 @@ export default {
   mixins: [commonMixin],
   data: function() {
     return {
-      perPage: 10,
+      tableOptions: numItemsTableOptions,
+      perPage: localStorage.numItemsTableSelected ? localStorage.numItemsTableSelected : 10,
       currentPage: 1,
       sortBy: `rank`,
       sortDesc: false,
@@ -222,6 +230,9 @@ export default {
     clearInterval(this.polling);
   },
   methods: {
+      handleNumFields(num) {
+        this.perPage = num;
+      },
      toggleFavorite(validator) {
       // Receives validator accountId
       if (this.isFavorite(validator)) {
@@ -278,5 +289,12 @@ export default {
 
 .page-accounts td div {
   padding: 0 !important;
+}
+.btn-group {
+  margin-bottom: 1rem;
+  display: inline-flex;
+}
+.btn-secondary {
+  font-size: 0.8rem;
 }
 </style>

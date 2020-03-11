@@ -13,7 +13,6 @@
             ></b-form-input>
           </b-col>
         </b-row>
-
         <!-- Mobile sorting -->
         <div class="row d-block d-sm-block d-md-block d-lg-none d-xl-none">
           <b-col lg="6" class="my-1">
@@ -148,12 +147,18 @@
               </p>
             </template>
           </b-table>
-          <b-pagination
-            v-model="currentPage"
-            :total-rows="totalRows"
-            :per-page="perPage"
-            aria-controls="intentions-table"
-          ></b-pagination>
+          <div style="display: flex">
+            <b-pagination
+              v-model="currentPage"
+              :total-rows="totalRows"
+              :per-page="perPage"
+              aria-controls="validators-table"
+            >
+            </b-pagination>
+            <b-button-group class="mx-4">
+              <b-button @click="handleNumFields(item)" v-for="(item, index) in tableOptions" v-bind:key=index>{{item}}</b-button>
+            </b-button-group>
+          </div>
         </div>
       </b-container>
     </section>
@@ -167,7 +172,7 @@ import Identicon from '../components/identicon.vue';
 import Network from '../components/network.vue';
 import { isHex } from '@polkadot/util';
 import BN from 'bn.js';
-import { blockExplorer } from '../polkastats.config.js';
+import { blockExplorer, numItemsTableOptions } from '../polkastats.config.js';
 import commonMixin from '../mixins/commonMixin.js';
 
 export default {
@@ -182,7 +187,8 @@ export default {
   mixins: [commonMixin],
   data: function() {
     return {
-      perPage: 10,
+      tableOptions: numItemsTableOptions,
+      perPage: localStorage.numItemsTableSelected ? localStorage.numItemsTableSelected : 10,
       currentPage: 1,
       sortBy: `rank`,
       sortDesc: false,
@@ -312,6 +318,9 @@ export default {
     clearInterval(this.pollingIndexes);
   },
   methods: {
+    handleNumFields(num) {
+      this.perPage = num;
+    },
     toggleFavorite(validator) {
       // Receives validator accountId
       if (this.isFavorite(validator)) {
@@ -357,7 +366,7 @@ export default {
       let filteredArray =  this.$store.state.identities.list.filter(obj => {
         return obj.stashId === stashId
       });
-      console.log(filteredArray[0]);
+      // console.log(filteredArray[0]);
       return filteredArray[0];
     },
     hasKusamaIdentity(stashId) {
@@ -369,7 +378,7 @@ export default {
       let filteredArray =  this.$store.state.stakingIdentities.list.filter(obj => {
         return obj.accountId === stashId
       });
-      console.log(filteredArray[0]);
+      // console.log(filteredArray[0]);
       return filteredArray[0].identity;
     },
     onFiltered(filteredItems) {
@@ -501,5 +510,12 @@ body {
     color: #343a40;
     background-color: #fff;
     border: 1px solid #dee2e6;
+}
+.btn-group {
+  margin-bottom: 1rem;
+  display: inline-flex;
+}
+.btn-secondary {
+  font-size: 0.8rem;
 }
 </style>
