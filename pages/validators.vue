@@ -480,7 +480,6 @@ import { mapMutations } from "vuex"
 import axios from "axios"
 import bootstrap from "bootstrap"
 import Identicon from "../components/identicon.vue"
-import Network from "../components/network.vue"
 import { isHex } from "@polkadot/util"
 import BN from "bn.js"
 import { blockExplorer, numItemsTableOptions } from "../polkastats.config.js"
@@ -488,8 +487,7 @@ import commonMixin from "../mixins/commonMixin.js"
 
 export default {
   components: {
-    Identicon,
-    Network
+    Identicon
   },
   mixins: [commonMixin],
   data: function() {
@@ -657,11 +655,15 @@ export default {
             validator => parseFloat(validator["commission"]) > filtering
           )
         else if (this.filterOperator === "=")
-          return parseFloat(validator["commission"]) === filtering
+          return this.validators.filter(
+            validator => parseFloat(validator["commission"]) === filtering
+          )
         return this.validators.filter(
           validator => parseFloat(validator["commission"]) < filtering
         )
       }
+
+      return this.validators
     },
     validators() {
       let validatorsObject = []

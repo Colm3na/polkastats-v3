@@ -120,15 +120,15 @@
                   <h4 v-else class="mt-2 mb-2">
                     <span
                       class="d-inline d-sm-inline d-md-inline d-lg-inline d-xl-none"
-                    >{{ indexes[data.item.pub_key_stash] }}</span>
+                      >{{ indexes[data.item.pub_key_stash] }}</span
+                    >
                     <span
                       class="d-none d-sm-none d-md-none d-lg-none d-xl-inline"
-                    >{{ indexes[data.item.pub_key_stash] }}</span>
+                      >{{ indexes[data.item.pub_key_stash] }}</span
+                    >
                   </h4>
                 </nuxt-link>
-                <p class="mt-2 mb-2 rank">
-rank #{{ data.item.rank }}
-</p>
+                <p class="mt-2 mb-2 rank">rank #{{ data.item.rank }}</p>
                 <p v-b-tooltip.hover class="bonded mb-0" title="Total stake">
                   {{ formatAmount(data.item.stake_total) }}
                 </p>
@@ -137,7 +137,9 @@ rank #{{ data.item.rank }}
                     <span v-b-tooltip.hover title="Self bonded">{{
                       formatAmount(data.item.stake_validator)
                     }}</span>
-                    <span v-b-tooltip.hover title="Bonded by nominators">(+{{ formatAmount(data.item.other_stake_sum) }})</span>
+                    <span v-b-tooltip.hover title="Bonded by nominators"
+                      >(+{{ formatAmount(data.item.other_stake_sum) }})</span
+                    >
                   </small>
                 </p>
               </div>
@@ -180,10 +182,12 @@ rank #{{ data.item.rank }}
                   <span v-else>
                     <span
                       class="d-inline d-sm-inline d-md-inline d-lg-inline d-xl-none"
-                    >{{ indexes[data.item.pub_key_stash] }}</span>
+                      >{{ indexes[data.item.pub_key_stash] }}</span
+                    >
                     <span
                       class="d-none d-sm-none d-md-none d-lg-none d-xl-inline"
-                    >{{ indexes[data.item.pub_key_stash] }}</span>
+                      >{{ indexes[data.item.pub_key_stash] }}</span
+                    >
                   </span>
                 </nuxt-link>
               </div>
@@ -267,8 +271,7 @@ import commonMixin from "../mixins/commonMixin.js"
 
 export default {
   components: {
-    Identicon,
-    Network
+    Identicon
   },
   mixins: [commonMixin],
   data: function() {

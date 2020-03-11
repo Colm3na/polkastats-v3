@@ -4,7 +4,7 @@
       <b-container class="nominator-page main pt-3 pb-5">
         <template v-for="(nominator, index) in nominators">
           <template v-if="nominator.accountId === accountId">
-            <div class="row">
+            <div :key="nominator.accountId" class="row">
               <div class="col-2 col-lg-1">
                 <template v-if="index > 0">
                   <nuxt-link
@@ -39,7 +39,7 @@
                 </template>
               </div>
             </div>
-            <div class="card mt-4 mb-3">
+            <div :key="index" class="card mt-4 mb-3">
               <div class="card-body text-center">
                 <Identicon
                   :key="nominator.accountId"
@@ -63,9 +63,10 @@
                 <h5>
                   {{ nominator.staking.length }} nomination<span
                     v-if="nominator.staking.length > 1"
-                  >s</span>:
+                    >s</span
+                  >:
                 </h5>
-                <hr >
+                <hr />
                 <!-- identity start -->
                 <div v-if="hasIdentity(nominator.accountId)">
                   <div
@@ -246,14 +247,16 @@
                     </p>
                     <p class="amount">
                       {{ formatDot(nomination.amount) }}
-                      <small>({{
-                        (
-                          getTotalStakePercen(
-                            nominator.staking,
-                            nomination.amount
-                          ) / 100
-                        ).toFixed(2)
-                      }}%)</small>
+                      <small
+                        >({{
+                          (
+                            getTotalStakePercen(
+                              nominator.staking,
+                              nomination.amount
+                            ) / 100
+                          ).toFixed(2)
+                        }}%)</small
+                      >
                     </p>
                   </div>
                 </div>
@@ -367,6 +370,7 @@ export default {
       nominatorStaking.map((nominator, index) => {
         nominator.rank = index + 1
       })
+      // eslint-disable-next-line vue/no-side-effects-in-computed-properties
       this.totalRows = nominatorStaking.length
       // console.log(nominatorStaking);
       return nominatorStaking

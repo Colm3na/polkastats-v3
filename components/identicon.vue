@@ -22,6 +22,7 @@ export default {
   components: {
     Identicon: Identicon
   },
+  // eslint-disable-next-line vue/require-prop-types
   props: ["value", "size", "theme"],
   methods: {
     makeToast(content = "", title = "", variant = null, solid = false) {

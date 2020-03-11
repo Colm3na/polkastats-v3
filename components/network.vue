@@ -67,6 +67,7 @@
 <script>
 import { isHex } from "@polkadot/util"
 export default {
+  // eslint-disable-next-line vue/require-prop-types
   props: ["network"],
   data: function() {
     return {

@@ -4,7 +4,7 @@
       <b-container class="validator-page main pt-3 pb-5">
         <template v-for="(validator, index) in validators">
           <template v-if="validator.accountId === accountId">
-            <div class="row">
+            <div :key="validator.accountId" class="row">
               <div class="col-2 col-lg-1">
                 <template v-if="index > 0">
                   <nuxt-link
@@ -39,7 +39,7 @@
                 </template>
               </div>
             </div>
-            <div class="validator-detail card mt-4 mb-3">
+            <div :key="index" class="validator-detail card mt-4 mb-3">
               <div class="card-body">
                 <i
                   v-if="validator.imOnline.isOnline"
@@ -118,9 +118,7 @@
                         :theme="'polkadot'"
                       />
                     </div>
-                    <p class="mt-3 mb-0 rank">
-rank #{{ index + 1 }}
-</p>
+                    <p class="mt-3 mb-0 rank">rank #{{ index + 1 }}</p>
                     <template v-if="validator.stakers">
                       <p
                         v-if="validator.stakers.total > 0"
@@ -147,7 +145,8 @@ rank #{{ index + 1 }}
                             v-if="validator.stakers.own > 0"
                             v-b-tooltip.hover
                             title="Self bonded"
-                          >{{ formatAmount(validator.stakers.own) }}</span>
+                            >{{ formatAmount(validator.stakers.own) }}</span
+                          >
                           <span
                             v-if="
                               validator.stakers.total - validator.stakers.own >
@@ -155,11 +154,12 @@ rank #{{ index + 1 }}
                             "
                             v-b-tooltip.hover
                             title="Bonded by nominators"
-                          >(+{{
-                            formatAmount(
-                              validator.stakers.total - validator.stakers.own
-                            )
-                          }})</span>
+                            >(+{{
+                              formatAmount(
+                                validator.stakers.total - validator.stakers.own
+                              )
+                            }})</span
+                          >
                         </small>
                       </p>
                       <p
@@ -208,10 +208,12 @@ rank #{{ index + 1 }}
                             v-b-tooltip.hover
                             class="d-inline d-sm-none d-md-none d-lg-none d-xl-none"
                             :title="validator.accountId"
-                          >{{ indexes[validator.accountId] }}</span>
+                            >{{ indexes[validator.accountId] }}</span
+                          >
                           <span
                             class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline"
-                          >{{ indexes[validator.accountId] }}</span>
+                            >{{ indexes[validator.accountId] }}</span
+                          >
                         </a>
                       </div>
                     </div>
@@ -234,11 +236,12 @@ rank #{{ index + 1 }}
                             v-b-tooltip.hover
                             class="d-inline d-sm-none d-md-none d-lg-none d-xl-none"
                             :title="validator.controllerId"
-                          >{{ indexes[validator.controllerId] }}
+                            >{{ indexes[validator.controllerId] }}
                           </span>
                           <span
                             class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline"
-                          >{{ indexes[validator.controllerId] }}</span>
+                            >{{ indexes[validator.controllerId] }}</span
+                          >
                         </a>
                       </div>
                     </div>
@@ -536,9 +539,7 @@ rank #{{ index + 1 }}
                                 class="d-block d-sm-block d-md-none d-lg-none d-xl-none text-center py-2"
                               >
                                 >
-                                <p class="mb-0">
-rank #{{ data.item.rank }}
-</p>
+                                <p class="mb-0">rank #{{ data.item.rank }}</p>
                                 <p class="mt-2 mb-0">
                                   <Identicon
                                     :key="data.item.who"
@@ -557,10 +558,12 @@ rank #{{ data.item.rank }}
                                       v-b-tooltip.hover
                                       class="d-inline-block d-sm-none d-md-none d-lg-none d-xl-none"
                                       :title="data.item.who"
-                                    >{{ indexes[data.item.who] }}</span>
+                                      >{{ indexes[data.item.who] }}</span
+                                    >
                                     <span
                                       class="d-none d-sm-inline-block d-md-inline-block d-lg-inline-block d-xl-inline-block"
-                                    >{{ indexes[data.item.who] }}</span>
+                                      >{{ indexes[data.item.who] }}</span
+                                    >
                                   </nuxt-link>
                                 </p>
                                 <p class="mt-2 mb-0">
@@ -591,10 +594,12 @@ rank #{{ data.item.rank }}
                                       v-b-tooltip.hover
                                       class="d-inline-block d-sm-none d-md-none d-lg-none d-xl-none"
                                       :title="data.item.who"
-                                    >{{ indexes[data.item.who] }}</span>
+                                      >{{ indexes[data.item.who] }}</span
+                                    >
                                     <span
                                       class="d-none d-sm-inline-block d-md-inline-block d-lg-inline-block d-xl-inline-block"
-                                    >{{ indexes[data.item.who] }}</span>
+                                      >{{ indexes[data.item.who] }}</span
+                                    >
                                   </nuxt-link>
                                 </p>
                               </div>
@@ -624,12 +629,12 @@ rank #{{ data.item.rank }}
                         :title="`Session ids (${validator.sessionIds.length})`"
                       >
                         <div
-                          v-for="(sessionId, index) in validator.sessionIds"
-                          :key="index"
+                          v-for="(sessionId, index1) in validator.sessionIds"
+                          :key="index1"
                           class="row"
                         >
                           <div class="col-12 mb-1 who">
-                            {{ index + 1 }}.
+                            {{ index1 + 1 }}.
                             <Identicon
                               :key="sessionId"
                               :value="sessionId"
@@ -644,10 +649,12 @@ rank #{{ data.item.rank }}
                                 v-b-tooltip.hover
                                 class="d-inline-block d-sm-none d-md-none d-lg-none d-xl-none"
                                 :title="sessionId"
-                              >{{ shortAddress(sessionId) }}</span>
+                                >{{ shortAddress(sessionId) }}</span
+                              >
                               <span
                                 class="d-none d-sm-inline-block d-md-inline-block d-lg-inline-block d-xl-inline-block"
-                              >{{ sessionId }}</span>
+                                >{{ sessionId }}</span
+                              >
                             </a>
                           </div>
                         </div>
@@ -660,12 +667,13 @@ rank #{{ data.item.rank }}
                         "
                       >
                         <div
-                          v-for="(sessionId, index) in validator.nextSessionIds"
-                          :key="index"
+                          v-for="(sessionId,
+                          index2) in validator.nextSessionIds"
+                          :key="index2"
                           class="row"
                         >
                           <div class="col-12 mb-1 who">
-                            {{ index + 1 }}.
+                            {{ index2 + 1 }}.
                             <Identicon
                               :key="sessionId"
                               :value="sessionId"
@@ -680,10 +688,12 @@ rank #{{ data.item.rank }}
                                 v-b-tooltip.hover
                                 class="d-inline-block d-sm-none d-md-none d-lg-none d-xl-none"
                                 :title="sessionId"
-                              >{{ shortAddress(sessionId) }}</span>
+                                >{{ shortAddress(sessionId) }}</span
+                              >
                               <span
                                 class="d-none d-sm-inline-block d-md-inline-block d-lg-inline-block d-xl-inline-block"
-                              >{{ sessionId }}</span>
+                                >{{ sessionId }}</span
+                              >
                             </a>
                           </div>
                         </div>
@@ -701,13 +711,15 @@ rank #{{ data.item.rank }}
             <small
               v-if="monthly.last - monthly.first > 0"
               class="change text-success ml-3"
-            ><i class="far fa-thumbs-up" /> +{{
-              formatAmount(monthly.last - monthly.first)
-            }}</small><small
+              ><i class="far fa-thumbs-up" /> +{{
+                formatAmount(monthly.last - monthly.first)
+              }}</small
+            ><small
               v-if="monthly.last - monthly.first < 0"
               class="change text-danger ml-3"
-            ><i class="far fa-thumbs-down" />
-              {{ formatAmount(monthly.last - monthly.first) }}</small>
+              ><i class="far fa-thumbs-down" />
+              {{ formatAmount(monthly.last - monthly.first) }}</small
+            >
           </h3>
           <apexchart
             type="line"
@@ -722,13 +734,15 @@ rank #{{ data.item.rank }}
             <small
               v-if="weekly.last - weekly.first > 0"
               class="change text-success ml-3"
-            ><i class="far fa-thumbs-up" /> +{{
-              formatAmount(weekly.last - weekly.first)
-            }}</small><small
+              ><i class="far fa-thumbs-up" /> +{{
+                formatAmount(weekly.last - weekly.first)
+              }}</small
+            ><small
               v-if="weekly.last - weekly.first < 0"
               class="change text-danger ml-3"
-            ><i class="far fa-thumbs-down" />
-              {{ formatAmount(weekly.last - weekly.first) }}</small>
+              ><i class="far fa-thumbs-down" />
+              {{ formatAmount(weekly.last - weekly.first) }}</small
+            >
           </h3>
           <apexchart
             type="line"
@@ -743,13 +757,15 @@ rank #{{ data.item.rank }}
             <small
               v-if="daily.last - daily.first > 0"
               class="change text-success ml-3"
-            ><i class="far fa-thumbs-up" /> +{{
-              formatAmount(daily.last - daily.first)
-            }}</small><small
+              ><i class="far fa-thumbs-up" /> +{{
+                formatAmount(daily.last - daily.first)
+              }}</small
+            ><small
               v-if="daily.last - daily.first < 0"
               class="change text-danger ml-3"
-            ><i class="far fa-thumbs-down" />
-              {{ formatAmount(daily.last - daily.first) }}</small>
+              ><i class="far fa-thumbs-down" />
+              {{ formatAmount(daily.last - daily.first) }}</small
+            >
           </h3>
           <apexchart
             type="line"
@@ -1004,10 +1020,12 @@ export default {
         let validator = this.$store.state.validators.list.find(
           validator => validator.accountId === this.accountId
         )
+        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
         this.totalRows = validator.stakers.others.length
       }
       return this.$store.state.validators.list
     },
+    // eslint-disable-next-line vue/return-in-computed-property
     validatorStakers() {
       if (this.$store.state.validators.list.length > 0) {
         let validator = this.$store.state.validators.list.find(

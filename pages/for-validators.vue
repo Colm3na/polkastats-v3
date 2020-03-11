@@ -5,7 +5,7 @@
         <div class="row text-center">
           <div class="col-md-12 pt-5 pb-5">
             <h3>
-              Want to have your validator name, logo, website url<br>
+              Want to have your validator name, logo, website url<br />
               and social links included in PolkaStats?
             </h3>
           </div>
@@ -21,7 +21,7 @@
           You will need both,
           <a href="https://keybase.io" target="_blank">Keybase</a> and
           <a href="https://github.com" target="_blank">GitHub</a> accounts in
-          order to continue.<br>
+          order to continue.<br />
           Make sure you have properly filled your full name, website, social
           links and have uploaded a profile picture in your Keybase profile.
         </b-alert>
@@ -29,7 +29,9 @@
           <b-card title="Step 1">
             <b-card-text>
               Login with your GitHub user and make a Fork of PolkaStats v2 repo:
-              <a href="https://github.com/Colm3na/polkastats-v2" target="_blank">https://github.com/Colm3na/polkastats-v2</a>.
+              <a href="https://github.com/Colm3na/polkastats-v2" target="_blank"
+                >https://github.com/Colm3na/polkastats-v2</a
+              >.
             </b-card-text>
           </b-card>
           <b-card title="Step 2">
@@ -38,27 +40,33 @@
               <a
                 href="https://github.com/Colm3na/polkastats-v2/tree/master/identities"
                 target="_blank"
-              >identities folder</a>. In that folder place 3 new files with exactly this names,
+                >identities folder</a
+              >. In that folder place 3 new files with exactly this names,
               keybase_username with your
               <a href="https://keybase.io" target="_blank">Keybase</a> username
               on it. A logo.png (512x512 max) and
               <a
                 href="https://raw.githubusercontent.com/derfredy/polkastats-v2/master/identities/DSpbbk6HKKyS78c4KDLSxCetqbwnsemv2iocVXwNe2FAvWC/validator_info.json"
                 target="_blank"
-              >validator_info.json</a>
+                >validator_info.json</a
+              >
               following this schema.
             </b-card-text>
           </b-card>
           <b-card title="Step 3">
             <b-card-text>
               Make a Pull Request to the master branch of the original repo:
-              <a href="https://github.com/Colm3na/polkastats-v2" target="_blank">https://github.com/Colm3na/polkastats-v2</a>.
+              <a href="https://github.com/Colm3na/polkastats-v2" target="_blank"
+                >https://github.com/Colm3na/polkastats-v2</a
+              >.
             </b-card-text>
           </b-card>
         </b-card-group>
         <h4 class="mt-4">
           Need help? Send me a message at
-          <a target="_blank" href="mailto:polkastats@protonmail.com">polkastats@protonmail.com</a>.
+          <a target="_blank" href="mailto:polkastats@protonmail.com"
+            >polkastats@protonmail.com</a
+          >.
         </h4>
       </b-container>
     </section>

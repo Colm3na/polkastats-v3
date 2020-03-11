@@ -7,9 +7,13 @@
         </h1>
         <p>
           This is about
-          <a href="https://polkadot.network" target="_blank"><strong>Polkadot</strong></a>
+          <a href="https://polkadot.network" target="_blank"
+            ><strong>Polkadot</strong></a
+          >
           and now
-          <a href="https://kusama.network" target="_blank"><strong>Kusama</strong></a>, of course ;-)
+          <a href="https://kusama.network" target="_blank"
+            ><strong>Kusama</strong></a
+          >, of course ;-)
         </p>
         <p>
           I code this app to experiment and learn about how to retrieve and
@@ -21,7 +25,8 @@
           <a
             href="https://riot.im/app/#/room/#polkadot-watercooler:matrix.org"
             target="_blank"
-          >Polkadot Watercooler</a>
+            >Polkadot Watercooler</a
+          >
           for point me to the right direction and save me hours of useless
           coding.
         </p>
@@ -36,23 +41,29 @@
           <li>Version 2!</li>
           <li>
             New GitHub repos:
-            <a href="https://github.com/Colm3na/polkastats-v2" target="_blank">https://github.com/Colm3na/polkastats-v2</a>
+            <a href="https://github.com/Colm3na/polkastats-v2" target="_blank"
+              >https://github.com/Colm3na/polkastats-v2</a
+            >
             and
             <a
               href="https://github.com/Colm3na/polkastats-backend-v2"
               target="_blank"
-            >https://github.com/Colm3na/polkastats-backend-v2</a>
+              >https://github.com/Colm3na/polkastats-backend-v2</a
+            >
           </li>
           <li>Added Kusama CC2 network support.</li>
           <li>
             Changed default network to Kusama CC2 (<a
               href="https://polkastats.io"
               target="_blank"
-            >https://polkastats.io</a>).
+              >https://polkastats.io</a
+            >).
           </li>
           <li>
             Alexander network now is at
-            <a href="https://alexander.polkastats.io" target="_blank">https://alexander.polkastats.io</a>.
+            <a href="https://alexander.polkastats.io" target="_blank"
+              >https://alexander.polkastats.io</a
+            >.
           </li>
           <li>Improved MySQL backend!</li>
         </ul>
@@ -65,7 +76,8 @@
             <a
               href="https://github.com/polkadot-js/ui/tree/master/packages/vue-identicon"
               target="_blank"
-            >vue-identicon component</a>.
+              >vue-identicon component</a
+            >.
           </li>
           <li>Use formatBalance function from @polkadot/util</li>
         </ul>

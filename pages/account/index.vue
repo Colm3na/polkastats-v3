@@ -4,46 +4,80 @@
       <b-container class="account-page main pt-4 pb-5">
         <template v-for="(account, index) in accounts">
           <template v-if="account.accountId === accountId">
-            <div class="row">
+            <div :key="account.accountId" class="row">
               <div class="col-2 col-lg-1">
                 <template v-if="index > 0">
-                  <nuxt-link :to="{name: 'account', query: { accountId: accounts[index-1].accountId } }" :title="'Previous account: ' + accounts[index-1].accountId">
+                  <nuxt-link
+                    :to="{
+                      name: 'account',
+                      query: { accountId: accounts[index - 1].accountId }
+                    }"
+                    :title="
+                      'Previous account: ' + accounts[index - 1].accountId
+                    "
+                  >
                     <i class="fas fa-2x fa-chevron-left" />
                   </nuxt-link>
                 </template>
               </div>
               <div class="col-8 col-lg-10 text-center">
-                <h4 class="mb-1">
-                  Account {{ accountId }}
-                </h4>
+                <h4 class="mb-1">Account {{ accountId }}</h4>
               </div>
               <div class="col-2 col-lg-1 text-right">
                 <template v-if="index < accounts.length - 1">
-                  <nuxt-link :to="{name: 'account', query: { accountId: accounts[index+1].accountId } }" :title="'Next account: ' + accounts[index+1].accountId">
+                  <nuxt-link
+                    :to="{
+                      name: 'account',
+                      query: { accountId: accounts[index + 1].accountId }
+                    }"
+                    :title="'Next account: ' + accounts[index + 1].accountId"
+                  >
                     <i class="fas fa-2x fa-chevron-right" />
-                  </nuxt-link>  
+                  </nuxt-link>
                 </template>
               </div>
             </div>
-            <div class="card mt-4 mb-3">
+            <div :key="index" class="card mt-4 mb-3">
               <div class="card-body">
                 <p class="text-center mb-2">
-                  <Identicon :key="account.accountId" :value="account.accountId" :size="80" :theme="'polkadot'" />
-                </p><h4 class="text-center mb-4">
+                  <Identicon
+                    :key="account.accountId"
+                    :value="account.accountId"
+                    :size="80"
+                    :theme="'polkadot'"
+                  />
+                </p>
+                <h4 class="text-center mb-4">
                   {{ account.accountIndex }}
                 </h4>
-                <h4 v-b-tooltip.hover class="text-center mb-4 amount" title="Free Balance">
+                <h4
+                  v-b-tooltip.hover
+                  class="text-center mb-4 amount"
+                  title="Free Balance"
+                >
                   {{ formatAmount(account.balances.freeBalance) }}
                 </h4>
-                </p>
                 <table class="table table-striped">
                   <tbody>
                     <tr>
                       <td>Account ID</td>
                       <td class="text-right">
-                        <a :href="blockExplorer.account + account.accountId" target="_blank" class="d-block my-2">
-                          <Identicon :key="account.accountId" :value="account.accountId" :size="20" :theme="'polkadot'" />
-                          <span v-b-tooltip.hover title="See address in PolkaScan">{{ account.accountId }}</span>
+                        <a
+                          :href="blockExplorer.account + account.accountId"
+                          target="_blank"
+                          class="d-block my-2"
+                        >
+                          <Identicon
+                            :key="account.accountId"
+                            :value="account.accountId"
+                            :size="20"
+                            :theme="'polkadot'"
+                          />
+                          <span
+                            v-b-tooltip.hover
+                            title="See address in PolkaScan"
+                            >{{ account.accountId }}</span
+                          >
                         </a>
                       </td>
                     </tr>
@@ -62,7 +96,11 @@
                     <tr v-if="account.identity.email">
                       <td>Identity::email</td>
                       <td class="text-right">
-                        <a :href="`mailto:${account.identity.email}`" target="_blank">{{ account.identity.email }}</a>
+                        <a
+                          :href="`mailto:${account.identity.email}`"
+                          target="_blank"
+                          >{{ account.identity.email }}</a
+                        >
                       </td>
                     </tr>
                     <tr v-if="account.identity.legal">
@@ -80,13 +118,24 @@
                     <tr v-if="account.identity.web">
                       <td>Identity::web</td>
                       <td class="text-right">
-                        <a :href="account.identity.web" target="_blank">{{ account.identity.web }}</a>
+                        <a :href="account.identity.web" target="_blank">{{
+                          account.identity.web
+                        }}</a>
                       </td>
                     </tr>
                     <tr v-if="account.identity.twitter">
                       <td>Identity::twitter</td>
                       <td class="text-right">
-                        <a :href="`https://twitter.com/${account.identity.twitter.substr(1, account.identity.twitter.length)}`" target="_blank">{{ account.identity.twitter }}</a>
+                        <a
+                          :href="
+                            `https://twitter.com/${account.identity.twitter.substr(
+                              1,
+                              account.identity.twitter.length
+                            )}`
+                          "
+                          target="_blank"
+                          >{{ account.identity.twitter }}</a
+                        >
                       </td>
                     </tr>
                     <tr v-if="account.identity.judgements">
@@ -127,11 +176,21 @@
                     <tr>
                       <td>Locked Breakdowns</td>
                       <td class="text-right">
-                        <p v-if="account.balances.lockedBreakdown.length === 0" class="mb-0">
+                        <p
+                          v-if="account.balances.lockedBreakdown.length === 0"
+                          class="mb-0"
+                        >
                           No
                         </p>
-                        <p v-for="(locked, index) in account.balances.lockedBreakdown" v-else :key="locked.id" class="mb-1">
-                          <strong>{{ formatAmount(locked.amount) }}</strong> until <strong>{{ formatNumber(locked.until) }}</strong>
+                        <p
+                          v-for="locked in account.balances.lockedBreakdown"
+                          v-else
+                          :key="locked.id"
+                          class="mb-1"
+                        >
+                          <strong>{{ formatAmount(locked.amount) }}</strong>
+                          until
+                          <strong>{{ formatNumber(locked.until) }}</strong>
                         </p>
                       </td>
                     </tr>
@@ -176,10 +235,10 @@
   </div>
 </template>
 <script>
-import { mapMutations } from 'vuex'
-import Identicon from '../../components/identicon.vue'
-import { blockExplorer } from '../../polkastats.config.js'
-import commonMixin from '../../mixins/commonMixin.js'
+import { mapMutations } from "vuex"
+import Identicon from "../../components/identicon.vue"
+import { blockExplorer } from "../../polkastats.config.js"
+import commonMixin from "../../mixins/commonMixin.js"
 
 export default {
   components: {
@@ -199,34 +258,37 @@ export default {
     }
   },
   watch: {
-    $route () {
+    $route() {
       this.accountId = this.$route.query.accountId
     }
   },
-  created: function () {
+  created: function() {
     var vm = this
-    
+
     // Force update of account list if empty
     if (this.$store.state.accounts.list.length == 0) {
-      vm.$store.dispatch('accounts/update')
+      vm.$store.dispatch("accounts/update")
     }
     this.totalRows = this.$store.state.accounts.list.length
 
     // Update data every 5 minutes
     this.polling = setInterval(() => {
-      vm.$store.dispatch('accounts/update')
+      vm.$store.dispatch("accounts/update")
       if (!this.filter) this.totalRows = this.$store.state.accounts.list.length
     }, 300000)
-
   },
-  beforeDestroy: function () {
+  beforeDestroy: function() {
     clearInterval(this.polling)
   },
-  head () {
+  head() {
     return {
-      title: 'PolkaStats - Kusama account ' + this.$route.query.accountId,
+      title: "PolkaStats - Kusama account " + this.$route.query.accountId,
       meta: [
-        { hid: 'description', name: 'description', content: 'Kusama account ' + this.$route.query.accountId }
+        {
+          hid: "description",
+          name: "description",
+          content: "Kusama account " + this.$route.query.accountId
+        }
       ]
     }
   }

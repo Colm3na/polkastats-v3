@@ -4,7 +4,7 @@
       <b-container class="page-intention main pt-3 pb-5">
         <template v-for="(validator, index) in intentions">
           <template v-if="validator.accountId == accountId">
-            <div class="row">
+            <div :key="validator.accountId" class="row">
               <div class="col-2 col-lg-1">
                 <template v-if="index > 0">
                   <nuxt-link
@@ -39,7 +39,7 @@
                 </template>
               </div>
             </div>
-            <div class="validator-detail card mt-4 mb-3">
+            <div :key="index" class="validator-detail card mt-4 mb-3">
               <div class="card-body">
                 <i
                   v-if="isFavorite(validator.accountId)"
@@ -97,9 +97,7 @@
                         :theme="'polkadot'"
                       />
                     </div>
-                    <p class="mb-0 rank">
-rank #{{ index + 1 }}
-</p>
+                    <p class="mb-0 rank">rank #{{ index + 1 }}</p>
                     <p
                       v-b-tooltip.hover
                       class="bonded mb-0"
@@ -144,10 +142,12 @@ rank #{{ index + 1 }}
                             v-b-tooltip.hover
                             class="d-inline d-sm-none d-md-none d-lg-none d-xl-none"
                             :title="validator.stashId"
-                          >{{ indexes[validator.stashId] }}</span>
+                            >{{ indexes[validator.stashId] }}</span
+                          >
                           <span
                             class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline"
-                          >{{ indexes[validator.stashId] }}</span>
+                            >{{ indexes[validator.stashId] }}</span
+                          >
                         </a>
                       </div>
                     </div>
@@ -170,11 +170,12 @@ rank #{{ index + 1 }}
                             v-b-tooltip.hover
                             class="d-inline d-sm-none d-md-none d-lg-none d-xl-none"
                             :title="validator.controllerId"
-                          >{{ indexes[validator.controllerId] }}
+                            >{{ indexes[validator.controllerId] }}
                           </span>
                           <span
                             class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline"
-                          >{{ indexes[validator.controllerId] }}</span>
+                            >{{ indexes[validator.controllerId] }}</span
+                          >
                         </a>
                       </div>
                     </div>
@@ -464,10 +465,12 @@ rank #{{ index + 1 }}
                                   v-b-tooltip.hover
                                   class="d-inline-block d-sm-none d-md-none d-lg-none d-xl-none"
                                   :title="sessionId"
-                                >{{ shortAddress(sessionId) }}</span>
+                                  >{{ shortAddress(sessionId) }}</span
+                                >
                                 <span
                                   class="d-none d-sm-inline-block d-md-inline-block d-lg-inline-block d-xl-inline-block"
-                                >{{ sessionId }}</span>
+                                  >{{ sessionId }}</span
+                                >
                               </a>
                             </div>
                           </div>
@@ -481,7 +484,7 @@ rank #{{ index + 1 }}
                         >
                           <div
                             v-for="(sessionId,
-                                    index) in validator.nextSessionIds"
+                            index) in validator.nextSessionIds"
                             :key="index"
                             class="row"
                           >
@@ -501,10 +504,12 @@ rank #{{ index + 1 }}
                                   v-b-tooltip.hover
                                   class="d-inline-block d-sm-none d-md-none d-lg-none d-xl-none"
                                   :title="sessionId"
-                                >{{ shortAddress(sessionId) }}</span>
+                                  >{{ shortAddress(sessionId) }}</span
+                                >
                                 <span
                                   class="d-none d-sm-inline-block d-md-inline-block d-lg-inline-block d-xl-inline-block"
-                                >{{ sessionId }}</span>
+                                  >{{ sessionId }}</span
+                                >
                               </a>
                             </div>
                           </div>
@@ -536,10 +541,12 @@ rank #{{ index + 1 }}
                                   v-b-tooltip.hover
                                   class="d-inline-block d-sm-none d-md-none d-lg-none d-xl-none"
                                   :title="staker.who"
-                                >{{ indexes[staker.who] }}</span>
+                                  >{{ indexes[staker.who] }}</span
+                                >
                                 <span
                                   class="d-none d-sm-inline-block d-md-inline-block d-lg-inline-block d-xl-inline-block"
-                                >{{ indexes[staker.who] }}</span>
+                                  >{{ indexes[staker.who] }}</span
+                                >
                               </a>
                             </div>
                             <div class="col-4 text-right value">
@@ -561,13 +568,15 @@ rank #{{ index + 1 }}
             <small
               v-if="monthly.last - monthly.first > 0"
               class="change text-success ml-3"
-            ><i class="far fa-thumbs-up" /> +{{
-              formatAmount(monthly.last - monthly.first)
-            }}</small><small
+              ><i class="far fa-thumbs-up" /> +{{
+                formatAmount(monthly.last - monthly.first)
+              }}</small
+            ><small
               v-if="monthly.last - monthly.first < 0"
               class="change text-danger ml-3"
-            ><i class="far fa-thumbs-down" />
-              {{ formatAmount(monthly.last - monthly.first) }}</small>
+              ><i class="far fa-thumbs-down" />
+              {{ formatAmount(monthly.last - monthly.first) }}</small
+            >
           </h3>
           <apexchart
             type="line"
@@ -582,13 +591,15 @@ rank #{{ index + 1 }}
             <small
               v-if="weekly.last - weekly.first > 0"
               class="change text-success ml-3"
-            ><i class="far fa-thumbs-up" /> +{{
-              formatAmount(weekly.last - weekly.first)
-            }}</small><small
+              ><i class="far fa-thumbs-up" /> +{{
+                formatAmount(weekly.last - weekly.first)
+              }}</small
+            ><small
               v-if="weekly.last - weekly.first < 0"
               class="change text-danger ml-3"
-            ><i class="far fa-thumbs-down" />
-              {{ formatAmount(weekly.last - weekly.first) }}</small>
+              ><i class="far fa-thumbs-down" />
+              {{ formatAmount(weekly.last - weekly.first) }}</small
+            >
           </h3>
           <apexchart
             type="line"
@@ -603,13 +614,15 @@ rank #{{ index + 1 }}
             <small
               v-if="daily.last - daily.first > 0"
               class="change text-success ml-3"
-            ><i class="far fa-thumbs-up" /> +{{
-              formatAmount(daily.last - daily.first)
-            }}</small><small
+              ><i class="far fa-thumbs-up" /> +{{
+                formatAmount(daily.last - daily.first)
+              }}</small
+            ><small
               v-if="daily.last - daily.first < 0"
               class="change text-danger ml-3"
-            ><i class="far fa-thumbs-down" />
-              {{ formatAmount(daily.last - daily.first) }}</small>
+              ><i class="far fa-thumbs-down" />
+              {{ formatAmount(daily.last - daily.first) }}</small
+            >
           </h3>
           <apexchart
             type="line"

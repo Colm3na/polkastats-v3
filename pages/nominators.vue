@@ -96,15 +96,15 @@
                   <span v-else>
                     <span
                       class="d-inline d-sm-inline d-md-inline d-lg-inline d-xl-none"
-                    >{{ indexes[data.item.accountId] }}</span>
+                      >{{ indexes[data.item.accountId] }}</span
+                    >
                     <span
                       class="d-none d-sm-none d-md-none d-lg-none d-xl-inline"
-                    >{{ indexes[data.item.accountId] }}</span>
+                      >{{ indexes[data.item.accountId] }}</span
+                    >
                   </span>
                 </nuxt-link>
-                <p class="mt-2 mb-2">
-rank #{{ data.item.rank }}
-</p>
+                <p class="mt-2 mb-2">rank #{{ data.item.rank }}</p>
                 <p class="mb-0">
                   {{ formatAmount(data.item.totalStake) }}
                 </p>
@@ -129,10 +129,12 @@ rank #{{ data.item.rank }}
                   <span v-else>
                     <span
                       class="d-inline d-sm-inline d-md-inline d-lg-inline d-xl-none"
-                    >{{ indexes[data.item.accountId] }}</span>
+                      >{{ indexes[data.item.accountId] }}</span
+                    >
                     <span
                       class="d-none d-sm-none d-md-none d-lg-none d-xl-inline"
-                    >{{ indexes[data.item.accountId] }}</span>
+                      >{{ indexes[data.item.accountId] }}</span
+                    >
                   </span>
                 </nuxt-link>
               </div>
@@ -206,8 +208,7 @@ import commonMixin from "../mixins/commonMixin.js"
 
 export default {
   components: {
-    Identicon,
-    Network
+    Identicon
   },
   mixins: [commonMixin],
   data: function() {
@@ -337,6 +338,7 @@ export default {
       nominatorStaking.map((nominator, index) => {
         nominator.rank = index + 1
       })
+      // eslint-disable-next-line vue/no-side-effects-in-computed-properties
       this.totalRows = nominatorStaking.length
       return nominatorStaking
     },

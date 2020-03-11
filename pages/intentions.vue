@@ -121,15 +121,15 @@
                   <h4 v-else class="mt-2 mb-2">
                     <span
                       class="d-inline d-sm-inline d-md-inline d-lg-inline d-xl-none"
-                    >{{ indexes[data.item.accountId] }}</span>
+                      >{{ indexes[data.item.accountId] }}</span
+                    >
                     <span
                       class="d-none d-sm-none d-md-none d-lg-none d-xl-inline"
-                    >{{ indexes[data.item.accountId] }}</span>
+                      >{{ indexes[data.item.accountId] }}</span
+                    >
                   </h4>
                 </nuxt-link>
-                <p class="mt-3 mb-0 rank">
-rank #{{ data.item.rank }}
-</p>
+                <p class="mt-3 mb-0 rank">rank #{{ data.item.rank }}</p>
                 <div v-if="data.item.activeStake">
                   <p
                     v-b-tooltip.hover
@@ -188,10 +188,12 @@ rank #{{ data.item.rank }}
                   <span v-else>
                     <span
                       class="d-inline d-sm-inline d-md-inline d-lg-inline d-xl-none"
-                    >{{ indexes[data.item.accountId] }}</span>
+                      >{{ indexes[data.item.accountId] }}</span
+                    >
                     <span
                       class="d-none d-sm-none d-md-none d-lg-none d-xl-inline"
-                    >{{ indexes[data.item.accountId] }}</span>
+                      >{{ indexes[data.item.accountId] }}</span
+                    >
                   </span>
                 </nuxt-link>
               </div>
@@ -261,7 +263,6 @@ import { mapMutations } from "vuex"
 import axios from "axios"
 import bootstrap from "bootstrap"
 import Identicon from "../components/identicon.vue"
-import Network from "../components/network.vue"
 import { isHex } from "@polkadot/util"
 import BN from "bn.js"
 import { blockExplorer, numItemsTableOptions } from "../polkastats.config.js"
@@ -269,8 +270,7 @@ import commonMixin from "../mixins/commonMixin.js"
 
 export default {
   components: {
-    Identicon,
-    Network
+    Identicon
   },
   mixins: [commonMixin],
   data: function() {

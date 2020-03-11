@@ -18,7 +18,7 @@
         title="Press Enter key to save"
         @input="$emit('input', $event.target.value)"
         @keydown.enter="updateFavoritesCookie()"
-      >
+      />
     </span>
   </div>
 </template>

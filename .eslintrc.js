@@ -9,9 +9,8 @@ module.exports = {
     },
     extends: [
       'eslint:recommended',
-      // https://github.com/vuejs/eslint-plugin-vue#priority-a-essential-error-prevention
-      // consider switching to `plugin:vue/strongly-recommended` or `plugin:vue/recommended` for stricter rules.
       'plugin:vue/recommended',
+      'prettier/vue',
       'plugin:prettier/recommended'
     ],
     // required to lint *.vue files
@@ -20,10 +19,17 @@ module.exports = {
     ],
     // add your custom rules here
     rules: {
-      'semi': [2, 'never'],
-      'no-console': 'off',
-      'vue/max-attributes-per-line': 'off',
-      'prettier/prettier': ['error', { 'semi': false }]
-    }
+        'semi': [0, 'never'],
+        'no-console': 'off',
+        'vue/max-attributes-per-line': 'off',
+        'prettier/prettier': ['error', { 'semi': false }],
+        "vue/component-name-in-template-casing": ["error", "PascalCase"],
+        "no-console": process.env.NODE_ENV === "production" ? "error" : "off",
+        "no-debugger": process.env.NODE_ENV === "production" ? "error" : "off",
+        "no-unused-vars": 'off',
+        "vue/no-template-shadow": "off"
+    },
+    globals: {
+        $nuxt: true
+    },
   }
-  

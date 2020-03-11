@@ -23,7 +23,7 @@
         <!-- START FAVORITE VALIDATORS -->
         <template v-for="(validator, index) in validators">
           <template v-if="isFavorite(validator.accountId)">
-            <div class="validator card mb-3">
+            <div :key="validator.accountId" class="validator card mb-3">
               <i
                 v-if="validator.imOnline.isOnline"
                 v-b-tooltip.hover
@@ -138,18 +138,20 @@
                           v-if="validator.stakers.own > 0"
                           v-b-tooltip.hover
                           title="Self bonded"
-                        >{{ formatAmount(validator.stakers.own) }}</span>
+                          >{{ formatAmount(validator.stakers.own) }}</span
+                        >
                         <span
                           v-if="
                             validator.stakers.total - validator.stakers.own > 0
                           "
                           v-b-tooltip.hover
                           title="Bonded by nominators"
-                        >(+{{
-                          formatAmount(
-                            validator.stakers.total - validator.stakers.own
-                          )
-                        }})</span>
+                          >(+{{
+                            formatAmount(
+                              validator.stakers.total - validator.stakers.own
+                            )
+                          }})</span
+                        >
                       </small>
                     </p>
                     <p
@@ -211,10 +213,12 @@
                             v-b-tooltip.hover
                             class="d-inline d-sm-none d-md-none d-lg-none d-xl-none"
                             :title="validator.stashId"
-                          >{{ indexes[validator.stashId] }}</span>
+                            >{{ indexes[validator.stashId] }}</span
+                          >
                           <span
                             class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline"
-                          >{{ indexes[validator.stashId] }}</span>
+                            >{{ indexes[validator.stashId] }}</span
+                          >
                         </a>
                       </div>
                     </div>
@@ -237,10 +241,12 @@
                             v-b-tooltip.hover
                             class="d-inline d-sm-none d-md-none d-lg-none d-xl-none"
                             :title="validator.controllerId"
-                          >{{ indexes[validator.controllerId] }}</span>
+                            >{{ indexes[validator.controllerId] }}</span
+                          >
                           <span
                             class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline"
-                          >{{ indexes[validator.controllerId] }}</span>
+                            >{{ indexes[validator.controllerId] }}</span
+                          >
                         </a>
                       </div>
                     </div>
@@ -397,10 +403,12 @@
                                   v-b-tooltip.hover
                                   class="d-inline-block d-sm-none d-md-none d-lg-none d-xl-none"
                                   :title="sessionId"
-                                >{{ shortAddress(sessionId) }}</span>
+                                  >{{ shortAddress(sessionId) }}</span
+                                >
                                 <span
                                   class="d-none d-sm-inline-block d-md-inline-block d-lg-inline-block d-xl-inline-block"
-                                >{{ sessionId }}</span>
+                                  >{{ sessionId }}</span
+                                >
                               </a>
                             </div>
                           </div>
@@ -414,7 +422,7 @@
                         >
                           <div
                             v-for="(sessionId,
-                                    index) in validator.nextSessionIds"
+                            index) in validator.nextSessionIds"
                             :key="index"
                             class="row"
                           >
@@ -434,10 +442,12 @@
                                   v-b-tooltip.hover
                                   class="d-inline-block d-sm-none d-md-none d-lg-none d-xl-none"
                                   :title="sessionId"
-                                >{{ shortAddress(sessionId) }}</span>
+                                  >{{ shortAddress(sessionId) }}</span
+                                >
                                 <span
                                   class="d-none d-sm-inline-block d-md-inline-block d-lg-inline-block d-xl-inline-block"
-                                >{{ sessionId }}</span>
+                                  >{{ sessionId }}</span
+                                >
                               </a>
                             </div>
                           </div>
@@ -471,10 +481,12 @@
                                     v-b-tooltip.hover
                                     class="d-inline-block d-sm-none d-md-none d-lg-none d-xl-none"
                                     :title="staker.who"
-                                  >{{ indexes[staker.who] }}</span>
+                                    >{{ indexes[staker.who] }}</span
+                                  >
                                   <span
                                     class="d-none d-sm-inline-block d-md-inline-block d-lg-inline-block d-xl-inline-block"
-                                  >{{ indexes[staker.who] }}</span>
+                                    >{{ indexes[staker.who] }}</span
+                                  >
                                 </a>
                               </div>
                               <div class="col-4 text-right value">
@@ -495,7 +507,7 @@
         <!-- START FAVORITE INTENTIONS -->
         <template v-for="(validator, index) in intentions">
           <template v-if="isFavorite(validator.accountId)">
-            <div class="validator card mb-3">
+            <div :key="validator.accountId" class="validator card mb-3">
               <a class="favorite" @click="toggleFavorite(validator.accountId)">
                 <i
                   v-if="isFavorite(validator.accountId)"
@@ -622,10 +634,12 @@
                             v-b-tooltip.hover
                             class="d-inline d-sm-none d-md-none d-lg-none d-xl-none"
                             :title="validator.stashId"
-                          >{{ indexes[validator.stashId] }}</span>
+                            >{{ indexes[validator.stashId] }}</span
+                          >
                           <span
                             class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline"
-                          >{{ indexes[validator.stashId] }}</span>
+                            >{{ indexes[validator.stashId] }}</span
+                          >
                         </a>
                       </div>
                     </div>
@@ -648,10 +662,12 @@
                             v-b-tooltip.hover
                             class="d-inline d-sm-none d-md-none d-lg-none d-xl-none"
                             :title="validator.controllerId"
-                          >{{ indexes[validator.controllerId] }}</span>
+                            >{{ indexes[validator.controllerId] }}</span
+                          >
                           <span
                             class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline"
-                          >{{ indexes[validator.controllerId] }}</span>
+                            >{{ indexes[validator.controllerId] }}</span
+                          >
                         </a>
                       </div>
                     </div>
@@ -807,10 +823,12 @@
                                   v-b-tooltip.hover
                                   class="d-inline-block d-sm-none d-md-none d-lg-none d-xl-none"
                                   :title="sessionId"
-                                >{{ shortAddress(sessionId) }}</span>
+                                  >{{ shortAddress(sessionId) }}</span
+                                >
                                 <span
                                   class="d-none d-sm-inline-block d-md-inline-block d-lg-inline-block d-xl-inline-block"
-                                >{{ sessionId }}</span>
+                                  >{{ sessionId }}</span
+                                >
                               </a>
                             </div>
                           </div>
@@ -824,7 +842,7 @@
                         >
                           <div
                             v-for="(sessionId,
-                                    index) in validator.nextSessionIds"
+                            index) in validator.nextSessionIds"
                             :key="index"
                             class="row"
                           >
@@ -844,10 +862,12 @@
                                   v-b-tooltip.hover
                                   class="d-inline-block d-sm-none d-md-none d-lg-none d-xl-none"
                                   :title="sessionId"
-                                >{{ shortAddress(sessionId) }}</span>
+                                  >{{ shortAddress(sessionId) }}</span
+                                >
                                 <span
                                   class="d-none d-sm-inline-block d-md-inline-block d-lg-inline-block d-xl-inline-block"
-                                >{{ sessionId }}</span>
+                                  >{{ sessionId }}</span
+                                >
                               </a>
                             </div>
                           </div>
@@ -879,10 +899,12 @@
                                   v-b-tooltip.hover
                                   class="d-inline-block d-sm-none d-md-none d-lg-none d-xl-none"
                                   :title="staker.who"
-                                >{{ shortAddress(staker.who) }}</span>
+                                  >{{ shortAddress(staker.who) }}</span
+                                >
                                 <span
                                   class="d-none d-sm-inline-block d-md-inline-block d-lg-inline-block d-xl-inline-block"
-                                >{{ staker.who }}</span>
+                                  >{{ staker.who }}</span
+                                >
                               </a>
                             </div>
                             <div class="col-4 text-right value">
@@ -908,7 +930,6 @@ import { mapMutations } from "vuex"
 import axios from "axios"
 import bootstrap from "bootstrap"
 import Identicon from "../components/identicon.vue"
-import Network from "../components/network.vue"
 import { isHex } from "@polkadot/util"
 import BN from "bn.js"
 import { blockExplorer } from "../polkastats.config.js"
@@ -916,8 +937,7 @@ import commonMixin from "../mixins/commonMixin.js"
 
 export default {
   components: {
-    Identicon,
-    Network
+    Identicon
   },
   mixins: [commonMixin],
   data: function() {

@@ -74,17 +74,13 @@
             @filtered="onFiltered"
           >
             <template slot="rank" slot-scope="data">
-              <p class="text-right mb-0">
-#{{ data.item.rank }}
-</p>
+              <p class="text-right mb-0">#{{ data.item.rank }}</p>
             </template>
             <template slot="accountId" slot-scope="data">
               <div
                 class="d-block d-sm-block d-md-none d-lg-none d-xl-none text-center"
               >
-                <p class="mb-2">
-rank #{{ data.item.rank }}
-</p>
+                <p class="mb-2">rank #{{ data.item.rank }}</p>
                 <Identicon
                   :key="data.item.accountId"
                   :value="data.item.accountId"

@@ -30,7 +30,9 @@
           We love getting feedback from the community, if you find a bug, want
           to comment some behaviour or want a feature being added please place
           an Issue in our
-          <a href="https://github.com/Colm3na/polkastats-v2" target="_blank">GitHub repository</a>.
+          <a href="https://github.com/Colm3na/polkastats-v2" target="_blank"
+            >GitHub repository</a
+          >.
         </p>
 
         <h2 class="mt-5 mb-4">
@@ -39,7 +41,9 @@
 
         <p>
           This is an easy way you can support me and the Polkadot folks at
-          <a href="https://www.colmenalabs.org/" target="_blank">La Colmena Labs</a>
+          <a href="https://www.colmenalabs.org/" target="_blank"
+            >La Colmena Labs</a
+          >
           blockchain colective.
         </p>
 
@@ -52,7 +56,7 @@
                 class="img-fluid"
                 style="max-width: 80px;"
                 title="PolkaStats"
-              >
+              />
             </div>
             <div class="col-md-10">
               <h3 class="mt-1 mb-2">
@@ -74,10 +78,12 @@
                   v-b-tooltip.hover
                   class="d-inline d-sm-none d-md-none d-lg-none d-xl-none"
                   title="GTzRQPzkcuynHgkEHhsPBFpKdh4sAacVRsnd8vYfPpTMeEY"
-                >GTzRQPzkcu .... vYfPpTMeEY</span>
+                  >GTzRQPzkcu .... vYfPpTMeEY</span
+                >
                 <span
                   class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline"
-                >GTzRQPzkcuynHgkEHhsPBFpKdh4sAacVRsnd8vYfPpTMeEY</span>
+                  >GTzRQPzkcuynHgkEHhsPBFpKdh4sAacVRsnd8vYfPpTMeEY</span
+                >
               </a>
             </div>
           </div>
@@ -91,7 +97,7 @@
                 class="img-fluid"
                 style="max-width: 80px;"
                 title="DragonStake"
-              >
+              />
             </div>
             <div class="col-md-10">
               <h3 class="mt-1 mb-2">
@@ -113,10 +119,12 @@
                   v-b-tooltip.hover
                   class="d-inline d-sm-none d-md-none d-lg-none d-xl-none"
                   title="DSpbbk6HKKyS78c4KDLSxCetqbwnsemv2iocVXwNe2FAvWC"
-                >DSpbbk6HKK .... XwNe2FAvWC</span>
+                  >DSpbbk6HKK .... XwNe2FAvWC</span
+                >
                 <span
                   class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline"
-                >DSpbbk6HKKyS78c4KDLSxCetqbwnsemv2iocVXwNe2FAvWC</span>
+                  >DSpbbk6HKKyS78c4KDLSxCetqbwnsemv2iocVXwNe2FAvWC</span
+                >
               </a>
             </div>
           </div>
@@ -130,7 +138,7 @@
                 class="img-fluid"
                 style="max-width: 80px;"
                 title="DelegaNetworks"
-              >
+              />
             </div>
             <div class="col-md-10">
               <h3 class="mt-1 mb-2">
@@ -152,10 +160,12 @@
                   v-b-tooltip.hover
                   class="d-inline d-sm-none d-md-none d-lg-none d-xl-none"
                   title="CoqysGbay3t3Q7hXgEmGJJquhYYpo8PqLwvW1WsUwR7KvXm"
-                >CoqysGbay3 .... WsUwR7KvXm</span>
+                  >CoqysGbay3 .... WsUwR7KvXm</span
+                >
                 <span
                   class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline"
-                >CoqysGbay3t3Q7hXgEmGJJquhYYpo8PqLwvW1WsUwR7KvXm</span>
+                  >CoqysGbay3t3Q7hXgEmGJJquhYYpo8PqLwvW1WsUwR7KvXm</span
+                >
               </a>
             </div>
           </div>
@@ -165,7 +175,9 @@
         </h2>
         <p>
           Are you a happy PolkaStats user? Make sure you follow
-          <a target="_blank" href="https://twitter.com/polkastats"><i class="fab fa-twitter" /> @PolkaStats</a>
+          <a target="_blank" href="https://twitter.com/polkastats"
+            ><i class="fab fa-twitter" /> @PolkaStats</a
+          >
           on Twitter to get the last platform updates.
         </p>
       </b-container>

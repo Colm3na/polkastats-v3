@@ -200,8 +200,8 @@ import commonMixin from "../../mixins/commonMixin.js"
 
 export default {
   components: {
-    apexchart: VueApexCharts,
-    Identicon
+    // apexchart: VueApexCharts,
+    // Identicon
   },
   mixins: [commonMixin],
   data: function() {
