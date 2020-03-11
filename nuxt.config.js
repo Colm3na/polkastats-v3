@@ -1,4 +1,4 @@
-import axios from "axios"
+import axios from "axios";
 export default {
   mode: "spa",
   /*
@@ -69,8 +69,8 @@ export default {
           test: /\.(js|vue)$/,
           loader: "eslint-loader",
           exclude: /(node_modules)/
-        })
+        });
       }
     }
   }
-}
+};

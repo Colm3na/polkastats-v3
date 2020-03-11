@@ -1,9 +1,9 @@
-import axios from "axios"
-import { backendBaseURL } from "../polkastats.config.js"
+import axios from "axios";
+import { backendBaseURL } from "../polkastats.config.js";
 
 export const state = () => ({
   list: []
-})
+});
 
 export const mutations = {
   update(state, identities) {
@@ -11,17 +11,17 @@ export const mutations = {
     // console.log(`Updating identities store, sending event to Google Analytics!`);
     // this.$ga.event('vuex-store', 'update-identities');
 
-    state.list = identities
+    state.list = identities;
   },
   getters: function() {
-    state => state.list
+    state => state.list;
   }
-}
+};
 
 export const actions = {
   update(context) {
     axios.get(`${backendBaseURL}/identities`).then(function(response) {
-      context.commit("update", response.data)
-    })
+      context.commit("update", response.data);
+    });
   }
-}
+};

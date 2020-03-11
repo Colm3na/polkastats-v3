@@ -269,21 +269,21 @@
   </div>
 </template>
 <script>
-import { mapMutations } from "vuex"
-import axios from "axios"
-import moment from "moment"
-import VueApexCharts from "vue-apexcharts"
-import Identicon from "../../components/identicon.vue"
-import { formatBalance, isHex } from "@polkadot/util"
-import BN from "bn.js"
+import { mapMutations } from "vuex";
+import axios from "axios";
+import moment from "moment";
+import VueApexCharts from "vue-apexcharts";
+import Identicon from "../../components/identicon.vue";
+import { formatBalance, isHex } from "@polkadot/util";
+import BN from "bn.js";
 import {
   decimals,
   unit,
   backendBaseURL,
   blockExplorer
-} from "../../polkastats.config.js"
+} from "../../polkastats.config.js";
 
-formatBalance.setDefaults({ decimals, unit })
+formatBalance.setDefaults({ decimals, unit });
 
 export default {
   components: {
@@ -294,55 +294,55 @@ export default {
       accountId: this.$route.query.accountId,
       blockExplorer,
       polling: null
-    }
+    };
   },
   computed: {
     validators() {
-      return this.$store.state.validators.list
+      return this.$store.state.validators.list;
     },
     identities() {
-      return this.$store.state.identities.list
+      return this.$store.state.identities.list;
     },
     nicknames() {
-      return this.$store.state.nicknames.list
+      return this.$store.state.nicknames.list;
     },
     indexes() {
-      return this.$store.state.indexes.list
+      return this.$store.state.indexes.list;
     },
     nominators() {
-      let nominatorStaking = []
+      let nominatorStaking = [];
       for (let i = 0; i < this.validators.length; i++) {
-        let validator = this.validators[i]
+        let validator = this.validators[i];
         if (validator.stakers.others.length > 0) {
           for (let j = 0; j < validator.stakers.others.length; j++) {
-            let nominator = validator.stakers.others[j]
+            let nominator = validator.stakers.others[j];
             if (nominatorStaking.find(nom => nom.accountId === nominator.who)) {
               let nominatorTmp = nominatorStaking.filter(nom => {
-                return nom.accountId === nominator.who
-              })
-              let bn
+                return nom.accountId === nominator.who;
+              });
+              let bn;
               if (isHex(nominator.value)) {
                 bn = new BN(
                   nominator.value.substring(2, nominator.value.length),
                   16
-                )
+                );
               } else {
-                bn = new BN(nominator.value.toString(), 10)
+                bn = new BN(nominator.value.toString(), 10);
               }
-              nominatorTmp[0].totalStake = nominatorTmp[0].totalStake.add(bn)
+              nominatorTmp[0].totalStake = nominatorTmp[0].totalStake.add(bn);
               nominatorTmp[0].staking.push({
                 validator: validator.accountId,
                 amount: nominator.value
-              })
+              });
             } else {
-              let bn
+              let bn;
               if (isHex(nominator.value)) {
                 bn = new BN(
                   nominator.value.substring(2, nominator.value.length),
                   16
-                )
+                );
               } else {
-                bn = new BN(nominator.value.toString(), 10)
+                bn = new BN(nominator.value.toString(), 10);
               }
               nominatorStaking.push({
                 accountId: nominator.who,
@@ -353,203 +353,203 @@ export default {
                     amount: nominator.value
                   }
                 ]
-              })
+              });
             }
           }
         }
       }
       nominatorStaking.sort(function compare(a, b) {
         if (a.totalStake.lt(b.totalStake)) {
-          return 1
+          return 1;
         }
         if (a.totalStake.gt(b.totalStake)) {
-          return -1
+          return -1;
         }
-        return 0
-      })
+        return 0;
+      });
       nominatorStaking.map((nominator, index) => {
-        nominator.rank = index + 1
-      })
+        nominator.rank = index + 1;
+      });
       // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-      this.totalRows = nominatorStaking.length
+      this.totalRows = nominatorStaking.length;
       // console.log(nominatorStaking);
-      return nominatorStaking
+      return nominatorStaking;
     }
   },
   watch: {
     $route() {
-      this.accountId = this.$route.query.accountId
+      this.accountId = this.$route.query.accountId;
     }
   },
   created: function() {
-    var vm = this
+    var vm = this;
 
     // Force update of validators list if empty
     if (this.$store.state.validators.list.length === 0) {
-      vm.$store.dispatch("validators/update")
+      vm.$store.dispatch("validators/update");
     }
 
     // Force update of staking_identity list if empty
     if (this.$store.state.stakingIdentities.list.length == 0) {
-      vm.$store.dispatch("stakingIdentities/update")
+      vm.$store.dispatch("stakingIdentities/update");
     }
 
     // Force update of indentities list if empty
     if (this.$store.state.identities.list.length === 0) {
-      vm.$store.dispatch("identities/update")
+      vm.$store.dispatch("identities/update");
     }
 
     // Force update of nicknames list if empty
     if (this.$store.state.nicknames.list.length === 0) {
-      vm.$store.dispatch("nicknames/update")
+      vm.$store.dispatch("nicknames/update");
     }
 
     // Force update of account indexes list if empty
     if (this.$store.state.indexes.list.length == 0) {
-      vm.$store.dispatch("indexes/update")
+      vm.$store.dispatch("indexes/update");
     }
 
     // Update validators, identities and nicknames every 10 seconds
     this.polling = setInterval(() => {
-      vm.$store.dispatch("validators/update")
-      vm.$store.dispatch("identities/update")
-      vm.$store.dispatch("nicknames/update")
-      vm.$store.dispatch("stakingIdentities/update")
-    }, 10000)
+      vm.$store.dispatch("validators/update");
+      vm.$store.dispatch("identities/update");
+      vm.$store.dispatch("nicknames/update");
+      vm.$store.dispatch("stakingIdentities/update");
+    }, 10000);
 
     // Update account indexes every 1 min
     this.pollingIndexes = setInterval(() => {
-      vm.$store.dispatch("indexes/update")
-    }, 60000)
+      vm.$store.dispatch("indexes/update");
+    }, 60000);
   },
   beforeDestroy: function() {
-    clearInterval(this.polling)
-    clearInterval(this.pollingIndexes)
+    clearInterval(this.polling);
+    clearInterval(this.pollingIndexes);
   },
   methods: {
     formatNumber(n) {
       if (isHex(n)) {
         return parseInt(n, 16)
           .toString()
-          .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+          .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
       } else {
-        return n.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+        return n.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
       }
     },
     formatDot(amount) {
-      let bn
+      let bn;
       if (isHex(amount)) {
-        bn = new BN(amount.substring(2, amount.length), 16)
+        bn = new BN(amount.substring(2, amount.length), 16);
       } else {
-        bn = new BN(amount.toString())
+        bn = new BN(amount.toString());
       }
-      return formatBalance(bn.toString(10))
+      return formatBalance(bn.toString(10));
     },
     shortAddress(address) {
       return (
         address.substring(0, 5) +
         " .... " +
         address.substring(address.length - 5)
-      )
+      );
     },
     thousandsSeparator(n) {
-      return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+      return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     },
     getIndex(validator) {
       // Receives validator accountId
       for (var i = 0; i < this.validators.length; i++) {
         if (this.validators[i].accountId === validator) {
-          return i
+          return i;
         }
       }
-      return false
+      return false;
     },
     getRank(validator) {
       // Receives validator accountId
       for (var i = 0; i < this.validators.length; i++) {
         if (this.validators[i].accountId == validator) {
-          return i + 1
+          return i + 1;
         }
       }
-      return false
+      return false;
     },
     makeToast(content = "", title = "", variant = null, solid = false) {
       this.$bvToast.toast(content, {
         title: title,
         variant: variant,
         solid: solid
-      })
+      });
     },
     getIdentity(stashId) {
       let filteredArray = this.$store.state.stakingIdentities.list.filter(
         obj => {
-          return obj.accountId === stashId
+          return obj.accountId === stashId;
         }
-      )
-      return filteredArray[0]
+      );
+      return filteredArray[0];
     },
     hasIdentity(stashId) {
       return this.$store.state.stakingIdentities.list.some(obj => {
-        return obj.accountId === stashId
-      })
+        return obj.accountId === stashId;
+      });
     },
     hasPolkaStatsIdentity(stashId) {
       return this.$store.state.identities.list.some(obj => {
-        return obj.stashId === stashId
-      })
+        return obj.stashId === stashId;
+      });
     },
     getPolkaStatsIdentity(stashId) {
       let filteredArray = this.$store.state.identities.list.filter(obj => {
-        return obj.stashId === stashId
-      })
-      return filteredArray[0]
+        return obj.stashId === stashId;
+      });
+      return filteredArray[0];
     },
     hasNickname(accountId) {
       return this.$store.state.nicknames.list.some(obj => {
-        return obj.accountId === accountId
-      })
+        return obj.accountId === accountId;
+      });
     },
     getNickname(accountId) {
       let filteredArray = this.$store.state.nicknames.list.filter(obj => {
-        return obj.accountId === accountId
-      })
-      return filteredArray[0].nickname
+        return obj.accountId === accountId;
+      });
+      return filteredArray[0].nickname;
     },
     getTotalStake(stake) {
-      let totalStake = new BN("0", 10)
+      let totalStake = new BN("0", 10);
       if (stake.length > 0) {
         for (let i = 0; i < stake.length; i++) {
-          let nomination = stake[i]
-          let bn
+          let nomination = stake[i];
+          let bn;
           if (isHex(nomination.amount)) {
             bn = new BN(
               nomination.amount.substring(2, nomination.amount.length),
               16
-            )
+            );
           } else {
-            bn = new BN(nomination.amount.toString(), 10)
+            bn = new BN(nomination.amount.toString(), 10);
           }
-          totalStake = totalStake.add(bn)
+          totalStake = totalStake.add(bn);
         }
-        return totalStake
+        return totalStake;
       } else {
-        return 0
+        return 0;
       }
     },
     getTotalStakePercen(stake, amount) {
-      let totalStake = this.getTotalStake(stake)
+      let totalStake = this.getTotalStake(stake);
 
       if (totalStake && amount) {
-        let bn
+        let bn;
         if (isHex(amount)) {
-          bn = new BN(amount.substring(2, amount.length), 16)
+          bn = new BN(amount.substring(2, amount.length), 16);
         } else {
-          bn = new BN(amount.toString(), 10)
+          bn = new BN(amount.toString(), 10);
         }
-        bn = bn.mul(new BN("10000", 10))
-        return bn.div(totalStake)
+        bn = bn.mul(new BN("10000", 10));
+        return bn.div(totalStake);
       } else {
-        return 0
+        return 0;
       }
     }
   },
@@ -563,9 +563,9 @@ export default {
           content: "Kusama nominator " + this.$route.query.accountId
         }
       ]
-    }
+    };
   }
-}
+};
 </script>
 <style>
 .amount {

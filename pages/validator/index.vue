@@ -779,15 +779,15 @@
   </div>
 </template>
 <script>
-import { mapMutations } from "vuex"
-import axios from "axios"
-import moment from "moment"
-import VueApexCharts from "vue-apexcharts"
-import Identicon from "../../components/identicon.vue"
-import { isHex } from "@polkadot/util"
-import BN from "bn.js"
-import { backendBaseURL, blockExplorer } from "../../polkastats.config.js"
-import commonMixin from "../../mixins/commonMixin.js"
+import { mapMutations } from "vuex";
+import axios from "axios";
+import moment from "moment";
+import VueApexCharts from "vue-apexcharts";
+import Identicon from "../../components/identicon.vue";
+import { isHex } from "@polkadot/util";
+import BN from "bn.js";
+import { backendBaseURL, blockExplorer } from "../../polkastats.config.js";
+import commonMixin from "../../mixins/commonMixin.js";
 
 export default {
   components: {
@@ -893,7 +893,7 @@ export default {
           },
           labels: {
             formatter: function(val) {
-              return moment.unix(val).format("MM/DD/YYYY HH:mm")
+              return moment.unix(val).format("MM/DD/YYYY HH:mm");
             }
           },
           tooltip: {
@@ -906,7 +906,7 @@ export default {
           },
           labels: {
             formatter: function(val) {
-              return val
+              return val;
             }
           }
         }
@@ -943,7 +943,7 @@ export default {
           },
           labels: {
             formatter: function(val) {
-              return moment.unix(val).format("MM/DD/YYYY HH:mm")
+              return moment.unix(val).format("MM/DD/YYYY HH:mm");
             }
           },
           tooltip: {
@@ -956,7 +956,7 @@ export default {
           },
           labels: {
             formatter: function(val) {
-              return val
+              return val;
             }
           }
         }
@@ -993,7 +993,7 @@ export default {
           },
           labels: {
             formatter: function(val) {
-              return moment.unix(val).format("MM/DD/YYYY HH:mm")
+              return moment.unix(val).format("MM/DD/YYYY HH:mm");
             }
           },
           tooltip: {
@@ -1006,35 +1006,35 @@ export default {
           },
           labels: {
             formatter: function(val) {
-              return val
+              return val;
             }
           }
         }
       },
       totalIssuance: ""
-    }
+    };
   },
   computed: {
     validators() {
       if (this.$store.state.validators.list.length > 0) {
         let validator = this.$store.state.validators.list.find(
           validator => validator.accountId === this.accountId
-        )
+        );
         // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-        this.totalRows = validator.stakers.others.length
+        this.totalRows = validator.stakers.others.length;
       }
-      return this.$store.state.validators.list
+      return this.$store.state.validators.list;
     },
     // eslint-disable-next-line vue/return-in-computed-property
     validatorStakers() {
       if (this.$store.state.validators.list.length > 0) {
         let validator = this.$store.state.validators.list.find(
           validator => validator.accountId === this.accountId
-        )
+        );
         // console.log(validator);
 
         // Calculate others stake total amount
-        let stakeTotal, stakeOwn, stakeOthers
+        let stakeTotal, stakeOwn, stakeOthers;
 
         if (isHex(validator.stakers.total)) {
           stakeTotal = new BN(
@@ -1042,9 +1042,9 @@ export default {
               .toString()
               .substring(2, validator.stakers.total.length),
             16
-          )
+          );
         } else {
-          stakeTotal = new BN(validator.stakers.total, 10)
+          stakeTotal = new BN(validator.stakers.total, 10);
         }
 
         if (isHex(validator.stakers.own)) {
@@ -1053,17 +1053,17 @@ export default {
               .toString()
               .substring(2, validator.stakers.own.length),
             16
-          )
+          );
         } else {
-          stakeOwn = new BN(validator.stakers.own, 10)
+          stakeOwn = new BN(validator.stakers.own, 10);
         }
-        stakeOthers = stakeTotal.sub(stakeOwn)
+        stakeOthers = stakeTotal.sub(stakeOwn);
 
-        let stakers = validator.stakers.others.slice()
+        let stakers = validator.stakers.others.slice();
 
         stakers.sort((a, b) => {
           if (a.value && b.value) {
-            let stakeA, stakeB
+            let stakeA, stakeB;
 
             // console.log(`a`, a.value);
             // console.log(`b`, b.value);
@@ -1072,29 +1072,29 @@ export default {
               stakeA = new BN(
                 a.value.toString().substring(2, a.value.length),
                 16
-              )
+              );
             } else {
-              stakeA = new BN(a.value, 10)
+              stakeA = new BN(a.value, 10);
             }
 
             if (isHex(b.value)) {
               stakeB = new BN(
                 b.value.toString().substring(2, b.value.length),
                 16
-              )
+              );
             } else {
-              stakeB = new BN(b.value, 10)
+              stakeB = new BN(b.value, 10);
             }
 
             // console.log(`a`, stakeA.toString(10));
             // console.log(`b`, stakeB.toString(10));
             // console.log(`res`, stakeA.lt(stakeB));
 
-            return stakeA.lt(stakeB) ? 1 : -1
+            return stakeA.lt(stakeB) ? 1 : -1;
 
             // return stakeA.cmp(stakeB);
           }
-        })
+        });
 
         return stakers.map((staker, index) => {
           return {
@@ -1103,29 +1103,29 @@ export default {
             amountOrder: index + 1,
             accountIndex: this.indexes[staker.who],
             percent: this.getStakePercent(staker.value, stakeOthers)
-          }
-        })
+          };
+        });
       }
     },
     identities() {
-      return this.$store.state.identities.list
+      return this.$store.state.identities.list;
     },
     nicknames() {
-      return this.$store.state.nicknames.list
+      return this.$store.state.nicknames.list;
     },
     indexes() {
-      return this.$store.state.indexes.list
+      return this.$store.state.indexes.list;
     },
     totalStakeBonded() {
-      return this.$store.state.validators.totalStakeBonded
+      return this.$store.state.validators.totalStakeBonded;
     },
     totalStakeBondedPercen() {
       if (this.totalStakeBonded !== 0 && this.totalIssuance !== "") {
-        let totalIssuance = new BN(this.totalIssuance, 10)
-        let totalStakeBonded = this.totalStakeBonded.mul(new BN("100000", 10))
-        return totalStakeBonded.div(totalIssuance)
+        let totalIssuance = new BN(this.totalIssuance, 10);
+        let totalStakeBonded = this.totalStakeBonded.mul(new BN("100000", 10));
+        return totalStakeBonded.div(totalIssuance);
       } else {
-        return 0
+        return 0;
       }
     },
     sortOptions() {
@@ -1133,93 +1133,93 @@ export default {
       return this.fields
         .filter(f => f.sortable)
         .map(f => {
-          return { text: f.label, value: f.key }
-        })
+          return { text: f.label, value: f.key };
+        });
     }
   },
   watch: {
     $route() {
-      this.accountId = this.$route.query.accountId
+      this.accountId = this.$route.query.accountId;
 
       // Update graph data
-      this.getValidatorDailyGraphData()
-      this.getValidatorWeeklyGraphData()
-      this.getValidatorMonthlyGraphData()
+      this.getValidatorDailyGraphData();
+      this.getValidatorWeeklyGraphData();
+      this.getValidatorMonthlyGraphData();
 
       // Restart graph data polling
-      clearInterval(this.graphPolling)
+      clearInterval(this.graphPolling);
       this.graphPolling = setInterval(() => {
-        this.getValidatorDailyGraphData()
-        this.getValidatorWeeklyGraphData()
-        this.getValidatorMonthlyGraphData()
-      }, 60000)
+        this.getValidatorDailyGraphData();
+        this.getValidatorWeeklyGraphData();
+        this.getValidatorMonthlyGraphData();
+      }, 60000);
     }
   },
   created: function() {
-    var vm = this
+    var vm = this;
 
     // Get favorites from cookie
     if (this.$cookies.get("favorites")) {
-      this.favorites = this.$cookies.get("favorites")
+      this.favorites = this.$cookies.get("favorites");
     }
 
     // Load graph data first time
-    this.getValidatorDailyGraphData()
-    this.getValidatorWeeklyGraphData()
-    this.getValidatorMonthlyGraphData()
+    this.getValidatorDailyGraphData();
+    this.getValidatorWeeklyGraphData();
+    this.getValidatorMonthlyGraphData();
 
     // Force update of validators list if empty
     if (this.$store.state.validators.list.length == 0) {
-      vm.$store.dispatch("validators/update")
+      vm.$store.dispatch("validators/update");
     }
 
     // Force update of staking_identity list if empty
     if (this.$store.state.stakingIdentities.list.length == 0) {
-      vm.$store.dispatch("stakingIdentities/update")
+      vm.$store.dispatch("stakingIdentities/update");
     }
 
     // Force update of indentity list if empty
     if (this.$store.state.identities.list.length == 0) {
-      vm.$store.dispatch("identities/update")
+      vm.$store.dispatch("identities/update");
     }
 
     // Force update of nicknames list if empty
     if (this.$store.state.nicknames.list.length == 0) {
-      vm.$store.dispatch("nicknames/update")
+      vm.$store.dispatch("nicknames/update");
     }
 
     // Force update of account indexes list if empty
     if (this.$store.state.indexes.list.length == 0) {
-      vm.$store.dispatch("indexes/update")
+      vm.$store.dispatch("indexes/update");
     }
 
     // Update validators every 10 seconds
     this.polling = setInterval(() => {
-      vm.$store.dispatch("validators/update")
-      vm.$store.dispatch("stakingIdentities/update")
-    }, 10000)
+      vm.$store.dispatch("validators/update");
+      vm.$store.dispatch("stakingIdentities/update");
+    }, 10000);
 
     // Refresh graph data and account indexes every minute
     this.graphPolling = setInterval(() => {
-      this.getValidatorDailyGraphData()
-      this.getValidatorWeeklyGraphData()
-      this.getValidatorMonthlyGraphData()
-      vm.$store.dispatch("indexes/update")
-    }, 60000)
+      this.getValidatorDailyGraphData();
+      this.getValidatorWeeklyGraphData();
+      this.getValidatorMonthlyGraphData();
+      vm.$store.dispatch("indexes/update");
+    }, 60000);
   },
   beforeDestroy: function() {
-    clearInterval(this.polling)
-    clearInterval(this.graphPolling)
+    clearInterval(this.polling);
+    clearInterval(this.graphPolling);
   },
   methods: {
     getValidatorDailyGraphData: function() {
-      var vm = this
+      var vm = this;
       axios
         .get(`${this.backendBaseURL}/validator/graph/daily/${this.accountId}`)
         .then(function(response) {
           // Update chart data
-          var newCategories = []
-          var newData = []
+          var newCategories = [];
+          var newData = [];
 
           //console.log(response.data);
 
@@ -1231,9 +1231,9 @@ export default {
               (i > 0 && response.data[i].amount != response.data[i - 1].amount)
             ) {
               // Save first and last point
-              if (i == 0) vm.daily.last = response.data[i].amount
+              if (i == 0) vm.daily.last = response.data[i].amount;
               if (i == response.data.length - 1)
-                vm.daily.first = response.data[i].amount
+                vm.daily.first = response.data[i].amount;
 
               newCategories.push(
                 moment
@@ -1242,13 +1242,13 @@ export default {
                     "YYYY-MM-DD HH:mm:ss.SSSSSS Z"
                   )
                   .format("YYYY-MM-DD HH:mm:ss")
-              )
-              newData.push(response.data[i].amount)
+              );
+              newData.push(response.data[i].amount);
             }
           }
 
-          newCategories.reverse()
-          newData.reverse()
+          newCategories.reverse();
+          newData.reverse();
 
           // Make sure to update the whole options config and not just a single property to allow the Vue watch catch the change.
           vm.StakeEvolutionDailyChartOptions = {
@@ -1262,7 +1262,7 @@ export default {
                 },
                 labels: {
                   formatter: function(val) {
-                    return moment.unix(val / 1000).format("MM/DD/YYYY HH:mm")
+                    return moment.unix(val / 1000).format("MM/DD/YYYY HH:mm");
                   }
                 }
               },
@@ -1272,37 +1272,37 @@ export default {
                 },
                 labels: {
                   formatter: function(val) {
-                    return (val / 1000000000000).toFixed(6)
+                    return (val / 1000000000000).toFixed(6);
                   }
                 }
               }
             }
-          }
+          };
 
           // In the same way, update the series option
           vm.StakeEvolutionDailySeries = [
             {
               data: newData
             }
-          ]
-        })
+          ];
+        });
     },
     getValidatorWeeklyGraphData: function() {
-      var vm = this
+      var vm = this;
       axios
         .get(`${this.backendBaseURL}/validator/graph/weekly/${this.accountId}`)
         .then(function(response) {
           // Update chart data
-          var newCategories = []
-          var newData = []
+          var newCategories = [];
+          var newData = [];
 
           //console.log(response.data);
 
           for (var i = 0; i < response.data.length; i++) {
             // Save first and last point
-            if (i == 0) vm.weekly.last = response.data[i].amount
+            if (i == 0) vm.weekly.last = response.data[i].amount;
             if (i == response.data.length - 1)
-              vm.weekly.first = response.data[i].amount
+              vm.weekly.first = response.data[i].amount;
 
             newCategories.push(
               moment
@@ -1311,12 +1311,12 @@ export default {
                   "YYYY-MM-DD HH:mm:ss.SSSSSS Z"
                 )
                 .format("YYYY-MM-DD HH:mm:ss")
-            )
-            newData.push(response.data[i].amount)
+            );
+            newData.push(response.data[i].amount);
           }
 
-          newCategories.reverse()
-          newData.reverse()
+          newCategories.reverse();
+          newData.reverse();
 
           // Make sure to update the whole options config and not just a single property to allow the Vue watch catch the change.
           vm.StakeEvolutionWeeklyChartOptions = {
@@ -1330,7 +1330,7 @@ export default {
                 },
                 labels: {
                   formatter: function(val) {
-                    return moment.unix(val / 1000).format("MM/DD/YYYY HH:mm")
+                    return moment.unix(val / 1000).format("MM/DD/YYYY HH:mm");
                   }
                 }
               },
@@ -1340,37 +1340,37 @@ export default {
                 },
                 labels: {
                   formatter: function(val) {
-                    return (val / 1000000000000).toFixed(6)
+                    return (val / 1000000000000).toFixed(6);
                   }
                 }
               }
             }
-          }
+          };
 
           // In the same way, update the series option
           vm.StakeEvolutionWeeklySeries = [
             {
               data: newData
             }
-          ]
-        })
+          ];
+        });
     },
     getValidatorMonthlyGraphData: function() {
-      var vm = this
+      var vm = this;
       axios
         .get(`${this.backendBaseURL}/validator/graph/monthly/${this.accountId}`)
         .then(function(response) {
           // Update chart data
-          var newCategories = []
-          var newData = []
+          var newCategories = [];
+          var newData = [];
 
           //console.log(response.data);
 
           for (var i = 0; i < response.data.length; i++) {
             // Save first and last point
-            if (i == 0) vm.monthly.last = response.data[i].amount
+            if (i == 0) vm.monthly.last = response.data[i].amount;
             if (i == response.data.length - 1)
-              vm.monthly.first = response.data[i].amount
+              vm.monthly.first = response.data[i].amount;
 
             newCategories.push(
               moment
@@ -1379,12 +1379,12 @@ export default {
                   "YYYY-MM-DD HH:mm:ss.SSSSSS Z"
                 )
                 .format("YYYY-MM-DD HH:mm:ss")
-            )
-            newData.push(response.data[i].amount)
+            );
+            newData.push(response.data[i].amount);
           }
 
-          newCategories.reverse()
-          newData.reverse()
+          newCategories.reverse();
+          newData.reverse();
 
           // Make sure to update the whole options config and not just a single property to allow the Vue watch catch the change.
           vm.StakeEvolutionMonthlyChartOptions = {
@@ -1398,7 +1398,7 @@ export default {
                 },
                 labels: {
                   formatter: function(val) {
-                    return moment.unix(val / 1000).format("MM/DD/YYYY HH:mm")
+                    return moment.unix(val / 1000).format("MM/DD/YYYY HH:mm");
                   }
                 }
               },
@@ -1408,90 +1408,90 @@ export default {
                 },
                 labels: {
                   formatter: function(val) {
-                    return (val / 1000000000000).toFixed(6)
+                    return (val / 1000000000000).toFixed(6);
                   }
                 }
               }
             }
-          }
+          };
 
           // In the same way, update the series option
           vm.StakeEvolutionMonthlySeries = [
             {
               data: newData
             }
-          ]
-        })
+          ];
+        });
     },
     toggleFavorite(validator) {
       // Receives validator accountId
       if (this.isFavorite(validator)) {
-        this.favorites.splice(this.getIndex(validator), 1)
+        this.favorites.splice(this.getIndex(validator), 1);
       } else {
         this.favorites.push({
           accountId: validator,
           name: "Edit validator name..."
-        })
+        });
       }
-      return true
+      return true;
     },
     isFavorite(validator) {
       // Receives validator accountId
       for (var i = 0; i < this.favorites.length; i++) {
         if (this.favorites[i].accountId == validator) {
-          return true
+          return true;
         }
       }
-      return false
+      return false;
     },
     getIndex(validator) {
       // Receives validator accountId
       for (var i = 0; i < this.favorites.length; i++) {
         if (this.favorites[i].accountId == validator) {
-          return i
+          return i;
         }
       }
-      return false
+      return false;
     },
     getIdentity(stashId) {
       let filteredArray = this.$store.state.stakingIdentities.list.filter(
         obj => {
-          return obj.accountId === stashId
+          return obj.accountId === stashId;
         }
-      )
-      return filteredArray[0]
+      );
+      return filteredArray[0];
     },
     hasIdentity(stashId) {
       return this.$store.state.stakingIdentities.list.some(obj => {
-        return obj.accountId === stashId
-      })
+        return obj.accountId === stashId;
+      });
     },
     hasPolkaStatsIdentity(stashId) {
       return this.$store.state.identities.list.some(obj => {
-        return obj.stashId === stashId
-      })
+        return obj.stashId === stashId;
+      });
     },
     getPolkaStatsIdentity(stashId) {
       let filteredArray = this.$store.state.identities.list.filter(obj => {
-        return obj.stashId === stashId
-      })
-      return filteredArray[0]
+        return obj.stashId === stashId;
+      });
+      return filteredArray[0];
     },
     hasNickname(accountId) {
       return this.$store.state.nicknames.list.some(obj => {
-        return obj.accountId === accountId
-      })
+        return obj.accountId === accountId;
+      });
     },
     getNickname(accountId) {
       let filteredArray = this.$store.state.nicknames.list.filter(obj => {
-        return obj.accountId === accountId
-      })
-      return filteredArray[0].nickname
+        return obj.accountId === accountId;
+      });
+      return filteredArray[0].nickname;
     },
     onFiltered(filteredItems) {
       // Trigger pagination to update the number of buttons/pages due to filtering
-      this.totalRows = filteredItems.length
-      this.currentPage = 1
+      this.totalRows = filteredItems.length;
+      this.currentPage = 1;
     }
   },
   head() {
@@ -1505,9 +1505,9 @@ export default {
           content: "Polkadot Kusama validator " + this.$route.query.accountId
         }
       ]
-    }
+    };
   }
-}
+};
 </script>
 <style>
 .fas.fa-copy {

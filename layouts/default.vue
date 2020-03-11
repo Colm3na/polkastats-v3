@@ -264,17 +264,17 @@
   </div>
 </template>
 <script>
-import { mapMutations } from "vuex"
+import { mapMutations } from "vuex";
 export default {
   computed: {
     system() {
-      return this.$store.state.system.info
+      return this.$store.state.system.info;
     }
   },
   created: function() {
-    this.$store.dispatch("system/update")
+    this.$store.dispatch("system/update");
   }
-}
+};
 </script>
 <style>
 @import url("https://use.fontawesome.com/releases/v5.6.3/css/all.css");

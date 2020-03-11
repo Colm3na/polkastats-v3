@@ -28,19 +28,19 @@ export default {
   data: function() {
     return {
       editing: false
-    }
+    };
   },
   methods: {
     updateFavoritesCookie: function() {
-      this.editing = false
+      this.editing = false;
       this.$cookies.set("favorites", this.favorites, {
         path: "/",
         maxAge: 60 * 60 * 24 * 7
-      })
-      console.log(this.favorites)
+      });
+      console.log(this.favorites);
     }
   }
-}
+};
 </script>
 <style>
 h5 {

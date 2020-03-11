@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import Identicon from "@polkadot/vue-identicon"
+import Identicon from "@polkadot/vue-identicon";
 export default {
   components: {
     Identicon: Identicon
@@ -30,10 +30,10 @@ export default {
         title: title,
         variant: variant,
         solid: solid
-      })
+      });
     }
   }
-}
+};
 </script>
 
 <style>

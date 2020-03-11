@@ -185,8 +185,8 @@
   </div>
 </template>
 <script>
-import Identicon from "../components/identicon.vue"
-import { blockExplorer } from "../polkastats.config.js"
+import Identicon from "../components/identicon.vue";
+import { blockExplorer } from "../polkastats.config.js";
 
 export default {
   components: {
@@ -195,15 +195,15 @@ export default {
   data: function() {
     return {
       blockExplorer
-    }
+    };
   },
   head() {
     return {
       title: "PolkaStats - Support us",
       meta: [{ hid: "description", name: "description", content: "Support us" }]
-    }
+    };
   }
-}
+};
 </script>
 <style>
 .support-us .clipboard {

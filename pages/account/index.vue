@@ -235,10 +235,10 @@
   </div>
 </template>
 <script>
-import { mapMutations } from "vuex"
-import Identicon from "../../components/identicon.vue"
-import { blockExplorer } from "../../polkastats.config.js"
-import commonMixin from "../../mixins/commonMixin.js"
+import { mapMutations } from "vuex";
+import Identicon from "../../components/identicon.vue";
+import { blockExplorer } from "../../polkastats.config.js";
+import commonMixin from "../../mixins/commonMixin.js";
 
 export default {
   components: {
@@ -250,35 +250,35 @@ export default {
       accountId: this.$route.query.accountId,
       blockExplorer,
       polling: null
-    }
+    };
   },
   computed: {
     accounts() {
-      return this.$store.state.accounts.list
+      return this.$store.state.accounts.list;
     }
   },
   watch: {
     $route() {
-      this.accountId = this.$route.query.accountId
+      this.accountId = this.$route.query.accountId;
     }
   },
   created: function() {
-    var vm = this
+    var vm = this;
 
     // Force update of account list if empty
     if (this.$store.state.accounts.list.length == 0) {
-      vm.$store.dispatch("accounts/update")
+      vm.$store.dispatch("accounts/update");
     }
-    this.totalRows = this.$store.state.accounts.list.length
+    this.totalRows = this.$store.state.accounts.list.length;
 
     // Update data every 5 minutes
     this.polling = setInterval(() => {
-      vm.$store.dispatch("accounts/update")
-      if (!this.filter) this.totalRows = this.$store.state.accounts.list.length
-    }, 300000)
+      vm.$store.dispatch("accounts/update");
+      if (!this.filter) this.totalRows = this.$store.state.accounts.list.length;
+    }, 300000);
   },
   beforeDestroy: function() {
-    clearInterval(this.polling)
+    clearInterval(this.polling);
   },
   head() {
     return {
@@ -290,9 +290,9 @@ export default {
           content: "Kusama account " + this.$route.query.accountId
         }
       ]
-    }
+    };
   }
-}
+};
 </script>
 <style>
 .identicon {

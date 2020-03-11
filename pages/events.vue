@@ -117,10 +117,10 @@
   </div>
 </template>
 <script>
-import { mapMutations } from "vuex"
-import axios from "axios"
-import bootstrap from "bootstrap"
-import commonMixin from "../mixins/commonMixin.js"
+import { mapMutations } from "vuex";
+import axios from "axios";
+import bootstrap from "bootstrap";
+import commonMixin from "../mixins/commonMixin.js";
 
 export default {
   mixins: [commonMixin],
@@ -172,45 +172,45 @@ export default {
         }
       ],
       polling: null
-    }
+    };
   },
   computed: {
     events() {
-      return this.$store.state.events.list
+      return this.$store.state.events.list;
     },
     sortOptions() {
       // Create an options list from our fields
       return this.fields
         .filter(f => f.sortable)
         .map(f => {
-          return { text: f.label, value: f.key }
-        })
+          return { text: f.label, value: f.key };
+        });
     }
   },
   created: function() {
-    var vm = this
+    var vm = this;
 
     // Force update of events list if empty
     if (this.$store.state.events.list.length == 0) {
-      vm.$store.dispatch("events/update")
+      vm.$store.dispatch("events/update");
     }
-    this.totalRows = this.$store.state.events.list.length
+    this.totalRows = this.$store.state.events.list.length;
 
     // Update data every 10 seconds
     this.polling = setInterval(() => {
-      vm.$store.dispatch("network/update")
-      vm.$store.dispatch("events/update")
-      if (!this.filter) this.totalRows = this.$store.state.events.list.length
-    }, 10000)
+      vm.$store.dispatch("network/update");
+      vm.$store.dispatch("events/update");
+      if (!this.filter) this.totalRows = this.$store.state.events.list.length;
+    }, 10000);
   },
   beforeDestroy: function() {
-    clearInterval(this.polling)
+    clearInterval(this.polling);
   },
   methods: {
     onFiltered(filteredItems) {
       // Trigger pagination to update the number of buttons/pages due to filtering
-      this.totalRows = filteredItems.length
-      this.currentPage = 1
+      this.totalRows = filteredItems.length;
+      this.currentPage = 1;
     }
   },
   head() {
@@ -223,9 +223,9 @@ export default {
           content: "Polkadot Kusama chain events"
         }
       ]
-    }
+    };
   }
-}
+};
 </script>
 <style>
 #events-table th {

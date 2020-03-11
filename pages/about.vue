@@ -98,7 +98,7 @@
   </div>
 </template>
 <script>
-import axios from "axios"
+import axios from "axios";
 export default {
   head() {
     return {
@@ -106,8 +106,8 @@ export default {
       meta: [
         { hid: "description", name: "description", content: "About PolkaStats" }
       ]
-    }
+    };
   }
-}
+};
 </script>
 <style></style>

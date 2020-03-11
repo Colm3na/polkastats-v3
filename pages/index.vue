@@ -431,15 +431,15 @@
   </div>
 </template>
 <script>
-import { mapMutations } from "vuex"
-import axios from "axios"
-import bootstrap from "bootstrap"
-import Identicon from "../components/identicon.vue"
-import Network from "../components/network.vue"
-import { isHex } from "@polkadot/util"
-import BN from "bn.js"
-import { blockExplorer } from "../polkastats.config.js"
-import commonMixin from "../mixins/commonMixin.js"
+import { mapMutations } from "vuex";
+import axios from "axios";
+import bootstrap from "bootstrap";
+import Identicon from "../components/identicon.vue";
+import Network from "../components/network.vue";
+import { isHex } from "@polkadot/util";
+import BN from "bn.js";
+import { blockExplorer } from "../polkastats.config.js";
+import commonMixin from "../mixins/commonMixin.js";
 
 export default {
   components: {
@@ -516,45 +516,45 @@ export default {
       blockExplorer,
       favorites: [],
       polling: null
-    }
+    };
   },
   computed: {
     network() {
-      return this.$store.state.network.info
+      return this.$store.state.network.info;
     },
     validators() {
-      let validatorsObject = []
+      let validatorsObject = [];
       for (let i = 0; i < this.$store.state.validators.list.length; i++) {
-        let validator = this.$store.state.validators.list[i]
-        let stake = 0
+        let validator = this.$store.state.validators.list[i];
+        let stake = 0;
         if (validator.stakers || validator.stakingLedger) {
           if (validator.stakers.total > 0) {
-            stake = validator.stakers.total
+            stake = validator.stakers.total;
           } else {
-            stake = validator.stakingLedger.total
+            stake = validator.stakingLedger.total;
           }
         }
-        let stakePercent = 0
+        let stakePercent = 0;
         if (validator.stakers) {
           stakePercent = this.getStakePercent(
             validator.stakers.total,
             this.totalStakeBonded
-          )
+          );
         }
 
-        let commission = 0
+        let commission = 0;
         if (validator.validatorPrefs) {
-          commission = validator.validatorPrefs.commission
+          commission = validator.validatorPrefs.commission;
         }
 
-        let identity = ""
+        let identity = "";
         if (this.hasIdentity(validator.accountId)) {
-          identity = this.getIdentity(validator.accountId)
+          identity = this.getIdentity(validator.accountId);
         }
 
-        let kusamaIdentity = ""
+        let kusamaIdentity = "";
         if (this.hasKusamaIdentity(validator.accountId)) {
-          kusamaIdentity = this.hasKusamaIdentity(validator.accountId)
+          kusamaIdentity = this.hasKusamaIdentity(validator.accountId);
         }
 
         validatorsObject.push({
@@ -573,18 +573,18 @@ export default {
           currentElected: validator.currentElected,
           kusamaIdentity,
           identity
-        })
+        });
       }
-      return validatorsObject
+      return validatorsObject;
     },
     intentions() {
-      return this.$store.state.intentions.list
+      return this.$store.state.intentions.list;
     },
     identities() {
-      return this.$store.state.identities.list
+      return this.$store.state.identities.list;
     },
     indexes() {
-      return this.$store.state.indexes.list
+      return this.$store.state.indexes.list;
     },
     totalStakeBondedPercen() {
       if (
@@ -592,23 +592,23 @@ export default {
         this.network.totalIssuance !== "" &&
         this.network.totalIssuance !== "0"
       ) {
-        let totalIssuance = new BN(this.network.totalIssuance, 10)
-        let totalStakeBonded = this.totalStakeBonded.mul(new BN("100", 10))
-        return totalStakeBonded.div(totalIssuance)
+        let totalIssuance = new BN(this.network.totalIssuance, 10);
+        let totalStakeBonded = this.totalStakeBonded.mul(new BN("100", 10));
+        return totalStakeBonded.div(totalIssuance);
       } else {
-        return 0
+        return 0;
       }
     },
     totalStakeBonded() {
-      return this.$store.state.validators.totalStakeBonded
+      return this.$store.state.validators.totalStakeBonded;
     },
     sortOptions() {
       // Create an options list from our fields
       return this.fields
         .filter(f => f.sortable)
         .map(f => {
-          return { text: f.label, value: f.key }
-        })
+          return { text: f.label, value: f.key };
+        });
     }
   },
   watch: {
@@ -617,134 +617,134 @@ export default {
       this.$cookies.set("favorites", val, {
         path: "/",
         maxAge: 60 * 60 * 24 * 7
-      })
+      });
     }
   },
   created: function() {
-    var vm = this
+    var vm = this;
 
     // Get favorites from cookie
     if (this.$cookies.get("favorites")) {
-      this.favorites = this.$cookies.get("favorites")
+      this.favorites = this.$cookies.get("favorites");
     }
 
     // Force update of network info
-    vm.$store.dispatch("network/update")
+    vm.$store.dispatch("network/update");
 
     // Force update of validators list if empty
     if (this.$store.state.validators.list.length === 0) {
-      vm.$store.dispatch("validators/update")
+      vm.$store.dispatch("validators/update");
     }
-    this.totalRows = this.$store.state.validators.list.length
+    this.totalRows = this.$store.state.validators.list.length;
 
     // Force update of intentions list if empty
     if (this.$store.state.intentions.list.length == 0) {
-      vm.$store.dispatch("intentions/update")
+      vm.$store.dispatch("intentions/update");
     }
 
     // Force update of indentity list if empty
     if (this.$store.state.identities.list.length === 0) {
-      vm.$store.dispatch("identities/update")
+      vm.$store.dispatch("identities/update");
     }
 
     // Force update of indexes list if empty
     if (this.$store.state.indexes.list.length === 0) {
-      vm.$store.dispatch("indexes/update")
+      vm.$store.dispatch("indexes/update");
     }
 
     // Force update of staking identities list if empty
     if (this.$store.state.stakingIdentities.list.length === 0) {
-      vm.$store.dispatch("stakingIdentities/update")
+      vm.$store.dispatch("stakingIdentities/update");
     }
 
     // Update network info validators and intentions every 10 seconds
     this.polling = setInterval(() => {
-      vm.$store.dispatch("network/update")
-      vm.$store.dispatch("validators/update")
-      vm.$store.dispatch("intentions/update")
-      vm.$store.dispatch("stakingIdentities/update")
+      vm.$store.dispatch("network/update");
+      vm.$store.dispatch("validators/update");
+      vm.$store.dispatch("intentions/update");
+      vm.$store.dispatch("stakingIdentities/update");
       if (!this.filter)
-        this.totalRows = this.$store.state.validators.list.length
-    }, 10000)
+        this.totalRows = this.$store.state.validators.list.length;
+    }, 10000);
 
     // Update account indexes every 1 min
     this.pollingIndexes = setInterval(() => {
-      vm.$store.dispatch("indexes/update")
-    }, 60000)
+      vm.$store.dispatch("indexes/update");
+    }, 60000);
   },
   beforeDestroy: function() {
-    clearInterval(this.polling)
-    clearInterval(this.pollingIndexes)
+    clearInterval(this.polling);
+    clearInterval(this.pollingIndexes);
   },
   methods: {
     toggleFavorite(validator) {
       // Receives validator accountId
       if (this.isFavorite(validator)) {
-        this.favorites.splice(this.getIndex(validator), 1)
+        this.favorites.splice(this.getIndex(validator), 1);
       } else {
         this.favorites.push({
           accountId: validator,
           name: "Edit validator name..."
-        })
+        });
       }
-      return true
+      return true;
     },
     isFavorite(validator) {
       // Receives validator accountId
       for (var i = 0; i < this.favorites.length; i++) {
         if (this.favorites[i].accountId == validator) {
-          return true
+          return true;
         }
       }
-      return false
+      return false;
     },
     getIndex(validator) {
       // Receives validator accountId
       for (var i = 0; i < this.favorites.length; i++) {
         if (this.favorites[i].accountId == validator) {
-          return i
+          return i;
         }
       }
-      return false
+      return false;
     },
     getRank(validator) {
       // Receives validator accountId
       for (var i = 0; i < this.validators.length; i++) {
         if (this.validators[i].accountId == validator) {
-          return i + 1
+          return i + 1;
         }
       }
-      return false
+      return false;
     },
     hasIdentity(stashId) {
       return this.$store.state.identities.list.some(obj => {
-        return obj.stashId === stashId
-      })
+        return obj.stashId === stashId;
+      });
     },
     getIdentity(stashId) {
       let filteredArray = this.$store.state.identities.list.filter(obj => {
-        return obj.stashId === stashId
-      })
-      return filteredArray[0]
+        return obj.stashId === stashId;
+      });
+      return filteredArray[0];
     },
     hasKusamaIdentity(stashId) {
       return this.$store.state.stakingIdentities.list.some(obj => {
-        return obj.accountId === stashId
-      })
+        return obj.accountId === stashId;
+      });
     },
     getKusamaIdentity(stashId) {
       let filteredArray = this.$store.state.stakingIdentities.list.filter(
         obj => {
-          return obj.accountId === stashId
+          return obj.accountId === stashId;
         }
-      )
+      );
       // console.log(filteredArray[0]);
-      return filteredArray[0].identity
+      return filteredArray[0].identity;
     },
     onFiltered(filteredItems) {
       // Trigger pagination to update the number of buttons/pages due to filtering
-      this.totalRows = filteredItems.length
-      this.currentPage = 1
+      this.totalRows = filteredItems.length;
+      this.currentPage = 1;
     }
   },
   head() {
@@ -757,9 +757,9 @@ export default {
           content: "Polkadot Kusama network statistics"
         }
       ]
-    }
+    };
   }
-}
+};
 </script>
 <style>
 body {

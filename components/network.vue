@@ -65,27 +65,27 @@
 </template>
 
 <script>
-import { isHex } from "@polkadot/util"
+import { isHex } from "@polkadot/util";
 export default {
   // eslint-disable-next-line vue/require-prop-types
   props: ["network"],
   data: function() {
     return {
       showNetworkStats: true
-    }
+    };
   },
   methods: {
     formatNumber(n) {
       if (isHex(n)) {
         return parseInt(n, 16)
           .toString()
-          .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+          .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
       } else {
-        return n.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+        return n.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
       }
     }
   }
-}
+};
 </script>
 
 <style>

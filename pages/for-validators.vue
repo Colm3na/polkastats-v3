@@ -73,7 +73,7 @@
   </div>
 </template>
 <script>
-import axios from "axios"
+import axios from "axios";
 export default {
   head() {
     return {
@@ -85,9 +85,9 @@ export default {
           content: "Include your Kusama validator info in PolkaStats"
         }
       ]
-    }
+    };
   }
-}
+};
 </script>
 <style scoped>
 .card-title {

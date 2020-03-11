@@ -211,12 +211,12 @@
   </div>
 </template>
 <script>
-import { mapMutations } from "vuex"
-import axios from "axios"
-import bootstrap from "bootstrap"
-import Identicon from "../components/identicon.vue"
-import commonMixin from "../mixins/commonMixin.js"
-import { numItemsTableOptions } from "../polkastats.config.js"
+import { mapMutations } from "vuex";
+import axios from "axios";
+import bootstrap from "bootstrap";
+import Identicon from "../components/identicon.vue";
+import commonMixin from "../mixins/commonMixin.js";
+import { numItemsTableOptions } from "../polkastats.config.js";
 
 export default {
   components: {
@@ -276,30 +276,30 @@ export default {
       ],
       favorites: [],
       polling: null
-    }
+    };
   },
   computed: {
     accounts() {
-      let accounts = []
+      let accounts = [];
       for (let i = 0; i < this.$store.state.accounts.list.length; i++) {
-        let account = this.$store.state.accounts.list[i]
-        const accountIndex = account.accountIndex
+        let account = this.$store.state.accounts.list[i];
+        const accountIndex = account.accountIndex;
 
         accounts.push({
           ...account,
           accountIndex,
           favorite: this.isFavorite(accountIndex)
-        })
+        });
       }
-      return accounts
+      return accounts;
     },
     sortOptions() {
       // Create an options list from our fields
       return this.fields
         .filter(f => f.sortable)
         .map(f => {
-          return { text: f.label, value: f.key }
-        })
+          return { text: f.label, value: f.key };
+        });
     }
   },
   watch: {
@@ -307,70 +307,70 @@ export default {
       this.$cookies.set("favorites", val, {
         path: "/",
         maxAge: 60 * 60 * 24 * 7
-      })
+      });
     }
   },
   created: function() {
-    var vm = this
+    var vm = this;
 
     // Get favorites from cookie
     if (this.$cookies.get("favorites")) {
-      this.favorites = this.$cookies.get("favorites")
+      this.favorites = this.$cookies.get("favorites");
     }
 
     // Force update of account list if empty
     if (this.$store.state.accounts.list.length == 0) {
-      vm.$store.dispatch("accounts/update")
+      vm.$store.dispatch("accounts/update");
     }
-    this.totalRows = this.$store.state.accounts.list.length
+    this.totalRows = this.$store.state.accounts.list.length;
 
     // Update data every 5 minutes
     this.polling = setInterval(() => {
-      vm.$store.dispatch("accounts/update")
-      if (!this.filter) this.totalRows = this.$store.state.accounts.list.length
-    }, 300000)
+      vm.$store.dispatch("accounts/update");
+      if (!this.filter) this.totalRows = this.$store.state.accounts.list.length;
+    }, 300000);
   },
   beforeDestroy: function() {
-    clearInterval(this.polling)
+    clearInterval(this.polling);
   },
   methods: {
     handleNumFields(num) {
-      this.perPage = num
+      this.perPage = num;
     },
     toggleFavorite(validator) {
       // Receives validator accountId
       if (this.isFavorite(validator)) {
-        this.favorites.splice(this.getIndex(validator), 1)
+        this.favorites.splice(this.getIndex(validator), 1);
       } else {
         this.favorites.push({
           accountId: validator,
           name: "Edit phragmen name..."
-        })
+        });
       }
-      return true
+      return true;
     },
     isFavorite(validator) {
       // Receives validator accountId
       for (var i = 0; i < this.favorites.length; i++) {
         if (this.favorites[i].accountId == validator) {
-          return true
+          return true;
         }
       }
-      return false
+      return false;
     },
     getIndex(validator) {
       // Receives validator accountId
       for (var i = 0; i < this.favorites.length; i++) {
         if (this.favorites[i].accountId == validator) {
-          return i
+          return i;
         }
       }
-      return false
+      return false;
     },
     onFiltered(filteredItems) {
       // Trigger pagination to update the number of buttons/pages due to filtering
-      this.totalRows = filteredItems.length
-      this.currentPage = 1
+      this.totalRows = filteredItems.length;
+      this.currentPage = 1;
     }
   },
   head() {
@@ -383,9 +383,9 @@ export default {
           content: "Polkadot Kusama active accounts"
         }
       ]
-    }
+    };
   }
-}
+};
 </script>
 <style>
 #accounts-table th {
