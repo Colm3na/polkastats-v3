@@ -6,20 +6,24 @@
         <b-row style="margin-bottom: 1rem">
           <b-col cols="10">
             <b-form-input
+              id="filterInput"
               v-model="filter"
               type="search"
-              id="filterInput"
               placeholder="Search validator by account, account index, identity display name or keybase name"
             />
           </b-col>
           <b-col cols="auto">
-            <b-button v-b-toggle.collapse-filter class="filter-button" @click="handleFilter()">
+            <b-button
+              v-b-toggle.collapse-filter
+              class="filter-button"
+              @click="handleFilter()"
+            >
               <font-awesome-icon
                 :icon="['fas', 'filter']"
                 :style="{
                   color: '#d75ea1',
                   width: '15px',
-                  height: '15px',
+                  height: '15px'
                 }"
               />
             </b-button>
@@ -35,8 +39,8 @@
                   </b-col>
                   <b-col>
                     <b-form-select
-                      v-model="filterField"
                       id="filter1"
+                      v-model="filterField"
                       class="filters"
                       :options="filterFieldsOptions"
                     />
@@ -62,18 +66,18 @@
                     <b-form-input v-model="filterText" class="filters" />
                   </b-col>
                 </b-row>
-                  <div class="filter-trash-button-container">
-                    <b-button class="filter-trash-button" @click="resetFilter()">
-                      <font-awesome-icon
-                        :icon="['fas', 'trash']"
-                        :style="{
-                          color: '#d75ea1',
-                          width: '15px',
-                          height: '15px'
-                        }"
-                      />
-                    </b-button>
-                  </div>
+                <div class="filter-trash-button-container">
+                  <b-button class="filter-trash-button" @click="resetFilter()">
+                    <font-awesome-icon
+                      :icon="['fas', 'trash']"
+                      :style="{
+                        color: '#d75ea1',
+                        width: '15px',
+                        height: '15px'
+                      }"
+                    />
+                  </b-button>
+                </div>
               </b-card>
             </b-collapse>
           </b-container>
@@ -91,13 +95,15 @@
             >
               <b-input-group size="sm">
                 <b-form-select
-                  v-model="sortBy"
                   id="sortBySelect"
+                  v-model="sortBy"
                   :options="sortOptions"
                   class="w-75"
                 >
                   <template v-slot:first>
-                    <option value="">-- none --</option>
+                    <option value="">
+                      -- none --
+                    </option>
                   </template>
                 </b-form-select>
                 <b-form-select
@@ -106,8 +112,12 @@
                   :disabled="!sortBy"
                   class="w-25"
                 >
-                  <option :value="false">Asc</option>
-                  <option :value="true">Desc</option>
+                  <option :value="false">
+                    Asc
+                  </option>
+                  <option :value="true">
+                    Desc
+                  </option>
                 </b-form-select>
               </b-input-group>
             </b-form-group>
@@ -117,8 +127,8 @@
         <!-- Table with sorting and pagination-->
         <div class="table-responsive">
           <b-table
-            stacked="md"
             id="validators-table"
+            stacked="md"
             head-variant="dark"
             :fields="fields"
             :items="filteredValidators"
@@ -127,7 +137,7 @@
             :sort-by.sync="sortBy"
             :sort-desc.sync="sortDesc"
             :filter="filter"
-            :filterIncludedFields="filterOn"
+            :filter-included-fields="filterOn"
             @filtered="onFiltered"
           >
             <template slot="rank" slot-scope="data">
@@ -139,16 +149,16 @@
               <p class="text-center mb-0">
                 <i
                   v-if="data.item.imOnline"
-                  class="imOnline fas fa-check-circle"
                   v-b-tooltip.hover
-                  v-bind:title="data.item.imOnlineMessage"
-                ></i>
+                  class="imOnline fas fa-check-circle"
+                  :title="data.item.imOnlineMessage"
+                />
                 <i
                   v-else
-                  class="imOffline fas fa-times-circle"
                   v-b-tooltip.hover
-                  v-bind:title="data.item.imOnlineMessage"
-                ></i>
+                  class="imOffline fas fa-times-circle"
+                  :title="data.item.imOnlineMessage"
+                />
               </p>
             </template>
             <template slot="accountId" slot-scope="data">
@@ -156,52 +166,52 @@
                 <b-container>
                   <b-row>
                     <p class="mt-3 mb-0 rank">
-                      <span class="rank-detail" v-b-tooltip.hover title="Rank"
+                      <span v-b-tooltip.hover class="rank-detail" title="Rank"
                         >#{{ data.item.rank }}</span
                       >
                       <i
                         v-if="data.item.imOnline"
-                        class="imOnline fas fa-check-circle ml-1"
                         v-b-tooltip.hover
-                        v-bind:title="data.item.imOnlineMessage"
-                      ></i>
+                        class="imOnline fas fa-check-circle ml-1"
+                        :title="data.item.imOnlineMessage"
+                      />
                       <i
                         v-else
-                        class="imOffline fas fa-times-circle ml-1"
                         v-b-tooltip.hover
-                        v-bind:title="data.item.imOnlineMessage"
-                      ></i>
+                        class="imOffline fas fa-times-circle ml-1"
+                        :title="data.item.imOnlineMessage"
+                      />
                       <i
                         v-if="data.item.currentElected"
-                        class="elected fas fa-chevron-circle-right"
                         v-b-tooltip.hover
+                        class="elected fas fa-chevron-circle-right"
                         title="Elected for next session"
-                      ></i>
+                      />
                       <i
                         v-else
-                        class="notElected fas fa-times-circle"
                         v-b-tooltip.hover
+                        class="notElected fas fa-times-circle"
                         title="Not elected for next session"
-                      ></i>
+                      />
                     </p>
                     <a
                       class="favorite"
-                      v-on:click="toggleFavorite(data.item.accountId)"
+                      @click="toggleFavorite(data.item.accountId)"
                     >
                       <i
                         v-if="data.item.favorite"
+                        v-b-tooltip.hover
                         class="fas fa-star"
                         style="color: #f1bd23"
-                        v-b-tooltip.hover
                         title="Remove from Favorites"
-                      ></i>
+                      />
                       <i
                         v-else
+                        v-b-tooltip.hover
                         class="fas fa-star"
                         style="color: #e6dfdf;"
-                        v-b-tooltip.hover
                         title="Add to Favorites"
-                      ></i>
+                      />
                     </a>
                   </b-row>
                   <b-row>
@@ -218,17 +228,17 @@
                             v-if="getIdentity(data.item.accountId).logo !== ''"
                           >
                             <img
-                              v-bind:src="getIdentity(data.item.accountId).logo"
+                              :src="getIdentity(data.item.accountId).logo"
                               class="identity mt-2"
                             />
                           </div>
                         </div>
                         <div v-else class="logo">
                           <Identicon
+                            :key="data.item.accountId"
                             :value="data.item.accountId"
                             :size="48"
                             :theme="'polkadot'"
-                            :key="data.item.accountId"
                           />
                         </div>
                       </nuxt-link>
@@ -263,8 +273,8 @@
                           <div v-if="data.item.stakers">
                             <p
                               v-if="data.item.stake && data.item.stake > 0"
-                              class="bonded mb-0"
                               v-b-tooltip.hover
+                              class="bonded mb-0"
                               title="Total bonded"
                             >
                               <!-- <i class="far fa-handshake"></i> -->
@@ -347,17 +357,17 @@
                     class="d-inline-block"
                   >
                     <img
-                      v-bind:src="getIdentity(data.item.accountId).logo"
+                      :src="getIdentity(data.item.accountId).logo"
                       class="identity-small d-inline-block"
                     />
                   </div>
                 </div>
                 <div v-else class="d-inline-block">
                   <Identicon
+                    :key="data.item.accountId"
                     :value="data.item.accountId"
                     :size="20"
                     :theme="'polkadot'"
-                    :key="data.item.accountId"
                   />
                 </div>
                 <nuxt-link
@@ -392,7 +402,7 @@
               </p>
             </template>
             <template slot="stakeIndex" slot-scope="data">
-              <p class="text-center mb-0" v-if="data.item.stake > 0">
+              <p v-if="data.item.stake > 0" class="text-center mb-0">
                 {{ formatAmount(data.item.stake) }}
               </p>
             </template>
@@ -408,8 +418,8 @@
             </template>
             <template slot="commission" slot-scope="data">
               <p
-                class="text-center mb-0"
                 v-if="typeof data.item.commission == 'number'"
+                class="text-center mb-0"
               >
                 {{ (data.item.commission / 10000000).toFixed(2) }}%
               </p>
@@ -423,22 +433,22 @@
               <p class="text-center mb-0">
                 <a
                   class="favorite"
-                  v-on:click="toggleFavorite(data.item.accountId)"
+                  @click="toggleFavorite(data.item.accountId)"
                 >
                   <i
                     v-if="data.item.favorite"
+                    v-b-tooltip.hover
                     class="fas fa-star"
                     style="color: #f1bd23"
-                    v-b-tooltip.hover
                     title="Remove from Favorites"
-                  ></i>
+                  />
                   <i
                     v-else
+                    v-b-tooltip.hover
                     class="fas fa-star"
                     style="color: #e6dfdf;"
-                    v-b-tooltip.hover
                     title="Add to Favorites"
-                  ></i>
+                  />
                 </a>
               </p>
             </template>
@@ -449,10 +459,15 @@
               :total-rows="totalRows"
               :per-page="perPage"
               aria-controls="validators-table"
-            >
-            </b-pagination>
+            />
             <b-button-group class="mx-4">
-              <b-button @click="handleNumFields(item)" v-for="(item, index) in tableOptions" v-bind:key=index>{{item}}</b-button>
+              <b-button
+                v-for="(item, index) in tableOptions"
+                :key="index"
+                @click="handleNumFields(item)"
+              >
+                {{ item }}
+              </b-button>
             </b-button-group>
           </div>
         </div>
@@ -461,34 +476,28 @@
   </div>
 </template>
 <script>
-import { mapMutations } from "vuex";
-import axios from "axios";
-import bootstrap from "bootstrap";
-import Identicon from "../components/identicon.vue";
-import Network from "../components/network.vue";
-import { isHex } from "@polkadot/util";
-import BN from "bn.js";
-import { blockExplorer, numItemsTableOptions } from "../polkastats.config.js";
-import commonMixin from "../mixins/commonMixin.js";
+import { mapMutations } from "vuex"
+import axios from "axios"
+import bootstrap from "bootstrap"
+import Identicon from "../components/identicon.vue"
+import Network from "../components/network.vue"
+import { isHex } from "@polkadot/util"
+import BN from "bn.js"
+import { blockExplorer, numItemsTableOptions } from "../polkastats.config.js"
+import commonMixin from "../mixins/commonMixin.js"
 
 export default {
-  head() {
-    return {
-      title: "PolkaStats - Polkadot Kusama network statistics",
-      meta: [
-        {
-          hid: "description",
-          name: "description",
-          content: "Polkadot Kusama network statistics"
-        }
-      ]
-    };
+  components: {
+    Identicon,
+    Network
   },
   mixins: [commonMixin],
   data: function() {
     return {
       tableOptions: numItemsTableOptions,
-      perPage: localStorage.numItemsTableSelected ? localStorage.numItemsTableSelected : 10,
+      perPage: localStorage.numItemsTableSelected
+        ? localStorage.numItemsTableSelected
+        : 10,
       currentPage: 1,
       sortBy: `favorite`,
       sortDesc: true,
@@ -560,127 +569,133 @@ export default {
       blockExplorer,
       favorites: [],
       polling: null
-    };
+    }
   },
   computed: {
     network() {
-      return this.$store.state.network.info;
+      return this.$store.state.network.info
     },
     filteredValidators() {
       const getStake = value => {
-        const stake = commonMixin.methods.formatAmount(value);
+        const stake = commonMixin.methods.formatAmount(value)
         const float = stake.toString().includes("k")
           ? parseFloat(stake) * 1000
-          : parseFloat(stake);
+          : parseFloat(stake)
 
-        return parseInt(float);
-      };
+        return parseInt(float)
+      }
 
       // No filters
-      if (this.filterOn.length === 0 || !!!this.filterField || !!!this.filterOperator || !!!this.filterText) return this.validators;
+      if (
+        this.filterOn.length === 0 ||
+        !this.filterField ||
+        !this.filterOperator ||
+        !this.filterText
+      )
+        return this.validators
 
       // Filtering by Number of Stakers
       if (this.filterField === "Stakers") {
-        const filtering = parseInt(this.filterText);
+        const filtering = parseInt(this.filterText)
 
         if (this.filterOperator === ">")
           return this.validators.filter(
             validator => validator["numStakers"] > filtering
-          );
+          )
         else if (this.filterOperator === "=")
           return this.validators.filter(
             validator => validator["numStakers"] === filtering
-          );
+          )
         return this.validators.filter(
           validator => validator["numStakers"] < filtering
-        );
+        )
       }
 
       // Filtering by Total Stake
       else if (this.filterField === "Total Stake") {
         const filtering = this.filterText.toString().includes(".")
           ? parseFloat(this.filterText) * 1000
-          : parseInt(this.filterText);
+          : parseInt(this.filterText)
 
         if (this.filterOperator === ">")
           return this.validators.filter(
             validator => getStake(validator.stake) > filtering
-          );
+          )
         else if (this.filterOperator === "=")
           return this.validators.filter(
             validator => getStake(validator.stake) === filtering
-          );
+          )
         return this.validators.filter(
           validator => getStake(validator.stake) < filtering
-        );
+        )
       }
 
       // Filtering by & Stake
       else if (this.filterField === "% Stake") {
-        const filtering = parseFloat(this.filterText).toFixed(2);
+        const filtering = parseFloat(this.filterText).toFixed(2)
 
         if (this.filterOperator === ">")
           return this.validators.filter(
             validator => parseFloat(validator["percent"]).toFixed(2) > filtering
-          );
+          )
         else if (this.filterOperator === "=")
           return this.validators.filter(
             validator =>
               parseFloat(validator["percent"]).toFixed(2) === filtering
-          );
+          )
         return this.validators.filter(
           validator => parseFloat(validator["percent"]).toFixed(2) < filtering
-        );
+        )
       }
 
       // Filtering by Commission
       else if (this.filterField === "Commission") {
-        const filtering = parseFloat(this.filterText) * 10000000;
+        const filtering = parseFloat(this.filterText) * 10000000
 
         if (this.filterOperator === ">")
           return this.validators.filter(
             validator => parseFloat(validator["commission"]) > filtering
-          );
+          )
         else if (this.filterOperator === "=")
-          return parseFloat(validator["commission"]) === filtering;
+          return parseFloat(validator["commission"]) === filtering
         return this.validators.filter(
           validator => parseFloat(validator["commission"]) < filtering
-        );
+        )
       }
     },
     validators() {
-      let validatorsObject = [];
+      let validatorsObject = []
       for (let i = 0; i < this.$store.state.validators.list.length; i++) {
-        let validator = this.$store.state.validators.list[i];
-        let stake = 0;
+        let validator = this.$store.state.validators.list[i]
+        let stake = 0
         if (validator.stakers || validator.stakingLedger) {
           if (validator.stakers.total > 0) {
-            stake = validator.stakers.total;
+            stake = validator.stakers.total
           } else {
-            stake = validator.stakingLedger.total;
+            stake = validator.stakingLedger.total
           }
         }
-        let stakePercent = 0;
+        let stakePercent = 0
         if (validator.stakers) {
           stakePercent = this.getStakePercent(
             validator.stakers.total,
             this.totalStakeBonded
-          );
+          )
         }
 
-        let commission = 0;
+        let commission = 0
         if (validator.validatorPrefs) {
-          commission = validator.validatorPrefs.commission;
+          commission = validator.validatorPrefs.commission
         }
 
-        let identity = "";
+        let identity = ""
         if (this.hasIdentity(validator.accountId)) {
-          identity = this.getIdentity(validator.accountId);
+          identity = this.getIdentity(validator.accountId)
         }
 
-        let kusamaIdentity = "";
+        let kusamaIdentity = ""
         if (this.hasKusamaIdentity(validator.accountId)) {
-          kusamaIdentity = this.hasKusamaIdentity(validator.accountId);
+          kusamaIdentity = this.hasKusamaIdentity(validator.accountId)
         }
 
         validatorsObject.push({
@@ -699,18 +714,18 @@ export default {
           currentElected: validator.currentElected,
           kusamaIdentity,
           identity
-        });
+        })
       }
-      return validatorsObject;
+      return validatorsObject
     },
     intentions() {
-      return this.$store.state.intentions.list;
+      return this.$store.state.intentions.list
     },
     identities() {
-      return this.$store.state.identities.list;
+      return this.$store.state.identities.list
     },
     indexes() {
-      return this.$store.state.indexes.list;
+      return this.$store.state.indexes.list
     },
     totalStakeBondedPercen() {
       if (
@@ -718,163 +733,23 @@ export default {
         this.network.totalIssuance !== "" &&
         this.network.totalIssuance !== "0"
       ) {
-        let totalIssuance = new BN(this.network.totalIssuance, 10);
-        let totalStakeBonded = this.totalStakeBonded.mul(new BN("100", 10));
-        return totalStakeBonded.div(totalIssuance);
+        let totalIssuance = new BN(this.network.totalIssuance, 10)
+        let totalStakeBonded = this.totalStakeBonded.mul(new BN("100", 10))
+        return totalStakeBonded.div(totalIssuance)
       } else {
-        return 0;
+        return 0
       }
     },
     totalStakeBonded() {
-      return this.$store.state.validators.totalStakeBonded;
+      return this.$store.state.validators.totalStakeBonded
     },
     sortOptions() {
       // Create an options list from our fields
       return this.fields
         .filter(f => f.sortable)
         .map(f => {
-          return { text: f.label, value: f.key };
-        });
-    }
-  },
-  created: function() {
-    var vm = this;
-
-    // Get favorites from cookie
-    if (this.$cookies.get("favorites")) {
-      this.favorites = this.$cookies.get("favorites");
-    }
-
-    // Force update of network info
-    vm.$store.dispatch("network/update");
-
-    // Force update of validators list if empty
-    if (this.$store.state.validators.list.length === 0) {
-      vm.$store.dispatch("validators/update");
-    }
-    this.totalRows = this.$store.state.validators.list.length;
-
-    // Force update of intentions list if empty
-    if (this.$store.state.intentions.list.length == 0) {
-      vm.$store.dispatch("intentions/update");
-    }
-
-    // Force update of indentity list if empty
-    if (this.$store.state.identities.list.length === 0) {
-      vm.$store.dispatch("identities/update");
-    }
-
-    // Force update of indexes list if empty
-    if (this.$store.state.indexes.list.length === 0) {
-      vm.$store.dispatch("indexes/update");
-    }
-
-    // Force update of staking identities list if empty
-    if (this.$store.state.stakingIdentities.list.length === 0) {
-      vm.$store.dispatch("stakingIdentities/update");
-    }
-
-    // Update network info validators and intentions every 10 seconds
-    this.polling = setInterval(() => {
-      vm.$store.dispatch("network/update");
-      vm.$store.dispatch("validators/update");
-      vm.$store.dispatch("intentions/update");
-      vm.$store.dispatch("stakingIdentities/update");
-      if (!this.filter)
-        this.totalRows = this.$store.state.validators.list.length;
-    }, 10000);
-
-    // Update account indexes every 1 min
-    this.pollingIndexes = setInterval(() => {
-      vm.$store.dispatch("indexes/update");
-    }, 60000);
-  },
-  beforeDestroy: function() {
-    clearInterval(this.polling);
-    clearInterval(this.pollingIndexes);
-  },
-  methods: {
-    handleFilter() {
-      this.filter = "";
-    },
-    resetFilter() {
-      this.filterField = null;
-      this.filterOperator = null;
-      this.filterText = null;
-      this.filterOn.length = 0;
-    },
-    handleNumFields(num) {
-      localStorage.numItemsTableSelected = num;
-      this.perPage = num;
-    },
-    toggleFavorite(validator) {
-      // Receives validator accountId
-      if (this.isFavorite(validator)) {
-        this.favorites.splice(this.getIndex(validator), 1);
-      } else {
-        this.favorites.push({
-          accountId: validator,
-          name: "Edit validator name..."
-        });
-      }
-      return true;
-    },
-    isFavorite(validator) {
-      // Receives validator accountId
-      for (var i = 0; i < this.favorites.length; i++) {
-        if (this.favorites[i].accountId == validator) {
-          return true;
-        }
-      }
-      return false;
-    },
-    getIndex(validator) {
-      // Receives validator accountId
-      for (var i = 0; i < this.favorites.length; i++) {
-        if (this.favorites[i].accountId == validator) {
-          return i;
-        }
-      }
-      return false;
-    },
-    getRank(validator) {
-      // Receives validator accountId
-      for (var i = 0; i < this.validators.length; i++) {
-        if (this.validators[i].accountId == validator) {
-          return i + 1;
-        }
-      }
-      return false;
-    },
-    hasIdentity(stashId) {
-      return this.$store.state.identities.list.some(obj => {
-        return obj.stashId === stashId;
-      });
-    },
-    getIdentity(stashId) {
-      let filteredArray = this.$store.state.identities.list.filter(obj => {
-        return obj.stashId === stashId;
-      });
-      return filteredArray[0];
-    },
-    hasKusamaIdentity(stashId) {
-      return this.$store.state.stakingIdentities.list.some(obj => {
-        return obj.accountId === stashId;
-      });
-    },
-    getKusamaIdentity(stashId) {
-      let filteredArray = this.$store.state.stakingIdentities.list.filter(
-        obj => {
-          return obj.accountId === stashId;
-        }
-      );
-      // console.log(filteredArray[0]);
-      return filteredArray[0].identity;
-    },
-    onFiltered(filteredItems) {
-      // Trigger pagination to update the number of buttons/pages due to filtering
-      this.totalRows = filteredItems.length;
-      this.currentPage = 1;
+          return { text: f.label, value: f.key }
+        })
     }
   },
   watch: {
@@ -883,17 +758,165 @@ export default {
       this.$cookies.set("favorites", val, {
         path: "/",
         maxAge: 60 * 60 * 24 * 7
-      });
+      })
     },
     filterField: function() {
-      this.filterOn[0] = this.filterField;
-    },
+      this.filterOn[0] = this.filterField
+    }
   },
-  components: {
-    Identicon,
-    Network
+  created: function() {
+    var vm = this
+
+    // Get favorites from cookie
+    if (this.$cookies.get("favorites")) {
+      this.favorites = this.$cookies.get("favorites")
+    }
+
+    // Force update of network info
+    vm.$store.dispatch("network/update")
+
+    // Force update of validators list if empty
+    if (this.$store.state.validators.list.length === 0) {
+      vm.$store.dispatch("validators/update")
+    }
+    this.totalRows = this.$store.state.validators.list.length
+
+    // Force update of intentions list if empty
+    if (this.$store.state.intentions.list.length == 0) {
+      vm.$store.dispatch("intentions/update")
+    }
+
+    // Force update of indentity list if empty
+    if (this.$store.state.identities.list.length === 0) {
+      vm.$store.dispatch("identities/update")
+    }
+
+    // Force update of indexes list if empty
+    if (this.$store.state.indexes.list.length === 0) {
+      vm.$store.dispatch("indexes/update")
+    }
+
+    // Force update of staking identities list if empty
+    if (this.$store.state.stakingIdentities.list.length === 0) {
+      vm.$store.dispatch("stakingIdentities/update")
+    }
+
+    // Update network info validators and intentions every 10 seconds
+    this.polling = setInterval(() => {
+      vm.$store.dispatch("network/update")
+      vm.$store.dispatch("validators/update")
+      vm.$store.dispatch("intentions/update")
+      vm.$store.dispatch("stakingIdentities/update")
+      if (!this.filter)
+        this.totalRows = this.$store.state.validators.list.length
+    }, 10000)
+
+    // Update account indexes every 1 min
+    this.pollingIndexes = setInterval(() => {
+      vm.$store.dispatch("indexes/update")
+    }, 60000)
+  },
+  beforeDestroy: function() {
+    clearInterval(this.polling)
+    clearInterval(this.pollingIndexes)
+  },
+  methods: {
+    handleFilter() {
+      this.filter = ""
+    },
+    resetFilter() {
+      this.filterField = null
+      this.filterOperator = null
+      this.filterText = null
+      this.filterOn.length = 0
+    },
+    handleNumFields(num) {
+      localStorage.numItemsTableSelected = num
+      this.perPage = num
+    },
+    toggleFavorite(validator) {
+      // Receives validator accountId
+      if (this.isFavorite(validator)) {
+        this.favorites.splice(this.getIndex(validator), 1)
+      } else {
+        this.favorites.push({
+          accountId: validator,
+          name: "Edit validator name..."
+        })
+      }
+      return true
+    },
+    isFavorite(validator) {
+      // Receives validator accountId
+      for (var i = 0; i < this.favorites.length; i++) {
+        if (this.favorites[i].accountId == validator) {
+          return true
+        }
+      }
+      return false
+    },
+    getIndex(validator) {
+      // Receives validator accountId
+      for (var i = 0; i < this.favorites.length; i++) {
+        if (this.favorites[i].accountId == validator) {
+          return i
+        }
+      }
+      return false
+    },
+    getRank(validator) {
+      // Receives validator accountId
+      for (var i = 0; i < this.validators.length; i++) {
+        if (this.validators[i].accountId == validator) {
+          return i + 1
+        }
+      }
+      return false
+    },
+    hasIdentity(stashId) {
+      return this.$store.state.identities.list.some(obj => {
+        return obj.stashId === stashId
+      })
+    },
+    getIdentity(stashId) {
+      let filteredArray = this.$store.state.identities.list.filter(obj => {
+        return obj.stashId === stashId
+      })
+      return filteredArray[0]
+    },
+    hasKusamaIdentity(stashId) {
+      return this.$store.state.stakingIdentities.list.some(obj => {
+        return obj.accountId === stashId
+      })
+    },
+    getKusamaIdentity(stashId) {
+      let filteredArray = this.$store.state.stakingIdentities.list.filter(
+        obj => {
+          return obj.accountId === stashId
+        }
+      )
+      // console.log(filteredArray[0]);
+      return filteredArray[0].identity
+    },
+    onFiltered(filteredItems) {
+      // Trigger pagination to update the number of buttons/pages due to filtering
+      this.totalRows = filteredItems.length
+      this.currentPage = 1
+    }
+  },
+  head() {
+    return {
+      title: "PolkaStats - Polkadot Kusama network statistics",
+      meta: [
+        {
+          hid: "description",
+          name: "description",
+          content: "Polkadot Kusama network statistics"
+        }
+      ]
+    }
   }
-};
+}
 </script>
 <style>
 body {

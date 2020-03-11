@@ -6,11 +6,11 @@
         <b-row>
           <b-col lg="12" class="mb-4">
             <b-form-input
+              id="filterInput"
               v-model="filter"
               type="search"
-              id="filterInput"
               placeholder="Search nominator by account, account index or identity display name"
-            ></b-form-input>
+            />
           </b-col>
         </b-row>
         <!-- Mobile sorting -->
@@ -25,14 +25,30 @@
               class="mb-4"
             >
               <b-input-group size="sm">
-                <b-form-select v-model="sortBy" id="sortBySelect" :options="sortOptions" class="w-75">
+                <b-form-select
+                  id="sortBySelect"
+                  v-model="sortBy"
+                  :options="sortOptions"
+                  class="w-75"
+                >
                   <template v-slot:first>
-                    <option value="">-- none --</option>
+                    <option value="">
+                      -- none --
+                    </option>
                   </template>
                 </b-form-select>
-                <b-form-select v-model="sortDesc" size="sm" :disabled="!sortBy" class="w-25">
-                  <option :value="false">Asc</option>
-                  <option :value="true">Desc</option>
+                <b-form-select
+                  v-model="sortDesc"
+                  size="sm"
+                  :disabled="!sortBy"
+                  class="w-25"
+                >
+                  <option :value="false">
+                    Asc
+                  </option>
+                  <option :value="true">
+                    Desc
+                  </option>
                 </b-form-select>
               </b-input-group>
             </b-form-group>
@@ -41,8 +57,8 @@
         <!-- Table with sorting and pagination-->
         <div class="table-responsive">
           <b-table
-            stacked="md"
             id="nominators-table"
+            stacked="md"
             head-variant="dark"
             :fields="fields"
             :items="nominators"
@@ -51,40 +67,72 @@
             :sort-by.sync="sortBy"
             :sort-desc.sync="sortDesc"
             :filter="filter"
-            :filterIncludedFields="filterOn"
+            :filter-included-fields="filterOn"
             @filtered="onFiltered"
           >
             <template slot="rank" slot-scope="data">
               {{ data.item.rank }}
             </template>
             <template slot="accountId" slot-scope="data">
-              <div class="d-block d-sm-block d-md-none d-lg-none d-xl-none text-center">
-                <Identicon :value="data.item.accountId" :size="20" :theme="'polkadot'" :key="data.item.accountId" />
-                <nuxt-link :to="{name: 'nominator', query: { accountId: data.item.accountId } }" title="Nominator details">
+              <div
+                class="d-block d-sm-block d-md-none d-lg-none d-xl-none text-center"
+              >
+                <Identicon
+                  :key="data.item.accountId"
+                  :value="data.item.accountId"
+                  :size="20"
+                  :theme="'polkadot'"
+                />
+                <nuxt-link
+                  :to="{
+                    name: 'nominator',
+                    query: { accountId: data.item.accountId }
+                  }"
+                  title="Nominator details"
+                >
                   <span v-if="hasKusamaIdentity(data.item.accountId)">
                     {{ getKusamaIdentity(data.item.accountId).display }}
                   </span>
                   <span v-else>
-                    <span class="d-inline d-sm-inline d-md-inline d-lg-inline d-xl-none">{{ indexes[data.item.accountId] }}</span>
-                    <span class="d-none d-sm-none d-md-none d-lg-none d-xl-inline">{{ indexes[data.item.accountId] }}</span>
+                    <span
+                      class="d-inline d-sm-inline d-md-inline d-lg-inline d-xl-none"
+                    >{{ indexes[data.item.accountId] }}</span>
+                    <span
+                      class="d-none d-sm-none d-md-none d-lg-none d-xl-inline"
+                    >{{ indexes[data.item.accountId] }}</span>
                   </span>
                 </nuxt-link>
                 <p class="mt-2 mb-2">
-                  rank #{{ data.item.rank }}
-                </p>
+rank #{{ data.item.rank }}
+</p>
                 <p class="mb-0">
                   {{ formatAmount(data.item.totalStake) }}
                 </p>
               </div>
               <div class="d-none d-sm-none d-md-block d-lg-block d-xl-block">
-                <Identicon :value="data.item.accountId" :size="20" :theme="'polkadot'" :key="data.item.accountId" />
-                <nuxt-link :to="{name: 'nominator', query: { accountId: data.item.accountId } }" title="Nominator details">
+                <Identicon
+                  :key="data.item.accountId"
+                  :value="data.item.accountId"
+                  :size="20"
+                  :theme="'polkadot'"
+                />
+                <nuxt-link
+                  :to="{
+                    name: 'nominator',
+                    query: { accountId: data.item.accountId }
+                  }"
+                  title="Nominator details"
+                >
                   <span v-if="hasKusamaIdentity(data.item.accountId)">
                     {{ getKusamaIdentity(data.item.accountId).display }}
                   </span>
                   <span v-else>
-                    <span class="d-inline d-sm-inline d-md-inline d-lg-inline d-xl-none">{{ indexes[data.item.accountId] }}</span>
-                    <span class="d-none d-sm-none d-md-none d-lg-none d-xl-inline">{{ indexes[data.item.accountId] }}</span>
+                    <span
+                      class="d-inline d-sm-inline d-md-inline d-lg-inline d-xl-none"
+                    >{{ indexes[data.item.accountId] }}</span>
+                    <span
+                      class="d-none d-sm-none d-md-none d-lg-none d-xl-inline"
+                    >{{ indexes[data.item.accountId] }}</span>
                   </span>
                 </nuxt-link>
               </div>
@@ -101,9 +149,24 @@
             </template>
             <template slot="favorite" slot-scope="data">
               <p class="text-center mb-0">
-                <a class="favorite" v-on:click="toggleFavorite(data.item.accountIndex)">
-                  <i v-if="data.item.favorite" class="fas fa-star" style="color: #f1bd23" v-b-tooltip.hover title="Remove from Favorites"></i>
-                  <i v-else class="fas fa-star" style="color: #e6dfdf;" v-b-tooltip.hover title="Add to Favorites"></i>
+                <a
+                  class="favorite"
+                  @click="toggleFavorite(data.item.accountIndex)"
+                >
+                  <i
+                    v-if="data.item.favorite"
+                    v-b-tooltip.hover
+                    class="fas fa-star"
+                    style="color: #f1bd23"
+                    title="Remove from Favorites"
+                  />
+                  <i
+                    v-else
+                    v-b-tooltip.hover
+                    class="fas fa-star"
+                    style="color: #e6dfdf;"
+                    title="Add to Favorites"
+                  />
                 </a>
               </p>
             </template>
@@ -114,10 +177,15 @@
               :total-rows="totalRows"
               :per-page="perPage"
               aria-controls="validators-table"
-            >
-            </b-pagination>
+            />
             <b-button-group class="mx-4">
-              <b-button @click="handleNumFields(item)" v-for="(item, index) in tableOptions" v-bind:key=index>{{item}}</b-button>
+              <b-button
+                v-for="(item, index) in tableOptions"
+                :key="index"
+                @click="handleNumFields(item)"
+              >
+                {{ item }}
+              </b-button>
             </b-button-group>
           </div>
         </div>
@@ -126,24 +194,20 @@
   </div>
 </template>
 <script>
-import { mapMutations } from 'vuex';
-import axios from 'axios';
-import bootstrap from 'bootstrap';
-import Identicon from '../components/identicon.vue';
-import Network from '../components/network.vue';
-import { isHex } from '@polkadot/util';
-import BN from 'bn.js';
-import { blockExplorer, numItemsTableOptions } from '../polkastats.config.js';
-import commonMixin from '../mixins/commonMixin.js';
+import { mapMutations } from "vuex"
+import axios from "axios"
+import bootstrap from "bootstrap"
+import Identicon from "../components/identicon.vue"
+import Network from "../components/network.vue"
+import { isHex } from "@polkadot/util"
+import BN from "bn.js"
+import { blockExplorer, numItemsTableOptions } from "../polkastats.config.js"
+import commonMixin from "../mixins/commonMixin.js"
 
 export default {
-  head () {
-    return {
-      title: 'PolkaStats - Polkadot Kusama nominators',
-      meta: [
-        { hid: 'description', name: 'description', content: 'Polkadot Kusama nominators' }
-      ]
-    }
+  components: {
+    Identicon,
+    Network
   },
   mixins: [commonMixin],
   data: function() {
@@ -151,7 +215,9 @@ export default {
       blockExplorer,
       polling: null,
       tableOptions: numItemsTableOptions,
-      perPage: localStorage.numItemsTableSelected ? localStorage.numItemsTableSelected : 10,
+      perPage: localStorage.numItemsTableSelected
+        ? localStorage.numItemsTableSelected
+        : 10,
       currentPage: 1,
       sortBy: ``,
       sortDesc: false,
@@ -159,60 +225,86 @@ export default {
       filterOn: [],
       totalRows: 1,
       fields: [
-        { key: 'rank', label: 'Rank', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` },
-        { key: 'accountId', label: 'Nominator', sortable: true },
-        { key: 'nominations', label: 'Nominations', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` },
-        { key: 'totalStake', label: 'Total stake', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` },
-        { key: 'favorite', label: '⭐', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` }
+        {
+          key: "rank",
+          label: "Rank",
+          sortable: true,
+          class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
+        },
+        { key: "accountId", label: "Nominator", sortable: true },
+        {
+          key: "nominations",
+          label: "Nominations",
+          sortable: true,
+          class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
+        },
+        {
+          key: "totalStake",
+          label: "Total stake",
+          sortable: true,
+          class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
+        },
+        {
+          key: "favorite",
+          label: "⭐",
+          sortable: true,
+          class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
+        }
       ],
       favorites: []
     }
   },
   computed: {
-    validators () {
-      return this.$store.state.validators.list;
+    validators() {
+      return this.$store.state.validators.list
     },
     identities() {
-      return this.$store.state.identities.list;
+      return this.$store.state.identities.list
     },
     indexes() {
       return this.$store.state.indexes.list
     },
-    nominators () {
-      let nominatorStaking = [];
-      for(let i = 0; i < this.validators.length; i++) {
-        let validator = this.validators[i];
+    nominators() {
+      let nominatorStaking = []
+      for (let i = 0; i < this.validators.length; i++) {
+        let validator = this.validators[i]
         if (validator.stakers.others.length > 0) {
           for (let j = 0; j < validator.stakers.others.length; j++) {
-            let nominator = validator.stakers.others[j];
-            const accountIndex = this.indexes[nominator.who];
+            let nominator = validator.stakers.others[j]
+            const accountIndex = this.indexes[nominator.who]
             if (nominatorStaking.find(nom => nom.accountId === nominator.who)) {
               let nominatorTmp = nominatorStaking.filter(nom => {
                 return nom.accountId === nominator.who
               })
-              let bn;
+              let bn
               if (isHex(nominator.value)) {
-                bn = new BN(nominator.value.substring(2, nominator.value.length), 16);
+                bn = new BN(
+                  nominator.value.substring(2, nominator.value.length),
+                  16
+                )
               } else {
-                bn = new BN(nominator.value.toString(), 10);
+                bn = new BN(nominator.value.toString(), 10)
               }
-              nominatorTmp[0].totalStake = nominatorTmp[0].totalStake.add(bn);
-              nominatorTmp[0].nominations++;
+              nominatorTmp[0].totalStake = nominatorTmp[0].totalStake.add(bn)
+              nominatorTmp[0].nominations++
               nominatorTmp[0].staking.push({
                 validator: validator.accountId,
                 amount: nominator.value
-              });
+              })
             } else {
-              let bn;
+              let bn
               if (isHex(nominator.value)) {
-                bn = new BN(nominator.value.substring(2, nominator.value.length), 16);
+                bn = new BN(
+                  nominator.value.substring(2, nominator.value.length),
+                  16
+                )
               } else {
-                bn = new BN(nominator.value.toString(), 10);
+                bn = new BN(nominator.value.toString(), 10)
               }
 
-              let kusamaIdentity = "";
+              let kusamaIdentity = ""
               if (this.hasKusamaIdentity(nominator.who)) {
-                kusamaIdentity = this.hasKusamaIdentity(nominator.who);
+                kusamaIdentity = this.hasKusamaIdentity(nominator.who)
               }
 
               nominatorStaking.push({
@@ -221,30 +313,32 @@ export default {
                 kusamaIdentity,
                 totalStake: bn,
                 nominations: 1,
-                staking: [{
-                  validator: validator.accountId,
-                  amount: nominator.value
-                }],
+                staking: [
+                  {
+                    validator: validator.accountId,
+                    amount: nominator.value
+                  }
+                ],
                 favorite: this.isFavorite(accountIndex)
               })
             }
           }
         }
       }
-      nominatorStaking.sort(function compare( a, b ) {
-        if ( a.totalStake.lt(b.totalStake) ){
-          return 1;
+      nominatorStaking.sort(function compare(a, b) {
+        if (a.totalStake.lt(b.totalStake)) {
+          return 1
         }
-        if ( a.totalStake.gt(b.totalStake) ){
-          return -1;
+        if (a.totalStake.gt(b.totalStake)) {
+          return -1
         }
-        return 0;
-      });
+        return 0
+      })
       nominatorStaking.map((nominator, index) => {
-        nominator.rank = index+1;
-      });
-      this.totalRows = nominatorStaking.length;
-      return nominatorStaking;
+        nominator.rank = index + 1
+      })
+      this.totalRows = nominatorStaking.length
+      return nominatorStaking
     },
     sortOptions() {
       // Create an options list from our fields
@@ -255,113 +349,125 @@ export default {
         })
     }
   },
-  created: function () {
-    var vm = this;
-    
+  watch: {
+    favorites: function(val) {
+      this.$cookies.set("favorites", val, {
+        path: "/",
+        maxAge: 60 * 60 * 24 * 7
+      })
+    }
+  },
+  created: function() {
+    var vm = this
+
     // Get favorites from cookie
-    if (this.$cookies.get('favorites')) {
-      this.favorites = this.$cookies.get('favorites');
+    if (this.$cookies.get("favorites")) {
+      this.favorites = this.$cookies.get("favorites")
     }
 
     // Force update of validators list if empty
     if (this.$store.state.validators.list.length === 0) {
-      vm.$store.dispatch('validators/update');
+      vm.$store.dispatch("validators/update")
     }
 
     // Force update of indentities list if empty
     if (this.$store.state.identities.list.length === 0) {
-      vm.$store.dispatch('identities/update');
+      vm.$store.dispatch("identities/update")
     }
 
     // Force update of staking identities list if empty
     if (this.$store.state.stakingIdentities.list.length === 0) {
-      vm.$store.dispatch('stakingIdentities/update');
+      vm.$store.dispatch("stakingIdentities/update")
     }
 
     // Force update of account indexes list if empty
     if (this.$store.state.indexes.list.length == 0) {
-      vm.$store.dispatch('indexes/update');
+      vm.$store.dispatch("indexes/update")
     }
 
     // Update validators and staking identities every 10 seconds
     this.polling = setInterval(() => {
-      vm.$store.dispatch('validators/update');
-      vm.$store.dispatch('stakingIdentities/update');
-    }, 10000);
+      vm.$store.dispatch("validators/update")
+      vm.$store.dispatch("stakingIdentities/update")
+    }, 10000)
 
     // Update PolkaStats identities and account indexes every 1 min
     this.pollingIndexes = setInterval(() => {
-      vm.$store.dispatch('identities/update');
-      vm.$store.dispatch('indexes/update'); 
-    }, 60000);
-
+      vm.$store.dispatch("identities/update")
+      vm.$store.dispatch("indexes/update")
+    }, 60000)
   },
-  beforeDestroy: function () {
-    clearInterval(this.polling);
-    clearInterval(this.pollingIndexes);
+  beforeDestroy: function() {
+    clearInterval(this.polling)
+    clearInterval(this.pollingIndexes)
   },
   methods: {
     handleNumFields(num) {
-      this.perPage = num;
+      this.perPage = num
     },
     toggleFavorite(validator) {
       // Receives validator accountId
       if (this.isFavorite(validator)) {
-        this.favorites.splice(this.getIndex(validator), 1);
+        this.favorites.splice(this.getIndex(validator), 1)
       } else {
-        this.favorites.push({ accountId: validator, name: 'Edit phragmen name...'});
+        this.favorites.push({
+          accountId: validator,
+          name: "Edit phragmen name..."
+        })
       }
-      return true;
+      return true
     },
     isFavorite(validator) {
       // Receives validator accountId
-      for (var i=0; i < this.favorites.length; i++) {
+      for (var i = 0; i < this.favorites.length; i++) {
         if (this.favorites[i].accountId == validator) {
-          return true;
+          return true
         }
       }
-      return false;
+      return false
     },
     getIndex(validator) {
       // Receives validator accountId
-      for (var i=0; i < this.favorites.length; i++) {
+      for (var i = 0; i < this.favorites.length; i++) {
         if (this.favorites[i].accountId === validator) {
-          return i;
+          return i
         }
       }
-      return false;
+      return false
     },
     getRank(validator) {
       // Receives validator accountId
-      for (var i=0; i < this.validators.length; i++) {
+      for (var i = 0; i < this.validators.length; i++) {
         if (this.validators[i].accountId == validator) {
-          return i + 1;
+          return i + 1
         }
       }
-      return false;
+      return false
     },
     hasIdentity(stashId) {
       return this.$store.state.identities.list.some(obj => {
-        return obj.stashId === stashId;
-      });
+        return obj.stashId === stashId
+      })
     },
     getIdentity(stashId) {
-      let filteredArray =  this.$store.state.identities.list.filter(obj => {
+      let filteredArray = this.$store.state.identities.list.filter(obj => {
         return obj.stashId === stashId
-      });
-      return filteredArray[0];
+      })
+      return filteredArray[0]
     },
     hasKusamaIdentity(stashId) {
       return this.$store.state.stakingIdentities.list.some(obj => {
-        return obj.accountId === stashId;
-      });
+        return obj.accountId === stashId
+      })
     },
     getKusamaIdentity(stashId) {
-      let filteredArray =  this.$store.state.stakingIdentities.list.filter(obj => {
-        return obj.accountId === stashId
-      });
-      console.log(filteredArray[0]);
-      return filteredArray[0].identity;
+      let filteredArray = this.$store.state.stakingIdentities.list.filter(
+        obj => {
+          return obj.accountId === stashId
+        }
+      )
+      console.log(filteredArray[0])
+      return filteredArray[0].identity
     },
     onFiltered(filteredItems) {
       // Trigger pagination to update the number of buttons/pages due to filtering
@@ -369,17 +475,17 @@ export default {
       this.currentPage = 1
     }
   },
-  watch: {
-    favorites: function (val) {
-      this.$cookies.set('favorites', val, {
-        path: '/',
-        maxAge: 60 * 60 * 24 * 7
-      });
+  head() {
+    return {
+      title: "PolkaStats - Polkadot Kusama nominators",
+      meta: [
+        {
+          hid: "description",
+          name: "description",
+          content: "Polkadot Kusama nominators"
+        }
+      ]
     }
-  },
-  components: {
-    Identicon,
-    Network
   }
 }
 </script>

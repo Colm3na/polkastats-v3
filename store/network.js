@@ -1,11 +1,11 @@
-import axios from 'axios';
-import { backendBaseURL } from '../polkastats.config.js';
+import axios from "axios"
+import { backendBaseURL } from "../polkastats.config.js"
 
 export const state = () => ({
   info: {
     bestblocknumber: 0,
     bestBlockFinalized: 0,
-    session: {  
+    session: {
       currentEra: 0,
       currentIndex: 0,
       eraLength: 0,
@@ -20,29 +20,27 @@ export const state = () => ({
     totalIssuance: ""
   }
 })
-  
+
 export const mutations = {
-  update (state, network) {
+  update(state, network) {
     // Send Google Analytics event: Category, action, label, value
     // console.log(`Updating network store, sending event to Google Analytics!`);
     // this.$ga.event('vuex-store', 'update-network');
 
-    state.info.bestblocknumber = network.block_height;
-    state.info.bestBlockFinalized = network.block_height_finalized;
-    state.info.session = network.session;
-    state.info.totalIssuance = network.total_issuance;
-
+    state.info.bestblocknumber = network.block_height
+    state.info.bestBlockFinalized = network.block_height_finalized
+    state.info.session = network.session
+    state.info.totalIssuance = network.total_issuance
   },
   getters: function() {
-    info: state => state.info
+    state => state.info
   }
 }
 
 export const actions = {
-  update (context) {
-    axios.get(`${backendBaseURL}/chain`)
-      .then(function (response) {
-        context.commit('update', response.data);
-      })
+  update(context) {
+    axios.get(`${backendBaseURL}/chain`).then(function(response) {
+      context.commit("update", response.data)
+    })
   }
 }

@@ -1,32 +1,31 @@
-import axios from 'axios';
-import { backendBaseURL } from '../polkastats.config.js';
+import axios from "axios"
+import { backendBaseURL } from "../polkastats.config.js"
 
 export const state = () => ({
   list: []
 })
-  
+
 export const mutations = {
-  update (state, accounts) {
+  update(state, accounts) {
     // Send Google Analytics event: Category, action, label, value
     // console.log(`Updating nicknames store, sending event to Google Analytics!`);
     // this.$ga.event('vuex-store', 'update-nicknames');
 
-    let indexes = [];
+    let indexes = []
     accounts.forEach(account => {
-      indexes[account.accountId] = account.accountIndex; 
-    });
-    state.list = indexes;
+      indexes[account.accountId] = account.accountIndex
+    })
+    state.list = indexes
   },
   getters: function() {
-    list: state => state.list
+    state => state.list
   }
 }
 
 export const actions = {
-  update (context) {
-    axios.get(`${backendBaseURL}/indexes`)
-      .then(function (response) {
-        context.commit('update', response.data);
-      })
+  update(context) {
+    axios.get(`${backendBaseURL}/indexes`).then(function(response) {
+      context.commit("update", response.data)
+    })
   }
 }
