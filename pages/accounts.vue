@@ -2,16 +2,18 @@
   <div>
     <section>
       <b-container class="page-accounts main pt-4">
-        <h1 class="text-center mb-4">Active Kusama accounts</h1>
+        <h1 class="text-center mb-4">
+          Active Kusama accounts
+        </h1>
         <!-- Filter -->
         <b-row>
           <b-col lg="12" class="mb-4">
             <b-form-input
+              id="filterInput"
               v-model="filter"
               type="search"
-              id="filterInput"
               placeholder="Search account by address, index or identity"
-            ></b-form-input>
+            />
           </b-col>
         </b-row>
         <!-- Mobile sorting -->
@@ -26,14 +28,30 @@
               class="mb-4"
             >
               <b-input-group size="sm">
-                <b-form-select v-model="sortBy" id="sortBySelect" :options="sortOptions" class="w-75">
+                <b-form-select
+                  id="sortBySelect"
+                  v-model="sortBy"
+                  :options="sortOptions"
+                  class="w-75"
+                >
                   <template v-slot:first>
-                    <option value="">-- none --</option>
+                    <option value="">
+                      -- none --
+                    </option>
                   </template>
                 </b-form-select>
-                <b-form-select v-model="sortDesc" size="sm" :disabled="!sortBy" class="w-25">
-                  <option :value="false">Asc</option>
-                  <option :value="true">Desc</option>
+                <b-form-select
+                  v-model="sortDesc"
+                  size="sm"
+                  :disabled="!sortBy"
+                  class="w-25"
+                >
+                  <option :value="false">
+                    Asc
+                  </option>
+                  <option :value="true">
+                    Desc
+                  </option>
                 </b-form-select>
               </b-input-group>
             </b-form-group>
@@ -42,8 +60,8 @@
         <!-- Table with sorting and pagination-->
         <div>
           <b-table
-            stacked="md"
             id="accounts-table"
+            stacked="md"
             head-variant="dark"
             :fields="fields"
             :items="accounts"
@@ -52,46 +70,78 @@
             :sort-by.sync="sortBy"
             :sort-desc.sync="sortDesc"
             :filter="filter"
-            :filterIncludedFields="filterOn"
+            :filter-included-fields="filterOn"
             @filtered="onFiltered"
           >
             <template slot="rank" slot-scope="data">
-              <p class="text-right mb-0">
-                #{{ data.item.rank }}
-              </p>
+              <p class="text-right mb-0">#{{ data.item.rank }}</p>
             </template>
             <template slot="accountId" slot-scope="data">
-              <div class="d-block d-sm-block d-md-none d-lg-none d-xl-none text-center">
-                <p class="mb-2">
-                  rank #{{ data.item.rank }}
-                </p>
-                <Identicon :value="data.item.accountId" :size="40" :theme="'polkadot'" :key="data.item.accountId" />
-                <nuxt-link :to="{name: 'account', query: { accountId: data.item.accountId } }" title="Account details">
+              <div
+                class="d-block d-sm-block d-md-none d-lg-none d-xl-none text-center"
+              >
+                <p class="mb-2">rank #{{ data.item.rank }}</p>
+                <Identicon
+                  :key="data.item.accountId"
+                  :value="data.item.accountId"
+                  :size="40"
+                  :theme="'polkadot'"
+                />
+                <nuxt-link
+                  :to="{
+                    name: 'account',
+                    query: { accountId: data.item.accountId }
+                  }"
+                  title="Account details"
+                >
                   <h4>{{ data.item.accountIndex }}</h4>
                 </nuxt-link>
-                <p class="mb-0" v-if="data.item.identity.display">
+                <p v-if="data.item.identity.display" class="mb-0">
                   {{ data.item.identity.display }}
                 </p>
                 <table class="table table-striped mt-4">
                   <tbody>
                     <tr>
-                      <td class="text-left"><strong>Free Balance</strong></td>
-                      <td class="text-right">{{ formatAmount(data.item.freeBalance) }}</td>
+                      <td class="text-left">
+                        <strong>Free Balance</strong>
+                      </td>
+                      <td class="text-right">
+                        {{ formatAmount(data.item.freeBalance) }}
+                      </td>
                     </tr>
                     <tr>
-                      <td class="text-left"><strong>Available Balance</strong></td>
-                      <td class="text-right">{{ formatAmount(data.item.availableBalance) }}</td>
+                      <td class="text-left">
+                        <strong>Available Balance</strong>
+                      </td>
+                      <td class="text-right">
+                        {{ formatAmount(data.item.availableBalance) }}
+                      </td>
                     </tr>
                     <tr>
-                      <td class="text-left"><strong>Locked Balance</strong></td>
-                      <td class="text-right">{{ formatAmount(data.item.lockedBalance) }}</td>
+                      <td class="text-left">
+                        <strong>Locked Balance</strong>
+                      </td>
+                      <td class="text-right">
+                        {{ formatAmount(data.item.lockedBalance) }}
+                      </td>
                     </tr>
                   </tbody>
                 </table>
               </div>
               <div class="d-none d-sm-none d-md-block d-lg-block d-xl-block">
-                <Identicon :value="data.item.accountId" :size="20" :theme="'polkadot'" :key="data.item.accountId" />
-                <nuxt-link :to="{name: 'account', query: { accountId: data.item.accountId } }" title="Account details">
+                <Identicon
+                  :key="data.item.accountId"
+                  :value="data.item.accountId"
+                  :size="20"
+                  :theme="'polkadot'"
+                />
+                <nuxt-link
+                  :to="{
+                    name: 'account',
+                    query: { accountId: data.item.accountId }
+                  }"
+                  title="Account details"
+                >
                   {{ data.item.accountIndex }}
                 </nuxt-link>
               </div>
@@ -116,9 +166,24 @@
             </template>
             <template slot="favorite" slot-scope="data">
               <p class="text-center mb-0">
-                <a class="favorite" v-on:click="toggleFavorite(data.item.accountIndex)">
-                  <i v-if="data.item.favorite" class="fas fa-star" style="color: #f1bd23" v-b-tooltip.hover title="Remove from Favorites"></i>
-                  <i v-else class="fas fa-star" style="color: #e6dfdf;" v-b-tooltip.hover title="Add to Favorites"></i>
+                <a
+                  class="favorite"
+                  @click="toggleFavorite(data.item.accountIndex)"
+                >
+                  <i
+                    v-if="data.item.favorite"
+                    v-b-tooltip.hover
+                    class="fas fa-star"
+                    style="color: #f1bd23"
+                    title="Remove from Favorites"
+                  />
+                  <i
+                    v-else
+                    v-b-tooltip.hover
+                    class="fas fa-star"
+                    style="color: #e6dfdf;"
+                    title="Add to Favorites"
+                  />
                 </a>
               </p>
             </template>
@@ -129,10 +194,15 @@
               :total-rows="totalRows"
               :per-page="perPage"
               aria-controls="validators-table"
-            >
-            </b-pagination>
+            />
             <b-button-group class="mx-4">
-              <b-button @click="handleNumFields(item)" v-for="(item, index) in tableOptions" v-bind:key=index>{{item}}</b-button>
+              <b-button
+                v-for="(item, index) in tableOptions"
+                :key="index"
+                @click="handleNumFields(item)"
+              >
+                {{ item }}
+              </b-button>
             </b-button-group>
           </div>
         </div>
@@ -141,27 +211,24 @@
   </div>
 </template>
 <script>
-import { mapMutations } from 'vuex';
-import axios from 'axios';
-import bootstrap from 'bootstrap';
-import Identicon from '../components/identicon.vue';
-import commonMixin from '../mixins/commonMixin.js';
-import { numItemsTableOptions } from '../polkastats.config.js';
+import { mapMutations } from "vuex";
+import axios from "axios";
+import bootstrap from "bootstrap";
+import Identicon from "../components/identicon.vue";
+import commonMixin from "../mixins/commonMixin.js";
+import { numItemsTableOptions } from "../polkastats.config.js";
 
 export default {
-  head () {
-    return {
-      title: 'PolkaStats - Polkadot Kusama active accounts',
-      meta: [
-        { hid: 'description', name: 'description', content: 'Polkadot Kusama active accounts' }
-      ]
-    }
+  components: {
+    Identicon
   },
   mixins: [commonMixin],
   data: function() {
     return {
       tableOptions: numItemsTableOptions,
-      perPage: localStorage.numItemsTableSelected ? localStorage.numItemsTableSelected : 10,
+      perPage: localStorage.numItemsTableSelected
+        ? localStorage.numItemsTableSelected
+        : 10,
       currentPage: 1,
       sortBy: `rank`,
       sortDesc: false,
@@ -169,25 +236,55 @@ export default {
       filterOn: [],
       totalRows: 1,
       fields: [
-        { key: 'rank', label: 'Rank', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` },
-        { key: 'accountId', label: 'Account', sortable: true },
-        { key: 'identity', label: 'Identity', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` },
-        { key: 'freeBalance', label: 'Free balance', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` },
-        { key: 'lockedBalance', label: 'Locked balance', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` },
-        { key: 'availableBalance', label: 'Available balance', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` },
-        { key: 'favorite', label: '⭐', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` }
+        {
+          key: "rank",
+          label: "Rank",
+          sortable: true,
+          class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
+        },
+        { key: "accountId", label: "Account", sortable: true },
+        {
+          key: "identity",
+          label: "Identity",
+          sortable: true,
+          class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
+        },
+        {
+          key: "freeBalance",
+          label: "Free balance",
+          sortable: true,
+          class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
+        },
+        {
+          key: "lockedBalance",
+          label: "Locked balance",
+          sortable: true,
+          class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
+        },
+        {
+          key: "availableBalance",
+          label: "Available balance",
+          sortable: true,
+          class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
+        },
+        {
+          key: "favorite",
+          label: "⭐",
+          sortable: true,
+          class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
+        }
       ],
       favorites: [],
       polling: null
-    }
+    };
   },
   computed: {
     accounts() {
       let accounts = [];
-      for(let i = 0; i < this.$store.state.accounts.list.length; i++) {
+      for (let i = 0; i < this.$store.state.accounts.list.length; i++) {
         let account = this.$store.state.accounts.list[i];
-        const accountIndex = account.accountIndex
-          
+        const accountIndex = account.accountIndex;
+
         accounts.push({
           ...account,
           accountIndex,
@@ -201,50 +298,60 @@ export default {
       return this.fields
         .filter(f => f.sortable)
         .map(f => {
-          return { text: f.label, value: f.key }
+          return { text: f.label, value: f.key };
         });
     }
   },
-  created: function () {
+  watch: {
+    favorites: function(val) {
+      this.$cookies.set("favorites", val, {
+        path: "/",
+        maxAge: 60 * 60 * 24 * 7
+      });
+    }
+  },
+  created: function() {
     var vm = this;
-    
+
     // Get favorites from cookie
-    if (this.$cookies.get('favorites')) {
-      this.favorites = this.$cookies.get('favorites');
+    if (this.$cookies.get("favorites")) {
+      this.favorites = this.$cookies.get("favorites");
     }
 
     // Force update of account list if empty
     if (this.$store.state.accounts.list.length == 0) {
-      vm.$store.dispatch('accounts/update');
+      vm.$store.dispatch("accounts/update");
     }
     this.totalRows = this.$store.state.accounts.list.length;
 
     // Update data every 5 minutes
     this.polling = setInterval(() => {
-      vm.$store.dispatch('accounts/update');
+      vm.$store.dispatch("accounts/update");
       if (!this.filter) this.totalRows = this.$store.state.accounts.list.length;
     }, 300000);
-
   },
-  beforeDestroy: function () {
+  beforeDestroy: function() {
     clearInterval(this.polling);
   },
   methods: {
-      handleNumFields(num) {
-        this.perPage = num;
-      },
-     toggleFavorite(validator) {
+    handleNumFields(num) {
+      this.perPage = num;
+    },
+    toggleFavorite(validator) {
       // Receives validator accountId
       if (this.isFavorite(validator)) {
         this.favorites.splice(this.getIndex(validator), 1);
       } else {
-        this.favorites.push({ accountId: validator, name: 'Edit phragmen name...'});
+        this.favorites.push({
+          accountId: validator,
+          name: "Edit phragmen name..."
+        });
       }
       return true;
     },
     isFavorite(validator) {
       // Receives validator accountId
-      for (var i=0; i < this.favorites.length; i++) {
+      for (var i = 0; i < this.favorites.length; i++) {
         if (this.favorites[i].accountId == validator) {
           return true;
         }
@@ -253,7 +360,7 @@ export default {
     },
     getIndex(validator) {
       // Receives validator accountId
-      for (var i=0; i < this.favorites.length; i++) {
+      for (var i = 0; i < this.favorites.length; i++) {
         if (this.favorites[i].accountId == validator) {
           return i;
         }
@@ -262,28 +369,29 @@ export default {
     },
     onFiltered(filteredItems) {
       // Trigger pagination to update the number of buttons/pages due to filtering
-      this.totalRows = filteredItems.length
-      this.currentPage = 1
+      this.totalRows = filteredItems.length;
+      this.currentPage = 1;
     }
   },
-  watch: {
-    favorites: function (val) {
-      this.$cookies.set('favorites', val, {
-        path: '/',
-        maxAge: 60 * 60 * 24 * 7
-      });
-    }
-  },
-  components: {
-    Identicon
+  head() {
+    return {
+      title: "PolkaStats - Polkadot Kusama active accounts",
+      meta: [
+        {
+          hid: "description",
+          name: "description",
+          content: "Polkadot Kusama active accounts"
+        }
+      ]
+    };
   }
-}
+};
 </script>
 <style>
 #accounts-table th {
   text-align: center;
 }
-.page-accounts .identicon{
+.page-accounts .identicon {
   display: inline-block;
 }
 

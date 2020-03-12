@@ -2,16 +2,18 @@
   <div>
     <section>
       <b-container class="page-phragmen main pt-4">
-        <h1 class="text-center mb-4">Predicted candidates by phragmen election algorithm</h1>
+        <h1 class="text-center mb-4">
+          Predicted candidates by phragmen election algorithm
+        </h1>
         <!-- Filter -->
         <b-row>
           <b-col lg="12" class="mb-4">
             <b-form-input
+              id="filterInput"
               v-model="filter"
               type="search"
-              id="filterInput"
               placeholder="Search candidate by account, account index, identity display name or keybase name"
-            ></b-form-input>
+            />
           </b-col>
         </b-row>
         <!-- Mobile sorting -->
@@ -26,14 +28,30 @@
               class="mb-4"
             >
               <b-input-group size="sm">
-                <b-form-select v-model="sortBy" id="sortBySelect" :options="sortOptions" class="w-75">
+                <b-form-select
+                  id="sortBySelect"
+                  v-model="sortBy"
+                  :options="sortOptions"
+                  class="w-75"
+                >
                   <template v-slot:first>
-                    <option value="">-- none --</option>
+                    <option value="">
+                      -- none --
+                    </option>
                   </template>
                 </b-form-select>
-                <b-form-select v-model="sortDesc" size="sm" :disabled="!sortBy" class="w-25">
-                  <option :value="false">Asc</option>
-                  <option :value="true">Desc</option>
+                <b-form-select
+                  v-model="sortDesc"
+                  size="sm"
+                  :disabled="!sortBy"
+                  class="w-25"
+                >
+                  <option :value="false">
+                    Asc
+                  </option>
+                  <option :value="true">
+                    Desc
+                  </option>
                 </b-form-select>
               </b-input-group>
             </b-form-group>
@@ -42,8 +60,8 @@
         <!-- Table with sorting and pagination-->
         <div>
           <b-table
-            stacked="md"
             id="candidates-table"
+            stacked="md"
             head-variant="dark"
             :fields="fields"
             :items="candidates"
@@ -52,7 +70,7 @@
             :sort-by.sync="sortBy"
             :sort-desc.sync="sortDesc"
             :filter="filter"
-            :filterIncludedFields="filterOn"
+            :filter-included-fields="filterOn"
             @filtered="onFiltered"
           >
             <template slot="rank" slot-scope="data">
@@ -61,48 +79,100 @@
               </p>
             </template>
             <template slot="pub_key_stash" slot-scope="data">
-              <div class="d-block d-sm-block d-md-none d-lg-none d-xl-none text-center">
+              <div
+                class="d-block d-sm-block d-md-none d-lg-none d-xl-none text-center"
+              >
                 <div v-if="hasIdentity(data.item.pub_key_stash)">
                   <div v-if="getIdentity(data.item.pub_key_stash).logo !== ''">
-                    <img v-bind:src="getIdentity(data.item.pub_key_stash).logo" class="identity mt-2" />
+                    <img
+                      :src="getIdentity(data.item.pub_key_stash).logo"
+                      class="identity mt-2"
+                    />
                   </div>
                 </div>
                 <div v-else>
-                  <Identicon :value="data.item.pub_key_stash" :size="80" :theme="'polkadot'" :key="data.item.pub_key_stash" />
+                  <Identicon
+                    :key="data.item.pub_key_stash"
+                    :value="data.item.pub_key_stash"
+                    :size="80"
+                    :theme="'polkadot'"
+                  />
                 </div>
-                <nuxt-link :to="{name: 'phragmen-candidate', query: { accountId: data.item.pub_key_stash } }" title="Candidate details">
-                  <h4 v-if="hasIdentity(data.item.pub_key_stash)" class="mt-2 mb-2">
+                <nuxt-link
+                  :to="{
+                    name: 'phragmen-candidate',
+                    query: { accountId: data.item.pub_key_stash }
+                  }"
+                  title="Candidate details"
+                >
+                  <h4
+                    v-if="hasIdentity(data.item.pub_key_stash)"
+                    class="mt-2 mb-2"
+                  >
                     {{ getIdentity(data.item.pub_key_stash).full_name }}
                   </h4>
-                  <h4 v-else-if="hasKusamaIdentity(data.item.pub_key_stash)" class="mt-2 mb-2">
+                  <h4
+                    v-else-if="hasKusamaIdentity(data.item.pub_key_stash)"
+                    class="mt-2 mb-2"
+                  >
                     {{ hasKusamaIdentity(data.item.pub_key_stash).display }}
                   </h4>
                   <h4 v-else class="mt-2 mb-2">
-                    <span class="d-inline d-sm-inline d-md-inline d-lg-inline d-xl-none">{{ indexes[data.item.pub_key_stash] }}</span>
-                    <span class="d-none d-sm-none d-md-none d-lg-none d-xl-inline">{{ indexes[data.item.pub_key_stash] }}</span>
+                    <span
+                      class="d-inline d-sm-inline d-md-inline d-lg-inline d-xl-none"
+                      >{{ indexes[data.item.pub_key_stash] }}</span
+                    >
+                    <span
+                      class="d-none d-sm-none d-md-none d-lg-none d-xl-inline"
+                      >{{ indexes[data.item.pub_key_stash] }}</span
+                    >
                   </h4>
                 </nuxt-link>
-                <p class="mt-2 mb-2 rank">
-                  rank #{{ data.item.rank }}
+                <p class="mt-2 mb-2 rank">rank #{{ data.item.rank }}</p>
+                <p v-b-tooltip.hover class="bonded mb-0" title="Total stake">
+                  {{ formatAmount(data.item.stake_total) }}
                 </p>
-                <p class="bonded mb-0" v-b-tooltip.hover title="Total stake">{{ formatAmount(data.item.stake_total) }}</p>
                 <p class="mb-0">
                   <small>
-                    <span v-b-tooltip.hover title="Self bonded">{{ formatAmount(data.item.stake_validator) }}</span>
-                    <span v-b-tooltip.hover title="Bonded by nominators">(+{{ formatAmount(data.item.other_stake_sum) }})</span>
+                    <span v-b-tooltip.hover title="Self bonded">{{
+                      formatAmount(data.item.stake_validator)
+                    }}</span>
+                    <span v-b-tooltip.hover title="Bonded by nominators"
+                      >(+{{ formatAmount(data.item.other_stake_sum) }})</span
+                    >
                   </small>
                 </p>
               </div>
               <div class="d-none d-sm-none d-md-block d-lg-block d-xl-block">
-                <div v-if="hasIdentity(data.item.pub_key_stash)" class="d-inline-block">
-                  <div v-if="getIdentity(data.item.pub_key_stash).logo !== ''" class="d-inline-block">
-                    <img v-bind:src="getIdentity(data.item.pub_key_stash).logo" class="identity-small d-inline-block" />
+                <div
+                  v-if="hasIdentity(data.item.pub_key_stash)"
+                  class="d-inline-block"
+                >
+                  <div
+                    v-if="getIdentity(data.item.pub_key_stash).logo !== ''"
+                    class="d-inline-block"
+                  >
+                    <img
+                      :src="getIdentity(data.item.pub_key_stash).logo"
+                      class="identity-small d-inline-block"
+                    />
                   </div>
                 </div>
                 <div v-else class="d-inline-block">
-                  <Identicon :value="data.item.pub_key_stash" :size="20" :theme="'polkadot'" :key="data.item.pub_key_stash" />
+                  <Identicon
+                    :key="data.item.pub_key_stash"
+                    :value="data.item.pub_key_stash"
+                    :size="20"
+                    :theme="'polkadot'"
+                  />
                 </div>
-                <nuxt-link :to="{name: 'phragmen-candidate', query: { accountId: data.item.pub_key_stash } }" title="Candidate details">
+                <nuxt-link
+                  :to="{
+                    name: 'phragmen-candidate',
+                    query: { accountId: data.item.pub_key_stash }
+                  }"
+                  title="Candidate details"
+                >
                   <span v-if="hasIdentity(data.item.pub_key_stash)">
                     {{ getIdentity(data.item.pub_key_stash).full_name }}
                   </span>
@@ -110,8 +180,14 @@
                     {{ getKusamaIdentity(data.item.pub_key_stash).display }}
                   </span>
                   <span v-else>
-                    <span class="d-inline d-sm-inline d-md-inline d-lg-inline d-xl-none">{{ indexes[data.item.pub_key_stash] }}</span>
-                    <span class="d-none d-sm-none d-md-none d-lg-none d-xl-inline">{{ indexes[data.item.pub_key_stash] }}</span>
+                    <span
+                      class="d-inline d-sm-inline d-md-inline d-lg-inline d-xl-none"
+                      >{{ indexes[data.item.pub_key_stash] }}</span
+                    >
+                    <span
+                      class="d-none d-sm-none d-md-none d-lg-none d-xl-inline"
+                      >{{ indexes[data.item.pub_key_stash] }}</span
+                    >
                   </span>
                 </nuxt-link>
               </div>
@@ -132,15 +208,30 @@
               </p>
             </template>
             <template slot="stake_total" slot-scope="data">
-              <p class="text-right mb-0" v-if="data.item.stake_total > 0 ">
+              <p v-if="data.item.stake_total > 0" class="text-right mb-0">
                 {{ formatAmount(data.item.stake_total) }}
               </p>
             </template>
             <template slot="favorite" slot-scope="data">
               <p class="text-center mb-0">
-                <a class="favorite" v-on:click="toggleFavorite(data.item.accountIndex)">
-                  <i v-if="data.item.favorite" class="fas fa-star" style="color: #f1bd23" v-b-tooltip.hover title="Remove from Favorites"></i>
-                  <i v-else class="fas fa-star" style="color: #e6dfdf;" v-b-tooltip.hover title="Add to Favorites"></i>
+                <a
+                  class="favorite"
+                  @click="toggleFavorite(data.item.accountIndex)"
+                >
+                  <i
+                    v-if="data.item.favorite"
+                    v-b-tooltip.hover
+                    class="fas fa-star"
+                    style="color: #f1bd23"
+                    title="Remove from Favorites"
+                  />
+                  <i
+                    v-else
+                    v-b-tooltip.hover
+                    class="fas fa-star"
+                    style="color: #e6dfdf;"
+                    title="Add to Favorites"
+                  />
                 </a>
               </p>
             </template>
@@ -151,10 +242,15 @@
               :total-rows="totalRows"
               :per-page="perPage"
               aria-controls="validators-table"
-            >
-            </b-pagination>
+            />
             <b-button-group class="mx-4">
-              <b-button @click="handleNumFields(item)" v-for="(item, index) in tableOptions" v-bind:key=index>{{item}}</b-button>
+              <b-button
+                v-for="(item, index) in tableOptions"
+                :key="index"
+                @click="handleNumFields(item)"
+              >
+                {{ item }}
+              </b-button>
             </b-button-group>
           </div>
         </div>
@@ -163,30 +259,27 @@
   </div>
 </template>
 <script>
-import { mapMutations } from 'vuex';
-import axios from 'axios';
-import bootstrap from 'bootstrap';
-import Identicon from '../components/identicon.vue';
-import Network from '../components/network.vue';
-import { isHex } from '@polkadot/util';
-import BN from 'bn.js';
-import { blockExplorer, numItemsTableOptions } from '../polkastats.config.js';
-import commonMixin from '../mixins/commonMixin.js';
+import { mapMutations } from "vuex";
+import axios from "axios";
+import bootstrap from "bootstrap";
+import Identicon from "../components/identicon.vue";
+import Network from "../components/network.vue";
+import { isHex } from "@polkadot/util";
+import BN from "bn.js";
+import { blockExplorer, numItemsTableOptions } from "../polkastats.config.js";
+import commonMixin from "../mixins/commonMixin.js";
 
 export default {
-  head () {
-    return {
-      title: 'PolkaStats - Polkadot Kusama phragmen candidates',
-      meta: [
-        { hid: 'description', name: 'description', content: 'Polkadot Kusama phragmen candidates' }
-      ]
-    }
+  components: {
+    Identicon
   },
   mixins: [commonMixin],
   data: function() {
     return {
       tableOptions: numItemsTableOptions,
-      perPage: localStorage.numItemsTableSelected ? localStorage.numItemsTableSelected : 10,
+      perPage: localStorage.numItemsTableSelected
+        ? localStorage.numItemsTableSelected
+        : 10,
       currentPage: 1,
       sortBy: `rank`,
       sortDesc: false,
@@ -194,18 +287,53 @@ export default {
       filterOn: [],
       totalRows: 1,
       fields: [
-        { key: 'rank', label: '#', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` },
-        { key: 'pub_key_stash', label: 'Candidate', sortable: true, filterByFormatted: true },
-        { key: 'other_stake_count', label: 'Voters', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` },
-        { key: 'stake_validator', label: 'Self stake', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` },
-        { key: 'other_stake_sum', label: 'Voters stake', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` },
-        { key: 'stake_total', label: 'Total stake', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` },
-        { key: 'favorite', label: '⭐', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` }
+        {
+          key: "rank",
+          label: "#",
+          sortable: true,
+          class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
+        },
+        {
+          key: "pub_key_stash",
+          label: "Candidate",
+          sortable: true,
+          filterByFormatted: true
+        },
+        {
+          key: "other_stake_count",
+          label: "Voters",
+          sortable: true,
+          class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
+        },
+        {
+          key: "stake_validator",
+          label: "Self stake",
+          sortable: true,
+          class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
+        },
+        {
+          key: "other_stake_sum",
+          label: "Voters stake",
+          sortable: true,
+          class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
+        },
+        {
+          key: "stake_total",
+          label: "Total stake",
+          sortable: true,
+          class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
+        },
+        {
+          key: "favorite",
+          label: "⭐",
+          sortable: true,
+          class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
+        }
       ],
       blockExplorer,
       polling: null,
-      favorites: [],
-    }
+      favorites: []
+    };
   },
   computed: {
     network() {
@@ -213,7 +341,11 @@ export default {
     },
     candidates() {
       let candidates = [];
-      for(let i = 0; i < this.$store.state.phragmen.info.candidates.length; i++) {
+      for (
+        let i = 0;
+        i < this.$store.state.phragmen.info.candidates.length;
+        i++
+      ) {
         let candidate = this.$store.state.phragmen.info.candidates[i];
         let identity = "";
         const accountIndex = this.indexes[candidate.pub_key_stash];
@@ -254,58 +386,67 @@ export default {
       return this.fields
         .filter(f => f.sortable)
         .map(f => {
-          return { text: f.label, value: f.key }
+          return { text: f.label, value: f.key };
         });
     }
   },
-  created: function () {
+  watch: {
+    favorites: function(val) {
+      //console.log(val);
+      this.$cookies.set("favorites", val, {
+        path: "/",
+        maxAge: 60 * 60 * 24 * 7
+      });
+    }
+  },
+  created: function() {
     var vm = this;
 
     // Get favorites from cookie
-    if (this.$cookies.get('favorites')) {
-      this.favorites = this.$cookies.get('favorites');
+    if (this.$cookies.get("favorites")) {
+      this.favorites = this.$cookies.get("favorites");
     }
 
     // Force update of network info
-    vm.$store.dispatch('network/update');
-    
+    vm.$store.dispatch("network/update");
+
     // Force update of phragmen candidates list if empty
     if (this.$store.state.phragmen.info.candidates.length == 0) {
-      vm.$store.dispatch('phragmen/update');
+      vm.$store.dispatch("phragmen/update");
     }
     this.totalRows = this.$store.state.phragmen.info.candidates.length;
 
     // Force update of indentity list if empty
     if (this.$store.state.identities.list.length == 0) {
-      vm.$store.dispatch('identities/update');
+      vm.$store.dispatch("identities/update");
     }
 
     // Force update of staking identities list if empty
     if (this.$store.state.stakingIdentities.list.length === 0) {
-      vm.$store.dispatch('stakingIdentities/update');
+      vm.$store.dispatch("stakingIdentities/update");
     }
 
     // Force update of indexes list if empty
     if (this.$store.state.indexes.list.length === 0) {
-      vm.$store.dispatch('indexes/update');
+      vm.$store.dispatch("indexes/update");
     }
 
     // Update data every 10 seconds
     this.polling = setInterval(() => {
-      vm.$store.dispatch('network/update');
-      vm.$store.dispatch('phragmen/update');
-      vm.$store.dispatch('identities/update');
-      vm.$store.dispatch('stakingIdentities/update');
-      if (!this.filter) this.totalRows = this.$store.state.phragmen.info.candidates.length;
+      vm.$store.dispatch("network/update");
+      vm.$store.dispatch("phragmen/update");
+      vm.$store.dispatch("identities/update");
+      vm.$store.dispatch("stakingIdentities/update");
+      if (!this.filter)
+        this.totalRows = this.$store.state.phragmen.info.candidates.length;
     }, 10000);
 
     // Update account indexes every 1 min
     this.pollingIndexes = setInterval(() => {
-      vm.$store.dispatch('indexes/update'); 
+      vm.$store.dispatch("indexes/update");
     }, 60000);
-
   },
-  beforeDestroy: function () {
+  beforeDestroy: function() {
     clearInterval(this.polling);
     clearInterval(this.pollingIndexes);
   },
@@ -318,13 +459,16 @@ export default {
       if (this.isFavorite(validator)) {
         this.favorites.splice(this.getIndex(validator), 1);
       } else {
-        this.favorites.push({ accountId: validator, name: 'Edit phragmen name...'});
+        this.favorites.push({
+          accountId: validator,
+          name: "Edit phragmen name..."
+        });
       }
       return true;
     },
     isFavorite(validator) {
       // Receives validator accountId
-      for (var i=0; i < this.favorites.length; i++) {
+      for (var i = 0; i < this.favorites.length; i++) {
         if (this.favorites[i].accountId == validator) {
           return true;
         }
@@ -333,7 +477,7 @@ export default {
     },
     getIndex(validator) {
       // Receives validator accountId
-      for (var i=0; i < this.favorites.length; i++) {
+      for (var i = 0; i < this.favorites.length; i++) {
         if (this.favorites[i].accountId == validator) {
           return i;
         }
@@ -346,8 +490,8 @@ export default {
       });
     },
     getIdentity(stashId) {
-      let filteredArray =  this.$store.state.identities.list.filter(obj => {
-        return obj.stashId === stashId
+      let filteredArray = this.$store.state.identities.list.filter(obj => {
+        return obj.stashId === stashId;
       });
       return filteredArray[0];
     },
@@ -357,32 +501,33 @@ export default {
       });
     },
     getKusamaIdentity(stashId) {
-      let filteredArray =  this.$store.state.stakingIdentities.list.filter(obj => {
-        return obj.accountId === stashId
-      });
+      let filteredArray = this.$store.state.stakingIdentities.list.filter(
+        obj => {
+          return obj.accountId === stashId;
+        }
+      );
       console.log(filteredArray[0]);
       return filteredArray[0].identity;
     },
     onFiltered(filteredItems) {
       // Trigger pagination to update the number of buttons/pages due to filtering
-      this.totalRows = filteredItems.length
-      this.currentPage = 1
+      this.totalRows = filteredItems.length;
+      this.currentPage = 1;
     }
   },
-  watch: {
-    favorites: function (val) {
-      //console.log(val);
-      this.$cookies.set('favorites', val, {
-        path: '/',
-        maxAge: 60 * 60 * 24 * 7
-      });
-    }
-  },
-  components: {
-    Identicon,
-    Network
+  head() {
+    return {
+      title: "PolkaStats - Polkadot Kusama phragmen candidates",
+      meta: [
+        {
+          hid: "description",
+          name: "description",
+          content: "Polkadot Kusama phragmen candidates"
+        }
+      ]
+    };
   }
-}
+};
 </script>
 <style>
 body {
@@ -405,7 +550,7 @@ body {
   font-weight: 700;
   font-size: 1.3rem;
 }
-[data-toggle="collapse"] .fas:before {   
+[data-toggle="collapse"] .fas:before {
   content: "\f078";
 }
 [data-toggle="collapse"][aria-expanded="false"] .fas:before {
@@ -421,7 +566,8 @@ body {
   color: #d75ea1;
   font-weight: 700;
 }
-.fee, .unstake {
+.fee,
+.unstake {
   color: #d75ea1;
   font-weight: 700;
 }

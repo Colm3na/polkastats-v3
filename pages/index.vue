@@ -42,11 +42,11 @@
         <b-row>
           <b-col lg="12" class="mb-4">
             <b-form-input
+              id="filterInput"
               v-model="filter"
               type="search"
-              id="filterInput"
               placeholder="Search validator by account, account index, identity display name or keybase name"
-            ></b-form-input>
+            />
           </b-col>
         </b-row>
         <!-- Mobile sorting -->
@@ -62,13 +62,15 @@
             >
               <b-input-group size="sm">
                 <b-form-select
-                  v-model="sortBy"
                   id="sortBySelect"
+                  v-model="sortBy"
                   :options="sortOptions"
                   class="w-75"
                 >
                   <template v-slot:first>
-                    <option value="">-- none --</option>
+                    <option value="">
+                      -- none --
+                    </option>
                   </template>
                 </b-form-select>
                 <b-form-select
@@ -77,8 +79,12 @@
                   :disabled="!sortBy"
                   class="w-25"
                 >
-                  <option :value="false">Asc</option>
-                  <option :value="true">Desc</option>
+                  <option :value="false">
+                    Asc
+                  </option>
+                  <option :value="true">
+                    Desc
+                  </option>
                 </b-form-select>
               </b-input-group>
             </b-form-group>
@@ -87,8 +93,8 @@
         <!-- Table with sorting and pagination-->
         <div class="table-responsive">
           <b-table
-            stacked="md"
             id="validators-table"
+            stacked="md"
             head-variant="dark"
             :fields="fields"
             :items="validators"
@@ -97,7 +103,7 @@
             :sort-by.sync="sortBy"
             :sort-desc.sync="sortDesc"
             :filter="filter"
-            :filterIncludedFields="filterOn"
+            :filter-included-fields="filterOn"
             @filtered="onFiltered"
           >
             <template slot="rank" slot-scope="data">
@@ -109,99 +115,98 @@
               <p class="text-center mb-0">
                 <i
                   v-if="data.item.imOnline"
-                  class="imOnline fas fa-check-circle"
                   v-b-tooltip.hover
-                  v-bind:title="data.item.imOnlineMessage"
-                ></i>
+                  class="imOnline fas fa-check-circle"
+                  :title="data.item.imOnlineMessage"
+                />
                 <i
                   v-else
-                  class="imOffline fas fa-times-circle"
                   v-b-tooltip.hover
-                  v-bind:title="data.item.imOnlineMessage"
-                ></i>
+                  class="imOffline fas fa-times-circle"
+                  :title="data.item.imOnlineMessage"
+                />
               </p>
             </template>
             <template slot="accountId" slot-scope="data">
               <div class="d-block d-sm-block d-md-none d-lg-none d-xl-none">
-                
                 <b-container>
                   <b-row>
-                  <p class="mt-3 mb-0 rank">
-                  <span class="rank-detail" v-b-tooltip.hover title="Rank"
-                    >#{{ data.item.rank }}</span
-                  >
-                  <i
-                    v-if="data.item.imOnline"
-                    class="imOnline fas fa-check-circle ml-1"
-                    v-b-tooltip.hover
-                    v-bind:title="data.item.imOnlineMessage"
-                  ></i>
-                  <i
-                    v-else
-                    class="imOffline fas fa-times-circle ml-1"
-                    v-b-tooltip.hover
-                    v-bind:title="data.item.imOnlineMessage"
-                  ></i>
-                  <i
-                    v-if="data.item.currentElected"
-                    class="elected fas fa-chevron-circle-right"
-                    v-b-tooltip.hover
-                    title="Elected for next session"
-                  ></i>
-                  <i
-                    v-else
-                    class="notElected fas fa-times-circle"
-                    v-b-tooltip.hover
-                    title="Not elected for next session"
-                  ></i>
-                </p>
-                <a
-                  class="favorite"
-                  v-on:click="toggleFavorite(data.item.accountId)"
-                >
-                  <i
-                    v-if="data.item.favorite"
-                    class="fas fa-star"
-                    style="color: #f1bd23"
-                    v-b-tooltip.hover
-                    title="Remove from Favorites"
-                  ></i>
-                  <i
-                    v-else
-                    class="fas fa-star"
-                    style="color: #e6dfdf;"
-                    v-b-tooltip.hover
-                    title="Add to Favorites"
-                  ></i>
-                </a>
+                    <p class="mt-3 mb-0 rank">
+                      <span v-b-tooltip.hover class="rank-detail" title="Rank"
+                        >#{{ data.item.rank }}</span
+                      >
+                      <i
+                        v-if="data.item.imOnline"
+                        v-b-tooltip.hover
+                        class="imOnline fas fa-check-circle ml-1"
+                        :title="data.item.imOnlineMessage"
+                      />
+                      <i
+                        v-else
+                        v-b-tooltip.hover
+                        class="imOffline fas fa-times-circle ml-1"
+                        :title="data.item.imOnlineMessage"
+                      />
+                      <i
+                        v-if="data.item.currentElected"
+                        v-b-tooltip.hover
+                        class="elected fas fa-chevron-circle-right"
+                        title="Elected for next session"
+                      />
+                      <i
+                        v-else
+                        v-b-tooltip.hover
+                        class="notElected fas fa-times-circle"
+                        title="Not elected for next session"
+                      />
+                    </p>
+                    <a
+                      class="favorite"
+                      @click="toggleFavorite(data.item.accountId)"
+                    >
+                      <i
+                        v-if="data.item.favorite"
+                        v-b-tooltip.hover
+                        class="fas fa-star"
+                        style="color: #f1bd23"
+                        title="Remove from Favorites"
+                      />
+                      <i
+                        v-else
+                        v-b-tooltip.hover
+                        class="fas fa-star"
+                        style="color: #e6dfdf;"
+                        title="Add to Favorites"
+                      />
+                    </a>
                   </b-row>
                   <b-row>
                     <b-col cols="4">
                       <nuxt-link
-                          :to="{
-                            name: 'validator',
-                            query: { accountId: data.item.accountId }
-                          }"
-                          title="Validator details"
-                        >
-                      <div v-if="hasIdentity(data.item.accountId)">
-                        <div
-                          v-if="getIdentity(data.item.accountId).logo !== ''"
-                        >
-                          <img
-                            v-bind:src="getIdentity(data.item.accountId).logo"
-                            class="identity mt-2"
+                        :to="{
+                          name: 'validator',
+                          query: { accountId: data.item.accountId }
+                        }"
+                        title="Validator details"
+                      >
+                        <div v-if="hasIdentity(data.item.accountId)">
+                          <div
+                            v-if="getIdentity(data.item.accountId).logo !== ''"
+                          >
+                            <img
+                              :src="getIdentity(data.item.accountId).logo"
+                              class="identity mt-2"
+                            />
+                          </div>
+                        </div>
+                        <div v-else class="logo">
+                          <Identicon
+                            :key="data.item.accountId"
+                            :value="data.item.accountId"
+                            :size="48"
+                            :theme="'polkadot'"
                           />
                         </div>
-                      </div>
-                      <div v-else class="logo">
-                        <Identicon
-                          :value="data.item.accountId"
-                          :size="48"
-                          :theme="'polkadot'"
-                          :key="data.item.accountId"
-                        />
-                      </div>
                       </nuxt-link>
                     </b-col>
                     <b-col cols="8">
@@ -213,9 +218,7 @@
                           }"
                           title="Validator details"
                         >
-                          <h4
-                            v-if="hasIdentity(data.item.accountId)"
-                          >
+                          <h4 v-if="hasIdentity(data.item.accountId)">
                             {{ getIdentity(data.item.accountId).full_name }}
                           </h4>
                           <h4
@@ -236,8 +239,8 @@
                           <div v-if="data.item.stakers">
                             <p
                               v-if="data.item.stake && data.item.stake > 0"
-                              class="bonded mb-0"
                               v-b-tooltip.hover
+                              class="bonded mb-0"
                               title="Total bonded"
                             >
                               <!-- <i class="far fa-handshake"></i> -->
@@ -290,7 +293,9 @@
                                     }"
                                   />
                                   {{
-                                    (data.item.commission / 10000000).toFixed(2)
+                                    (data.item.commission / 10000000).toFixed(
+                                      2
+                                    )
                                   }}%
                                 </span>
                               </p>
@@ -318,17 +323,17 @@
                     class="d-inline-block"
                   >
                     <img
-                      v-bind:src="getIdentity(data.item.accountId).logo"
+                      :src="getIdentity(data.item.accountId).logo"
                       class="identity-small d-inline-block"
                     />
                   </div>
                 </div>
                 <div v-else class="d-inline-block">
                   <Identicon
+                    :key="data.item.accountId"
                     :value="data.item.accountId"
                     :size="20"
                     :theme="'polkadot'"
-                    :key="data.item.accountId"
                   />
                 </div>
                 <nuxt-link
@@ -363,7 +368,7 @@
               </p>
             </template>
             <template slot="stakeIndex" slot-scope="data">
-              <p class="text-center mb-0" v-if="data.item.stake > 0">
+              <p v-if="data.item.stake > 0" class="text-center mb-0">
                 {{ formatAmount(data.item.stake) }}
               </p>
             </template>
@@ -379,8 +384,8 @@
             </template>
             <template slot="commission" slot-scope="data">
               <p
-                class="text-center mb-0"
                 v-if="typeof data.item.commission == 'number'"
+                class="text-center mb-0"
               >
                 {{ (data.item.commission / 10000000).toFixed(2) }}%
               </p>
@@ -394,22 +399,22 @@
               <p class="text-center mb-0">
                 <a
                   class="favorite"
-                  v-on:click="toggleFavorite(data.item.accountId)"
+                  @click="toggleFavorite(data.item.accountId)"
                 >
                   <i
                     v-if="data.item.favorite"
+                    v-b-tooltip.hover
                     class="fas fa-star"
                     style="color: #f1bd23"
-                    v-b-tooltip.hover
                     title="Remove from Favorites"
-                  ></i>
+                  />
                   <i
                     v-else
+                    v-b-tooltip.hover
                     class="fas fa-star"
                     style="color: #e6dfdf;"
-                    v-b-tooltip.hover
                     title="Add to Favorites"
-                  ></i>
+                  />
                 </a>
               </p>
             </template>
@@ -419,7 +424,7 @@
             :total-rows="totalRows"
             :per-page="perPage"
             aria-controls="validators-table"
-          ></b-pagination>
+          />
         </div>
       </b-container>
     </section>
@@ -437,17 +442,9 @@ import { blockExplorer } from "../polkastats.config.js";
 import commonMixin from "../mixins/commonMixin.js";
 
 export default {
-  head() {
-    return {
-      title: "PolkaStats - Polkadot Kusama network statistics",
-      meta: [
-        {
-          hid: "description",
-          name: "description",
-          content: "Polkadot Kusama network statistics"
-        }
-      ]
-    };
+  components: {
+    Identicon,
+    Network
   },
   mixins: [commonMixin],
   data: function() {
@@ -614,6 +611,15 @@ export default {
         });
     }
   },
+  watch: {
+    favorites: function(val) {
+      //console.log(val);
+      this.$cookies.set("favorites", val, {
+        path: "/",
+        maxAge: 60 * 60 * 24 * 7
+      });
+    }
+  },
   created: function() {
     var vm = this;
 
@@ -741,18 +747,17 @@ export default {
       this.currentPage = 1;
     }
   },
-  watch: {
-    favorites: function(val) {
-      //console.log(val);
-      this.$cookies.set("favorites", val, {
-        path: "/",
-        maxAge: 60 * 60 * 24 * 7
-      });
-    }
-  },
-  components: {
-    Identicon,
-    Network
+  head() {
+    return {
+      title: "PolkaStats - Polkadot Kusama network statistics",
+      meta: [
+        {
+          hid: "description",
+          name: "description",
+          content: "Polkadot Kusama network statistics"
+        }
+      ]
+    };
   }
 };
 </script>
@@ -871,7 +876,8 @@ body {
   margin-left: -0.5em;
 }
 @media (max-width: 767px) {
-  .table th, .table td {
+  .table th,
+  .table td {
     border-top: 0;
     padding: 0;
   }
@@ -979,7 +985,7 @@ body {
   }
 }
 
-@media (max-width: 470px) { 
+@media (max-width: 470px) {
   td {
     border-top: 0;
   }
@@ -1020,6 +1026,5 @@ body {
   .identity {
     max-width: 48px;
   }
-
 }
 </style>

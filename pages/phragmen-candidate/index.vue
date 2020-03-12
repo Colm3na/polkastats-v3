@@ -1,5 +1,5 @@
 <template>
-  <index></index>
+  <index />
 </template>
 <!-- This is commented to fix temporally
 <template>
@@ -188,24 +188,20 @@
 </template>
 -->
 <script>
-import { mapMutations } from 'vuex'
-import axios from 'axios';
-import moment from 'moment';
-import VueApexCharts from 'vue-apexcharts';
-import Identicon from '../../components/identicon.vue';
-import { isHex } from '@polkadot/util';
-import BN from 'bn.js';
-import { backendBaseURL, blockExplorer} from '../../polkastats.config.js';
-import commonMixin from '../../mixins/commonMixin.js';
+import { mapMutations } from "vuex";
+import axios from "axios";
+import moment from "moment";
+import VueApexCharts from "vue-apexcharts";
+import Identicon from "../../components/identicon.vue";
+import { isHex } from "@polkadot/util";
+import BN from "bn.js";
+import { backendBaseURL, blockExplorer } from "../../polkastats.config.js";
+import commonMixin from "../../mixins/commonMixin.js";
 
 export default {
-  head () {
-    return {
-      title: 'PolkaStats - Polkadot Kusama phragmen candidate ' + this.$route.query.accountId,
-      meta: [
-        { hid: 'description', name: 'description', content: 'Polkadot Kusama phragmen candidate ' + this.$route.query.accountId }
-      ]
-    }
+  components: {
+    // apexchart: VueApexCharts,
+    // Identicon
   },
   mixins: [commonMixin],
   data: function() {
@@ -214,73 +210,79 @@ export default {
       blockExplorer,
       backendBaseURL,
       polling: null
-    }
+    };
   },
   computed: {
-    candidates () {
+    candidates() {
       return this.$store.state.phragmen.info.candidates;
     },
     identities() {
-      return this.$store.state.identities.list
+      return this.$store.state.identities.list;
     },
     nicknames() {
-      return this.$store.state.nicknames.list
+      return this.$store.state.nicknames.list;
     },
     indexes() {
-      return this.$store.state.indexes.list
+      return this.$store.state.indexes.list;
     }
   },
-  created: function () {
+  watch: {
+    $route() {
+      this.accountId = this.$route.query.accountId;
+    }
+  },
+  created: function() {
     var vm = this;
 
     // Force update of phragmen candidates list if empty
     if (this.$store.state.phragmen.info.candidates.length == 0) {
-      vm.$store.dispatch('phragmen/update');
+      vm.$store.dispatch("phragmen/update");
     }
 
     // Force update of staking_identity list if empty
     if (this.$store.state.stakingIdentities.list.length == 0) {
-      vm.$store.dispatch('stakingIdentities/update');
+      vm.$store.dispatch("stakingIdentities/update");
     }
 
     // Force update of indentity list if empty
     if (this.$store.state.identities.list.length == 0) {
-      vm.$store.dispatch('identities/update');
+      vm.$store.dispatch("identities/update");
     }
 
     // Force update of nicknames list if empty
     if (this.$store.state.nicknames.list.length === 0) {
-      vm.$store.dispatch('nicknames/update');
+      vm.$store.dispatch("nicknames/update");
     }
 
     // Force update of account indexes list if empty
     if (this.$store.state.indexes.list.length == 0) {
-      vm.$store.dispatch('indexes/update');
+      vm.$store.dispatch("indexes/update");
     }
-    console.log('store', this.$store.state)
+    console.log("store", this.$store.state);
     // Update data every 10 seconds
     this.polling = setInterval(() => {
-      vm.$store.dispatch('phragmen/update');
-      vm.$store.dispatch('identities/update');
-      vm.$store.dispatch('nicknames/update');
-      vm.$store.dispatch('stakingIdentities/update');
+      vm.$store.dispatch("phragmen/update");
+      vm.$store.dispatch("identities/update");
+      vm.$store.dispatch("nicknames/update");
+      vm.$store.dispatch("stakingIdentities/update");
     }, 10000);
 
     // Update account indexes every 1 min
     this.pollingIndexes = setInterval(() => {
-      vm.$store.dispatch('indexes/update'); 
+      vm.$store.dispatch("indexes/update");
     }, 60000);
-    
   },
-  beforeDestroy: function () {
+  beforeDestroy: function() {
     clearInterval(this.polling);
     clearInterval(this.pollingIndexes);
   },
   methods: {
     getIdentity(stashId) {
-      let filteredArray =  this.$store.state.stakingIdentities.list.filter(obj => {
-        return obj.accountId === stashId
-      });
+      let filteredArray = this.$store.state.stakingIdentities.list.filter(
+        obj => {
+          return obj.accountId === stashId;
+        }
+      );
       return filteredArray[0];
     },
     hasIdentity(stashId) {
@@ -289,8 +291,8 @@ export default {
       });
     },
     getPolkStatsIdentity(stashId) {
-      let filteredArray =  this.$store.state.identities.list.filter(obj => {
-        return obj.stashId === stashId
+      let filteredArray = this.$store.state.identities.list.filter(obj => {
+        return obj.stashId === stashId;
       });
       return filteredArray[0];
     },
@@ -305,22 +307,28 @@ export default {
       });
     },
     getNickname(accountId) {
-      let filteredArray =  this.$store.state.nicknames.list.filter(obj => {
-        return obj.accountId === accountId
+      let filteredArray = this.$store.state.nicknames.list.filter(obj => {
+        return obj.accountId === accountId;
       });
       return filteredArray[0].nickname;
     }
   },
-  watch: {
-    $route () {
-      this.accountId = this.$route.query.accountId;
-    }
-  },
-  components: {
-    apexchart: VueApexCharts,
-    Identicon
+  head() {
+    return {
+      title:
+        "PolkaStats - Polkadot Kusama phragmen candidate " +
+        this.$route.query.accountId,
+      meta: [
+        {
+          hid: "description",
+          name: "description",
+          content:
+            "Polkadot Kusama phragmen candidate " + this.$route.query.accountId
+        }
+      ]
+    };
   }
-}
+};
 </script>
 <style>
 .fas.fa-copy {

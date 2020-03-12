@@ -1,15 +1,17 @@
-import { decimals, unit } from '../polkastats.config.js';
-import { formatBalance, isHex } from '@polkadot/util';
+import { decimals, unit } from "../polkastats.config.js";
+import { formatBalance, isHex } from "@polkadot/util";
 formatBalance.setDefaults({ decimals, unit });
-import BN from 'bn.js';
+import BN from "bn.js";
 
 export default {
   methods: {
     formatNumber(number) {
       if (isHex(number)) {
-        return (parseInt(number, 16).toString()).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+        return parseInt(number, 16)
+          .toString()
+          .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
       } else {
-        return (number.toString()).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+        return number.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
       }
     },
     formatAmount(amount) {
@@ -22,10 +24,18 @@ export default {
       return formatBalance(bn.toString(10));
     },
     shortAddress(address) {
-      return (address).substring(0,5) + ' .... ' + (address).substring(address.length - 5);
+      return (
+        address.substring(0, 5) +
+        " .... " +
+        address.substring(address.length - 5)
+      );
     },
     shortSessionId(sessionId) {
-      return (sessionId).substring(0,10) + ' .... ' + (sessionId).substring(sessionId.length - 10);
+      return (
+        sessionId.substring(0, 10) +
+        " .... " +
+        sessionId.substring(sessionId.length - 10)
+      );
     },
     formatRewardDest(rewardDestination) {
       if (rewardDestination === 0) {
@@ -61,9 +71,9 @@ export default {
       } else {
         amountBN = new BN(amount.toString(), 10);
       }
-      amountBN = amountBN.mul(new BN('100000', 10));
+      amountBN = amountBN.mul(new BN("100000", 10));
       let result = amountBN.div(totalStakeBonded);
       return this.formatNumber(parseInt(result.toString(10), 10) / 1000);
     }
   }
-}
+};

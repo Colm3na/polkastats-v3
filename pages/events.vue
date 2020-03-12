@@ -2,17 +2,19 @@
   <div>
     <section>
       <b-container class="page-events main pt-4">
-        <h1 class="text-center mb-4">Latest 5,000 Kusama events</h1>
+        <h1 class="text-center mb-4">
+          Latest 5,000 Kusama events
+        </h1>
 
         <!-- Filter -->
         <b-row>
           <b-col lg="12" class="mb-4">
             <b-form-input
+              id="filterInput"
               v-model="filter"
               type="search"
-              id="filterInput"
               placeholder="Search event"
-            ></b-form-input>
+            />
           </b-col>
         </b-row>
         <!-- Mobile sorting -->
@@ -27,14 +29,30 @@
               class="mb-4"
             >
               <b-input-group size="sm">
-                <b-form-select v-model="sortBy" id="sortBySelect" :options="sortOptions" class="w-75">
+                <b-form-select
+                  id="sortBySelect"
+                  v-model="sortBy"
+                  :options="sortOptions"
+                  class="w-75"
+                >
                   <template v-slot:first>
-                    <option value="">-- none --</option>
+                    <option value="">
+                      -- none --
+                    </option>
                   </template>
                 </b-form-select>
-                <b-form-select v-model="sortDesc" size="sm" :disabled="!sortBy" class="w-25">
-                  <option :value="false">Asc</option>
-                  <option :value="true">Desc</option>
+                <b-form-select
+                  v-model="sortDesc"
+                  size="sm"
+                  :disabled="!sortBy"
+                  class="w-25"
+                >
+                  <option :value="false">
+                    Asc
+                  </option>
+                  <option :value="true">
+                    Desc
+                  </option>
                 </b-form-select>
               </b-input-group>
             </b-form-group>
@@ -43,8 +61,8 @@
         <!-- Table with sorting and pagination-->
         <div>
           <b-table
-            stacked="md"
             id="events-table"
+            stacked="md"
             head-variant="dark"
             :fields="fields"
             :items="events"
@@ -53,7 +71,7 @@
             :sort-by.sync="sortBy"
             :sort-desc.sync="sortDesc"
             :filter="filter"
-            :filterIncludedFields="filterOn"
+            :filter-included-fields="filterOn"
             @filtered="onFiltered"
           >
             <template slot="blockNumber" slot-scope="data">
@@ -92,27 +110,19 @@
             :total-rows="totalRows"
             :per-page="perPage"
             aria-controls="events-table"
-          ></b-pagination>
+          />
         </div>
       </b-container>
     </section>
   </div>
 </template>
 <script>
-import { mapMutations } from 'vuex';
-import axios from 'axios';
-import bootstrap from 'bootstrap';
-import commonMixin from '../mixins/commonMixin.js';
+import { mapMutations } from "vuex";
+import axios from "axios";
+import bootstrap from "bootstrap";
+import commonMixin from "../mixins/commonMixin.js";
 
 export default {
-  head () {
-    return {
-      title: 'PolkaStats - Polkadot Kusama chain events',
-      meta: [
-        { hid: 'description', name: 'description', content: 'Polkadot Kusama chain events' }
-      ]
-    }
-  },
   mixins: [commonMixin],
   data: function() {
     return {
@@ -124,15 +134,45 @@ export default {
       filterOn: [],
       totalRows: 1,
       fields: [
-        { key: 'blockNumber', label: 'Block', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` },
-        { key: 'eventIndex', label: 'Index', sortable: true, filterByFormatted: true },
-        { key: 'section', label: 'Section', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` },
-        { key: 'method', label: 'Method', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` },
-        { key: 'phase', label: 'Phase', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` },
-        { key: 'data', label: 'Data', sortable: true, class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell` }
+        {
+          key: "blockNumber",
+          label: "Block",
+          sortable: true,
+          class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
+        },
+        {
+          key: "eventIndex",
+          label: "Index",
+          sortable: true,
+          filterByFormatted: true
+        },
+        {
+          key: "section",
+          label: "Section",
+          sortable: true,
+          class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
+        },
+        {
+          key: "method",
+          label: "Method",
+          sortable: true,
+          class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
+        },
+        {
+          key: "phase",
+          label: "Phase",
+          sortable: true,
+          class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
+        },
+        {
+          key: "data",
+          label: "Data",
+          sortable: true,
+          class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
+        }
       ],
       polling: null
-    }
+    };
   },
   computed: {
     events() {
@@ -143,39 +183,49 @@ export default {
       return this.fields
         .filter(f => f.sortable)
         .map(f => {
-          return { text: f.label, value: f.key }
+          return { text: f.label, value: f.key };
         });
     }
   },
-  created: function () {
+  created: function() {
     var vm = this;
-    
+
     // Force update of events list if empty
     if (this.$store.state.events.list.length == 0) {
-      vm.$store.dispatch('events/update');
+      vm.$store.dispatch("events/update");
     }
     this.totalRows = this.$store.state.events.list.length;
 
-
     // Update data every 10 seconds
     this.polling = setInterval(() => {
-      vm.$store.dispatch('network/update');
-      vm.$store.dispatch('events/update');
+      vm.$store.dispatch("network/update");
+      vm.$store.dispatch("events/update");
       if (!this.filter) this.totalRows = this.$store.state.events.list.length;
     }, 10000);
-
   },
-  beforeDestroy: function () {
+  beforeDestroy: function() {
     clearInterval(this.polling);
   },
   methods: {
     onFiltered(filteredItems) {
       // Trigger pagination to update the number of buttons/pages due to filtering
-      this.totalRows = filteredItems.length
-      this.currentPage = 1
+      this.totalRows = filteredItems.length;
+      this.currentPage = 1;
     }
+  },
+  head() {
+    return {
+      title: "PolkaStats - Polkadot Kusama chain events",
+      meta: [
+        {
+          hid: "description",
+          name: "description",
+          content: "Polkadot Kusama chain events"
+        }
+      ]
+    };
   }
-}
+};
 </script>
 <style>
 #events-table th {
