@@ -215,7 +215,7 @@
       title="View source code on GitHub"
       target="_blank"
       ><svg
-        class="github-corner d-none d-md-none d-lg-block"
+        class="github-corner d-none d-md-none d-lg-none d-xl-block"
         width="90"
         height="90"
         viewBox="0 0 250 250"
