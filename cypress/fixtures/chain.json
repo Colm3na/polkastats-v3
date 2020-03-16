@@ -1,0 +1,18 @@
+{
+  "block_height": 1423387,
+  "block_height_finalized": 1423384,
+  "session": {
+    "activeEra": 531,
+    "activeEraStart": 1584037674000,
+    "currentEra": 531,
+    "currentIndex": 2524,
+    "eraLength": 3600,
+    "eraProgress": 1893,
+    "isEpoch": true,
+    "sessionLength": 600,
+    "sessionsPerEra": 6,
+    "sessionProgress": 93,
+    "validatorCount": 160
+  },
+  "total_issuance": "8631468179566872724"
+}

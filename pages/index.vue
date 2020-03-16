@@ -3,7 +3,13 @@
     <section>
       <b-container id="page-index" class="main pt-4">
         <!-- Kusama CC3 message -->
-        <b-alert show dismissible variant="primary" class="text-center">
+        <b-alert
+          show
+          dismissible
+          variant="primary"
+          class="text-center"
+          data-testid="serverAlert"
+        >
           <strong
             >⚡ We have a new awesome dedicated server graciously sponsored by
             <a href="https://www.colmenalabs.org/" target="_blank"
@@ -12,7 +18,13 @@
           >
         </b-alert>
         <!-- Economics info message -->
-        <b-alert show dismissible variant="success" class="text-center">
+        <b-alert
+          show
+          dismissible
+          variant="success"
+          class="text-center"
+          data-testid="infoAlert"
+        >
           Total issuance is
           <strong>{{ formatAmount(network.totalIssuance) }}</strong>
           <span
@@ -30,7 +42,13 @@
           </span>
         </b-alert>
         <!-- Validators info message -->
-        <b-alert show dismissible variant="success" class="text-center">
+        <b-alert
+          show
+          dismissible
+          variant="success"
+          class="text-center"
+          data-testid="validatorsAlert"
+        >
           Currently there are <strong>{{ validators.length }}</strong> active
           validators of
           <strong>{{ network.session.validatorCount }}</strong> available slots
@@ -46,6 +64,7 @@
               v-model="filter"
               type="search"
               placeholder="Search validator by account, account index, identity display name or keybase name"
+              data-testid="searchBar"
             />
           </b-col>
         </b-row>
@@ -96,6 +115,7 @@
             id="validators-table"
             stacked="md"
             head-variant="dark"
+            data-testid="validatorsTable"
             :fields="fields"
             :items="validators"
             :per-page="perPage"
@@ -342,6 +362,7 @@
                     query: { accountId: data.item.accountId }
                   }"
                   title="Validator details"
+                  data-testid="validatorLink"
                 >
                   <span v-if="hasIdentity(data.item.accountId)">
                     {{ getIdentity(data.item.accountId).full_name }}
