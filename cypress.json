@@ -1,0 +1,4 @@
+{
+    "baseUrl": "http://localhost:3000",
+    "apiUrl": "https://polkastats.io/api/v2"
+}

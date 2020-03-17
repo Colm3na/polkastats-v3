@@ -1,20 +1,21 @@
 <template>
   <div>
-    <section id="navigation">
+    <section id="navigation" data-testid="header">
       <div class="nav-bg-color fixed-top">
         <div class="container">
           <div id="top-bar">
-            <p class="network">
+            <p class="network" data-testid="network">
               <i class="fas fa-project-diagram" /> {{ system.chain }} using
               polkadot v{{ system.client_version }}
             </p>
           </div>
-          <b-navbar toggleable="xl" type="dark" class="row">
+          <b-navbar toggleable="xl" type="dark" class="row" data-testid="menu">
             <b-navbar-brand>
               <nuxt-link
                 to="/"
                 class="navbar-brand"
                 title="PolkaStats | Polkadot Kusama CC3 network statistics"
+                data-testid="logo"
               >
                 <img class="logo" src="/img/PolkaStats_logo_red-white.png" />
               </nuxt-link>
@@ -31,6 +32,7 @@
                     to="/validators"
                     active-class="home-active"
                     class="nav-link"
+                    data-testid="menu-validators"
                   >
                     Validators
                   </nuxt-link>
@@ -40,6 +42,7 @@
                     to="/intentions"
                     active-class="nuxt-link-exact-active"
                     class="nav-link"
+                    data-testid="menu-intentions"
                   >
                     Intentions
                   </nuxt-link>
@@ -49,6 +52,7 @@
                     to="/favorites"
                     active-class="nuxt-link-exact-active"
                     class="nav-link"
+                    data-testid="menu-favorites"
                   >
                     Favorites
                   </nuxt-link>
@@ -58,6 +62,7 @@
                     to="/phragmen"
                     active-class="nuxt-link-exact-active"
                     class="nav-link"
+                    data-testid="menu-phragmen"
                   >
                     Phragmen
                   </nuxt-link>
@@ -67,6 +72,7 @@
                     to="/nominators"
                     active-class="nuxt-link-exact-active"
                     class="nav-link"
+                    data-testid="menu-nominators"
                   >
                     Nominators
                   </nuxt-link>
@@ -76,6 +82,7 @@
                     to="/accounts"
                     active-class="nuxt-link-exact-active"
                     class="nav-link"
+                    data-testid="menu-accounts"
                   >
                     Accounts
                   </nuxt-link>
@@ -87,7 +94,7 @@
       </div>
     </section>
     <nuxt />
-    <section id="footer">
+    <section id="footer" data-testid="footer">
       <div class="container">
         <div class="row mt-4 pt-5">
           <div class="col-12 text-center">
@@ -100,23 +107,24 @@
         <div class="row mt-4 pt-5">
           <div
             class="col-xs-12 col-sm-12 col-md-4 mt-2 mb-4 pb-4 mt-sm-2 text-center text-white"
+            data-testid="footer-getInContact"
           >
             <h3 class="mb-3">
               Get in contact
             </h3>
             <hr />
             <ul class="list-unstyled list-inline social text-center">
-              <li class="list-inline-item mr-2">
+              <li class="list-inline-item mr-2" data-testid="footer-twitter">
                 <a target="_blank" href="https://twitter.com/polkastats"
                   ><i class="fab fa-twitter" /> @PolkaStats</a
                 >
               </li>
-              <li class="list-inline-item mr-2">
+              <li class="list-inline-item mr-2" data-testid="footer-pgp">
                 <a target="_blank" href="https://keybase.io/encrypt#polkastats"
                   ><i class="fab fa-keybase" /> PGP: 14C5 91D0 8ABA 03B7</a
                 >
               </li>
-              <li class="list-inline-item">
+              <li class="list-inline-item" data-testid="footer-email">
                 <a target="_blank" href="mailto:polkastats@protonmail.com"
                   ><i class="fa fa-envelope" /> polkastats@protonmail.com</a
                 >
@@ -125,6 +133,7 @@
           </div>
           <div
             class="col-xs-12 col-sm-12 col-md-4 mt-2 mb-4 pb-4 mt-sm-2 text-center text-white"
+            data-testid="footer-polkadot"
           >
             <h3 class="mb-3">
               PolkaStats
@@ -134,6 +143,7 @@
               to="/about"
               active-class="nuxt-link-exact-active"
               class="nav-link"
+              data-testid="aboutUs"
             >
               About us
             </nuxt-link>
@@ -141,6 +151,7 @@
               to="/support-us"
               active-class="nuxt-link-exact-active"
               class="nav-link"
+              data-testid="supportPolkastats"
             >
               Support PolkaStats
             </nuxt-link>
@@ -148,12 +159,14 @@
               to="/for-validators"
               active-class="nuxt-link-exact-active"
               class="nav-link"
+              data-testid="howToIncludeValidators"
             >
               How to include your validator info
             </nuxt-link>
           </div>
           <div
             class="col-xs-12 col-sm-12 col-md-4 mt-2 mb-4 pb-4 mt-sm-2 text-center text-white"
+            data-testid="footer-builtFor"
           >
             <h3 class="mb-3">
               Built for
@@ -163,6 +176,7 @@
               href="https://kusama.network"
               target="_blank"
               title="Built for KUSAMA"
+              data-testid="kusama"
             >
               <img
                 src="/img/KUSAMA_logo_7.png"
@@ -170,13 +184,14 @@
                 alt="Built for KUSAMA"
               />
             </a>
-            <p class="mt-4">
+            <p class="mt-4" data-testid="">
               <small>the wild cousin of</small>
             </p>
             <a
               href="https://polkadot.network"
               target="_blank"
               title="Built for POLKADOT"
+              data-testid="polkadot"
             >
               <img
                 class="polkadot-logo"
@@ -186,14 +201,30 @@
             </a>
           </div>
         </div>
-        <p class="small pt-4 text-center text-white">
+        <p
+          class="small pt-4 text-center text-white"
+          data-testid="footer-bottom"
+        >
           Made with <i class="far fa-heart" /> by
-          <a href="https://mariopino.es" title="Mario Pino">Mario Pino</a> in
-          <a target="_blank" href="https://colmenalabs.org" title="La Colmena"
+          <a
+            href="https://mariopino.es"
+            title="Mario Pino"
+            data-testid="marioLink"
+            >Mario Pino</a
+          >
+          in
+          <a
+            target="_blank"
+            href="https://colmenalabs.org"
+            title="La Colmena"
+            data-testid="laColmena"
             >La Colmena</a
           >
           <span class="mx-2">|</span> Built with
-          <a href="https://basicattentiontoken.org/" target="_blank"
+          <a
+            href="https://basicattentiontoken.org/"
+            target="_blank"
+            data-testid="bat"
             >Basic Atttention Token
             <img src="/img/brave/logo-full-color.png" class="img-fluid bat"
           /></a>
@@ -203,6 +234,7 @@
             aria-label="View source on GitHub"
             title="View source code on GitHub"
             target="_blank"
+            data-testid="github"
             ><i class="fab fa-github" /> View source code on GitHub</a
           >
         </p>

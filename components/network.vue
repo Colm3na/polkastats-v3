@@ -1,36 +1,51 @@
 <template>
-  <div v-if="showNetworkStats" class="network row text-center mt-4">
+  <div
+    v-if="showNetworkStats"
+    class="network row text-center mt-4"
+    data-testid="blocksInfo"
+  >
     <div class="col-12 text-right">
-      <button type="button" class="close" @click="showNetworkStats = false">
+      <button
+        type="button"
+        class="close"
+        data-testid="blocksInfoCloseButton"
+        @click="showNetworkStats = false"
+      >
         ×
       </button>
     </div>
     <div class="col-6 col-md-4 col-xl-2 mb-4">
-      <div class="card">
+      <div class="card" data-testid="lastBlock">
         <div class="card-body">
           <p>Last block</p>
-          <h5>{{ formatNumber(network.bestblocknumber) }}</h5>
+          <h5>
+            {{ formatNumber(network.bestblocknumber) }}
+          </h5>
         </div>
       </div>
     </div>
     <div class="col-6 col-md-4 col-xl-2 mb-4">
-      <div class="card">
+      <div class="card" data-testid="lastFinalized">
         <div class="card-body">
           <p>Last finalized</p>
-          <h5>{{ formatNumber(network.bestBlockFinalized) }}</h5>
+          <h5>
+            {{ formatNumber(network.bestBlockFinalized) }}
+          </h5>
         </div>
       </div>
     </div>
     <div class="col-6 col-md-4 col-xl-2 mb-4">
-      <div class="card">
+      <div class="card" data-testid="currentSession">
         <div class="card-body">
           <p>Current session</p>
-          <h5>{{ formatNumber(network.session.currentIndex) }}</h5>
+          <h5>
+            {{ formatNumber(network.session.currentIndex) }}
+          </h5>
         </div>
       </div>
     </div>
     <div class="col-6 col-md-4 col-xl-2 mb-4">
-      <div class="card">
+      <div class="card" data-testid="epoch">
         <div class="card-body">
           <p>Epoch</p>
           <h5>
@@ -42,15 +57,17 @@
       </div>
     </div>
     <div class="col-6 col-md-4 col-xl-2 mb-4">
-      <div class="card">
+      <div class="card" data-testid="currentEra">
         <div class="card-body">
           <p>Current era</p>
-          <h5>{{ formatNumber(network.session.currentEra) }}</h5>
+          <h5>
+            {{ formatNumber(network.session.currentEra) }}
+          </h5>
         </div>
       </div>
     </div>
     <div class="col-6 col-md-4 col-xl-2 mb-4">
-      <div class="card">
+      <div class="card" data-testid="era">
         <div class="card-body">
           <p>Era</p>
           <h5>

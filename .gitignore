@@ -90,3 +90,6 @@ sw.*
 
 # Polkadot node releases
 static/polkadot
+
+# Cypress
+cypress/integration/examples/

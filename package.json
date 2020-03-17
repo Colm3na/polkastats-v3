@@ -6,6 +6,7 @@
   "private": true,
   "scripts": {
     "build": "nuxt build",
+    "cypress:open": "cypress open",
     "dev": "nuxt",
     "generate": "nuxt generate",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
@@ -37,9 +38,11 @@
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0",
+    "cypress": "^4.1.0",
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.10.0",
     "eslint-loader": "^3.0.3",
+    "eslint-plugin-cypress": "^2.10.3",
     "eslint-plugin-prettier": "^3.1.2",
     "eslint-plugin-vue": "^6.2.2",
     "nodemon": "^1.18.9",
