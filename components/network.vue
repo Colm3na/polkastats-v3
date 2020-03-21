@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="showNetworkStats"
+    v-if="showNetworkStats && lastBlock !== undefined"
     class="network row text-center mt-4"
     data-testid="blocksInfo"
   >
@@ -18,8 +18,15 @@
       <div class="card" data-testid="lastBlock">
         <div class="card-body">
           <p>Last block</p>
-          <h5>
-            {{ formatNumber(network.bestblocknumber) }}
+          <Identicon
+            :key="lastBlock.block_author"
+            :value="lastBlock.block_author"
+            :size="25"
+            :theme="'polkadot'"
+            class="d-inline-block"
+          />
+          <h5 class="d-inline-block">
+            {{ formatNumber(lastBlock.block_number) }}
           </h5>
         </div>
       </div>
@@ -27,9 +34,9 @@
     <div class="col-6 col-md-4 col-xl-2 mb-4">
       <div class="card" data-testid="lastFinalized">
         <div class="card-body">
-          <p>Last finalized</p>
+          <p>Validator count</p>
           <h5>
-            {{ formatNumber(network.bestBlockFinalized) }}
+            {{ formatNumber(lastBlock.validator_count) }}
           </h5>
         </div>
       </div>
@@ -39,7 +46,7 @@
         <div class="card-body">
           <p>Current session</p>
           <h5>
-            {{ formatNumber(network.session.currentIndex) }}
+            {{ formatNumber(lastBlock.current_index) }}
           </h5>
         </div>
       </div>
@@ -49,8 +56,8 @@
         <div class="card-body">
           <p>Epoch</p>
           <h5>
-            {{ formatNumber(network.session.sessionProgress) }}/{{
-              formatNumber(network.session.sessionLength)
+            {{ formatNumber(lastBlock.session_progress) }}/{{
+              formatNumber(lastBlock.session_length)
             }}
           </h5>
         </div>
@@ -61,7 +68,7 @@
         <div class="card-body">
           <p>Current era</p>
           <h5>
-            {{ formatNumber(network.session.currentEra) }}
+            {{ formatNumber(lastBlock.current_era) }}
           </h5>
         </div>
       </div>
@@ -71,8 +78,8 @@
         <div class="card-body">
           <p>Era</p>
           <h5>
-            {{ formatNumber(network.session.eraProgress) }}/{{
-              formatNumber(network.session.eraLength)
+            {{ formatNumber(lastBlock.era_progress) }}/{{
+              formatNumber(lastBlock.era_length)
             }}
           </h5>
         </div>
@@ -83,12 +90,21 @@
 
 <script>
 import { isHex } from "@polkadot/util";
+import commonMixin from "../mixins/commonMixin.js";
+import Identicon from "../components/identicon.vue";
+import gql from "graphql-tag";
+
 export default {
+  components: {
+    Identicon
+  },
+  mixins: [commonMixin],
   // eslint-disable-next-line vue/require-prop-types
   props: ["network"],
   data: function() {
     return {
-      showNetworkStats: true
+      showNetworkStats: true,
+      lastBlock: undefined
     };
   },
   methods: {
@@ -101,6 +117,43 @@ export default {
         return n.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
       }
     }
+  },
+  apollo: {
+    $subscribe: {
+      block: {
+        query: gql`
+          subscription blocks {
+            block(order_by: { block_number: desc }, where: {}, limit: 1) {
+              block_number
+              block_hash
+              block_author
+              block_author_name
+              current_era
+              current_index
+              era_length
+              era_progress
+              extrinsics_root
+              is_epoch
+              new_accounts
+              num_transfers
+              parent_hash
+              session_length
+              session_per_era
+              session_progress
+              spec_name
+              spec_version
+              state_root
+              timestamp
+              total_events
+              validator_count
+            }
+          }
+        `,
+        result({ data }) {
+          this.lastBlock = data.block[0];
+        }
+      }
+    }
   }
 };
 </script>
@@ -110,6 +163,13 @@ export default {
   color: #670d35;
 }
 .network .card .card-body {
-  padding: 1rem;
+  padding: 1rem 0.5rem;
+}
+
+.network .identicon {
+  display: inline-block;
+  margin: 0 0.2rem 0 0;
+  cursor: copy;
+  height: 25px;
 }
 </style>
