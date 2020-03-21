@@ -548,17 +548,17 @@ export default {
       for (let i = 0; i < this.$store.state.validators.list.length; i++) {
         let validator = this.$store.state.validators.list[i];
         let stake = 0;
-        if (validator.stakers || validator.stakingLedger) {
-          if (validator.stakers.total > 0) {
-            stake = validator.stakers.total;
+        if (validator.exposure || validator.stakingLedger) {
+          if (validator.exposure.total > 0) {
+            stake = validator.exposure.total;
           } else {
             stake = validator.stakingLedger.total;
           }
         }
         let stakePercent = 0;
-        if (validator.stakers) {
+        if (validator.exposure) {
           stakePercent = this.getStakePercent(
-            validator.stakers.total,
+            validator.exposure.total,
             this.totalStakeBonded
           );
         }
@@ -585,8 +585,8 @@ export default {
           accountId: validator.accountId,
           accountIndex: this.indexes[validator.accountId],
           stake: stake,
-          stakers: validator.stakers,
-          numStakers: validator.stakers.others.length,
+          stakers: validator.exposure,
+          numStakers: validator.exposure.others.length,
           eraPoints: validator.currentEraPointsEarned,
           commission,
           percent: stakePercent,

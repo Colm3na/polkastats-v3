@@ -390,7 +390,7 @@
                     </div>
                     <!-- identity end -->
                     <div :id="'validator-info-' + index" class="mt-2">
-                      <template v-if="validator.stakers.others.length > 0">
+                      <template v-if="validator.exposure.others.length > 0">
                         <a
                           class=""
                           data-toggle="collapse"
@@ -401,7 +401,7 @@
                         >
                           <h6 class="h6 nominators d-inline mr-4">
                             <i class="fas" /> Stakers ({{
-                              validator.stakers.others.length
+                              validator.exposure.others.length
                             }})
                           </h6>
                         </a>
@@ -515,14 +515,14 @@
                           </div>
                         </div>
                       </template>
-                      <template v-if="validator.stakers.others.length > 0">
+                      <template v-if="validator.exposure.others.length > 0">
                         <div
                           :id="'staker' + index"
                           class="nominator collapse pt-2 pb-3"
                           :data-parent="'#validator-info-' + index"
                         >
                           <div
-                            v-for="(staker, index) in validator.stakers.others"
+                            v-for="(staker, index) in validator.exposure.others"
                             :key="index"
                             class="row"
                           >

@@ -43,17 +43,17 @@ export const mutations = {
     for (let i = 0; i < validators.length; i++) {
       let validator = validators[i];
       let bn;
-      if (validator.stakers) {
-        if (isHex(validator.stakers.total)) {
+      if (validator.exposure) {
+        if (isHex(validator.exposure.total)) {
           bn = new BN(
-            validator.stakers.total.substring(
+            validator.exposure.total.substring(
               2,
-              validator.stakers.total.length
+              validator.exposure.total.length
             ),
             16
           );
         } else {
-          bn = new BN(validator.stakers.total.toString(), 10);
+          bn = new BN(validator.exposure.total.toString(), 10);
         }
         accum = accum.add(bn);
       }

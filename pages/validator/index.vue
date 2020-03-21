@@ -119,14 +119,14 @@
                       />
                     </div>
                     <p class="mt-3 mb-0 rank">rank #{{ index + 1 }}</p>
-                    <template v-if="validator.stakers">
+                    <template v-if="validator.exposure">
                       <p
-                        v-if="validator.stakers.total > 0"
+                        v-if="validator.exposure.total > 0"
                         v-b-tooltip.hover
                         class="bonded mb-0"
                         title="Total bonded"
                       >
-                        {{ formatAmount(validator.stakers.total) }}
+                        {{ formatAmount(validator.exposure.total) }}
                       </p>
                       <p
                         v-else
@@ -137,26 +137,30 @@
                         {{ formatAmount(validator.stakingLedger.total) }}
                       </p>
                       <p
-                        v-if="validator.stakers.own !== validator.stakers.total"
+                        v-if="
+                          validator.exposure.own !== validator.exposure.total
+                        "
                         class="mb-0"
                       >
                         <small>
                           <span
-                            v-if="validator.stakers.own > 0"
+                            v-if="validator.exposure.own > 0"
                             v-b-tooltip.hover
                             title="Self bonded"
-                            >{{ formatAmount(validator.stakers.own) }}</span
+                            >{{ formatAmount(validator.exposure.own) }}</span
                           >
                           <span
                             v-if="
-                              validator.stakers.total - validator.stakers.own >
+                              validator.exposure.total -
+                                validator.exposure.own >
                                 0
                             "
                             v-b-tooltip.hover
                             title="Bonded by nominators"
                             >(+{{
                               formatAmount(
-                                validator.stakers.total - validator.stakers.own
+                                validator.exposure.total -
+                                  validator.exposure.own
                               )
                             }})</span
                           >
@@ -169,7 +173,7 @@
                       >
                         {{
                           getStakePercent(
-                            validator.stakers.total,
+                            validator.exposure.total,
                             totalStakeBonded
                           )
                         }}% of total stake
@@ -455,8 +459,8 @@
                     <b-tabs content-class="mt-4 mb-2" class="mt-4">
                       <!-- Stakers -->
                       <b-tab
-                        v-if="validator.stakers.others.length > 0"
-                        :title="`Stakers (${validator.stakers.others.length})`"
+                        v-if="validator.exposure.others.length > 0"
+                        :title="`Stakers (${validator.exposure.others.length})`"
                         active
                       >
                         <!-- Filter -->
@@ -1021,7 +1025,7 @@ export default {
           validator => validator.accountId === this.accountId
         );
         // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-        this.totalRows = validator.stakers.others.length;
+        this.totalRows = validator.exposure.others.length;
       }
       return this.$store.state.validators.list;
     },
@@ -1036,30 +1040,30 @@ export default {
         // Calculate others stake total amount
         let stakeTotal, stakeOwn, stakeOthers;
 
-        if (isHex(validator.stakers.total)) {
+        if (isHex(validator.exposure.total)) {
           stakeTotal = new BN(
-            validator.stakers.total
+            validator.exposure.total
               .toString()
-              .substring(2, validator.stakers.total.length),
+              .substring(2, validator.exposure.total.length),
             16
           );
         } else {
-          stakeTotal = new BN(validator.stakers.total, 10);
+          stakeTotal = new BN(validator.exposure.total, 10);
         }
 
-        if (isHex(validator.stakers.own)) {
+        if (isHex(validator.exposure.own)) {
           stakeOwn = new BN(
-            validator.stakers.own
+            validator.exposure.own
               .toString()
-              .substring(2, validator.stakers.own.length),
+              .substring(2, validator.exposure.own.length),
             16
           );
         } else {
-          stakeOwn = new BN(validator.stakers.own, 10);
+          stakeOwn = new BN(validator.exposure.own, 10);
         }
         stakeOthers = stakeTotal.sub(stakeOwn);
 
-        let stakers = validator.stakers.others.slice();
+        let stakers = validator.exposure.others.slice();
 
         stakers.sort((a, b) => {
           if (a.value && b.value) {
