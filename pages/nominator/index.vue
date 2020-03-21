@@ -313,9 +313,9 @@ export default {
       let nominatorStaking = [];
       for (let i = 0; i < this.validators.length; i++) {
         let validator = this.validators[i];
-        if (validator.stakers.others.length > 0) {
-          for (let j = 0; j < validator.stakers.others.length; j++) {
-            let nominator = validator.stakers.others[j];
+        if (validator.exposure.others.length > 0) {
+          for (let j = 0; j < validator.exposure.others.length; j++) {
+            let nominator = validator.exposure.others[j];
             if (nominatorStaking.find(nom => nom.accountId === nominator.who)) {
               let nominatorTmp = nominatorStaking.filter(nom => {
                 return nom.accountId === nominator.who;

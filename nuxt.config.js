@@ -47,13 +47,23 @@ export default {
       {
         id: "UA-144344973-1"
       }
-    ]
+    ],
+    ["@nuxtjs/apollo"]
   ],
   /*
    ** Axios module configuration
    ** See https://axios.nuxtjs.org/options
    */
   axios: {},
+  apollo: {
+    clientConfigs: {
+      default: {
+        httpEndpoint: "https://polkastats.io/api/v3/v1/graphql",
+        wsEndpoint: "wss://polkastats.io/api/v3/v1/graphql",
+        persisting: true
+      }
+    }
+  },
   /*
    ** Build configuration
    */

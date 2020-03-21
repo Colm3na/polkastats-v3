@@ -117,12 +117,12 @@
                       />
                     </p>
                     <p
-                      v-if="validator.stakers.total > 0"
+                      v-if="validator.exposure.total > 0"
                       v-b-tooltip.hover
                       class="bonded mb-0"
                       title="Total bonded"
                     >
-                      {{ formatAmount(validator.stakers.total) }}
+                      {{ formatAmount(validator.exposure.total) }}
                     </p>
                     <p
                       v-else
@@ -135,20 +135,21 @@
                     <p class="mb-0">
                       <small>
                         <span
-                          v-if="validator.stakers.own > 0"
+                          v-if="validator.exposure.own > 0"
                           v-b-tooltip.hover
                           title="Self bonded"
-                          >{{ formatAmount(validator.stakers.own) }}</span
+                          >{{ formatAmount(validator.exposure.own) }}</span
                         >
                         <span
                           v-if="
-                            validator.stakers.total - validator.stakers.own > 0
+                            validator.exposure.total - validator.exposure.own >
+                              0
                           "
                           v-b-tooltip.hover
                           title="Bonded by nominators"
                           >(+{{
                             formatAmount(
-                              validator.stakers.total - validator.stakers.own
+                              validator.exposure.total - validator.exposure.own
                             )
                           }})</span
                         >
@@ -161,7 +162,7 @@
                     >
                       {{
                         getStakePercent(
-                          validator.stakers.total,
+                          validator.exposure.total,
                           totalStakeBonded
                         )
                       }}% of total stake
@@ -327,8 +328,8 @@
                       </div>
                     </div>
                     <div :id="'validator-info-' + index">
-                      <template v-if="validator.stakers">
-                        <template v-if="validator.stakers.others.length > 0">
+                      <template v-if="validator.exposure">
+                        <template v-if="validator.exposure.others.length > 0">
                           <a
                             class=""
                             data-toggle="collapse"
@@ -339,7 +340,7 @@
                           >
                             <h6 class="h6 nominators d-inline mr-4">
                               <i class="fas" /> Stakers ({{
-                                validator.stakers.others.length
+                                validator.exposure.others.length
                               }})
                             </h6>
                           </a>
@@ -453,15 +454,15 @@
                           </div>
                         </div>
                       </template>
-                      <template v-if="validator.stakers">
-                        <template v-if="validator.stakers.others.length > 0">
+                      <template v-if="validator.exposure">
+                        <template v-if="validator.exposure.others.length > 0">
                           <div
                             :id="'staker' + index"
                             class="nominator collapse pt-2 pb-3"
                             :data-parent="'#validator-info-' + index"
                           >
                             <div
-                              v-for="(staker, index) in validator.stakers
+                              v-for="(staker, index) in validator.exposure
                                 .others"
                               :key="index"
                               class="row"
@@ -748,7 +749,7 @@
                       </div>
                     </div>
                     <div :id="'validator-info-' + index">
-                      <template v-if="validator.stakers.others.length > 0">
+                      <template v-if="validator.exposure.others.length > 0">
                         <a
                           class=""
                           data-toggle="collapse"
@@ -759,7 +760,7 @@
                         >
                           <h6 class="h6 nominators d-inline mr-4">
                             <i class="fas" /> Stakers ({{
-                              validator.stakers.others.length
+                              validator.exposure.others.length
                             }})
                           </h6>
                         </a>
@@ -873,14 +874,14 @@
                           </div>
                         </div>
                       </template>
-                      <template v-if="validator.stakers.others.length > 0">
+                      <template v-if="validator.exposure.others.length > 0">
                         <div
                           :id="'staker' + index"
                           class="nominator collapse pt-2 pb-3"
                           :data-parent="'#validator-info-' + index"
                         >
                           <div
-                            v-for="(staker, index) in validator.stakers.others"
+                            v-for="(staker, index) in validator.exposure.others"
                             :key="index"
                             class="row"
                           >
