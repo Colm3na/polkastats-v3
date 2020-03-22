@@ -2,233 +2,178 @@
   <div>
     <section>
       <b-container class="account-page main pt-4 pb-5">
-        <template v-for="(account, index) in accounts">
-          <template v-if="account.accountId === accountId">
-            <div :key="account.accountId" class="row">
-              <div class="col-2 col-lg-1">
-                <template v-if="index > 0">
-                  <nuxt-link
-                    :to="{
-                      name: 'account',
-                      query: { accountId: accounts[index - 1].accountId }
-                    }"
-                    :title="
-                      'Previous account: ' + accounts[index - 1].accountId
-                    "
-                  >
-                    <i class="fas fa-2x fa-chevron-left" />
-                  </nuxt-link>
-                </template>
-              </div>
-              <div class="col-8 col-lg-10 text-center">
-                <h4 class="mb-1">Account {{ accountId }}</h4>
-              </div>
-              <div class="col-2 col-lg-1 text-right">
-                <template v-if="index < accounts.length - 1">
-                  <nuxt-link
-                    :to="{
-                      name: 'account',
-                      query: { accountId: accounts[index + 1].accountId }
-                    }"
-                    :title="'Next account: ' + accounts[index + 1].accountId"
-                  >
-                    <i class="fas fa-2x fa-chevron-right" />
-                  </nuxt-link>
-                </template>
-              </div>
+        <template v-if="parsedAccount">
+          <div class="row">
+            <div class="col-12 text-center">
+              <h4 class="mb-1">Account {{ parsedAccount.accountId }}</h4>
             </div>
-            <div :key="index" class="card mt-4 mb-3">
-              <div class="card-body">
-                <p class="text-center mb-2">
-                  <Identicon
-                    :key="account.accountId"
-                    :value="account.accountId"
-                    :size="80"
-                    :theme="'polkadot'"
-                  />
-                </p>
-                <h4 class="text-center mb-4">
-                  {{ account.accountIndex }}
-                </h4>
-                <h4
-                  v-b-tooltip.hover
-                  class="text-center mb-4 amount"
-                  title="Free Balance"
-                >
-                  {{ formatAmount(account.balances.freeBalance) }}
-                </h4>
-                <table class="table table-striped">
-                  <tbody>
-                    <tr>
-                      <td>Account ID</td>
-                      <td class="text-right">
-                        <a
-                          :href="blockExplorer.account + account.accountId"
-                          target="_blank"
-                          class="d-block my-2"
+          </div>
+          <div class="card mt-4 mb-3">
+            <div class="card-body">
+              <p class="text-center mb-2">
+                <Identicon
+                  :key="parsedAccount.accountId"
+                  :value="parsedAccount.accountId"
+                  :size="80"
+                  :theme="'polkadot'"
+                />
+              </p>
+              <h4 class="text-center mb-4">
+                {{ parsedAccount.accountId }}
+              </h4>
+              <h4
+                v-b-tooltip.hover
+                class="text-center mb-4 amount"
+                title="Free Balance"
+              >
+                {{ formatAmount(parsedAccount.balances.freeBalance) }}
+              </h4>
+              <table class="table table-striped">
+                <tbody>
+                  <tr>
+                    <td>Account ID</td>
+                    <td class="text-right">
+                      <a
+                        :href="blockExplorer.account + parsedAccount.accountId"
+                        target="_blank"
+                        class="d-block my-2"
+                      >
+                        <Identicon
+                          :key="parsedAccount.accountId"
+                          :value="parsedAccount.accountId"
+                          :size="20"
+                          :theme="'polkadot'"
+                        />
+                        <span
+                          v-b-tooltip.hover
+                          title="See address in PolkaScan"
+                          >{{ parsedAccount.accountId }}</span
                         >
-                          <Identicon
-                            :key="account.accountId"
-                            :value="account.accountId"
-                            :size="20"
-                            :theme="'polkadot'"
-                          />
-                          <span
-                            v-b-tooltip.hover
-                            title="See address in PolkaScan"
-                            >{{ account.accountId }}</span
-                          >
-                        </a>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Account Index</td>
-                      <td class="text-right">
-                        {{ account.accountIndex }}
-                      </td>
-                    </tr>
-                    <tr v-if="account.identity.display">
-                      <td>Identity::display</td>
-                      <td class="text-right">
-                        {{ account.identity.display }}
-                      </td>
-                    </tr>
-                    <tr v-if="account.identity.email">
-                      <td>Identity::email</td>
-                      <td class="text-right">
-                        <a
-                          :href="`mailto:${account.identity.email}`"
-                          target="_blank"
-                          >{{ account.identity.email }}</a
-                        >
-                      </td>
-                    </tr>
-                    <tr v-if="account.identity.legal">
-                      <td>Identity::legal</td>
-                      <td class="text-right">
-                        {{ account.identity.legal }}
-                      </td>
-                    </tr>
-                    <tr v-if="account.identity.riot">
-                      <td>Identity::riot</td>
-                      <td class="text-right">
-                        {{ account.identity.riot }}
-                      </td>
-                    </tr>
-                    <tr v-if="account.identity.web">
-                      <td>Identity::web</td>
-                      <td class="text-right">
-                        <a :href="account.identity.web" target="_blank">{{
-                          account.identity.web
-                        }}</a>
-                      </td>
-                    </tr>
-                    <tr v-if="account.identity.twitter">
-                      <td>Identity::twitter</td>
-                      <td class="text-right">
-                        <a
-                          :href="
-                            `https://twitter.com/${account.identity.twitter.substr(
-                              1,
-                              account.identity.twitter.length
-                            )}`
-                          "
-                          target="_blank"
-                          >{{ account.identity.twitter }}</a
-                        >
-                      </td>
-                    </tr>
-                    <tr v-if="account.identity.judgements">
-                      <td>Identity::judgements</td>
-                      <td class="text-right">
-                        <span v-if="account.identity.judgements.length > 0">
-                          {{ account.identity.judgements }}
-                        </span>
-                        <span>
-                          No
-                        </span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Account Nonce</td>
-                      <td class="text-right">
-                        {{ account.balances.accountNonce }}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Free Balance</td>
-                      <td class="text-right">
-                        {{ formatAmount(account.balances.freeBalance) }}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Available Balance</td>
-                      <td class="text-right">
-                        {{ formatAmount(account.balances.availableBalance) }}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Locked Balance</td>
-                      <td class="text-right">
-                        {{ formatAmount(account.balances.lockedBalance) }}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Locked Breakdowns</td>
-                      <td class="text-right">
-                        <p
-                          v-if="account.balances.lockedBreakdown.length === 0"
-                          class="mb-0"
-                        >
-                          No
-                        </p>
-                        <p
-                          v-for="locked in account.balances.lockedBreakdown"
-                          v-else
-                          :key="locked.id"
-                          class="mb-1"
-                        >
-                          <strong>{{ formatAmount(locked.amount) }}</strong>
-                          until
-                          <strong>{{ formatNumber(locked.until) }}</strong>
-                        </p>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Reserved Balance</td>
-                      <td class="text-right">
-                        {{ formatAmount(account.balances.reservedBalance) }}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Is Vesting?</td>
-                      <td class="text-right">
-                        {{ account.balances.isVesting ? `Yes` : `No` }}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Vested Balance</td>
-                      <td class="text-right">
-                        {{ formatAmount(account.balances.vestedBalance) }}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Vesting Total</td>
-                      <td class="text-right">
-                        {{ formatAmount(account.balances.vestingTotal) }}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Voting Balance</td>
-                      <td class="text-right">
-                        {{ formatAmount(account.balances.votingBalance) }}
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
+                      </a>
+                    </td>
+                  </tr>
+                  <tr v-if="parsedAccount.identity.display">
+                    <td>Identity::display</td>
+                    <td class="text-right">
+                      {{ parsedAccount.identity.display }}
+                    </td>
+                  </tr>
+                  <tr v-if="parsedAccount.identity.email">
+                    <td>Identity::email</td>
+                    <td class="text-right">
+                      <a
+                        :href="`mailto:${parsedAccount.identity.email}`"
+                        target="_blank"
+                        >{{ parsedAccount.identity.email }}</a
+                      >
+                    </td>
+                  </tr>
+                  <tr v-if="parsedAccount.identity.legal">
+                    <td>Identity::legal</td>
+                    <td class="text-right">
+                      {{ parsedAccount.identity.legal }}
+                    </td>
+                  </tr>
+                  <tr v-if="parsedAccount.identity.riot">
+                    <td>Identity::riot</td>
+                    <td class="text-right">
+                      {{ parsedAccount.identity.riot }}
+                    </td>
+                  </tr>
+                  <tr v-if="parsedAccount.identity.web">
+                    <td>Identity::web</td>
+                    <td class="text-right">
+                      <a :href="parsedAccount.identity.web" target="_blank">{{
+                        parsedAccount.identity.web
+                      }}</a>
+                    </td>
+                  </tr>
+                  <tr v-if="parsedAccount.identity.twitter">
+                    <td>Identity::twitter</td>
+                    <td class="text-right">
+                      <a
+                        :href="
+                          `https://twitter.com/${parsedAccount.identity.twitter.substr(
+                            1,
+                            parsedAccount.identity.twitter.length
+                          )}`
+                        "
+                        target="_blank"
+                        >{{ parsedAccount.identity.twitter }}</a
+                      >
+                    </td>
+                  </tr>
+                  <tr v-if="parsedAccount.identity.judgements">
+                    <td>Identity::judgements</td>
+                    <td class="text-right">
+                      <span v-if="parsedAccount.identity.judgements.length > 0">
+                        {{ parsedAccount.identity.judgements }}
+                      </span>
+                      <span>
+                        No
+                      </span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Account Nonce</td>
+                    <td class="text-right">
+                      {{ parsedAccount.balances.accountNonce }}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Free Balance</td>
+                    <td class="text-right">
+                      {{ formatAmount(parsedAccount.balances.freeBalance) }}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Available Balance</td>
+                    <td class="text-right">
+                      {{
+                        formatAmount(parsedAccount.balances.availableBalance)
+                      }}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Locked Balance</td>
+                    <td class="text-right">
+                      {{ formatAmount(parsedAccount.balances.lockedBalance) }}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Reserved Balance</td>
+                    <td class="text-right">
+                      {{ formatAmount(parsedAccount.balances.reservedBalance) }}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Is Vesting?</td>
+                    <td class="text-right">
+                      {{ parsedAccount.balances.isVesting ? `Yes` : `No` }}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Vested Balance</td>
+                    <td class="text-right">
+                      {{ formatAmount(parsedAccount.balances.vestedBalance) }}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Vesting Total</td>
+                    <td class="text-right">
+                      {{ formatAmount(parsedAccount.balances.vestingTotal) }}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Voting Balance</td>
+                    <td class="text-right">
+                      {{ formatAmount(parsedAccount.balances.votingBalance) }}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
-          </template>
+          </div>
         </template>
       </b-container>
     </section>
@@ -239,6 +184,7 @@ import { mapMutations } from "vuex";
 import Identicon from "../../components/identicon.vue";
 import { blockExplorer } from "../../polkastats.config.js";
 import commonMixin from "../../mixins/commonMixin.js";
+import gql from "graphql-tag";
 
 export default {
   components: {
@@ -249,36 +195,45 @@ export default {
     return {
       accountId: this.$route.query.accountId,
       blockExplorer,
-      polling: null
+      parsedAccount: undefined
     };
-  },
-  computed: {
-    accounts() {
-      return this.$store.state.accounts.list;
-    }
   },
   watch: {
     $route() {
       this.accountId = this.$route.query.accountId;
     }
   },
-  created: function() {
-    var vm = this;
-
-    // Force update of account list if empty
-    if (this.$store.state.accounts.list.length == 0) {
-      vm.$store.dispatch("accounts/update");
+  apollo: {
+    account: {
+      query: gql`
+        query account($account_id: String!) {
+          account(where: { account_id: { _eq: $account_id } }) {
+            account_id
+            balances
+            block_height
+            identity
+            timestamp
+          }
+        }
+      `,
+      variables() {
+        return {
+          account_id: this.$route.query.accountId
+        };
+      },
+      result({ data }) {
+        this.parsedAccount = {
+          accountId: data.account[0].account_id,
+          balances: JSON.parse(data.account[0].balances),
+          blockHeight: data.account[0].block_height,
+          identity:
+            data.account[0].identity !== ``
+              ? JSON.parse(data.account[0].identity)
+              : {},
+          timestamp: data.account[0].timestamp
+        };
+      }
     }
-    this.totalRows = this.$store.state.accounts.list.length;
-
-    // Update data every 5 minutes
-    this.polling = setInterval(() => {
-      vm.$store.dispatch("accounts/update");
-      if (!this.filter) this.totalRows = this.$store.state.accounts.list.length;
-    }, 300000);
-  },
-  beforeDestroy: function() {
-    clearInterval(this.polling);
   },
   head() {
     return {
