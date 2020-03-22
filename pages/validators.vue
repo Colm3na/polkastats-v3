@@ -482,7 +482,10 @@ import bootstrap from "bootstrap";
 import Identicon from "../components/identicon.vue";
 import { isHex } from "@polkadot/util";
 import BN from "bn.js";
-import { blockExplorer, numItemsTableOptions } from "../polkastats.config.js";
+import {
+  blockExplorer,
+  numItemsTableValidatorOptions
+} from "../polkastats.config.js";
 import commonMixin from "../mixins/commonMixin.js";
 
 export default {
@@ -492,7 +495,7 @@ export default {
   mixins: [commonMixin],
   data: function() {
     return {
-      tableOptions: numItemsTableOptions,
+      tableOptions: numItemsTableValidatorOptions,
       perPage: localStorage.numItemsTableSelected
         ? localStorage.numItemsTableSelected
         : 10,
