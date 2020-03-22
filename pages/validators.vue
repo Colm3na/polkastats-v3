@@ -759,7 +759,7 @@ export default {
   },
   watch: {
     favorites: function(val) {
-      //console.log(val);
+      console.log(val);
       this.$cookies.set("favorites", val, {
         path: "/",
         maxAge: 60 * 60 * 24 * 7
@@ -839,35 +839,17 @@ export default {
       localStorage.numItemsTableSelected = num;
       this.perPage = num;
     },
-    toggleFavorite(validator) {
-      // Receives validator accountId
-      if (this.isFavorite(validator)) {
-        this.favorites.splice(this.getIndex(validator), 1);
+    toggleFavorite(accountId) {
+      console.log(this.favorites.indexOf(accountId));
+      if (this.favorites.indexOf(accountId) !== -1) {
+        this.favorites.splice(this.favorites.indexOf(accountId), 1);
       } else {
-        this.favorites.push({
-          accountId: validator,
-          name: "Edit validator name..."
-        });
+        this.favorites.push(accountId);
       }
       return true;
     },
-    isFavorite(validator) {
-      // Receives validator accountId
-      for (var i = 0; i < this.favorites.length; i++) {
-        if (this.favorites[i].accountId == validator) {
-          return true;
-        }
-      }
-      return false;
-    },
-    getIndex(validator) {
-      // Receives validator accountId
-      for (var i = 0; i < this.favorites.length; i++) {
-        if (this.favorites[i].accountId == validator) {
-          return i;
-        }
-      }
-      return false;
+    isFavorite(accountId) {
+      return this.favorites.includes(accountId);
     },
     getRank(validator) {
       // Receives validator accountId

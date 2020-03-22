@@ -337,22 +337,16 @@ export default {
     handleNumFields(num) {
       this.perPage = num;
     },
-    toggleFavorite(validator) {
-      // Receives validator accountId
-      if (this.isFavorite(validator)) {
-        this.favorites.splice(this.getIndex(validator), 1);
+    toggleFavorite(accountId) {
+      if (this.favorites.indexOf(accountId) !== -1) {
+        this.favorites.splice(this.favorites.indexOf(accountId), 1);
       } else {
-        this.favorites.push(validator);
+        this.favorites.push(accountId);
       }
       return true;
     },
-    isFavorite(validator) {
-      // Receives accountId
-      return this.favorites.includes(validator);
-    },
-    getIndex(validator) {
-      // Receives accountId
-      return this.favorites.indexOf(validator);
+    isFavorite(accountId) {
+      return this.favorites.includes(accountId);
     },
     onFiltered(filteredItems) {
       // Trigger pagination to update the number of buttons/pages due to filtering

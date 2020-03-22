@@ -440,35 +440,16 @@ export default {
     handleNumFields(num) {
       this.perPage = num;
     },
-    toggleFavorite(validator) {
-      // Receives validator accountId
-      if (this.isFavorite(validator)) {
-        this.favorites.splice(this.getIndex(validator), 1);
+    toggleFavorite(accountId) {
+      if (this.favorites.indexOf(accountId) !== -1) {
+        this.favorites.splice(this.favorites.indexOf(accountId), 1);
       } else {
-        this.favorites.push({
-          accountId: validator,
-          name: "Edit validator name..."
-        });
+        this.favorites.push(accountId);
       }
       return true;
     },
-    isFavorite(validator) {
-      // Receives validator accountId
-      for (var i = 0; i < this.favorites.length; i++) {
-        if (this.favorites[i].accountId == validator) {
-          return true;
-        }
-      }
-      return false;
-    },
-    getIndex(validator) {
-      // Receives validator accountId
-      for (var i = 0; i < this.favorites.length; i++) {
-        if (this.favorites[i].accountId == validator) {
-          return i;
-        }
-      }
-      return false;
+    isFavorite(accountId) {
+      return this.favorites.includes(accountId);
     },
     getRank(validator) {
       // Receives validator accountId
