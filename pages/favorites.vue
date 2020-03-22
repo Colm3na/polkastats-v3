@@ -214,11 +214,11 @@
                             v-b-tooltip.hover
                             class="d-inline d-sm-none d-md-none d-lg-none d-xl-none"
                             :title="validator.stashId"
-                            >{{ indexes[validator.stashId] }}</span
+                            >{{ shortAddress(validator.stashId) }}</span
                           >
                           <span
                             class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline"
-                            >{{ indexes[validator.stashId] }}</span
+                            >{{ shortAddress(validator.stashId) }}</span
                           >
                         </a>
                       </div>
@@ -242,11 +242,11 @@
                             v-b-tooltip.hover
                             class="d-inline d-sm-none d-md-none d-lg-none d-xl-none"
                             :title="validator.controllerId"
-                            >{{ indexes[validator.controllerId] }}</span
+                            >{{ shortAddress(validator.controllerId) }}</span
                           >
                           <span
                             class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline"
-                            >{{ indexes[validator.controllerId] }}</span
+                            >{{ shortAddress(validator.controllerId) }}</span
                           >
                         </a>
                       </div>
@@ -346,114 +346,6 @@
                           </a>
                         </template>
                       </template>
-                      <template v-if="validator.sessionIds.length > 0">
-                        <a
-                          class=""
-                          data-toggle="collapse"
-                          :href="'#current-session-id-' + index"
-                          role="button"
-                          aria-expanded="false"
-                          :aria-controls="'current-session-id-' + index"
-                        >
-                          <h6 class="h6 nominators d-inline mr-4">
-                            <i class="fas" /> Current session ids ({{
-                              validator.sessionIds.length
-                            }})
-                          </h6>
-                        </a>
-                      </template>
-                      <template v-if="validator.nextSessionIds.length > 0">
-                        <a
-                          class=""
-                          data-toggle="collapse"
-                          :href="'#session-id-' + index"
-                          role="button"
-                          aria-expanded="false"
-                          :aria-controls="'session-id-' + index"
-                        >
-                          <h6 class="h6 nominators d-inline mr-4">
-                            <i class="fas" /> Next session ids ({{
-                              validator.nextSessionIds.length
-                            }})
-                          </h6>
-                        </a>
-                      </template>
-                      <template v-if="validator.sessionIds.length > 0">
-                        <div
-                          :id="'current-session-id-' + index"
-                          class="nominator collapse pt-2 pb-3"
-                          :data-parent="'#validator-info-' + index"
-                        >
-                          <div
-                            v-for="(sessionId, index) in validator.sessionIds"
-                            :key="index"
-                            class="row"
-                          >
-                            <div class="col-12 mb-1 who">
-                              {{ index + 1 }}.
-                              <Identicon
-                                :value="sessionId"
-                                :size="20"
-                                :theme="'polkadot'"
-                              />
-                              <a
-                                :href="blockExplorer.account + sessionId"
-                                target="_blank"
-                              >
-                                <span
-                                  v-b-tooltip.hover
-                                  class="d-inline-block d-sm-none d-md-none d-lg-none d-xl-none"
-                                  :title="sessionId"
-                                  >{{ shortAddress(sessionId) }}</span
-                                >
-                                <span
-                                  class="d-none d-sm-inline-block d-md-inline-block d-lg-inline-block d-xl-inline-block"
-                                  >{{ sessionId }}</span
-                                >
-                              </a>
-                            </div>
-                          </div>
-                        </div>
-                      </template>
-                      <template v-if="validator.nextSessionIds.length > 0">
-                        <div
-                          :id="'session-id-' + index"
-                          class="nominator collapse pt-2 pb-3"
-                          :data-parent="'#validator-info-' + index"
-                        >
-                          <div
-                            v-for="(sessionId,
-                            index) in validator.nextSessionIds"
-                            :key="index"
-                            class="row"
-                          >
-                            <div class="col-12 mb-1 who">
-                              {{ index + 1 }}.
-                              <Identicon
-                                :key="sessionId"
-                                :value="sessionId"
-                                :size="20"
-                                :theme="'polkadot'"
-                              />
-                              <a
-                                :href="blockExplorer.account + sessionId"
-                                target="_blank"
-                              >
-                                <span
-                                  v-b-tooltip.hover
-                                  class="d-inline-block d-sm-none d-md-none d-lg-none d-xl-none"
-                                  :title="sessionId"
-                                  >{{ shortAddress(sessionId) }}</span
-                                >
-                                <span
-                                  class="d-none d-sm-inline-block d-md-inline-block d-lg-inline-block d-xl-inline-block"
-                                  >{{ sessionId }}</span
-                                >
-                              </a>
-                            </div>
-                          </div>
-                        </div>
-                      </template>
                       <template v-if="validator.exposure">
                         <template v-if="validator.exposure.others.length > 0">
                           <div
@@ -482,11 +374,11 @@
                                     v-b-tooltip.hover
                                     class="d-inline-block d-sm-none d-md-none d-lg-none d-xl-none"
                                     :title="staker.who"
-                                    >{{ indexes[staker.who] }}</span
+                                    >{{ shortAddress(staker.who) }}</span
                                   >
                                   <span
                                     class="d-none d-sm-inline-block d-md-inline-block d-lg-inline-block d-xl-inline-block"
-                                    >{{ indexes[staker.who] }}</span
+                                    >{{ shortAddress(staker.who) }}</span
                                   >
                                 </a>
                               </div>
@@ -635,11 +527,11 @@
                             v-b-tooltip.hover
                             class="d-inline d-sm-none d-md-none d-lg-none d-xl-none"
                             :title="validator.stashId"
-                            >{{ indexes[validator.stashId] }}</span
+                            >{{ shortAddress(validator.stashId) }}</span
                           >
                           <span
                             class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline"
-                            >{{ indexes[validator.stashId] }}</span
+                            >{{ shortAddress(validator.stashId) }}</span
                           >
                         </a>
                       </div>
@@ -663,11 +555,11 @@
                             v-b-tooltip.hover
                             class="d-inline d-sm-none d-md-none d-lg-none d-xl-none"
                             :title="validator.controllerId"
-                            >{{ indexes[validator.controllerId] }}</span
+                            >{{ shortAddress(validator.controllerId) }}</span
                           >
                           <span
                             class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline"
-                            >{{ indexes[validator.controllerId] }}</span
+                            >{{ shortAddress(validator.controllerId) }}</span
                           >
                         </a>
                       </div>
@@ -764,115 +656,6 @@
                             }})
                           </h6>
                         </a>
-                      </template>
-                      <template v-if="validator.sessionIds.length > 0">
-                        <a
-                          class=""
-                          data-toggle="collapse"
-                          :href="'#current-session-id-' + index"
-                          role="button"
-                          aria-expanded="false"
-                          :aria-controls="'current-session-id-' + index"
-                        >
-                          <h6 class="h6 nominators d-inline mr-4">
-                            <i class="fas" /> Current session ids ({{
-                              validator.sessionIds.length
-                            }})
-                          </h6>
-                        </a>
-                      </template>
-                      <template v-if="validator.nextSessionIds.length > 0">
-                        <a
-                          class=""
-                          data-toggle="collapse"
-                          :href="'#session-id-' + index"
-                          role="button"
-                          aria-expanded="false"
-                          :aria-controls="'session-id-' + index"
-                        >
-                          <h6 class="h6 nominators d-inline mr-4">
-                            <i class="fas" /> Next session ids ({{
-                              validator.nextSessionIds.length
-                            }})
-                          </h6>
-                        </a>
-                      </template>
-                      <template v-if="validator.sessionIds.length > 0">
-                        <div
-                          :id="'current-session-id-' + index"
-                          class="nominator collapse pt-2 pb-3"
-                          :data-parent="'#validator-info-' + index"
-                        >
-                          <div
-                            v-for="(sessionId, index) in validator.sessionIds"
-                            :key="index"
-                            class="row"
-                          >
-                            <div class="col-12 mb-1 who">
-                              {{ index + 1 }}.
-                              <Identicon
-                                :key="sessionId"
-                                :value="sessionId"
-                                :size="20"
-                                :theme="'polkadot'"
-                              />
-                              <a
-                                :href="blockExplorer.account + sessionId"
-                                target="_blank"
-                              >
-                                <span
-                                  v-b-tooltip.hover
-                                  class="d-inline-block d-sm-none d-md-none d-lg-none d-xl-none"
-                                  :title="sessionId"
-                                  >{{ shortAddress(sessionId) }}</span
-                                >
-                                <span
-                                  class="d-none d-sm-inline-block d-md-inline-block d-lg-inline-block d-xl-inline-block"
-                                  >{{ sessionId }}</span
-                                >
-                              </a>
-                            </div>
-                          </div>
-                        </div>
-                      </template>
-                      <template v-if="validator.nextSessionIds.length > 0">
-                        <div
-                          :id="'session-id-' + index"
-                          class="nominator collapse pt-2 pb-3"
-                          :data-parent="'#validator-info-' + index"
-                        >
-                          <div
-                            v-for="(sessionId,
-                            index) in validator.nextSessionIds"
-                            :key="index"
-                            class="row"
-                          >
-                            <div class="col-12 mb-1 who">
-                              {{ index + 1 }}.
-                              <Identicon
-                                :key="sessionId"
-                                :value="sessionId"
-                                :size="20"
-                                :theme="'polkadot'"
-                              />
-                              <a
-                                :href="blockExplorer.account + sessionId"
-                                target="_blank"
-                              >
-                                <span
-                                  v-b-tooltip.hover
-                                  class="d-inline-block d-sm-none d-md-none d-lg-none d-xl-none"
-                                  :title="sessionId"
-                                  >{{ shortAddress(sessionId) }}</span
-                                >
-                                <span
-                                  class="d-none d-sm-inline-block d-md-inline-block d-lg-inline-block d-xl-inline-block"
-                                  >{{ sessionId }}</span
-                                >
-                              </a>
-                            </div>
-                          </div>
-                        </div>
                       </template>
                       <template v-if="validator.exposure.others.length > 0">
                         <div
