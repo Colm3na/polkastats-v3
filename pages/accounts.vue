@@ -168,7 +168,7 @@
               <p class="text-center mb-0">
                 <a
                   class="favorite"
-                  @click="toggleFavorite(data.item.accountIndex)"
+                  @click="toggleFavorite(data.item.accountId)"
                 >
                   <i
                     v-if="data.item.favorite"
@@ -288,7 +288,7 @@ export default {
         accounts.push({
           ...account,
           accountIndex,
-          favorite: this.isFavorite(accountIndex)
+          favorite: this.isFavorite(account.accountId)
         });
       }
       return accounts;
@@ -324,8 +324,6 @@ export default {
     }
     this.totalRows = this.$store.state.accounts.list.length;
 
-    console.log(`this.totalRows:`, this.totalRows);
-
     // Update data every 5 minutes
     this.polling = setInterval(() => {
       vm.$store.dispatch("accounts/update");
@@ -342,32 +340,19 @@ export default {
     toggleFavorite(validator) {
       // Receives validator accountId
       if (this.isFavorite(validator)) {
-        this.favorites.splice(this.getIndex(validator), 1);
+        this.favorites.splice(validator, 1);
       } else {
-        this.favorites.push({
-          accountId: validator,
-          name: "Edit phragmen name..."
-        });
+        this.favorites.push(validator);
       }
       return true;
     },
     isFavorite(validator) {
-      // Receives validator accountId
-      for (var i = 0; i < this.favorites.length; i++) {
-        if (this.favorites[i].accountId == validator) {
-          return true;
-        }
-      }
-      return false;
+      // Receives accountId
+      return this.favorites.includes(validator);
     },
     getIndex(validator) {
-      // Receives validator accountId
-      for (var i = 0; i < this.favorites.length; i++) {
-        if (this.favorites[i].accountId == validator) {
-          return i;
-        }
-      }
-      return false;
+      // Receives accountId
+      return this.favorites.indexOf(validator);
     },
     onFiltered(filteredItems) {
       // Trigger pagination to update the number of buttons/pages due to filtering
