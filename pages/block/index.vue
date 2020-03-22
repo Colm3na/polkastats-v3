@@ -145,7 +145,53 @@
                     <td>{{ event.section }}</td>
                     <td>{{ event.method }}</td>
                     <td>{{ event.phase }}</td>
-                    <td>{{ event.data }}</td>
+                    <td>
+                      <template
+                        v-if="
+                          event.section === `balances` &&
+                            event.method === `Transfer`
+                        "
+                      >
+                        <Identicon
+                          :key="JSON.parse(event.data)[0]"
+                          :value="JSON.parse(event.data)[0]"
+                          :size="20"
+                          :theme="'polkadot'"
+                        />
+                        <nuxt-link
+                          :to="{
+                            name: 'account',
+                            query: { accountId: JSON.parse(event.data)[0] }
+                          }"
+                          title="Account details"
+                        >
+                          {{ shortAddress(JSON.parse(event.data)[0]) }}
+                        </nuxt-link>
+                        <i class="fas fa-arrow-right"></i>
+                        <Identicon
+                          :key="JSON.parse(event.data)[1]"
+                          :value="JSON.parse(event.data)[1]"
+                          :size="20"
+                          :theme="'polkadot'"
+                        />
+                        <nuxt-link
+                          :to="{
+                            name: 'account',
+                            query: { accountId: JSON.parse(event.data)[1] }
+                          }"
+                          title="Account details"
+                        >
+                          {{ shortAddress(JSON.parse(event.data)[1]) }}
+                        </nuxt-link>
+                        <i class="fas fa-arrow-right"></i>
+                        <span class="amount">
+                          {{ formatAmount(JSON.parse(event.data)[2]) }}
+                        </span>
+                      </template>
+                      <template v-else>
+                        {{ event.data }}
+                      </template>
+                    </td>
                   </tr>
                 </tbody>
               </table>
@@ -279,5 +325,8 @@ export default {
 .block-page .amount {
   color: #ef1073;
   font-weight: 700;
+}
+.block-page .clipboard {
+  display: inline-block;
 }
 </style>
