@@ -25,9 +25,15 @@
             :theme="'polkadot'"
             class="d-inline-block"
           />
-          <h5 class="d-inline-block">
-            {{ formatNumber(lastBlock.block_number) }}
-          </h5>
+          <nuxt-link
+            v-b-tooltip.hover
+            :to="`/block?blockNumber=${lastBlock.block_number}`"
+            title="Click to see block info!"
+          >
+            <h5 class="d-inline-block">
+              {{ formatNumber(lastBlock.block_number) }}
+            </h5>
+          </nuxt-link>
         </div>
       </div>
     </div>
