@@ -310,7 +310,7 @@ export default {
       });
     }
   },
-  created: function() {
+  created: async function() {
     var vm = this;
 
     // Get favorites from cookie
@@ -320,7 +320,7 @@ export default {
 
     // Force update of account list if empty
     if (this.$store.state.accounts.list.length === 0) {
-      vm.$store.dispatch("accounts/update");
+      await vm.$store.dispatch("accounts/update");
     }
     this.totalRows = this.$store.state.accounts.list.length;
 
