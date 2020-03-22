@@ -121,7 +121,7 @@
                     </td>
                   </tr>
                   <tr>
-                    <td>Free Balance</td>
+                    <td>Total Balance</td>
                     <td class="text-right">
                       {{ formatAmount(parsedAccount.balances.freeBalance) }}
                     </td>
