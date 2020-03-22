@@ -526,7 +526,7 @@ export default {
         },
         {
           key: "accountId",
-          label: "✅ Validators",
+          label: "✅ Validator",
           sortable: true,
           filterByFormatted: true
         },

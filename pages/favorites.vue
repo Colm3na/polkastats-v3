@@ -339,9 +339,10 @@
                             :aria-controls="'staker' + index"
                           >
                             <h6 class="h6 nominators d-inline mr-4">
-                              <i class="fas" /> Stakers ({{
+                              <i class="fas mr-1" />{{
                                 validator.exposure.others.length
-                              }})
+                              }}
+                              nominators
                             </h6>
                           </a>
                         </template>
@@ -651,9 +652,10 @@
                           :aria-controls="'staker' + index"
                         >
                           <h6 class="h6 nominators d-inline mr-4">
-                            <i class="fas" /> Stakers ({{
+                            <i class="fas mr-1" />{{
                               validator.exposure.others.length
-                            }})
+                            }}
+                            nominators
                           </h6>
                         </a>
                       </template>

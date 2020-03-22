@@ -456,253 +456,172 @@
                     <!-- identity end -->
 
                     <!-- Stakers -->
-                    <b-tabs content-class="mt-4 mb-2" class="mt-4">
-                      <!-- Stakers -->
-                      <b-tab
-                        v-if="validator.exposure.others.length > 0"
-                        :title="`Stakers (${validator.exposure.others.length})`"
-                        active
-                      >
-                        <!-- Filter -->
-                        <b-row class="mb-4">
-                          <b-col lg="12">
-                            <b-form-input
-                              id="filterInput"
-                              v-model="filter"
-                              type="search"
-                              placeholder="Search staker by account or account index"
-                            />
-                          </b-col>
-                        </b-row>
-                        <!-- Mobile sorting -->
-                        <div
-                          class="row d-block d-sm-block d-md-block d-lg-none d-xl-none"
+                    <h5 class="h5 account my-3">
+                      Nominators
+                    </h5>
+                    <!-- Filter -->
+                    <b-row class="mb-4">
+                      <b-col lg="12">
+                        <b-form-input
+                          id="filterInput"
+                          v-model="filter"
+                          type="search"
+                          placeholder="Search staker by account or account index"
+                        />
+                      </b-col>
+                    </b-row>
+                    <!-- Mobile sorting -->
+                    <div
+                      class="row d-block d-sm-block d-md-block d-lg-none d-xl-none"
+                    >
+                      <b-col lg="6" class="my-1">
+                        <b-form-group
+                          label="Sort"
+                          label-cols-sm="3"
+                          label-align-sm="right"
+                          label-size="sm"
+                          label-for="sortBySelect"
+                          class="mb-4"
                         >
-                          <b-col lg="6" class="my-1">
-                            <b-form-group
-                              label="Sort"
-                              label-cols-sm="3"
-                              label-align-sm="right"
-                              label-size="sm"
-                              label-for="sortBySelect"
-                              class="mb-4"
+                          <b-input-group size="sm">
+                            <b-form-select
+                              id="sortBySelect"
+                              v-model="sortBy"
+                              :options="sortOptions"
+                              class="w-75"
                             >
-                              <b-input-group size="sm">
-                                <b-form-select
-                                  id="sortBySelect"
-                                  v-model="sortBy"
-                                  :options="sortOptions"
-                                  class="w-75"
-                                >
-                                  <template v-slot:first>
-                                    <option value="">
-                                      -- none --
-                                    </option>
-                                  </template>
-                                </b-form-select>
-                                <b-form-select
-                                  v-model="sortDesc"
-                                  size="sm"
-                                  :disabled="!sortBy"
-                                  class="w-25"
-                                >
-                                  <option :value="false">
-                                    Asc
-                                  </option>
-                                  <option :value="true">
-                                    Desc
-                                  </option>
-                                </b-form-select>
-                              </b-input-group>
-                            </b-form-group>
-                          </b-col>
-                        </div>
-                        <!-- Table with sorting and pagination-->
-                        <div class="table-responsive">
-                          <b-table
-                            id="nominators-table"
-                            stacked="md"
-                            head-variant="dark"
-                            :fields="fields"
-                            :items="validatorStakers"
-                            :per-page="perPage"
-                            :current-page="currentPage"
-                            :sort-by.sync="sortBy"
-                            :sort-desc.sync="sortDesc"
-                            :filter="filter"
-                            :filter-included-fields="filterOn"
-                            @filtered="onFiltered"
+                              <template v-slot:first>
+                                <option value="">
+                                  -- none --
+                                </option>
+                              </template>
+                            </b-form-select>
+                            <b-form-select
+                              v-model="sortDesc"
+                              size="sm"
+                              :disabled="!sortBy"
+                              class="w-25"
+                            >
+                              <option :value="false">
+                                Asc
+                              </option>
+                              <option :value="true">
+                                Desc
+                              </option>
+                            </b-form-select>
+                          </b-input-group>
+                        </b-form-group>
+                      </b-col>
+                    </div>
+                    <!-- Table with sorting and pagination-->
+                    <div class="table-responsive">
+                      <b-table
+                        id="nominators-table"
+                        stacked="md"
+                        head-variant="dark"
+                        :fields="fields"
+                        :items="validatorStakers"
+                        :per-page="perPage"
+                        :current-page="currentPage"
+                        :sort-by.sync="sortBy"
+                        :sort-desc.sync="sortDesc"
+                        :filter="filter"
+                        :filter-included-fields="filterOn"
+                        @filtered="onFiltered"
+                      >
+                        <template slot="rank" slot-scope="data">
+                          <p class="text-center mb-0">
+                            {{ data.item.rank }}
+                          </p>
+                        </template>
+                        <template slot="who" slot-scope="data">
+                          <div
+                            class="d-block d-sm-block d-md-none d-lg-none d-xl-none text-center py-2"
                           >
-                            <template slot="rank" slot-scope="data">
-                              <p class="text-center mb-0">
-                                {{ data.item.rank }}
-                              </p>
-                            </template>
-                            <template slot="who" slot-scope="data">
-                              <div
-                                class="d-block d-sm-block d-md-none d-lg-none d-xl-none text-center py-2"
+                            >
+                            <p class="mb-0">rank #{{ data.item.rank }}</p>
+                            <p class="mt-2 mb-0">
+                              <Identicon
+                                :key="data.item.who"
+                                :value="data.item.who"
+                                :size="20"
+                                :theme="'polkadot'"
+                              />
+                              <nuxt-link
+                                :to="{
+                                  name: 'nominator',
+                                  query: { accountId: data.item.who }
+                                }"
+                                title="Nominator details"
                               >
+                                <span
+                                  v-b-tooltip.hover
+                                  class="d-inline-block d-sm-none d-md-none d-lg-none d-xl-none"
+                                  :title="data.item.who"
+                                  >{{ shortAddress(data.item.who) }}</span
                                 >
-                                <p class="mb-0">rank #{{ data.item.rank }}</p>
-                                <p class="mt-2 mb-0">
-                                  <Identicon
-                                    :key="data.item.who"
-                                    :value="data.item.who"
-                                    :size="20"
-                                    :theme="'polkadot'"
-                                  />
-                                  <nuxt-link
-                                    :to="{
-                                      name: 'nominator',
-                                      query: { accountId: data.item.who }
-                                    }"
-                                    title="Nominator details"
-                                  >
-                                    <span
-                                      v-b-tooltip.hover
-                                      class="d-inline-block d-sm-none d-md-none d-lg-none d-xl-none"
-                                      :title="data.item.who"
-                                      >{{ shortAddress(data.item.who) }}</span
-                                    >
-                                    <span
-                                      class="d-none d-sm-inline-block d-md-inline-block d-lg-inline-block d-xl-inline-block"
-                                      >{{ shortAddress(data.item.who) }}</span
-                                    >
-                                  </nuxt-link>
-                                </p>
-                                <p class="mt-2 mb-0">
-                                  {{ formatAmount(data.item.value) }} ({{
-                                    parseFloat(data.item.percent).toFixed(3)
-                                  }}
-                                  %)
-                                </p>
-                              </div>
-                              <div
-                                class="d-none d-sm-none d-md-block d-lg-block d-xl-block"
-                              >
-                                <p class="mb-0">
-                                  <Identicon
-                                    :key="data.item.who"
-                                    :value="data.item.who"
-                                    :size="20"
-                                    :theme="'polkadot'"
-                                  />
-                                  <nuxt-link
-                                    :to="{
-                                      name: 'nominator',
-                                      query: { accountId: data.item.who }
-                                    }"
-                                    title="Nominator details"
-                                  >
-                                    <span
-                                      v-b-tooltip.hover
-                                      class="d-inline-block d-sm-none d-md-none d-lg-none d-xl-none"
-                                      :title="data.item.who"
-                                      >{{ shortAddress(data.item.who) }}</span
-                                    >
-                                    <span
-                                      class="d-none d-sm-inline-block d-md-inline-block d-lg-inline-block d-xl-inline-block"
-                                      >{{ shortAddress(data.item.who) }}</span
-                                    >
-                                  </nuxt-link>
-                                </p>
-                              </div>
-                            </template>
-                            <template slot="percent" slot-scope="data">
-                              <p class="text-right mb-0">
-                                {{ parseFloat(data.item.percent).toFixed(3) }} %
-                              </p>
-                            </template>
-                            <template slot="amountOrder" slot-scope="data">
-                              <p class="text-right mb-0">
-                                {{ formatAmount(data.item.value) }}
-                              </p>
-                            </template>
-                          </b-table>
-                          <b-pagination
-                            v-model="currentPage"
-                            :total-rows="totalRows"
-                            :per-page="perPage"
-                            aria-controls="nominators-table"
-                          />
-                        </div>
-                      </b-tab>
-                      <!-- Current session ids -->
-                      <b-tab
-                        v-if="validator.sessionIds.length > 0"
-                        :title="`Session ids (${validator.sessionIds.length})`"
-                      >
-                        <div
-                          v-for="(sessionId, index1) in validator.sessionIds"
-                          :key="index1"
-                          class="row"
-                        >
-                          <div class="col-12 mb-1 who">
-                            {{ index1 + 1 }}.
-                            <Identicon
-                              :key="sessionId"
-                              :value="sessionId"
-                              :size="20"
-                              :theme="'polkadot'"
-                            />
-                            <a
-                              :href="blockExplorer.account + sessionId"
-                              target="_blank"
-                            >
-                              <span
-                                v-b-tooltip.hover
-                                class="d-inline-block d-sm-none d-md-none d-lg-none d-xl-none"
-                                :title="sessionId"
-                                >{{ shortAddress(sessionId) }}</span
-                              >
-                              <span
-                                class="d-none d-sm-inline-block d-md-inline-block d-lg-inline-block d-xl-inline-block"
-                                >{{ sessionId }}</span
-                              >
-                            </a>
+                                <span
+                                  class="d-none d-sm-inline-block d-md-inline-block d-lg-inline-block d-xl-inline-block"
+                                  >{{ shortAddress(data.item.who) }}</span
+                                >
+                              </nuxt-link>
+                            </p>
+                            <p class="mt-2 mb-0">
+                              {{ formatAmount(data.item.value) }} ({{
+                                parseFloat(data.item.percent).toFixed(3)
+                              }}
+                              %)
+                            </p>
                           </div>
-                        </div>
-                      </b-tab>
-                      <!-- Next session ids -->
-                      <b-tab
-                        v-if="validator.nextSessionIds.length > 0"
-                        :title="
-                          `Next session ids (${validator.nextSessionIds.length})`
-                        "
-                      >
-                        <div
-                          v-for="(sessionId,
-                          index2) in validator.nextSessionIds"
-                          :key="index2"
-                          class="row"
-                        >
-                          <div class="col-12 mb-1 who">
-                            {{ index2 + 1 }}.
-                            <Identicon
-                              :key="sessionId"
-                              :value="sessionId"
-                              :size="20"
-                              :theme="'polkadot'"
-                            />
-                            <a
-                              :href="blockExplorer.account + sessionId"
-                              target="_blank"
-                            >
-                              <span
-                                v-b-tooltip.hover
-                                class="d-inline-block d-sm-none d-md-none d-lg-none d-xl-none"
-                                :title="sessionId"
-                                >{{ shortAddress(sessionId) }}</span
+                          <div
+                            class="d-none d-sm-none d-md-block d-lg-block d-xl-block"
+                          >
+                            <p class="mb-0">
+                              <Identicon
+                                :key="data.item.who"
+                                :value="data.item.who"
+                                :size="20"
+                                :theme="'polkadot'"
+                              />
+                              <nuxt-link
+                                :to="{
+                                  name: 'nominator',
+                                  query: { accountId: data.item.who }
+                                }"
+                                title="Nominator details"
                               >
-                              <span
-                                class="d-none d-sm-inline-block d-md-inline-block d-lg-inline-block d-xl-inline-block"
-                                >{{ sessionId }}</span
-                              >
-                            </a>
+                                <span
+                                  v-b-tooltip.hover
+                                  class="d-inline-block d-sm-none d-md-none d-lg-none d-xl-none"
+                                  :title="data.item.who"
+                                  >{{ shortAddress(data.item.who) }}</span
+                                >
+                                <span
+                                  class="d-none d-sm-inline-block d-md-inline-block d-lg-inline-block d-xl-inline-block"
+                                  >{{ shortAddress(data.item.who) }}</span
+                                >
+                              </nuxt-link>
+                            </p>
                           </div>
-                        </div>
-                      </b-tab>
-                    </b-tabs>
+                        </template>
+                        <template slot="percent" slot-scope="data">
+                          <p class="text-right mb-0">
+                            {{ parseFloat(data.item.percent).toFixed(3) }} %
+                          </p>
+                        </template>
+                        <template slot="amountOrder" slot-scope="data">
+                          <p class="text-right mb-0">
+                            {{ formatAmount(data.item.value) }}
+                          </p>
+                        </template>
+                      </b-table>
+                      <b-pagination
+                        v-model="currentPage"
+                        :total-rows="totalRows"
+                        :per-page="perPage"
+                        aria-controls="nominators-table"
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
