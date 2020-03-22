@@ -249,11 +249,11 @@
                           <h4 v-else>
                             <span
                               class="validator-name d-inline d-sm-inline d-md-inline d-lg-inline d-xl-none"
-                              >{{ indexes[data.item.accountId] }}</span
+                              >{{ shortAddress(data.item.accountId) }}</span
                             >
                             <span
                               class="d-none d-sm-none d-md-none d-lg-none d-xl-inline"
-                              >{{ indexes[data.item.accountId] }}</span
+                              >{{ shortAddress(data.item.accountId) }}</span
                             >
                           </h4>
                           <div v-if="data.item.stakers">
@@ -373,11 +373,11 @@
                   <span v-else>
                     <span
                       class="d-inline d-sm-inline d-md-inline d-lg-inline d-xl-none"
-                      >{{ indexes[data.item.accountId] }}</span
+                      >{{ shortAddress(data.item.accountId) }}</span
                     >
                     <span
                       class="d-none d-sm-none d-md-none d-lg-none d-xl-inline"
-                      >{{ indexes[data.item.accountId] }}</span
+                      >{{ shortAddress(data.item.accountId) }}</span
                     >
                   </span>
                 </nuxt-link>
