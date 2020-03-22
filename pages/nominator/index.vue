@@ -21,7 +21,7 @@
                 </template>
               </div>
               <div class="col-8 col-lg-10 text-center">
-                <h4 class="mb-1">Nominator {{ indexes[accountId] }}</h4>
+                <h4 class="mb-1">Nominator {{ accountId }}</h4>
               </div>
               <div class="col-2 col-lg-1 text-right">
                 <template v-if="index < nominators.length - 1">
@@ -54,17 +54,17 @@
                 >
                   Nominator
                   <span v-b-tooltip.hover title="See address in PolkaScan">{{
-                    indexes[nominator.accountId]
+                    shortAddress(nominator.accountId)
                   }}</span>
                 </a>
                 <p v-b-tooltip.hover class="amount" title="Total bonded">
-                  {{ formatDot(getTotalStake(nominator.staking)) }}
+                  {{ formatAmount(getTotalStake(nominator.staking)) }}
                 </p>
                 <h5>
                   {{ nominator.staking.length }} nomination<span
                     v-if="nominator.staking.length > 1"
                     >s</span
-                  >:
+                  >
                 </h5>
                 <hr />
                 <!-- identity start -->
@@ -230,7 +230,7 @@
                       class="mt-2 mb-0 d-block"
                     >
                       <span v-b-tooltip.hover :title="nomination.validator">{{
-                        indexes[nomination.validator]
+                        shortAddress(nomination.validator)
                       }}</span>
                     </nuxt-link>
                     <p class="mt-0 mb-0">
@@ -246,7 +246,7 @@
                       }}%
                     </p>
                     <p class="amount">
-                      {{ formatDot(nomination.amount) }}
+                      {{ formatAmount(nomination.amount) }}
                       <small
                         >({{
                           (
@@ -282,6 +282,7 @@ import {
   backendBaseURL,
   blockExplorer
 } from "../../polkastats.config.js";
+import commonMixin from "../../mixins/commonMixin.js";
 
 formatBalance.setDefaults({ decimals, unit });
 
@@ -289,6 +290,7 @@ export default {
   components: {
     Identicon
   },
+  mixins: [commonMixin],
   data: function() {
     return {
       accountId: this.$route.query.accountId,
@@ -427,34 +429,6 @@ export default {
     clearInterval(this.pollingIndexes);
   },
   methods: {
-    formatNumber(n) {
-      if (isHex(n)) {
-        return parseInt(n, 16)
-          .toString()
-          .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
-      } else {
-        return n.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
-      }
-    },
-    formatDot(amount) {
-      let bn;
-      if (isHex(amount)) {
-        bn = new BN(amount.substring(2, amount.length), 16);
-      } else {
-        bn = new BN(amount.toString());
-      }
-      return formatBalance(bn.toString(10));
-    },
-    shortAddress(address) {
-      return (
-        address.substring(0, 5) +
-        " .... " +
-        address.substring(address.length - 5)
-      );
-    },
-    thousandsSeparator(n) {
-      return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    },
     getIndex(validator) {
       // Receives validator accountId
       for (var i = 0; i < this.validators.length; i++) {
