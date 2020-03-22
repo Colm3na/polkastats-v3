@@ -142,11 +142,11 @@
                             v-b-tooltip.hover
                             class="d-inline d-sm-none d-md-none d-lg-none d-xl-none"
                             :title="validator.stashId"
-                            >{{ indexes[validator.stashId] }}</span
+                            >{{ shortAddress(validator.stashId) }}</span
                           >
                           <span
                             class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline"
-                            >{{ indexes[validator.stashId] }}</span
+                            >{{ shortAddress(validator.stashId) }}</span
                           >
                         </a>
                       </div>
@@ -170,11 +170,11 @@
                             v-b-tooltip.hover
                             class="d-inline d-sm-none d-md-none d-lg-none d-xl-none"
                             :title="validator.controllerId"
-                            >{{ indexes[validator.controllerId] }}
+                            >{{ shortAddress(validator.controllerId) }}
                           </span>
                           <span
                             class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline"
-                            >{{ indexes[validator.controllerId] }}</span
+                            >{{ shortAddress(validator.controllerId) }}</span
                           >
                         </a>
                       </div>

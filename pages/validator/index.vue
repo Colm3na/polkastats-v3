@@ -21,7 +21,7 @@
                 </template>
               </div>
               <div class="col-8 col-lg-10 text-center">
-                <h4 class="mb-1">Validator {{ indexes[accountId] }}</h4>
+                <h4 class="mb-1">Validator {{ accountId }}</h4>
               </div>
               <div class="col-2 col-lg-1 text-right">
                 <template v-if="index < validators.length - 1">
@@ -212,11 +212,11 @@
                             v-b-tooltip.hover
                             class="d-inline d-sm-none d-md-none d-lg-none d-xl-none"
                             :title="validator.accountId"
-                            >{{ indexes[validator.accountId] }}</span
+                            >{{ shortAddress(validator.accountId) }}</span
                           >
                           <span
                             class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline"
-                            >{{ indexes[validator.accountId] }}</span
+                            >{{ shortAddress(validator.accountId) }}</span
                           >
                         </a>
                       </div>
@@ -240,11 +240,11 @@
                             v-b-tooltip.hover
                             class="d-inline d-sm-none d-md-none d-lg-none d-xl-none"
                             :title="validator.controllerId"
-                            >{{ indexes[validator.controllerId] }}
+                            >{{ shortAddress(validator.controllerId) }}
                           </span>
                           <span
                             class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline"
-                            >{{ indexes[validator.controllerId] }}</span
+                            >{{ shortAddress(validator.controllerId) }}</span
                           >
                         </a>
                       </div>
@@ -562,11 +562,11 @@
                                       v-b-tooltip.hover
                                       class="d-inline-block d-sm-none d-md-none d-lg-none d-xl-none"
                                       :title="data.item.who"
-                                      >{{ indexes[data.item.who] }}</span
+                                      >{{ shortAddress(data.item.who) }}</span
                                     >
                                     <span
                                       class="d-none d-sm-inline-block d-md-inline-block d-lg-inline-block d-xl-inline-block"
-                                      >{{ indexes[data.item.who] }}</span
+                                      >{{ shortAddress(data.item.who) }}</span
                                     >
                                   </nuxt-link>
                                 </p>
@@ -598,11 +598,11 @@
                                       v-b-tooltip.hover
                                       class="d-inline-block d-sm-none d-md-none d-lg-none d-xl-none"
                                       :title="data.item.who"
-                                      >{{ indexes[data.item.who] }}</span
+                                      >{{ shortAddress(data.item.who) }}</span
                                     >
                                     <span
                                       class="d-none d-sm-inline-block d-md-inline-block d-lg-inline-block d-xl-inline-block"
-                                      >{{ indexes[data.item.who] }}</span
+                                      >{{ shortAddress(data.item.who) }}</span
                                     >
                                   </nuxt-link>
                                 </p>

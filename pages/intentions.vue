@@ -121,11 +121,11 @@
                   <h4 v-else class="mt-2 mb-2">
                     <span
                       class="d-inline d-sm-inline d-md-inline d-lg-inline d-xl-none"
-                      >{{ indexes[data.item.accountId] }}</span
+                      >{{ shortAddress(data.item.accountId) }}</span
                     >
                     <span
                       class="d-none d-sm-none d-md-none d-lg-none d-xl-inline"
-                      >{{ indexes[data.item.accountId] }}</span
+                      >{{ shortAddress(data.item.accountId) }}</span
                     >
                   </h4>
                 </nuxt-link>
@@ -188,11 +188,11 @@
                   <span v-else>
                     <span
                       class="d-inline d-sm-inline d-md-inline d-lg-inline d-xl-none"
-                      >{{ indexes[data.item.accountId] }}</span
+                      >{{ shortAddress(data.item.accountId) }}</span
                     >
                     <span
                       class="d-none d-sm-none d-md-none d-lg-none d-xl-inline"
-                      >{{ indexes[data.item.accountId] }}</span
+                      >{{ shortAddress(data.item.accountId) }}</span
                     >
                   </span>
                 </nuxt-link>
