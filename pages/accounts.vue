@@ -251,7 +251,7 @@ export default {
         },
         {
           key: "freeBalance",
-          label: "Free balance",
+          label: "Total balance",
           sortable: true,
           class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
         },
