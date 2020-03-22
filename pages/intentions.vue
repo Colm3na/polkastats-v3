@@ -280,8 +280,8 @@ export default {
         ? localStorage.numItemsTableSelected
         : 10,
       currentPage: 1,
-      sortBy: `rank`,
-      sortDesc: false,
+      sortBy: `favorite`,
+      sortDesc: true,
       filter: null,
       filterOn: [],
       totalRows: 1,
