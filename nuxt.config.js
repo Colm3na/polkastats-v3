@@ -55,12 +55,16 @@ export default {
    ** See https://axios.nuxtjs.org/options
    */
   axios: {},
+  /*
+   ** Apollo module configuration
+   ** See https://github.com/nuxt-community/apollo-module
+   */
   apollo: {
     clientConfigs: {
       default: {
         httpEndpoint: "https://polkastats.io/api/v3/v1/graphql",
         wsEndpoint: "wss://polkastats.io/api/v3/v1/graphql",
-        persisting: true
+        websocketsOnly: true
       }
     }
   },

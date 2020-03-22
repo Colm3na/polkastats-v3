@@ -94,7 +94,7 @@
                   }"
                   title="Account details"
                 >
-                  <h4>{{ data.item.accountIndex }}</h4>
+                  <h4>{{ shortAddress(data.item.accountId) }}</h4>
                 </nuxt-link>
                 <p v-if="data.item.identity.display" class="mb-0">
                   {{ data.item.identity.display }}
@@ -142,7 +142,7 @@
                   }"
                   title="Account details"
                 >
-                  {{ data.item.accountIndex }}
+                  {{ shortAddress(data.item.accountId) }}
                 </nuxt-link>
               </div>
             </template>
@@ -319,10 +319,12 @@ export default {
     }
 
     // Force update of account list if empty
-    if (this.$store.state.accounts.list.length == 0) {
+    if (this.$store.state.accounts.list.length === 0) {
       vm.$store.dispatch("accounts/update");
     }
     this.totalRows = this.$store.state.accounts.list.length;
+
+    console.log(`this.totalRows:`, this.totalRows);
 
     // Update data every 5 minutes
     this.polling = setInterval(() => {

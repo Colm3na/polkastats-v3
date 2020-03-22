@@ -2,6 +2,7 @@ import axios from "axios";
 import BN from "bn.js";
 import { isHex } from "@polkadot/util";
 import { backendBaseURL } from "../polkastats.config.js";
+import gql from "graphql-tag";
 
 export const state = () => ({
   list: []
@@ -16,10 +17,8 @@ export const mutations = {
     state.list = accounts
       .map(account => {
         return {
-          accountId: account.accountId,
-          accountIndex: account.accountIndex,
+          accountId: account.account_id,
           identity: account.identity !== "" ? JSON.parse(account.identity) : "",
-          nickname: account.nickname,
           availableBalance: JSON.parse(account.balances).availableBalance,
           freeBalance: JSON.parse(account.balances).freeBalance,
           lockedBalance: JSON.parse(account.balances).lockedBalance,
@@ -60,9 +59,23 @@ export const mutations = {
 };
 
 export const actions = {
-  update(context) {
-    axios.get(`${backendBaseURL}/accounts`).then(function(response) {
-      context.commit("update", response.data);
-    });
+  async update(context) {
+    const client = this.app.apolloProvider.defaultClient;
+    const query = gql`
+      query account {
+        account {
+          account_id
+          balances
+          block_height
+          identity
+        }
+      }
+    `;
+    const response = await client.query({ query });
+    context.commit("update", response.data.account);
+
+    // axios.get(`${backendBaseURL}/accounts`).then(function(response) {
+    //   context.commit("update", response.data);
+    // });
   }
 };
