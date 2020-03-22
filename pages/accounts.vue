@@ -340,7 +340,7 @@ export default {
     toggleFavorite(validator) {
       // Receives validator accountId
       if (this.isFavorite(validator)) {
-        this.favorites.splice(validator, 1);
+        this.favorites.splice(this.getIndex(validator), 1);
       } else {
         this.favorites.push(validator);
       }
