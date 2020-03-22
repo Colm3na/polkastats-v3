@@ -3,7 +3,7 @@
     <section>
       <b-container class="page-accounts main pt-4">
         <h1 class="text-center mb-4">
-          Active Kusama accounts
+          Active accounts
         </h1>
         <!-- Filter -->
         <b-row>
@@ -230,8 +230,8 @@ export default {
         ? localStorage.numItemsTableSelected
         : 10,
       currentPage: 1,
-      sortBy: `rank`,
-      sortDesc: false,
+      sortBy: `favorite`,
+      sortDesc: true,
       filter: null,
       filterOn: [],
       totalRows: 1,
