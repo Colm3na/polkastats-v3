@@ -449,7 +449,6 @@ export default {
           return obj.accountId === stashId;
         }
       );
-      console.log(filteredArray[0]);
       return filteredArray[0].identity;
     },
     onFiltered(filteredItems) {

@@ -374,7 +374,6 @@ export default {
       });
       // eslint-disable-next-line vue/no-side-effects-in-computed-properties
       this.totalRows = nominatorStaking.length;
-      // console.log(nominatorStaking);
       return nominatorStaking;
     }
   },

@@ -1015,8 +1015,6 @@ export default {
           var newCategories = [];
           var newData = [];
 
-          //console.log(response.data);
-
           for (var i = 0; i < response.data.length; i++) {
             // Save first and last point
             if (i == 0) vm.weekly.last = response.data[i].amount;
@@ -1082,8 +1080,6 @@ export default {
           // Update chart data
           var newCategories = [];
           var newData = [];
-
-          //console.log(response.data);
 
           for (var i = 0; i < response.data.length; i++) {
             // Save first and last point

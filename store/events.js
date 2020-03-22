@@ -7,10 +7,6 @@ export const state = () => ({
 
 export const mutations = {
   update(state, events) {
-    // Send Google Analytics event: Category, action, label, value
-    // console.log(`Updating intentions store, sending event to Google Analytics!`);
-    // this.$ga.event('vuex-store', 'update-events');
-
     state.list = events;
   },
   getters: function() {

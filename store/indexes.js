@@ -7,10 +7,6 @@ export const state = () => ({
 
 export const mutations = {
   update(state, accounts) {
-    // Send Google Analytics event: Category, action, label, value
-    // console.log(`Updating nicknames store, sending event to Google Analytics!`);
-    // this.$ga.event('vuex-store', 'update-nicknames');
-
     let indexes = [];
     accounts.forEach(account => {
       indexes[account.accountId] = account.accountIndex;

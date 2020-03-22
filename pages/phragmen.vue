@@ -412,9 +412,8 @@ export default {
     }
   },
   watch: {
-    favorites: function(val) {
-      //console.log(val);
-      this.$cookies.set("favorites", val, {
+    favorites: function(favorites) {
+      this.$cookies.set("favorites", favorites, {
         path: "/",
         maxAge: 60 * 60 * 24 * 7
       });
@@ -508,7 +507,6 @@ export default {
           return obj.accountId === stashId;
         }
       );
-      console.log(filteredArray[0]);
       return filteredArray[0].identity;
     },
     onFiltered(filteredItems) {

@@ -23,10 +23,6 @@ export const state = () => ({
 
 export const mutations = {
   update(state, network) {
-    // Send Google Analytics event: Category, action, label, value
-    // console.log(`Updating network store, sending event to Google Analytics!`);
-    // this.$ga.event('vuex-store', 'update-network');
-
     state.info.bestblocknumber = network.block_height;
     state.info.bestBlockFinalized = network.block_height_finalized;
     state.info.session = network.session;

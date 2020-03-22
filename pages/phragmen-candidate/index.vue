@@ -457,7 +457,6 @@ export default {
     if (this.$store.state.indexes.list.length == 0) {
       vm.$store.dispatch("indexes/update");
     }
-    console.log("store", this.$store.state);
     // Update data every 10 seconds
     this.polling = setInterval(() => {
       vm.$store.dispatch("phragmen/update");

@@ -11,7 +11,6 @@ export const state = () => ({
 export const mutations = {
   update(state, validators) {
     // Send Google Analytics event: Category, action, label, value
-    // console.log(`Updating validators store, sending event to Google Analytics!`);
     this.$ga.event("vuex-store", "update-validators");
 
     // Sort validators by total bonded desc

@@ -954,7 +954,6 @@ export default {
         let validator = this.$store.state.validators.list.find(
           validator => validator.accountId === this.accountId
         );
-        // console.log(validator);
 
         // Calculate others stake total amount
         let stakeTotal, stakeOwn, stakeOthers;
@@ -988,9 +987,6 @@ export default {
           if (a.value && b.value) {
             let stakeA, stakeB;
 
-            // console.log(`a`, a.value);
-            // console.log(`b`, b.value);
-
             if (isHex(a.value)) {
               stakeA = new BN(
                 a.value.toString().substring(2, a.value.length),
@@ -1009,13 +1005,7 @@ export default {
               stakeB = new BN(b.value, 10);
             }
 
-            // console.log(`a`, stakeA.toString(10));
-            // console.log(`b`, stakeB.toString(10));
-            // console.log(`res`, stakeA.lt(stakeB));
-
             return stakeA.lt(stakeB) ? 1 : -1;
-
-            // return stakeA.cmp(stakeB);
           }
         });
 
@@ -1144,8 +1134,6 @@ export default {
           var newCategories = [];
           var newData = [];
 
-          //console.log(response.data);
-
           for (var i = 0; i < response.data.length; i++) {
             // Insert firt point, last point and points with different values
             if (
@@ -1219,8 +1207,6 @@ export default {
           var newCategories = [];
           var newData = [];
 
-          //console.log(response.data);
-
           for (var i = 0; i < response.data.length; i++) {
             // Save first and last point
             if (i == 0) vm.weekly.last = response.data[i].amount;
@@ -1286,8 +1272,6 @@ export default {
           // Update chart data
           var newCategories = [];
           var newData = [];
-
-          //console.log(response.data);
 
           for (var i = 0; i < response.data.length; i++) {
             // Save first and last point

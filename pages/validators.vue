@@ -758,9 +758,8 @@ export default {
     }
   },
   watch: {
-    favorites: function(val) {
-      console.log(val);
-      this.$cookies.set("favorites", val, {
+    favorites: function(favorites) {
+      this.$cookies.set("favorites", favorites, {
         path: "/",
         maxAge: 60 * 60 * 24 * 7
       });
@@ -840,7 +839,6 @@ export default {
       this.perPage = num;
     },
     toggleFavorite(accountId) {
-      console.log(this.favorites.indexOf(accountId));
       if (this.favorites.indexOf(accountId) !== -1) {
         this.favorites.splice(this.favorites.indexOf(accountId), 1);
       } else {
@@ -882,7 +880,6 @@ export default {
           return obj.accountId === stashId;
         }
       );
-      // console.log(filteredArray[0]);
       return filteredArray[0].identity;
     },
     onFiltered(filteredItems) {

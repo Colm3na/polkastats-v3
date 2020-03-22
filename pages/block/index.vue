@@ -290,7 +290,6 @@ export default {
         this.parsedEvents = {
           ...data.event
         };
-        console.log(this.parsedEvents);
       }
     }
   },
