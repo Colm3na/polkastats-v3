@@ -651,10 +651,10 @@ export default {
     // Force update of network info
     vm.$store.dispatch("network/update");
 
-    // Force update of validators list if empty
-    if (this.$store.state.validators.list.length === 0) {
-      vm.$store.dispatch("validators/update");
-    }
+    // Initialize validators list
+    vm.$store.dispatch("validators/update");
+
+    // Get the numbers of Rows
     this.totalRows = this.$store.state.validators.list.length;
 
     // Force update of intentions list if empty

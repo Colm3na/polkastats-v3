@@ -487,6 +487,7 @@ import {
   numItemsTableValidatorOptions
 } from "../polkastats.config.js";
 import commonMixin from "../mixins/commonMixin.js";
+import gql from "graphql-tag";
 
 export default {
   components: {
@@ -779,10 +780,10 @@ export default {
     // Force update of network info
     vm.$store.dispatch("network/update");
 
-    // Force update of validators list if empty
-    if (this.$store.state.validators.list.length === 0) {
-      vm.$store.dispatch("validators/update");
-    }
+    // Initialize validators table
+    vm.$store.dispatch("validators/update");
+
+    // Get the numbers of Rows
     this.totalRows = this.$store.state.validators.list.length;
 
     // Force update of intentions list if empty
