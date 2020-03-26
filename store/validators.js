@@ -1,7 +1,6 @@
-import axios from "axios";
 import BN from "bn.js";
 import { isHex } from "@polkadot/util";
-import { backendBaseURL } from "../polkastats.config.js";
+import gql from "graphql-tag";
 
 export const state = () => ({
   list: [],
@@ -64,10 +63,27 @@ export const mutations = {
   }
 };
 
+const GET_VALIDATORS = gql`
+  query validator_staking {
+    validator_staking(limit: 1, order_by: { timestamp: desc }) {
+      json
+    }
+  }
+`;
+
 export const actions = {
-  update(context) {
-    axios.get(`${backendBaseURL}/validators`).then(function(response) {
-      context.commit("update", response.data);
-    });
+  update({ commit }) {
+    const client = this.app.apolloProvider.defaultClient;
+    client
+      .query({
+        query: GET_VALIDATORS
+      })
+      .then(({ data }) => {
+        const validators = JSON.parse(data.validator_staking[0].json);
+        commit("update", validators);
+      })
+      .catch(error => {
+        console.log("Error fetching Validator table: ", error);
+      });
   }
 };
