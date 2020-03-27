@@ -1,5 +1,4 @@
-import axios from "axios";
-import { backendBaseURL } from "../polkastats.config.js";
+import gql from "graphql-tag";
 
 export const state = () => ({
   list: []
@@ -18,10 +17,27 @@ export const mutations = {
   }
 };
 
+const GET_INTENTIONS = gql`
+  query intention_staking {
+    intention_staking(limit: 1, order_by: { timestamp: desc }) {
+      json
+    }
+  }
+`;
+
 export const actions = {
   update(context) {
-    axios.get(`${backendBaseURL}/intentions`).then(function(response) {
-      context.commit("update", response.data);
-    });
+    const client = this.app.apolloProvider.defaultClient;
+    client
+      .query({
+        query: GET_INTENTIONS
+      })
+      .then(({ data }) => {
+        const intentions = JSON.parse(data.intention_staking[0].json);
+        context.commit("update", intentions);
+      })
+      .catch(error => {
+        console.log("Error fetching Intention table: ", error);
+      });
   }
 };
