@@ -42,11 +42,11 @@ export default {
       default() {
         return [];
       },
-      required: true
+      required: false
     },
     custom: {
       type: Boolean,
-      default: false,
+      default: true,
       required: false
     },
     id: {
@@ -123,10 +123,19 @@ export default {
           }
         }
       };
-      const options = this.options;
+
+      const customizedOptions = {
+        ...propsOptions,
+        responsive: [
+          {
+            ...propsOptions
+          }
+        ]
+      };
+
       const opt = mergeDeepRight(
         defaultOptions,
-        mergeDeepRight(propsOptions, this.options)
+        mergeDeepRight(customizedOptions, this.options)
       );
       return opt;
     }

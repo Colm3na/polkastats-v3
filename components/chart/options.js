@@ -1,7 +1,19 @@
+import animations from "./animations";
+import chart from "./chart";
 import xaxis from "./xaxis";
 import yaxis from "./yaxis";
+import mergeDeepRight from "ramda/src/mergeDeepRight";
 
-const options = {
+const mobile = {
+  labels: {
+    maxWidth: 90,
+    style: {
+      fontSize: "8px"
+    }
+  }
+};
+
+const customizations = {
   title: {
     align: "center",
     margin: 10,
@@ -16,45 +28,38 @@ const options = {
     }
   },
   colors: ["#d75ea1"],
+  dataLabels: {
+    enabled: false
+  },
+  stroke: {
+    curve: "straight"
+  },
   grid: {
-    row: {
-      colors: ["#f3f3f3", "transparent"],
-      opacity: 0.5
-    }
+    colors: ["#f3f3f3", "transparent"],
+    opacity: 0.5
   },
-  animations: {
-    enabled: true,
-    easing: "easeinout",
-    speed: 800,
-    animateGradually: {
-      enabled: true,
-      delay: 150
-    },
-    dynamicAnimation: {
-      enabled: true,
-      speed: 350
-    }
-  },
-  chart: {
-    toolbar: {
-      show: true,
-      offsetX: 0,
-      offsetY: 0,
-      tools: {
-        download: true,
-        selection: true,
-        zoom: true,
-        zoomin: true,
-        zoomout: true,
-        pan: true,
-        reset: true,
-        customIcons: []
-      },
-      autoSelected: "zoom"
-    }
-  },
+  markers: {
+    size: 6
+  }
+};
+
+const options = {
+  ...customizations,
+  chart: chart,
   xaxis,
-  yaxis
+  yaxis,
+  responsive: [
+    {
+      breakpoint: 415,
+      options: {
+        ...customizations,
+        animations: animations,
+        chart: chart,
+        xaxis: mergeDeepRight(xaxis, mobile),
+        yaxis: mergeDeepRight(yaxis, mobile)
+      }
+    }
+  ]
 };
 
 export default options;

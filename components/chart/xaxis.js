@@ -57,7 +57,7 @@ const xaxis = {
     offsetX: 0,
     offsetY: 0,
     style: {
-      color: undefined,
+      color: "#000",
       fontSize: "12px",
       fontFamily: "Roboto, sans-serif",
       fontWeight: 600,
