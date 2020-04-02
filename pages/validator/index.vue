@@ -703,44 +703,12 @@ import { mapMutations } from "vuex";
 import axios from "axios";
 import moment from "moment";
 import chart from "../../components/chart";
+import { commonChartOptions } from "../commons/chartOptions";
 import Identicon from "../../components/identicon.vue";
 import { isHex } from "@polkadot/util";
 import BN from "bn.js";
 import { backendBaseURL, blockExplorer } from "../../polkastats.config.js";
 import commonMixin from "../../mixins/commonMixin.js";
-
-const commonChartOptions = {
-  chart: {
-    zoom: {
-      enabled: false
-    }
-  },
-  xaxis: {
-    categories: [],
-    type: "datetime",
-    title: {
-      text: "Date / time (UTC)"
-    },
-    labels: {
-      formatter: function(val) {
-        return moment.unix(val).format("MM/DD/YYYY HH:mm");
-      }
-    },
-    tooltip: {
-      enabled: false
-    }
-  },
-  yaxis: {
-    title: {
-      text: "Total bonded (KSM)"
-    },
-    labels: {
-      formatter: function(val) {
-        return val;
-      }
-    }
-  }
-};
 
 export default {
   components: {
