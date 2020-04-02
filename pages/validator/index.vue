@@ -647,7 +647,6 @@
           <chart
             :options="StakeEvolutionMonthlyChartOptions"
             :series="StakeEvolutionMonthlySeries"
-            custom
           />
         </div>
         <div id="stake-evolution-weekly-chart" class="mt-5 mb-5 text-center">
@@ -669,7 +668,6 @@
           <chart
             :options="StakeEvolutionWeeklyChartOptions"
             :series="StakeEvolutionWeeklySeries"
-            custom
           />
         </div>
         <div id="stake-evolution-daily-chart" class="mb-5 text-center">
@@ -691,7 +689,6 @@
           <chart
             :options="StakeEvolutionDailyChartOptions"
             :series="StakeEvolutionDailySeries"
-            custom
           />
         </div>
       </b-container>

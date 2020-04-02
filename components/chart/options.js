@@ -45,7 +45,8 @@ const customizations = {
 
 const options = {
   ...customizations,
-  chart: chart,
+  animations,
+  chart,
   xaxis,
   yaxis,
   responsive: [
@@ -53,8 +54,8 @@ const options = {
       breakpoint: 415,
       options: {
         ...customizations,
-        animations: animations,
-        chart: chart,
+        animations,
+        chart,
         xaxis: mergeDeepRight(xaxis, mobile),
         yaxis: mergeDeepRight(yaxis, mobile)
       }

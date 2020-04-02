@@ -390,7 +390,6 @@
 import { mapMutations } from "vuex";
 import axios from "axios";
 import moment from "moment";
-import VueApexCharts from "vue-apexcharts";
 import Identicon from "../../components/identicon.vue";
 import { isHex } from "@polkadot/util";
 import BN from "bn.js";
@@ -399,7 +398,6 @@ import commonMixin from "../../mixins/commonMixin.js";
 
 export default {
   components: {
-    // apexchart: VueApexCharts,
     // Identicon
   },
   mixins: [commonMixin],
