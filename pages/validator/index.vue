@@ -644,9 +644,7 @@
               {{ formatAmount(monthly.last - monthly.first) }}</small
             >
           </h3>
-          <apexchart
-            type="line"
-            height="350"
+          <chart
             :options="StakeEvolutionMonthlyChartOptions"
             :series="StakeEvolutionMonthlySeries"
           />
@@ -667,9 +665,7 @@
               {{ formatAmount(weekly.last - weekly.first) }}</small
             >
           </h3>
-          <apexchart
-            type="line"
-            height="350"
+          <chart
             :options="StakeEvolutionWeeklyChartOptions"
             :series="StakeEvolutionWeeklySeries"
           />
@@ -690,9 +686,7 @@
               {{ formatAmount(daily.last - daily.first) }}</small
             >
           </h3>
-          <apexchart
-            type="line"
-            height="350"
+          <chart
             :options="StakeEvolutionDailyChartOptions"
             :series="StakeEvolutionDailySeries"
           />
@@ -705,7 +699,8 @@
 import { mapMutations } from "vuex";
 import axios from "axios";
 import moment from "moment";
-import VueApexCharts from "vue-apexcharts";
+import chart from "../../components/chart";
+import { commonChartOptions } from "../commons/chartOptions";
 import Identicon from "../../components/identicon.vue";
 import { isHex } from "@polkadot/util";
 import BN from "bn.js";
@@ -714,7 +709,7 @@ import commonMixin from "../../mixins/commonMixin.js";
 
 export default {
   components: {
-    apexchart: VueApexCharts,
+    chart,
     Identicon
   },
   mixins: [commonMixin],
@@ -785,154 +780,13 @@ export default {
         }
       ],
       StakeEvolutionDailyChartOptions: {
-        chart: {
-          height: 500,
-          stacked: false,
-          zoom: {
-            enabled: false
-          }
-        },
-        dataLabels: {
-          enabled: false
-        },
-        stroke: {
-          curve: "straight"
-        },
-        markers: {
-          size: 6
-        },
-        colors: ["#d75ea1"],
-        grid: {
-          row: {
-            colors: ["#f3f3f3", "transparent"], // takes an array which will be repeated on columns
-            opacity: 0.5
-          }
-        },
-        xaxis: {
-          categories: [],
-          type: "datetime",
-          title: {
-            text: "Date / time (UTC)"
-          },
-          labels: {
-            formatter: function(val) {
-              return moment.unix(val).format("MM/DD/YYYY HH:mm");
-            }
-          },
-          tooltip: {
-            enabled: false
-          }
-        },
-        yaxis: {
-          title: {
-            text: "Total bonded (KSM)"
-          },
-          labels: {
-            formatter: function(val) {
-              return val;
-            }
-          }
-        }
+        ...commonChartOptions
       },
       StakeEvolutionWeeklyChartOptions: {
-        chart: {
-          height: 500,
-          stacked: false,
-          zoom: {
-            enabled: false
-          }
-        },
-        dataLabels: {
-          enabled: false
-        },
-        stroke: {
-          curve: "straight"
-        },
-        markers: {
-          size: 6
-        },
-        colors: ["#d75ea1"],
-        grid: {
-          row: {
-            colors: ["#f3f3f3", "transparent"], // takes an array which will be repeated on columns
-            opacity: 0.5
-          }
-        },
-        xaxis: {
-          categories: [],
-          type: "datetime",
-          title: {
-            text: "Date / time (UTC)"
-          },
-          labels: {
-            formatter: function(val) {
-              return moment.unix(val).format("MM/DD/YYYY HH:mm");
-            }
-          },
-          tooltip: {
-            enabled: false
-          }
-        },
-        yaxis: {
-          title: {
-            text: "Total bonded (KSM)"
-          },
-          labels: {
-            formatter: function(val) {
-              return val;
-            }
-          }
-        }
+        ...commonChartOptions
       },
       StakeEvolutionMonthlyChartOptions: {
-        chart: {
-          height: 500,
-          stacked: false,
-          zoom: {
-            enabled: false
-          }
-        },
-        dataLabels: {
-          enabled: false
-        },
-        stroke: {
-          curve: "straight"
-        },
-        markers: {
-          size: 6
-        },
-        colors: ["#d75ea1"],
-        grid: {
-          row: {
-            colors: ["#f3f3f3", "transparent"], // takes an array which will be repeated on columns
-            opacity: 0.5
-          }
-        },
-        xaxis: {
-          categories: [],
-          type: "datetime",
-          title: {
-            text: "Date / time (UTC)"
-          },
-          labels: {
-            formatter: function(val) {
-              return moment.unix(val).format("MM/DD/YYYY HH:mm");
-            }
-          },
-          tooltip: {
-            enabled: false
-          }
-        },
-        yaxis: {
-          title: {
-            text: "Total bonded (KSM)"
-          },
-          labels: {
-            formatter: function(val) {
-              return val;
-            }
-          }
-        }
+        ...commonChartOptions
       },
       totalIssuance: ""
     };
