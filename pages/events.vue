@@ -74,14 +74,14 @@
             :filter-included-fields="filterOn"
             @filtered="onFiltered"
           >
-            <template slot="blockNumber" slot-scope="data">
+            <template slot="block_number" slot-scope="data">
               <p class="text-right mb-0">
-                {{ formatNumber(data.item.blockNumber) }}
+                {{ formatNumber(data.item.block_number) }}
               </p>
             </template>
-            <template slot="eventIndex" slot-scope="data">
+            <template slot="event_index" slot-scope="data">
               <p class="text-right mb-0">
-                {{ data.item.eventIndex }}
+                {{ data.item.event_index }}
               </p>
             </template>
             <template slot="section" slot-scope="data">
@@ -128,20 +128,20 @@ export default {
     return {
       perPage: 10,
       currentPage: 1,
-      sortBy: `blockNumber`,
+      sortBy: `block_number`,
       sortDesc: true,
       filter: null,
       filterOn: [],
       totalRows: 1,
       fields: [
         {
-          key: "blockNumber",
+          key: "block_number",
           label: "Block",
           sortable: true,
           class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
         },
         {
-          key: "eventIndex",
+          key: "event_index",
           label: "Index",
           sortable: true,
           filterByFormatted: true
