@@ -306,7 +306,6 @@ import { mapMutations } from "vuex";
 export default {
   computed: {
     system() {
-      console.log("T: ", this.$t);
       return this.$store.state.system.info;
     }
   },
