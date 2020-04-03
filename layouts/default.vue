@@ -5,8 +5,9 @@
         <div class="container">
           <div id="top-bar">
             <p class="network" data-testid="network">
-              <i class="fas fa-project-diagram" /> {{ system.chain }} using
-              polkadot v{{ system.client_version }}
+              <i class="fas fa-project-diagram" /> {{ system.chain }}
+              {{ $t("layout.default.system_message")
+              }}{{ system.client_version }}
             </p>
           </div>
           <b-navbar toggleable="xl" type="dark" class="row" data-testid="menu">
@@ -34,7 +35,7 @@
                     class="nav-link"
                     data-testid="menu-validators"
                   >
-                    Validators
+                    {{ $t("layout.default.validators") }}
                   </nuxt-link>
                 </b-nav-item>
                 <b-nav-item>
@@ -44,7 +45,7 @@
                     class="nav-link"
                     data-testid="menu-intentions"
                   >
-                    Intentions
+                    {{ $t("layout.default.intentions") }}
                   </nuxt-link>
                 </b-nav-item>
                 <b-nav-item>
@@ -54,7 +55,7 @@
                     class="nav-link"
                     data-testid="menu-favorites"
                   >
-                    Favorites
+                    {{ $t("layout.default.favorites") }}
                   </nuxt-link>
                 </b-nav-item>
                 <b-nav-item>
@@ -64,7 +65,7 @@
                     class="nav-link"
                     data-testid="menu-phragmen"
                   >
-                    Phragmen
+                    {{ $t("layout.default.phragmen") }}
                   </nuxt-link>
                 </b-nav-item>
                 <b-nav-item>
@@ -74,7 +75,7 @@
                     class="nav-link"
                     data-testid="menu-nominators"
                   >
-                    Nominators
+                    {{ $t("layout.default.nominators") }}
                   </nuxt-link>
                 </b-nav-item>
                 <b-nav-item>
@@ -84,7 +85,7 @@
                     class="nav-link"
                     data-testid="menu-accounts"
                   >
-                    Accounts
+                    {{ $t("layout.default.account") }}
                   </nuxt-link>
                 </b-nav-item>
               </b-navbar-nav>
@@ -110,7 +111,7 @@
             data-testid="footer-getInContact"
           >
             <h3 class="mb-3">
-              Get in contact
+              {{ $t("layout.default.get_in_contact") }}
             </h3>
             <hr />
             <ul class="list-unstyled list-inline social text-center">
@@ -145,7 +146,7 @@
               class="nav-link"
               data-testid="aboutUs"
             >
-              About us
+              {{ $t("layout.default.about_us") }}
             </nuxt-link>
             <nuxt-link
               to="/support-us"
@@ -153,7 +154,7 @@
               class="nav-link"
               data-testid="supportPolkastats"
             >
-              Support PolkaStats
+              {{ $t("layout.default.support_polkastats") }}
             </nuxt-link>
             <nuxt-link
               to="/for-validators"
@@ -161,7 +162,7 @@
               class="nav-link"
               data-testid="howToIncludeValidators"
             >
-              How to include your validator info
+              {{ $t("layout.default.how_to") }}
             </nuxt-link>
           </div>
           <div
@@ -169,7 +170,7 @@
             data-testid="footer-builtFor"
           >
             <h3 class="mb-3">
-              Built for
+              {{ $t("layout.default.built_for") }}
             </h3>
             <hr />
             <a
@@ -185,7 +186,7 @@
               />
             </a>
             <p class="mt-4" data-testid="">
-              <small>the wild cousin of</small>
+              <small>{{ $t("layout.default.the_wild_cousin_of") }}</small>
             </p>
             <a
               href="https://polkadot.network"
@@ -205,14 +206,16 @@
           class="small pt-4 text-center text-white"
           data-testid="footer-bottom"
         >
-          Made with <i class="far fa-heart" /> by
+          {{ $t("layout.default.made_with") }}
+          <i class="far fa-heart" />
+          {{ $t("layout.default.by") }}
           <a
             href="https://mariopino.es"
             title="Mario Pino"
             data-testid="marioLink"
             >Mario Pino</a
           >
-          in
+          {{ $t("layout.default.in") }}
           <a
             target="_blank"
             href="https://colmenalabs.org"
@@ -220,7 +223,7 @@
             data-testid="laColmena"
             >La Colmena</a
           >
-          <span class="mx-2">|</span> Built with
+          <span class="mx-2">|</span> {{ $t("layout.default.built_with") }}
           <a
             href="https://basicattentiontoken.org/"
             target="_blank"
@@ -235,7 +238,9 @@
             title="View source code on GitHub"
             target="_blank"
             data-testid="github"
-            ><i class="fab fa-github" /> View source code on GitHub</a
+            ><i class="fab fa-github" />{{
+              $t("layout.default.view_source_code_on_github")
+            }}</a
           >
         </p>
       </div>
@@ -297,9 +302,11 @@
 </template>
 <script>
 import { mapMutations } from "vuex";
+
 export default {
   computed: {
     system() {
+      console.log("T: ", this.$t);
       return this.$store.state.system.info;
     }
   },

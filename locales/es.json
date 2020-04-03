@@ -1,0 +1,34 @@
+{
+  "components": {},
+  "layout": {
+    "default": {
+      "system_message": "usando polkadot v",
+      "validators": "Validadores",
+      "intentions": "Intenciones",
+      "favorites": "Favoritos",
+      "phragmen": "Phragmen",
+      "nominators": "Nominadores",
+      "account": "Cuentas",
+      "get_in_contact": "Contacta",
+      "about_us": "Sobre nosotros",
+      "support_polkastats": "Apoya Polkastats",
+      "how_to": "Cómo incluir la información de tu validador",
+      "built_for": "Hecho para",
+      "the_wild_cousin_of": "the wild cousin of",
+      "made_with": "Hecho con",
+      "by": "por",
+      "in": "en",
+      "built_with": "Hecho con",
+      "view_source_code_on_github": "Ver código fuente en GitHub"
+    }
+  },
+  "pages": {
+    "home": {},
+    "validators": {},
+    "intentions": {},
+    "favorites": {},
+    "phragmen": {},
+    "nominators": {},
+    "accounts": {}
+  }
+}
