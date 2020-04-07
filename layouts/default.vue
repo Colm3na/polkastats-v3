@@ -243,9 +243,8 @@
             title="View source code on GitHub"
             target="_blank"
             data-testid="github"
-            ><i class="fab fa-github" />{{
-              $t("layout.default.view_source_code_on_github")
-            }}</a
+            ><i class="fab fa-github" />
+            {{ $t("layout.default.view_source_code_on_github") }}</a
           >
         </p>
       </div>
