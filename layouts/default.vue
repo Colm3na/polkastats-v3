@@ -4,11 +4,16 @@
       <div class="nav-bg-color fixed-top">
         <div class="container">
           <div id="top-bar">
-            <p class="network" data-testid="network">
-              <i class="fas fa-project-diagram" /> {{ system.chain }}
-              {{ $t("layout.default.system_message")
-              }}{{ system.client_version }}
-            </p>
+            <div>
+              <span class="network" data-testid="network">
+                <i class="fas fa-project-diagram" /> {{ system.chain }}
+                {{ $t("layout.default.system_message")
+                }}{{ system.client_version }}
+              </span>
+            </div>
+            <div>
+              <languages />
+            </div>
           </div>
           <b-navbar toggleable="xl" type="dark" class="row" data-testid="menu">
             <b-navbar-brand>
@@ -302,8 +307,10 @@
 </template>
 <script>
 import { mapMutations } from "vuex";
+import languages from "../components/languages";
 
 export default {
+  components: { languages },
   computed: {
     system() {
       return this.$store.state.system.info;
@@ -408,11 +415,14 @@ section#navigation nav {
 
 #top-bar {
   padding: 0.5rem 0 0 0;
+  display: flex;
+  flex: 1;
+  justify-content: flex-end;
+  align-items: center;
 }
 
-#top-bar p {
+#top-bar span {
   text-align: right;
-  margin-bottom: 0;
   color: hsla(0, 0%, 100%, 0.7);
 }
 
@@ -431,6 +441,10 @@ section#navigation nav {
 
 #top-bar .network {
   color: #ef1073;
+}
+
+.btn-group {
+  margin-bottom: 0;
 }
 
 /* Nav bar */
