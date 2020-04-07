@@ -1,5 +1,20 @@
 {
-  "components": {},
+  "components": {
+    "identicon": {
+      "copy_address": "Copy address ",
+      "to_clipboard": " to clipboard",
+      "address": "Address ",
+      "copied_to_the_clipboard": " copied to the clipboard"
+    },
+    "network": {
+      "last_block": "Last block",
+      "validator_count": "Validator count",
+      "current_session": "Current session",
+      "epoch": "Epoch",
+      "current_era": "Current era",
+      "era": "Era"
+    }
+  },
   "layout": {
     "default": {
       "system_message": "using polkadot v",

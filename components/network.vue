@@ -17,7 +17,7 @@
     <div class="col-6 col-md-4 col-xl-2 mb-4">
       <div class="card" data-testid="lastBlock">
         <div class="card-body">
-          <p>Last block</p>
+          <p>{{ $t("components.network.last_block") }}</p>
           <Identicon
             :key="lastBlock.block_author"
             :value="lastBlock.block_author"
@@ -40,7 +40,7 @@
     <div class="col-6 col-md-4 col-xl-2 mb-4">
       <div class="card" data-testid="lastFinalized">
         <div class="card-body">
-          <p>Validator count</p>
+          <p>{{ $t("components.network.validator_count") }}</p>
           <h5>
             {{ formatNumber(lastBlock.validator_count) }}
           </h5>
@@ -50,7 +50,7 @@
     <div class="col-6 col-md-4 col-xl-2 mb-4">
       <div class="card" data-testid="currentSession">
         <div class="card-body">
-          <p>Current session</p>
+          <p>{{ $t("components.network.current_session") }}</p>
           <h5>
             {{ formatNumber(lastBlock.current_index) }}
           </h5>
@@ -60,7 +60,7 @@
     <div class="col-6 col-md-4 col-xl-2 mb-4">
       <div class="card" data-testid="epoch">
         <div class="card-body">
-          <p>Epoch</p>
+          <p>{{ $t("components.network.epoch") }}</p>
           <h5>
             {{ formatNumber(lastBlock.session_progress) }}/{{
               formatNumber(lastBlock.session_length)
@@ -72,7 +72,7 @@
     <div class="col-6 col-md-4 col-xl-2 mb-4">
       <div class="card" data-testid="currentEra">
         <div class="card-body">
-          <p>Current era</p>
+          <p>{{ $t("components.network.current_era") }}</p>
           <h5>
             {{ formatNumber(lastBlock.current_era) }}
           </h5>
@@ -82,7 +82,7 @@
     <div class="col-6 col-md-4 col-xl-2 mb-4">
       <div class="card" data-testid="era">
         <div class="card-body">
-          <p>Era</p>
+          <p>{{ $t("components.network.era") }}</p>
           <h5>
             {{ formatNumber(lastBlock.era_progress) }}/{{
               formatNumber(lastBlock.era_length)
