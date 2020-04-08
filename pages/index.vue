@@ -546,11 +546,7 @@ export default {
       ],
       blockExplorer,
       favorites: [],
-      polling: null,
-      text: {
-        searchPlaceholder: this.$t("pages.index.search_placeholder"),
-        sort: this.$t("pages.index.sort")
-      }
+      polling: null
     };
   },
   computed: {

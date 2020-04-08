@@ -41,13 +41,13 @@
                 v-if="validator.currentElected"
                 v-b-tooltip.hover
                 class="elected fas fa-chevron-circle-right"
-                :title="validatorCurrentElected"
+                :title="$t('pages.favorites.elected_for_next_session')"
               />
               <i
                 v-else
                 v-b-tooltip.hover
                 class="notElected fas fa-times-circle"
-                :title="validatorCurrentNotElected"
+                :title="$t('pages.favorites.not_elected_for_next_session')"
               />
               <a class="favorite" @click="toggleFavorite(validator.accountId)">
                 <i
@@ -55,14 +55,14 @@
                   v-b-tooltip.hover
                   class="fas fa-star"
                   style="color: #f1bd23"
-                  title="validatorUnsetAsFavorite"
+                  :title="$t('pages.favorites.unset_as_favorite')"
                 />
                 <i
                   v-else
                   v-b-tooltip.hover
                   class="fas fa-star"
                   style="color: #e6dfdf;"
-                  title="validatorSetAsFavorite"
+                  :title="$t('pages.favorites.set_as_favorite')"
                 />
               </a>
               <div class="card-body">
@@ -110,18 +110,18 @@
                       />
                     </div>
                     <p class="mt-3 mb-0 rank">
-                      {{ rank }} #{{ index + 1 }}
+                      {{ $t("pages.favorites.rank") }} #{{ index + 1 }}
                       <i
                         v-b-tooltip.hover
                         class="fas fa-shield-alt"
-                        title="activeValidator"
+                        :title="$t('pages.favorites.active_validator')"
                       />
                     </p>
                     <p
                       v-if="validator.exposure.total > 0"
                       v-b-tooltip.hover
                       class="bonded mb-0"
-                      title="totalBonded"
+                      :title="$t('pages.favorites.total_bonded')"
                     >
                       {{ formatAmount(validator.exposure.total) }}
                     </p>
@@ -129,7 +129,7 @@
                       v-else
                       v-b-tooltip.hover
                       class="bonded mb-0"
-                      title="totalBonded"
+                      :title="$t('pages.favorites.total_bonded')"
                     >
                       {{ formatAmount(validator.stakingLedger.total) }}
                     </p>
@@ -138,7 +138,7 @@
                         <span
                           v-if="validator.exposure.own > 0"
                           v-b-tooltip.hover
-                          title="selfBonded"
+                          :title="$t('pages.favorites.self_bonded')"
                           >{{ formatAmount(validator.exposure.own) }}</span
                         >
                         <span
@@ -147,7 +147,7 @@
                               0
                           "
                           v-b-tooltip.hover
-                          title="bondedByNominators"
+                          :title="$t('pages.favorites.bonded_by_nominators')"
                           >(+{{
                             formatAmount(
                               validator.exposure.total - validator.exposure.own
@@ -159,17 +159,20 @@
                     <p
                       v-b-tooltip.hover
                       class="mb-0"
-                      title="percentageOverTotalBS"
+                      :title="
+                        $t('pages.favorites.percentage_over_total_bonded_stake')
+                      "
                     >
                       {{
                         getStakePercent(
                           validator.exposure.total,
                           totalStakeBonded
                         )
-                      }}% {{ ofTotalStake }}
+                      }}% {{ $t("pages.favorites.of_total_stake") }}
                     </p>
                     <p v-if="validator.currentEraPointsEarned" class="mb-0">
-                      {{ validator.currentEraPointsEarned }} {{ eraPoints }}
+                      {{ validator.currentEraPointsEarned }}
+                      {{ $t("pages.favorites.era_points") }}
                     </p>
                   </div>
                   <div class="col-md-9">
@@ -181,7 +184,7 @@
                           name: 'validator',
                           query: { accountId: validator.accountId }
                         }"
-                        title="validatorDetails"
+                        title="$t('pages.favorites.validator_details')"
                       >
                         <span v-if="hasIdentity(validator.accountId)">
                           {{ getIdentity(validator.accountId).full_name }}
@@ -198,7 +201,7 @@
                     </h4>
                     <div v-if="validator.stashId" class="row">
                       <div class="col-md-3 mb-1">
-                        <strong>{{ stash }}</strong>
+                        <strong>{{ $t("pages.favorites.stash") }}</strong>
                       </div>
                       <div class="col-md-9 mb-1">
                         <Identicon
@@ -226,7 +229,7 @@
                     </div>
                     <div v-if="validator.controllerId" class="row">
                       <div class="col-md-3 mb-1">
-                        <strong>{{ controller }}</strong>
+                        <strong>{{ $t("pages.favorites.controller") }}</strong>
                       </div>
                       <div class="col-md-9 mb-1">
                         <Identicon
@@ -254,7 +257,7 @@
                     </div>
                     <div v-if="validator.sessionIdHex" class="row">
                       <div class="col-md-3 mb-1">
-                        <strong>{{ sessionId }}</strong>
+                        <strong>{{ $t("pages.favorites.session_id") }}</strong>
                       </div>
                       <div
                         :id="'val-session-id-info-' + index"
@@ -282,7 +285,9 @@
                     </div>
                     <div v-if="validator.nextSessionIdHex" class="row">
                       <div class="col-md-3 mb-1">
-                        <strong>{{ nextSessionId }}</strong>
+                        <strong>{{
+                          $t("pages.favorites.next_session_id")
+                        }}</strong>
                       </div>
                       <div
                         :id="'val-next-session-id-info-' + index"
@@ -310,7 +315,7 @@
                     </div>
                     <div v-if="validator.validatorPrefs.commission" class="row">
                       <div class="col-md-3 mb-1">
-                        <strong>{{ commission }}n</strong>
+                        <strong>{{ $t("pages.favorites.commission") }}n</strong>
                       </div>
                       <div class="col-md-9 mb-1 fee">
                         {{
@@ -322,7 +327,9 @@
                     </div>
                     <div class="row mb-2">
                       <div class="col-md-3 mb-1">
-                        <strong>{{ rewardDestination }}</strong>
+                        <strong>{{
+                          $t("pages.favorites.reward_destination")
+                        }}</strong>
                       </div>
                       <div class="col-md-9 mb-1 fee">
                         {{ formatRewardDest(validator.rewardDestination) }}
@@ -343,7 +350,7 @@
                               <i class="fas mr-1" />{{
                                 validator.exposure.others.length
                               }}
-                              {{ nominators }}
+                              {{ $t("pages.favorites.nominators") }}
                             </h6>
                           </a>
                         </template>
@@ -409,14 +416,14 @@
                   v-b-tooltip.hover
                   class="fas fa-star"
                   style="color: #f1bd23"
-                  title="validatorUnsetAsFavoritee"
+                  :title="$t('pages.favorites.unset_as_favorite')"
                 />
                 <i
                   v-else
                   v-b-tooltip.hover
                   class="fas fa-star"
                   style="color: #e6dfdf;"
-                  title="validatorSetAsFavorite"
+                  :title="$t('pages.favorites.set_as_favorite')"
                 />
               </a>
               <div class="card-body">
@@ -462,18 +469,18 @@
                       />
                     </div>
                     <p class="mt-3 mb-0 rank">
-                      {{ rank }} #{{ index + 1 }}
+                      {{ $t("pages.favorites.rank") }} #{{ index + 1 }}
                       <i
                         v-b-tooltip.hover
                         class="fas fa-exclamation-triangle"
-                        title="intention"
+                        :title="$t('pages.favorites.intention')"
                       />
                     </p>
                     <template v-if="validator.stakingLedger">
                       <p
                         v-b-tooltip.hover
                         class="bonded mb-0"
-                        title="activeBonded"
+                        :title="$t('pages.favorites.active_bonded')"
                       >
                         {{ formatAmount(validator.stakingLedger.active) }}
                       </p>
@@ -495,7 +502,7 @@
                           name: 'intention',
                           query: { accountId: validator.accountId }
                         }"
-                        title="validatorDetails"
+                        title="$t('pages.favorites.validator_details')"
                       >
                         <span v-if="hasIdentity(validator.accountId)">
                           {{ getIdentity(validator.accountId).full_name }}
@@ -512,7 +519,7 @@
                     </h4>
                     <div v-if="validator.stashId" class="row">
                       <div class="col-md-3 mb-1">
-                        <strong>{{ stash }}</strong>
+                        <strong>{{ $t("pages.favorites.stash") }}</strong>
                       </div>
                       <div class="col-md-9 mb-1">
                         <Identicon
@@ -540,7 +547,7 @@
                     </div>
                     <div v-if="validator.controllerId" class="row">
                       <div class="col-md-3 mb-1">
-                        <strong>{{ controller }}</strong>
+                        <strong>{{ $t("pages.favorites.controller") }}</strong>
                       </div>
                       <div class="col-md-9 mb-1">
                         <Identicon
@@ -568,7 +575,7 @@
                     </div>
                     <div v-if="validator.sessionIdHex" class="row">
                       <div class="col-md-3 mb-1">
-                        <strong>{{ sessionId }}</strong>
+                        <strong>{{ $t("pages.favorites.session_id") }}</strong>
                       </div>
                       <div
                         :id="'int-session-id-info-' + index"
@@ -596,7 +603,9 @@
                     </div>
                     <div v-if="validator.nextSessionIdHex" class="row">
                       <div class="col-md-3 mb-1">
-                        <strong>{{ nextSessionId }}</strong>
+                        <strong>{{
+                          $t("pages.favorites.next_session_id")
+                        }}</strong>
                       </div>
                       <div
                         :id="'int-next-session-id-info-' + index"
@@ -624,7 +633,7 @@
                     </div>
                     <div v-if="validator.validatorPrefs.commission" class="row">
                       <div class="col-md-3 mb-1">
-                        <strong>{{ commission }}</strong>
+                        <strong>{{ $t("pages.favorites.commission") }}</strong>
                       </div>
                       <div class="col-md-9 mb-1 fee">
                         {{
@@ -636,7 +645,9 @@
                     </div>
                     <div class="row mb-2">
                       <div class="col-md-3 mb-1">
-                        <strong>{{ rewardDestination }}</strong>
+                        <strong>{{
+                          $t("pages.favorites.reward_destination")
+                        }}</strong>
                       </div>
                       <div class="col-md-9 mb-1 fee">
                         {{ formatRewardDest(validator.rewardDestination) }}
@@ -656,7 +667,7 @@
                             <i class="fas mr-1" />{{
                               validator.exposure.others.length
                             }}
-                            {{ nominators }}
+                            {{ $t("pages.favorites.nominators") }}
                           </h6>
                         </a>
                       </template>
@@ -732,36 +743,7 @@ export default {
       blockExplorer,
       favorites: [],
       polling: null,
-      validatorCurrentElected: this.$t(
-        "pages.favorites.elected_for_next_session"
-      ),
-      validatorCurrentNotElected: this.$t(
-        "pages.favorites.not_elected_for_next_session"
-      ),
-      validatorUnsetAsFavorite: this.$t("pages.favorites.unset_as_favorite"),
-      validatorSetAsFavorite: this.$t("pages.favorites.set_as_favorite"),
-      rank: this.$t("pages.favorites.rank"),
-      activeValidator: this.$t("pages.favorites.active_validator"),
-      totalBonded: this.$t("pages.favorites.total_bonded"),
-      selfBonded: this.$t("pages.favorites.self_bonded"),
-      activeBonded: this.$t("pages.favorites.active_bonded"),
-      bondedByNominators: this.$t("pages.favorites.bonded_by_nominators"),
-      percentageOverTotalBS: this.$t(
-        "pages.favorites.percentage_over_total_bonded_stake"
-      ),
-      ofTotalStake: this.$t("pages.favorites.of_total_stake"),
-      eraPoints: this.$t("pages.favorites.era_points"),
-      validatorDetails: this.$t("pages.favorites.validator_details"),
-      stash: this.$t("pages.favorites.stash"),
-      controller: this.$t("pages.favorites.controller"),
-      sessionId: this.$t("pages.favorites.session_id"),
-      nextSessionId: this.$t("pages.favorites.next_session_id"),
-      commission: this.$t("pages.favorites.commission"),
-      rewardDestination: this.$t("pages.favorites.reward_destination"),
-      nominators: this.$t("pages.favorites.nominators"),
-      intention: this.$t("pages.favorites.intention"),
-      headTitle: this.$t("pages.favorites.head_title"),
-      headContent: this.$t("pages.favorites.head_content")
+      intention: this.$t("pages.favorites.intention")
     };
   },
   computed: {
@@ -893,12 +875,12 @@ export default {
   },
   head() {
     return {
-      title: "PolkaStats - Polkadot Kusama favorite validators and intentions",
+      title: this.$t("pages.favorites.head_title"),
       meta: [
         {
           hid: "description",
           name: "description",
-          content: "Polkadot Kusama favorite validators and intentions"
+          content: this.$t("pages.favorites.head_content")
         }
       ]
     };

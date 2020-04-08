@@ -67,7 +67,8 @@
       "show_period_changes_TEXT": "Show period changes in daily, weekly and monthly total bonded charts",
       "show_last_block_and_sessionera_info": "Show last block and session/era info",
       "improved_navigation_speed": "Improved navigation speed",
-      "head_title": "PolkaStats - About PolkaStats"
+      "head_title": "PolkaStats - About PolkaStats",
+      "head_content": "About Polkadot"
     },
     "accounts": {
       "active_accounts": "Active accounts",
@@ -80,7 +81,8 @@
       "remove_from_favorites": "Remove from Favorites",
       "add_to_favorites": "Add to Favorites",
       "identity": "Identity",
-      "head_title": "PolkaStats - Polkadot Kusama active accounts"
+      "head_title": "PolkaStats - Polkadot Kusama active accounts",
+      "head_content": "Polkadot Kusama active accounts"
     },
     "events": {
       "latest_5000_kusama_events": "Latest 5,000 Kusama events",
@@ -92,7 +94,8 @@
       "method": "Method",
       "phase": "Phase",
       "data": "Data",
-      "head_title": "PolkaStats - Polkadot Kusama chain events"
+      "head_title": "PolkaStats - Polkadot Kusama chain events",
+      "head_content": "Polkadot Kusama chain events"
     },
     "favorites": {
       "hi_there": "Hi there!",

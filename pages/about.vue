@@ -109,7 +109,11 @@ export default {
     return {
       title: this.$t("pages.about.head_title"),
       meta: [
-        { hid: "description", name: "description", content: "About PolkaStats" }
+        {
+          hid: "description",
+          name: "description",
+          content: this.$t("pages.about.head_content")
+        }
       ]
     };
   }

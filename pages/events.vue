@@ -13,7 +13,7 @@
               id="filterInput"
               v-model="filter"
               type="search"
-              :placeholder="searchPlaceholder"
+              :placeholder="$t('pages.accounts.search_placeholder')"
             />
           </b-col>
         </b-row>
@@ -21,7 +21,7 @@
         <div class="row d-block d-sm-block d-md-block d-lg-none d-xl-none">
           <b-col lg="6" class="my-1">
             <b-form-group
-              :label="sort"
+              :label="$t('pages.accounts.sort')"
               label-cols-sm="3"
               label-align-sm="right"
               label-size="sm"
@@ -128,8 +128,6 @@ export default {
     return {
       perPage: 10,
       currentPage: 1,
-      searchPlaceholder: this.$t("pages.accounts.search_placeholder"),
-      sort: this.$t("pages.accounts.sort"),
       sortBy: `block_number`,
       sortDesc: true,
       filter: null,

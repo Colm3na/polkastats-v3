@@ -12,7 +12,7 @@
               id="filterInput"
               v-model="filter"
               type="search"
-              :placeholder="searchPlaceholder"
+              :placeholder="$t('pages.accounts.search_placeholder')"
             />
           </b-col>
         </b-row>
@@ -20,7 +20,7 @@
         <div class="row d-block d-sm-block d-md-block d-lg-none d-xl-none">
           <b-col lg="6" class="my-1">
             <b-form-group
-              :label="sort"
+              :label="$t('pages.accounts.sort')"
               label-cols-sm="3"
               label-align-sm="right"
               label-size="sm"
@@ -94,7 +94,7 @@
                     name: 'account',
                     query: { accountId: data.item.accountId }
                   }"
-                  :title="accountLinkTitle"
+                  :title="$t('pages.accounts.account_details')"
                 >
                   <h4>{{ shortAddress(data.item.accountId) }}</h4>
                 </nuxt-link>
@@ -146,7 +146,7 @@
                     name: 'account',
                     query: { accountId: data.item.accountId }
                   }"
-                  :title="accountLinkTitle"
+                  :title="$t('pages.accounts.account_details')"
                 >
                   {{ shortAddress(data.item.accountId) }}
                 </nuxt-link>
@@ -181,14 +181,14 @@
                     v-b-tooltip.hover
                     class="fas fa-star"
                     style="color: #f1bd23"
-                    :title="removeFavorite"
+                    :title="$t('pages.accounts.remove_from_favorites')"
                   />
                   <i
                     v-else
                     v-b-tooltip.hover
                     class="fas fa-star"
                     style="color: #e6dfdf;"
-                    :title="addFavorite"
+                    :title="$t('pages.accounts.add_to_favorites')"
                   />
                 </a>
               </p>
@@ -236,11 +236,6 @@ export default {
         ? localStorage.numItemsTableSelected
         : 10,
       currentPage: 1,
-      searchPlaceholder: this.$t("pages.accounts.search_placeholder"),
-      sort: this.$t("pages.accounts.sort"),
-      accountLinkTitle: this.$t("pages.accounts.account_details"),
-      addFavorite: this.$t("pages.accounts.add_to_favorites"),
-      removeFavorite: this.$t("pages.accounts.remove_from_favorites"),
       sortBy: `favorite`,
       sortDesc: true,
       filter: null,
@@ -372,7 +367,7 @@ export default {
         {
           hid: "description",
           name: "description",
-          content: "Polkadot Kusama active accounts"
+          content: this.$t("pages.accounts.head_content")
         }
       ]
     };
