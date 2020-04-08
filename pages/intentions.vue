@@ -9,7 +9,7 @@
               id="filterInput"
               v-model="filter"
               type="search"
-              placeholder="Search intention by account, account index, identity display name or keybase name"
+              :placeholder="$t('pages.intentions.search_placeholder')"
             />
           </b-col>
         </b-row>
@@ -17,7 +17,7 @@
         <div class="row d-block d-sm-block d-md-block d-lg-none d-xl-none">
           <b-col lg="6" class="my-1">
             <b-form-group
-              label="Sort"
+              :label="$t('pages.intentions.sort')"
               label-cols-sm="3"
               label-align-sm="right"
               label-size="sm"
@@ -107,7 +107,7 @@
                     name: 'intention',
                     query: { accountId: data.item.accountId }
                   }"
-                  title="Intention details"
+                  :title="$t('pages.intentions.intention_details')"
                 >
                   <h4 v-if="hasIdentity(data.item.accountId)" class="mt-2 mb-2">
                     {{ getIdentity(data.item.accountId).full_name }}
@@ -134,7 +134,7 @@
                   <p
                     v-b-tooltip.hover
                     class="bonded mb-0"
-                    title="Active bonded"
+                    :title="$t('pages.intention.active_bonded')"
                   >
                     {{ formatAmount(data.item.activeStake) }}
                   </p>
@@ -142,7 +142,10 @@
                 <div v-if="data.item.totalStake">
                   <p class="mb-0">
                     <small>
-                      <span v-b-tooltip.hover title="Total bonded">
+                      <span
+                        v-b-tooltip.hover
+                        :title="$t('pages.intention.total_bonded')"
+                      >
                         {{ formatAmount(data.item.totalStake) }}
                       </span>
                     </small>
@@ -177,7 +180,7 @@
                     name: 'intention',
                     query: { accountId: data.item.accountId }
                   }"
-                  title="Intention details"
+                  :title="$t('pages.intentions.intention_details')"
                 >
                   <span v-if="hasIdentity(data.item.accountId)">
                     {{ getIdentity(data.item.accountId).full_name }}
@@ -223,14 +226,14 @@
                     v-b-tooltip.hover
                     class="fas fa-star"
                     style="color: #f1bd23"
-                    title="Remove from Favorites"
+                    :title="$t('pages.intention.remove_from_favorites')"
                   />
                   <i
                     v-else
                     v-b-tooltip.hover
                     class="fas fa-star"
                     style="color: #e6dfdf;"
-                    title="Add to Favorites"
+                    :title="$t('pages.intention.add_to_favorites')"
                   />
                 </a>
               </p>

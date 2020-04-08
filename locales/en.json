@@ -173,7 +173,17 @@
       "commission": "Commission",
       "era_points": "Era points"
     },
-    "intentions": {},
+    "intentions": {
+      "search_placeholder": "Search intention by account, account index, identity display name or keybase name",
+      "sort": "Sort",
+      "intention_details": "Intention details",
+      "active_bonded": "Active bonded",
+      "total_bonded": "Total bonded",
+      "remove_from_favorites": "Remove from Favorites",
+      "add_to_favorites": "Add to Favorites",
+      "head_title": "PolkaStats -  Polkadot Kusama intention validators",
+      "head_content": "Polkadot Kusama intention validators"
+    },
     "nominators": {},
     "phragmen": {},
     "support-us": {},

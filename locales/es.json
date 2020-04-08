@@ -173,7 +173,17 @@
       "commission": "Comisión",
       "era_points": "Puntos era"
     },
-    "intentions": {},
+    "intentions": {
+      "search_placeholder": "Buscar validador por cuenta, índice de cuenta, nombre mostrado en identidad o nombre de keybase",
+      "sort": "Ordenar",
+      "intention_details": "Detalles de intenciones",
+      "active_bonded": "Depósito activo",
+      "total_bonded": "Total depositado",
+      "remove_from_favorites": "Eliminar de Favoritos",
+      "add_to_favorites": "Añadir a Favoritos",
+      "head_title": "PolkaStats -  Intenciones de Validadores de Polkadot Kusama",
+      "head_content": "Intenciones de Validadores de Polkadot Kusama"
+    },
     "nominators": {},
     "phragmen": {},
     "support-us": {},
