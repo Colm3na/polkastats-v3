@@ -181,6 +181,8 @@
       "total_bonded": "Total bonded",
       "remove_from_favorites": "Remove from Favorites",
       "add_to_favorites": "Add to Favorites",
+      "total_stake": "Total Stake",
+      "commission": "Commission",
       "head_title": "PolkaStats -  Polkadot Kusama intention validators",
       "head_content": "Polkadot Kusama intention validators"
     },

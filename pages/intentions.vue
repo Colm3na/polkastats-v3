@@ -298,13 +298,13 @@ export default {
         { key: "accountId", label: "Intention", sortable: true },
         {
           key: "totalStake",
-          label: "Total Stake",
+          label: this.$t("pages.intentions.total_stake"),
           sortable: true,
           class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
         },
         {
           key: "commission",
-          label: "Commission",
+          label: this.$t("pages.intentions.commission"),
           sortable: true,
           class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
         },
