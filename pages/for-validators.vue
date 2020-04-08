@@ -5,8 +5,11 @@
         <div class="row text-center">
           <div class="col-md-12 pt-5 pb-5">
             <h3>
-              Want to have your validator name, logo, website url<br />
-              and social links included in PolkaStats?
+              {{ $t("pages.for-validators.want_to_have_your_validator_TEXT_1")
+              }}<br />
+              {{
+                $t("pages.for-validators.want_to_have_your_validator_TEXT_2")
+              }}
             </h3>
           </div>
         </div>
@@ -15,20 +18,20 @@
     <section>
       <b-container class="main pb-5 text-center">
         <h2 class="mt-4 mb-4">
-          How to include your validator information in PolkaStats
+          {{ $t("pages.for-validators.how_to_include_TEXT") }}
         </h2>
         <b-alert variant="success" show>
-          You will need both,
-          <a href="https://keybase.io" target="_blank">Keybase</a> and
-          <a href="https://github.com" target="_blank">GitHub</a> accounts in
-          order to continue.<br />
-          Make sure you have properly filled your full name, website, social
-          links and have uploaded a profile picture in your Keybase profile.
+          {{ $t("pages.for-validators.you_will_need_both") }}
+          <a href="https://keybase.io" target="_blank">Keybase</a>
+          {{ $t("pages.for-validators.and") }}
+          <a href="https://github.com" target="_blank">GitHub</a>
+          {{ $t("pages.for-validators.accounts_in_order_to_continue") }}.<br />
+          {{ $t("pages.for-validators.make_sure_TEXT") }}
         </b-alert>
         <b-card-group deck class="mt-4 mb-4">
           <b-card title="Step 1">
             <b-card-text>
-              Login with your GitHub user and make a Fork of PolkaStats v2 repo:
+              {{ $t("pages.for-validators.login_with_your_github_TEXT") }}:
               <a href="https://github.com/Colm3na/polkastats-v2" target="_blank"
                 >https://github.com/Colm3na/polkastats-v2</a
               >.
@@ -36,26 +39,26 @@
           </b-card>
           <b-card title="Step 2">
             <b-card-text>
-              Create a new folder named "stash_address_of_your_validator" inside
+              {{ $t("pages.for-validators.create_a_new_folder_TEXT") }}
               <a
                 href="https://github.com/Colm3na/polkastats-v2/tree/master/identities"
                 target="_blank"
-                >identities folder</a
-              >. In that folder place 3 new files with exactly this names,
-              keybase_username with your
-              <a href="https://keybase.io" target="_blank">Keybase</a> username
-              on it. A logo.png (512x512 max) and
+                >{{ $t("pages.for-validators.identities_folder") }}</a
+              >. {{ $t("pages.for-validators.in_that_folder_TEXT") }}
+              <a href="https://keybase.io" target="_blank">Keybase</a>
+              {{ $t("pages.for-validators.username_on_it") }}.
+              {{ $t("pages.for-validators.a_logo_TEXT") }}
               <a
                 href="https://raw.githubusercontent.com/derfredy/polkastats-v2/master/identities/DSpbbk6HKKyS78c4KDLSxCetqbwnsemv2iocVXwNe2FAvWC/validator_info.json"
                 target="_blank"
                 >validator_info.json</a
               >
-              following this schema.
+              {{ $t("pages.for-validators.following_this_schema") }}.
             </b-card-text>
           </b-card>
           <b-card title="Step 3">
             <b-card-text>
-              Make a Pull Request to the master branch of the original repo:
+              {{ $t("pages.for-validators.make_a_pull_rquest_TEXT") }}:
               <a href="https://github.com/Colm3na/polkastats-v2" target="_blank"
                 >https://github.com/Colm3na/polkastats-v2</a
               >.
@@ -63,7 +66,7 @@
           </b-card>
         </b-card-group>
         <h4 class="mt-4">
-          Need help? Send me a message at
+          {{ $t("pages.for-validators.need_help_TEXT") }}
           <a target="_blank" href="mailto:polkastats@protonmail.com"
             >polkastats@protonmail.com</a
           >.
@@ -77,12 +80,12 @@ import axios from "axios";
 export default {
   head() {
     return {
-      title: "PolkaStats - For Polkadot Kusama validators",
+      title: this.$t("pages.for-validators.head_title"),
       meta: [
         {
           hid: "description",
           name: "description",
-          content: "Include your Kusama validator info in PolkaStats"
+          content: this.$t("pages.for-validators.head_content")
         }
       ]
     };
