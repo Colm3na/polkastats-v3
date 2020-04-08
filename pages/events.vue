@@ -3,7 +3,7 @@
     <section>
       <b-container class="page-events main pt-4">
         <h1 class="text-center mb-4">
-          Latest 5,000 Kusama events
+          {{ $t("pages.events.latest_5000_kusama_events") }}
         </h1>
 
         <!-- Filter -->
@@ -13,7 +13,7 @@
               id="filterInput"
               v-model="filter"
               type="search"
-              placeholder="Search event"
+              :placeholder="searchPlaceholder"
             />
           </b-col>
         </b-row>
@@ -21,7 +21,7 @@
         <div class="row d-block d-sm-block d-md-block d-lg-none d-xl-none">
           <b-col lg="6" class="my-1">
             <b-form-group
-              label="Sort"
+              :label="sort"
               label-cols-sm="3"
               label-align-sm="right"
               label-size="sm"
@@ -128,6 +128,8 @@ export default {
     return {
       perPage: 10,
       currentPage: 1,
+      searchPlaceholder: this.$t("pages.accounts.search_placeholder"),
+      sort: this.$t("pages.accounts.sort"),
       sortBy: `block_number`,
       sortDesc: true,
       filter: null,
@@ -136,37 +138,37 @@ export default {
       fields: [
         {
           key: "block_number",
-          label: "Block",
+          label: this.$t("pages.events.block"),
           sortable: true,
           class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
         },
         {
           key: "event_index",
-          label: "Index",
+          label: this.$t("pages.events.index"),
           sortable: true,
           filterByFormatted: true
         },
         {
           key: "section",
-          label: "Section",
+          label: this.$t("pages.events.section"),
           sortable: true,
           class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
         },
         {
           key: "method",
-          label: "Method",
+          label: this.$t("pages.events.method"),
           sortable: true,
           class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
         },
         {
           key: "phase",
-          label: "Phase",
+          label: this.$t("pages.events.phase"),
           sortable: true,
           class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
         },
         {
           key: "data",
-          label: "Data",
+          label: this.$t("pages.events.data"),
           sortable: true,
           class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
         }
@@ -215,7 +217,7 @@ export default {
   },
   head() {
     return {
-      title: "PolkaStats - Polkadot Kusama chain events",
+      title: this.$t("pages.events.head_title"),
       meta: [
         {
           hid: "description",
