@@ -156,7 +156,7 @@
       "active_validators_of": "validadores activos de",
       "available_slots_and": "posibles y",
       "waiting": "esperando",
-      "search_placeholder": "Buscar validador por cuenta, índice de cuenta, nombre mostrado en identidad o nombre de keybase",
+      "search_placeholder": "Buscar validador por cuenta, índice de cuenta, nombre mostrado como identidad o nombre de keybase",
       "sort": "Ordenar",
       "rank": "Rank",
       "elected_for_next_session": "Elegido para la siguiente session",
@@ -174,7 +174,7 @@
       "era_points": "Puntos era"
     },
     "intentions": {
-      "search_placeholder": "Buscar validador por cuenta, índice de cuenta, nombre mostrado en identidad o nombre de keybase",
+      "search_placeholder": "Buscar validador por cuenta, índice de cuenta, nombre mostrado como identidad o nombre de keybase",
       "sort": "Ordenar",
       "intention_details": "Detalles de intenciones",
       "active_bonded": "Depósito activo",
@@ -186,7 +186,19 @@
       "head_title": "PolkaStats -  Intenciones de Validadores de Polkadot Kusama",
       "head_content": "Intenciones de Validadores de Polkadot Kusama"
     },
-    "nominators": {},
+    "nominators": {
+      "search_placeholder": "Buscar nominadores por cuenta, índice de cuenta, nombre mostrado como identidad o nombre en keybase",
+      "sort": "Ordenar",
+      "nominator_details": "Detalles del Nominator",
+      "remove_from_favorites": "Eliminar de Favoritos",
+      "add_to_favorites": "Añadir a Favoritos",
+      "rank": "Rank",
+      "nominator": "Nominador",
+      "nominations": "Nominaciones",
+      "total_stake": "Participación total",
+      "head_title": "PolkaStats - Polkadot Kusama nominators",
+      "head_content": "Polkadot Kusama nominators"
+    },
     "phragmen": {},
     "support-us": {},
     "validators": {}
