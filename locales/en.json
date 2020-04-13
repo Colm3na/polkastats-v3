@@ -234,6 +234,26 @@
       "head_title": "PolkaStats - Support us",
       "head_content": "Support us"
     },
-    "validators": {}
+    "validators": {
+      "search_placeholder": "Search validator by account, account index, identity display name or keybase name",
+      "filter": "Filter",
+      "where": "where",
+      "than": "than",
+      "elected_for_next_session": "Elected for next session",
+      "not_elected_for_next_session": "Not elected for next session",
+      "remove_from_favorites": "Remove from Favorites",
+      "add_to_favorites": "Add to Favorites",
+      "validator_details": "Validator details",
+      "total_bonded": "Total bonded",
+      "percentage_over_total_bonded_stake": "Percentage over total bonded stake",
+      "validator": "Validator",
+      "stakers": "Stakers",
+      "total_stake": "Total stake",
+      "stake": "Stake",
+      "commission": "Commission",
+      "era_points": "Era points",
+      "head_title": "PolkaStats - Polkadot Kusama network statistics",
+      "head_content": "Polkadot Kusama network statistics"
+    }
   }
 }

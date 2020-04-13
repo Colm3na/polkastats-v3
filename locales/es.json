@@ -166,7 +166,7 @@
       "validator_details": "Detalles del validador",
       "total_bonded": "Total depositado",
       "percentage_over_total_bonded_stake": "Porcentaje sobre el total de la participación depositada",
-      "validator": "Validadores",
+      "validator": "Validador",
       "stakers": "Depositantes",
       "total_stake": "Participación total",
       "stake": "Participado",
@@ -234,6 +234,26 @@
       "head_title": "PolkaStats - Apoyanos",
       "head_content": "Apoyanos"
     },
-    "validators": {}
+    "validators": {
+      "search_placeholder": "Buscar validador por cuenta, índice de cuenta, nombre mostrado como identidad o nombre de keybase",
+      "filter": "Filtrar",
+      "where": "donde",
+      "than": "que",
+      "elected_for_next_session": "Elegido para la siguiente session",
+      "not_elected_for_next_session": "No elegido para la siguiente session",
+      "remove_from_favorites": "Eliminar de Favoritos",
+      "add_to_favorites": "Añadir a Favoritos",
+      "validator_details": "Detalles del validador",
+      "total_bonded": "Total depositado",
+      "percentage_over_total_bonded_stake": "Porcentaje sobre el total de la participación depositada",
+      "validator": "Validador",
+      "stakers": "Depositantes",
+      "total_stake": "Participación total",
+      "stake": "Participado",
+      "commission": "Comisión",
+      "era_points": "Puntos era",
+      "head_title": "PolkaStats - Estadísticas de la red Polkadot Kusama",
+      "head_content": "Polkadot Kusama estadísticas de la red"
+    }
   }
 }
