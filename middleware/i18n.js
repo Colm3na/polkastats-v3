@@ -1,11 +1,9 @@
-export default function({ isHMR, app, store, route, params, error, redirect }) {
-  const defaultLocale = app.i18n.fallbackLocale;
+export default function({ isHMR, app, store }) {
   // If middleware is called from hot module replacement, ignore it
   if (isHMR) {
     return;
   }
-  // Get locale from params
-  const locale = params.lang || defaultLocale;
+
+  const locale = app.i18n.locale || app.i18n.fallbackLocale;
   store.commit("locales/SET_LANG", locale);
-  app.i18n.locale = locale;
 }
