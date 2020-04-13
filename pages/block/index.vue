@@ -6,12 +6,12 @@
           <div class="card mt-4 mb-3">
             <div class="card-body">
               <h4 class="text-center mb-4">
-                Block #{{ formatNumber(blockNumber) }}
+                {{ $t("details.block.block") }} #{{ formatNumber(blockNumber) }}
               </h4>
               <table class="table table-striped block-table">
                 <tbody>
                   <tr>
-                    <td>Block author</td>
+                    <td>{{ $t("details.block.block_author") }}</td>
                     <td class="text-right">
                       <a
                         :href="blockExplorer.account + parsedBlock.block_author"
@@ -26,7 +26,7 @@
                         />
                         <span
                           v-b-tooltip.hover
-                          title="See address in PolkaScan"
+                          :title="$t('details.block.see_address_in_polkastats')"
                         >
                           {{ shortAddress(parsedBlock.block_author) }}
                         </span>
@@ -37,7 +37,7 @@
                     </td>
                   </tr>
                   <tr>
-                    <td>Block hash</td>
+                    <td>{{ $t("details.block.block_hash") }}</td>
                     <td class="text-right">
                       <p class="mb-0">
                         <nuxt-link
@@ -49,73 +49,73 @@
                     </td>
                   </tr>
                   <tr>
-                    <td>Extrinsic root</td>
+                    <td>{{ $t("details.block.extrinsic_root") }}</td>
                     <td class="text-right">
                       <p class="mb-0">{{ parsedBlock.extrinsics_root }}</p>
                     </td>
                   </tr>
                   <tr>
-                    <td>Parent hash</td>
+                    <td>{{ $t("details.block.parent_hash") }}</td>
                     <td class="text-right">
                       <p class="mb-0">{{ parsedBlock.parent_hash }}</p>
                     </td>
                   </tr>
                   <tr>
-                    <td>State root</td>
+                    <td>{{ $t("details.block.state_root") }}</td>
                     <td class="text-right">
                       <p class="mb-0">{{ parsedBlock.state_root }}</p>
                     </td>
                   </tr>
                   <tr>
-                    <td>Spec name</td>
+                    <td>{{ $t("details.block.spec_name") }}</td>
                     <td class="text-right">
                       <p class="mb-0">{{ parsedBlock.spec_name }}</p>
                     </td>
                   </tr>
                   <tr>
-                    <td>Spec version</td>
+                    <td>{{ $t("details.block.spec_version") }}</td>
                     <td class="text-right">
                       <p class="mb-0">{{ parsedBlock.spec_version }}</p>
                     </td>
                   </tr>
                   <tr>
-                    <td>Current session index</td>
+                    <td>{{ $t("details.block.current_session_index") }}</td>
                     <td class="text-right">
                       <p class="mb-0">{{ parsedBlock.current_index }}</p>
                     </td>
                   </tr>
                   <tr>
-                    <td>Session length</td>
+                    <td>{{ $t("details.block.session_length") }}</td>
                     <td class="text-right">
                       <p class="mb-0">{{ parsedBlock.session_length }}</p>
                     </td>
                   </tr>
                   <tr>
-                    <td>Session per era</td>
+                    <td>{{ $t("details.block.session_per_era") }}</td>
                     <td class="text-right">
                       <p class="mb-0">{{ parsedBlock.session_per_era }}</p>
                     </td>
                   </tr>
                   <tr>
-                    <td>Session progress</td>
+                    <td>{{ $t("details.block.session_progress") }}</td>
                     <td class="text-right">
                       <p class="mb-0">{{ parsedBlock.session_progress }}</p>
                     </td>
                   </tr>
                   <tr>
-                    <td>Current era index</td>
+                    <td>{{ $t("details.block.current_era_index") }}</td>
                     <td class="text-right">
                       <p class="mb-0">{{ parsedBlock.current_era }}</p>
                     </td>
                   </tr>
                   <tr>
-                    <td>Era length</td>
+                    <td>{{ $t("details.block.era_length") }}</td>
                     <td class="text-right">
                       <p class="mb-0">{{ parsedBlock.era_length }}</p>
                     </td>
                   </tr>
                   <tr>
-                    <td>Era progress</td>
+                    <td>{{ $t("details.block.era_progress") }}</td>
                     <td class="text-right">
                       <p class="mb-0">{{ parsedBlock.era_progress }}</p>
                     </td>
@@ -129,15 +129,15 @@
           <div class="card mt-4 mb-3">
             <div class="card-body">
               <h4 class="text-center mb-4">
-                System events
+                {{ $t("details.block.system_events") }}
               </h4>
               <table class="table table-striped">
                 <thead>
                   <tr>
-                    <th>Section</th>
-                    <th>Method</th>
-                    <th>Phase</th>
-                    <th>Data</th>
+                    <th>{{ $t("details.block.section") }}</th>
+                    <th>{{ $t("details.block.method") }}</th>
+                    <th>{{ $t("details.block.phase") }}</th>
+                    <th>{{ $t("details.block.data") }}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -163,7 +163,7 @@
                             name: 'account',
                             query: { accountId: JSON.parse(event.data)[0] }
                           }"
-                          title="Account details"
+                          :title="$t('details.block.account_details')"
                         >
                           {{ shortAddress(JSON.parse(event.data)[0]) }}
                         </nuxt-link>
@@ -179,7 +179,7 @@
                             name: 'account',
                             query: { accountId: JSON.parse(event.data)[1] }
                           }"
-                          title="Account details"
+                          :title="$t('details.block.account_details')"
                         >
                           {{ shortAddress(JSON.parse(event.data)[1]) }}
                         </nuxt-link>
