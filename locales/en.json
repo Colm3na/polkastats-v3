@@ -334,7 +334,51 @@
       "validator_details": "Validator details",
       "commission": "Commission"
     },
-    "phragmen-candidate": {},
-    "validator": {}
+    "phragmen-candidate": {
+      "previous_candidate": "Previous candidate: ",
+      "next_candidate": "Next candidate: ",
+      "candidate": "Candidate",
+      "total_stake": "Total Stake",
+      "self_bonded": "Self bonded",
+      "bonded_by_nominators": "Bonded by nominators",
+      "name": "Name",
+      "email": "Email",
+      "legal": "Legal",
+      "riot": "Riot",
+      "voters": "Voters"
+    },
+    "validator": {
+      "previous_validator": "Previous validator: ",
+      "next_validator": "Next validator: ",
+      "validator": "Validador",
+      "elected_for_next_session": "Elected for next session",
+      "not_elected_for_next_session": "Not elected for next session",
+      "in_favorites": "In Favorites",
+      "not_in_favorites": "Not in Favorites",
+      "total_bonded": "Total bonded",
+      "self_bonded": "Self bonded",
+      "bonded_by_nominators": "Bonded by nominators",
+      "percentage_over_total_bonded_stake": "Percentage over total bonded stake",
+      "of_total_stake": "of total stake",
+      "era_points": "era points",
+      "session_id": "Session id",
+      "next_session_id": "Next session id",
+      "commission": "Commission",
+      "reward_destination": "Reward destination",
+      "name": "Name",
+      "email": "Email",
+      "legal": "Legal",
+      "riot": "Riot",
+      "nominators": "Nominators",
+      "search_placeholder": "Search staker by account or account index",
+      "nominator_details": "Nominator details",
+      "monthly_chart": "Monthly chart",
+      "weekly_chart": "Weekly chart",
+      "daily_chart": "Daily chart",
+      "rank": "Rank",
+      "staker": "Staker",
+      "percentage": "Percentage",
+      "amount": "Amount"
+    }
   }
 }

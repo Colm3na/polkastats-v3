@@ -12,7 +12,9 @@
                     query: { accountId: candidates[index - 1].pub_key_stash }
                   }"
                   :title="
-                    'Previous candidate: ' + candidates[index - 1].pub_key_stash
+                    $t('details.phragmen-candidate.previous_candidate').concat(
+                      candidates[index - 1].pub_key_stash
+                    )
                   "
                 >
                   <i class="fas fa-2x fa-chevron-left"></i>
@@ -20,7 +22,10 @@
               </template>
             </div>
             <div class="col-8 col-lg-10 text-center">
-              <h4 class="mb-1">Candidate {{ indexes[accountId] }}</h4>
+              <h4 class="mb-1">
+                {{ $t("details.phragmen-candidate.candidate") }}
+                {{ indexes[accountId] }}
+              </h4>
             </div>
             <div class="col-2 col-lg-1 text-right">
               <template v-if="index < candidates.length - 1">
@@ -30,7 +35,9 @@
                     query: { accountId: candidates[index + 1].pub_key_stash }
                   }"
                   :title="
-                    'Next candidate: ' + candidates[index + 1].pub_key_stash
+                    $t('details.phragmen-candidate.next_candidate').concat(
+                      candidates[index + 1].pub_key_stash
+                    )
                   "
                 >
                   <i class="fas fa-2x fa-chevron-right"></i>
@@ -86,15 +93,25 @@
                     />
                   </div>
                   <p class="mt-3 mb-0 rank">rank #{{ candidate.rank }}</p>
-                  <p v-b-tooltip.hover class="bonded mb-0" title="Total stake">
+                  <p
+                    v-b-tooltip.hover
+                    class="bonded mb-0"
+                    :title="$t('details.phragmen-candidate.total_stake')"
+                  >
                     {{ formatAmount(candidate.stake_total) }}
                   </p>
                   <p class="mb-0">
                     <small>
-                      <span v-b-tooltip.hover title="Self bonded">{{
-                        formatAmount(candidate.stake_validator)
-                      }}</span>
-                      <span v-b-tooltip.hover title="Bonded by nominators"
+                      <span
+                        v-b-tooltip.hover
+                        :title="$t('details.phragmen-candidate.self_bonded')"
+                        >{{ formatAmount(candidate.stake_validator) }}</span
+                      >
+                      <span
+                        v-b-tooltip.hover
+                        :title="
+                          $t('details.phragmen-candidate.bonded_by_nominators')
+                        "
                         >(+{{ formatAmount(candidate.other_stake_sum) }})</span
                       >
                     </small>
@@ -180,7 +197,9 @@
                       class="row"
                     >
                       <div class="col-md-3 mb-1">
-                        <strong>Name</strong>
+                        <strong>{{
+                          $t("details.phragmen-candidate.name")
+                        }}</strong>
                       </div>
                       <div class="col-md-9 mb-1 fee">
                         {{
@@ -197,7 +216,9 @@
                       class="row"
                     >
                       <div class="col-md-3 mb-2">
-                        <strong>Email</strong>
+                        <strong>{{
+                          $t("details.phragmen-candidate.email")
+                        }}</strong>
                       </div>
                       <div class="col-md-9 mb-2 fee">
                         <a
@@ -224,7 +245,9 @@
                       class="row"
                     >
                       <div class="col-md-3 mb-2">
-                        <strong>Legal</strong>
+                        <strong>{{
+                          $t("details.phragmen-candidate.legal")
+                        }}</strong>
                       </div>
                       <div class="col-md-9 mb-2 fee">
                         {{
@@ -241,7 +264,9 @@
                       class="row"
                     >
                       <div class="col-md-3 mb-2">
-                        <strong>Riot</strong>
+                        <strong>{{
+                          $t("details.phragmen-candidate.riot")
+                        }}</strong>
                       </div>
                       <div class="col-md-9 mb-2 fee">
                         <a
@@ -324,7 +349,8 @@
                           :aria-controls="'candidate-voters-' + index"
                         >
                           <h6 class="h6 candidates d-inline mr-4">
-                            <i class="fas"></i> Voters ({{
+                            <i class="fas"></i>
+                            {{ $t("details.phragmen-candidate.voters") }} ({{
                               candidate.voters.length
                             }})
                           </h6>
