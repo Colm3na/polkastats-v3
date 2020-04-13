@@ -257,7 +257,21 @@
     }
   },
   "details": {
-    "account": {},
+    "account": {
+      "account": "Account",
+      "free_balance": "Free Balance",
+      "account_id": "Account ID",
+      "see_address_in_polkastats": "See address in Polkastats",
+      "account_nonce": "Account Nonce",
+      "total_balance": "Total Balance",
+      "available_balance": "Available Balance",
+      "locked_balance": "Locked Balance",
+      "reserved_balance": "Reserved Balance",
+      "is_vesting": "Is Vesting?",
+      "vested_balance": "Vested Balance",
+      "vesting_total": "Vesting Total",
+      "voting_balance": "Voting Balance"
+    },
     "block": {},
     "commons": {},
     "intention": {},

@@ -5,7 +5,10 @@
         <template v-if="parsedAccount">
           <div class="row">
             <div class="col-12 text-center">
-              <h4 class="mb-1">Account {{ parsedAccount.accountId }}</h4>
+              <h4 class="mb-1">
+                {{ $t("details.account.account") }}
+                {{ parsedAccount.accountId }}
+              </h4>
             </div>
           </div>
           <div class="card mt-4 mb-3">
@@ -24,14 +27,14 @@
               <h4
                 v-b-tooltip.hover
                 class="text-center mb-4 amount"
-                title="Free Balance"
+                :title="$t('details.account.free_balance')"
               >
                 {{ formatAmount(parsedAccount.balances.freeBalance) }}
               </h4>
               <table class="table table-striped">
                 <tbody>
                   <tr>
-                    <td>Account ID</td>
+                    <td>{{ $t("details.account.account_id") }}</td>
                     <td class="text-right">
                       <a
                         :href="blockExplorer.account + parsedAccount.accountId"
@@ -46,7 +49,9 @@
                         />
                         <span
                           v-b-tooltip.hover
-                          title="See address in PolkaScan"
+                          :title="
+                            $t('details.account.see_address_in_polkastats')
+                          "
                           >{{ parsedAccount.accountId }}</span
                         >
                       </a>
@@ -115,19 +120,19 @@
                     </td>
                   </tr>
                   <tr>
-                    <td>Account Nonce</td>
+                    <td>{{ $t("details.account.account_nonce") }}</td>
                     <td class="text-right">
                       {{ parsedAccount.balances.accountNonce }}
                     </td>
                   </tr>
                   <tr>
-                    <td>Total Balance</td>
+                    <td>{{ $t("details.account.total_balance") }}</td>
                     <td class="text-right">
                       {{ formatAmount(parsedAccount.balances.freeBalance) }}
                     </td>
                   </tr>
                   <tr>
-                    <td>Available Balance</td>
+                    <td>{{ $t("details.account.available_balance") }}</td>
                     <td class="text-right">
                       {{
                         formatAmount(parsedAccount.balances.availableBalance)
@@ -135,37 +140,37 @@
                     </td>
                   </tr>
                   <tr>
-                    <td>Locked Balance</td>
+                    <td>{{ $t("details.account.locked_balance") }}</td>
                     <td class="text-right">
                       {{ formatAmount(parsedAccount.balances.lockedBalance) }}
                     </td>
                   </tr>
                   <tr>
-                    <td>Reserved Balance</td>
+                    <td>{{ $t("details.account.reserved_balance") }}</td>
                     <td class="text-right">
                       {{ formatAmount(parsedAccount.balances.reservedBalance) }}
                     </td>
                   </tr>
                   <tr>
-                    <td>Is Vesting?</td>
+                    <td>{{ $t("details.account.is_vesting") }}</td>
                     <td class="text-right">
                       {{ parsedAccount.balances.isVesting ? `Yes` : `No` }}
                     </td>
                   </tr>
                   <tr>
-                    <td>Vested Balance</td>
+                    <td>{{ $t("details.account.vested_balance") }}</td>
                     <td class="text-right">
                       {{ formatAmount(parsedAccount.balances.vestedBalance) }}
                     </td>
                   </tr>
                   <tr>
-                    <td>Vesting Total</td>
+                    <td>{{ $t("details.account.vesting_total") }}</td>
                     <td class="text-right">
                       {{ formatAmount(parsedAccount.balances.vestingTotal) }}
                     </td>
                   </tr>
                   <tr>
-                    <td>Voting Balance</td>
+                    <td>{{ $t("details.account.voting_balance") }}</td>
                     <td class="text-right">
                       {{ formatAmount(parsedAccount.balances.votingBalance) }}
                     </td>

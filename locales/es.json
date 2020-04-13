@@ -257,7 +257,21 @@
     }
   },
   "details": {
-    "account": {},
+    "account": {
+      "account": "Cuenta",
+      "free_balance": "Saldo libre",
+      "account_id": "Cuenta ID",
+      "see_address_in_polkastats": "Ver dirección en Polkastats",
+      "account_nonce": "Nonce de Cuenta",
+      "total_balance": "Saldo Total",
+      "available_balance": "Saldo Disponible",
+      "locked_balance": "Saldo Bloqueado",
+      "reserved_balance": "Saldo Reservado",
+      "is_vesting": "¿Es una adquisición?",
+      "vested_balance": "Balance Adquirido",
+      "vesting_total": "Total Adquirido",
+      "voting_balance": "Balance de la Votación"
+    },
     "block": {},
     "commons": {},
     "intention": {},
