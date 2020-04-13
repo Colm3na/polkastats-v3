@@ -199,7 +199,24 @@
       "head_title": "PolkaStats - Polkadot Kusama nominators",
       "head_content": "Polkadot Kusama nominators"
     },
-    "phragmen": {},
+    "phragmen": {
+      "predicted_candidates_by_TEXT": "Predicted candidates by phragmen election algorithm",
+      "offline_phragmen_is_TEXT": "offline-phragmen is currently broken so this is temporary disabled!",
+      "search_placeholder": "Search candidate by account, account index or identity display name",
+      "sort": "Sort",
+      "candidate_details": "Candidate details",
+      "self_bonded": "Self bonded",
+      "bonded_by_nominators": "Bonded by nominators",
+      "total_stake": "Total Stake",
+      "remove_from_favorites": "Remove from Favorites",
+      "add_to_favorites": "Add to Favorites",
+      "candidate": "Candidate",
+      "voters": "Voters",
+      "self_stake": "Self stake",
+      "voters_stake": "Voters stake",
+      "head_title": "PolkaStats - Polkadot Kusama phragmen candidates",
+      "head_content": "Polkadot Kusama phragmen candidates"
+    },
     "support-us": {},
     "validators": {}
   }
