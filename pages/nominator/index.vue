@@ -13,7 +13,9 @@
                       query: { accountId: nominators[index - 1].accountId }
                     }"
                     :title="
-                      'Previous nominator: ' + nominators[index - 1].accountId
+                      $t('details.nominator.previous_nominator').concat(
+                        nominators[index - 1].accountId
+                      )
                     "
                   >
                     <i class="fas fa-2x fa-chevron-left" />
@@ -21,7 +23,9 @@
                 </template>
               </div>
               <div class="col-8 col-lg-10 text-center">
-                <h4 class="mb-1">Nominator {{ accountId }}</h4>
+                <h4 class="mb-1">
+                  {{ $t("details.nominator.nominator") }} {{ accountId }}
+                </h4>
               </div>
               <div class="col-2 col-lg-1 text-right">
                 <template v-if="index < nominators.length - 1">
@@ -31,7 +35,9 @@
                       query: { accountId: nominators[index + 1].accountId }
                     }"
                     :title="
-                      'Next validator: ' + nominators[index + 1].accountId
+                      $t('details.nominator.next_nominator').concat(
+                        nominators[index + 1].accountId
+                      )
                     "
                   >
                     <i class="fas fa-2x fa-chevron-right" />
@@ -52,19 +58,27 @@
                   target="_blank"
                   class="d-block my-2"
                 >
-                  Nominator
-                  <span v-b-tooltip.hover title="See address in PolkaScan">{{
-                    shortAddress(nominator.accountId)
-                  }}</span>
+                  {{ $t("details.nominator.nominator") }}
+                  <span
+                    v-b-tooltip.hover
+                    :title="$t('details.nominator.see_address_in_polkastats')"
+                    >{{ shortAddress(nominator.accountId) }}</span
+                  >
                 </a>
-                <p v-b-tooltip.hover class="amount" title="Total bonded">
+                <p
+                  v-b-tooltip.hover
+                  class="amount"
+                  :title="$t('details.nominator.total_bonded')"
+                >
                   {{ formatAmount(getTotalStake(nominator.staking)) }}
                 </p>
                 <h5>
-                  {{ nominator.staking.length }} nomination<span
-                    v-if="nominator.staking.length > 1"
-                    >s</span
-                  >
+                  {{ nominator.staking.length }}
+                  {{
+                    nominator.staking.length > 1
+                      ? $t("details.nominator.nominations")
+                      : $t("details.nominator.nomination")
+                  }}
                 </h5>
                 <hr />
                 <!-- identity start -->
@@ -79,7 +93,7 @@
                   >
                     >
                     <div class="col-md-3 mb-1">
-                      <strong>Name</strong>
+                      <strong>{{ $t("details.nominator.name") }}</strong>
                     </div>
                     <div class="col-md-9 mb-1 fee">
                       {{ getIdentity(nominator.accountId).identity.display }}
@@ -95,7 +109,7 @@
                   >
                     >
                     <div class="col-md-3 mb-2">
-                      <strong>Email</strong>
+                      <strong>{{ $t("details.nominator.email") }}</strong>
                     </div>
                     <div class="col-md-9 mb-2 fee">
                       <a
@@ -119,7 +133,7 @@
                     class="row"
                   >
                     <div class="col-md-3 mb-2">
-                      <strong>Legal</strong>
+                      <strong>{{ $t("details.nominator.legal") }}</strong>
                     </div>
                     <div class="col-md-9 mb-2 fee">
                       {{ getIdentity(nominator.accountId).identity.legal }}
@@ -134,7 +148,7 @@
                     class="row"
                   >
                     <div class="col-md-3 mb-2">
-                      <strong>Riot</strong>
+                      <strong>{{ $t("details.nominator.riot") }}</strong>
                     </div>
                     <div class="col-md-9 mb-2 fee">
                       <a
@@ -215,7 +229,7 @@
                         name: 'validator',
                         query: { accountId: nomination.validator }
                       }"
-                      title="Validator details"
+                      :title="$t('details.nominator.validator_details')"
                       class="mt-2 mb-0 d-block"
                     >
                       {{ getNickname(nomination.validator) }}
@@ -226,7 +240,7 @@
                         name: 'validator',
                         query: { accountId: nomination.validator }
                       }"
-                      title="Validator details"
+                      :title="$t('details.nominator.validator_details')"
                       class="mt-2 mb-0 d-block"
                     >
                       <span v-b-tooltip.hover :title="nomination.validator">{{
@@ -237,7 +251,7 @@
                       rank #{{ getRank(nomination.validator) }}
                     </p>
                     <p class="mt-0 mb-2">
-                      commission
+                      {{ $t("details.nominator.commission") }}
                       {{
                         (
                           validators[getIndex(nomination.validator)]

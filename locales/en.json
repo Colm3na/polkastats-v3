@@ -319,7 +319,21 @@
       "weekly_chart": "Weekly chart",
       "daily_chart": "Daily chart"
     },
-    "nominator": {},
+    "nominator": {
+      "previous_nominator": "Previous nominator: ",
+      "next_nominator": "Next nominator: ",
+      "nominator": "Nominator",
+      "see_address_in_polkastats": "See address in PolkaScan",
+      "total_bonded": "Total bonded",
+      "nomination": "nomination",
+      "nominations": "nominations",
+      "name": "Name",
+      "email": "Email",
+      "legal": "Legal",
+      "riot": "Riot",
+      "validator_details": "Validator details",
+      "commission": "Commission"
+    },
     "phragmen-candidate": {},
     "validator": {}
   }

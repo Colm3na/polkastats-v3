@@ -261,7 +261,7 @@
       "account": "Cuenta",
       "free_balance": "Saldo libre",
       "account_id": "Cuenta ID",
-      "see_address_in_polkastats": "Ver dirección en Polkastats",
+      "see_address_in_polkastats": "Ver dirección en PolkaScan",
       "account_nonce": "Nonce de Cuenta",
       "total_balance": "Saldo Total",
       "available_balance": "Saldo Disponible",
@@ -321,7 +321,21 @@
       "weekly_chart": "Gráfico semanal",
       "daily_chart": "Gráfico diario"
     },
-    "nominator": {},
+    "nominator": {
+      "previous_nominator": "Nominador previo: ",
+      "next_nominator": "Nominador siguiente: ",
+      "nominator": "Nominador",
+      "see_address_in_polkastats": "Ver dirección en PolkaScan",
+      "total_bonded": "Total depositado",
+      "nomination": "nominación",
+      "nominations": "nominaciones",
+      "name": "Nombre",
+      "email": "Email",
+      "legal": "Legal",
+      "riot": "Riot",
+      "validator_details": "Detalles del validador",
+      "commission": "Comisión"
+    },
     "phragmen-candidate": {},
     "validator": {}
   }
