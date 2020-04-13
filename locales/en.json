@@ -255,5 +255,14 @@
       "head_title": "PolkaStats - Polkadot Kusama network statistics",
       "head_content": "Polkadot Kusama network statistics"
     }
+  },
+  "details": {
+    "account": {},
+    "block": {},
+    "commons": {},
+    "intention": {},
+    "nominator": {},
+    "phragmen-candidate": {},
+    "validator": {}
   }
 }

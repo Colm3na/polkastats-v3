@@ -255,5 +255,14 @@
       "head_title": "PolkaStats - Estadísticas de la red Polkadot Kusama",
       "head_content": "Polkadot Kusama estadísticas de la red"
     }
+  },
+  "details": {
+    "account": {},
+    "block": {},
+    "commons": {},
+    "intention": {},
+    "nominator": {},
+    "phragmen-candidate": {},
+    "validator": {}
   }
 }
