@@ -29,7 +29,7 @@
     "apollo-link-ws": "^1.0.19",
     "bn.js": "^5.0.0",
     "bootstrap": "^4.1.3",
-    "bootstrap-vue": "^2.0.0-rc.11",
+    "bootstrap-vue": "2.0.0-rc.11",
     "cookie-universal-nuxt": "^2.0.16",
     "core-js": "^2.6.11",
     "jdenticon": "^2.2.0",
