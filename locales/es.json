@@ -384,7 +384,8 @@
       "reward": "Recompensa",
       "slashes": "Slashes",
       "produced_block": "Bloques producidos",
-      "status": "Status"
+      "status": "Status",
+      "date_time": "Día y hora"
     }
   }
 }

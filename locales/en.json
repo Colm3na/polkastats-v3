@@ -382,7 +382,8 @@
       "reward": "Reward",
       "slashes": "Slashes",
       "produced_block": "Produced Block",
-      "status": "Status"
+      "status": "Status",
+      "date_time": "Date and Time"
     }
   }
 }

@@ -1103,7 +1103,7 @@ export default {
                 categories: newCategories,
                 type: "datetime",
                 title: {
-                  text: "Date time (UTC)"
+                  text: vm.$t("details.validator.date_time") + " (UTC)"
                 },
                 labels: {
                   formatter: function(val) {
@@ -1113,11 +1113,15 @@ export default {
               },
               yaxis: {
                 title: {
-                  text: "Total bonded (KSM)"
+                  text: vm.$t("details.validator.total_bonded") + " (KSM)"
                 },
                 labels: {
                   formatter: function(val) {
-                    return (val / 1000000000000).toFixed(6);
+                    if (vm.overBreakpoint) {
+                      return (val / 1000000000000).toFixed(6);
+                    } else {
+                      return (val / 1000000000000).toFixed(2);
+                    }
                   }
                 }
               }
@@ -1188,7 +1192,7 @@ export default {
                 categories: newCategories,
                 type: "datetime",
                 title: {
-                  text: "Date time (UTC)"
+                  text: vm.$t("details.validator.date_time") + " (UTC)"
                 },
                 labels: {
                   formatter: function(val) {
@@ -1198,11 +1202,15 @@ export default {
               },
               yaxis: {
                 title: {
-                  text: "Total bonded (KSM)"
+                  text: vm.$t("details.validator.total_bonded") + " (KSM)"
                 },
                 labels: {
                   formatter: function(val) {
-                    return (val / 1000000000000).toFixed(6);
+                    if (vm.overBreakpoint) {
+                      return (val / 1000000000000).toFixed(6);
+                    } else {
+                      return (val / 1000000000000).toFixed(2);
+                    }
                   }
                 }
               }
@@ -1273,7 +1281,7 @@ export default {
                 categories: newCategories,
                 type: "datetime",
                 title: {
-                  text: "Date time (UTC)"
+                  text: vm.$t("details.validator.date_time") + " (UTC)"
                 },
                 labels: {
                   formatter: function(val) {
@@ -1283,11 +1291,15 @@ export default {
               },
               yaxis: {
                 title: {
-                  text: "Total bonded (KSM)"
+                  text: vm.$t("details.validator.total_bonded") + " (KSM)"
                 },
                 labels: {
                   formatter: function(val) {
-                    return (val / 1000000000000).toFixed(6);
+                    if (vm.overBreakpoint) {
+                      return (val / 1000000000000).toFixed(6);
+                    } else {
+                      return (val / 1000000000000).toFixed(2);
+                    }
                   }
                 }
               }
