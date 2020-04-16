@@ -728,6 +728,7 @@
 <script>
 import { mapMutations } from "vuex";
 import axios from "axios";
+import gql from "graphql-tag";
 import moment from "moment";
 import chart from "../../components/chart";
 import { commonChartOptions } from "../commons/chartOptions";
@@ -1027,36 +1028,67 @@ export default {
     resizeWindow(e) {
       this.overBreakpoint = window.innerWidth > this.mediumBreakpoint;
     },
+    getTimetamp(time) {
+      switch (time) {
+        case "day":
+          return parseInt(new Date().getTime() / 1000) - 86400;
+        case "week":
+          return parseInt(new Date().getTime() / 1000) - 604800;
+        case "month":
+          return parseInt(new Date().getTime() / 1000) - 2592000;
+        default:
+          return parseInt(new Date().getTime() / 1000) - 2592000;
+      }
+    },
     getValidatorDailyGraphData: function() {
       var vm = this;
-      axios
-        .get(`${this.backendBaseURL}/validator/graph/daily/${this.accountId}`)
+      const GET_VALIDATOR_BONDED = gql`
+        query validator_bonded {
+          validator_bonded(
+            where: { timestamp: { _gt: ${this.getTimetamp(
+              "day"
+            )} }, account_id: { _eq: "${this.accountId}" } },
+            order_by: {timestamp: desc}
+          ) {
+            account_id
+            amount
+            timestamp
+            session_index
+            block_number
+          }
+        }
+      `;
+
+      vm.$apolloProvider.defaultClient
+        .query({ query: GET_VALIDATOR_BONDED })
         .then(function(response) {
           // Update chart data
           var newCategories = [];
           var newData = [];
+          const { validator_bonded } = response.data;
 
-          for (var i = 0; i < response.data.length; i++) {
+          for (var i = 0; i < validator_bonded.length; i++) {
             // Insert firt point, last point and points with different values
             if (
               i == 0 ||
-              i == response.data.length - 1 ||
-              (i > 0 && response.data[i].amount != response.data[i - 1].amount)
+              i == validator_bonded.length - 1 ||
+              (i > 0 &&
+                validator_bonded[i].amount != validator_bonded[i - 1].amount)
             ) {
               // Save first and last point
-              if (i == 0) vm.daily.last = response.data[i].amount;
-              if (i == response.data.length - 1)
-                vm.daily.first = response.data[i].amount;
+              if (i == 0) vm.daily.last = validator_bonded[i].amount;
+              if (i == validator_bonded.length - 1)
+                vm.daily.first = validator_bonded[i].amount;
 
               newCategories.push(
                 moment
                   .unix(
-                    response.data[i].timestamp,
+                    validator_bonded[i].timestamp,
                     "YYYY-MM-DD HH:mm:ss.SSSSSS Z"
                   )
                   .format("YYYY-MM-DD HH:mm:ss")
               );
-              newData.push(response.data[i].amount);
+              newData.push(validator_bonded[i].amount);
             }
           }
 
