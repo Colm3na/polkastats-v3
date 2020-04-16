@@ -1054,6 +1054,9 @@ body {
   font-size: 0.8rem;
 }
 @media (max-width: 767px) {
+  table.b-table.b-table-stacked-md > tbody > tr > [data-label] {
+    grid-template-columns: inherit !important;
+  }
   .table th,
   .table td {
     border-top: 0;
