@@ -1134,28 +1134,47 @@ export default {
     },
     getValidatorWeeklyGraphData: function() {
       var vm = this;
-      axios
-        .get(`${this.backendBaseURL}/validator/graph/weekly/${this.accountId}`)
+
+      const GET_VALIDATOR_BONDED = gql`
+        query validator_bonded {
+          validator_bonded(
+            where: { timestamp: { _gt: ${this.getTimetamp(
+              "week"
+            )} }, account_id: { _eq: "${this.accountId}" } },
+            order_by: {timestamp: desc}
+          ) {
+            account_id
+            amount
+            timestamp
+            session_index
+            block_number
+          }
+        }
+      `;
+
+      vm.$apolloProvider.defaultClient
+        .query({ query: GET_VALIDATOR_BONDED })
         .then(function(response) {
           // Update chart data
           var newCategories = [];
           var newData = [];
+          const { validator_bonded } = response.data;
 
-          for (var i = 0; i < response.data.length; i++) {
+          for (var i = 0; i < validator_bonded.length; i++) {
             // Save first and last point
-            if (i == 0) vm.weekly.last = response.data[i].amount;
-            if (i == response.data.length - 1)
-              vm.weekly.first = response.data[i].amount;
+            if (i == 0) vm.weekly.last = validator_bonded[i].amount;
+            if (i == validator_bonded.length - 1)
+              vm.weekly.first = validator_bonded[i].amount;
 
             newCategories.push(
               moment
                 .unix(
-                  response.data[i].timestamp,
+                  validator_bonded[i].timestamp,
                   "YYYY-MM-DD HH:mm:ss.SSSSSS Z"
                 )
                 .format("YYYY-MM-DD HH:mm:ss")
             );
-            newData.push(response.data[i].amount);
+            newData.push(validator_bonded[i].amount);
           }
 
           newCategories.reverse();
