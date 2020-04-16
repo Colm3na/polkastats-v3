@@ -710,13 +710,6 @@
                 <b-tab :title="$t('details.validator.reward')"
                   ><p>Here is Rewards charts tab</p></b-tab
                 >
-                <b-tab :title="$t('details.validator.slashes')"
-                  ><p>Here is Slashes charts tab!</p></b-tab
-                >
-                <b-tab :title="$t('details.validator.produced_block')"
-                  ><p>Here is Produced Block charts tab!</p></b-tab
-                >
-                <b-tab title="Status"><p>Here is Status charts tab!</p></b-tab>
               </b-tabs>
             </b-card>
           </section>
