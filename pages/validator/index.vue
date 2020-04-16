@@ -942,21 +942,6 @@ export default {
         .map(f => {
           return { text: f.label, value: f.key };
         });
-    },
-    getChartHeader: function() {
-      return '<h3> \
-                <small v-if="monthly.last - monthly.first > 0" \
-                  class="change text-success ml-3" \
-                  ><i class="far fa-thumbs-up" /> +{{ \
-                    formatAmount(this.monthly.last - this.monthly.first) \
-                  }}</small><small v-if="monthly.last - monthly.first < 0"  \
-                  class="change text-danger ml-3"><i class="far fa-thumbs-down" /> \
-                  {{ \
-                    formatAmount(monthly.last - monthly.first) \
-                  }} \
-                </small> \
-            </h3> \
-      ';
     }
   },
   watch: {
