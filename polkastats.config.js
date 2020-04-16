@@ -9,3 +9,7 @@ export const blockExplorer = {
 
 export const numItemsTableValidatorOptions = [10, 20, 90, 180];
 export const numItemsTableOptions = [10, 20, 50, 100];
+
+// Breakpoints
+export const mobileBreakpoint = 415;
+export const mediumBreakpoint = 765;

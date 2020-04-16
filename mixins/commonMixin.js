@@ -4,12 +4,6 @@ formatBalance.setDefaults({ decimals, unit });
 import BN from "bn.js";
 
 export default {
-  data: function() {
-    return {
-      mobileBreakpoint: 415,
-      mediumBreakpoint: 765
-    };
-  },
   methods: {
     formatNumber(number) {
       if (isHex(number)) {

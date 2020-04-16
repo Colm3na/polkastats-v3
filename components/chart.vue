@@ -32,12 +32,11 @@ import VueApexCharts from "vue-apexcharts";
 import moment from "moment";
 import mergeDeepRight from "ramda/src/mergeDeepRight";
 import defaultOptions from "./chart/options";
-import commonMixin from "../mixins/commonMixin.js";
+import { mobileBreakpoint } from "../polkastats.config";
 
 Vue.component("apexchart", VueApexCharts);
 
 export default {
-  mixins: [commonMixin],
   props: {
     categories: {
       type: Array,
@@ -101,7 +100,8 @@ export default {
   data: function() {
     return {
       selected: this.type,
-      chartTypes: ["area", "bar", "heatmap", "line", "histogram", "scatter"]
+      chartTypes: ["area", "bar", "heatmap", "line", "histogram", "scatter"],
+      mobileBreakpoint
     };
   },
   computed: {

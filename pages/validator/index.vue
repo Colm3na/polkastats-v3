@@ -735,7 +735,12 @@ import Identicon from "../../components/identicon.vue";
 import chartHeader from "../../components/chart-header.vue";
 import { isHex } from "@polkadot/util";
 import BN from "bn.js";
-import { backendBaseURL, blockExplorer } from "../../polkastats.config.js";
+import {
+  backendBaseURL,
+  blockExplorer,
+  mediumBreakpoint,
+  mobileBreakpoint
+} from "../../polkastats.config.js";
 import commonMixin from "../../mixins/commonMixin.js";
 
 export default {
@@ -750,6 +755,8 @@ export default {
       accountId: this.$route.query.accountId,
       blockExplorer,
       backendBaseURL,
+      mediumBreakpoint,
+      mobileBreakpoint,
       polling: null,
       graphPolling: null,
       favorites: [],
@@ -821,8 +828,7 @@ export default {
         ...commonChartOptions
       },
       totalIssuance: "",
-      windowWidth: window.innerWidth,
-      overBreakpoint: window.innerWidth > this.mediumBreakpoint
+      overBreakpoint: window.innerWidth > mediumBreakpoint
     };
   },
   computed: {
@@ -1034,7 +1040,6 @@ export default {
   },
   methods: {
     resizeWindow(e) {
-      this.windowWidth = window.innerWidth;
       this.overBreakpoint = window.innerWidth > this.mediumBreakpoint;
     },
     getValidatorDailyGraphData: function() {
