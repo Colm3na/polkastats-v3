@@ -2,16 +2,6 @@ import animations from "./animations";
 import chart from "./chart";
 import xaxis from "./xaxis";
 import yaxis from "./yaxis";
-import mergeDeepRight from "ramda/src/mergeDeepRight";
-
-const mobile = {
-  labels: {
-    maxWidth: 90,
-    style: {
-      fontSize: "8px"
-    }
-  }
-};
 
 const customizations = {
   title: {
@@ -44,23 +34,11 @@ const customizations = {
 };
 
 const options = {
-  ...customizations,
   animations,
   chart,
   xaxis,
   yaxis,
-  responsive: [
-    {
-      breakpoint: 415,
-      options: {
-        ...customizations,
-        animations,
-        chart,
-        xaxis: mergeDeepRight(xaxis, mobile),
-        yaxis: mergeDeepRight(yaxis, mobile)
-      }
-    }
-  ]
+  ...customizations
 };
 
 export default options;

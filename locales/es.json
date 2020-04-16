@@ -374,13 +374,17 @@
       "nominators": "Nominadores",
       "search_placeholder": "Buscar Nominadores por cuenta o índice de cuenta",
       "nominator_details": "Detalles del Nominator",
-      "monthly_chart": "Gráfico mensual",
-      "weekly_chart": "Gráfico semanal",
-      "daily_chart": "Gráfico diario",
+      "monthly": "Mensual",
+      "weekly": "Semanal",
+      "daily": "Diario",
       "rank": "Rank",
       "stakers": "Nominadores",
       "percentage": "Porcentaje",
-      "amount": "Cantidad"
+      "amount": "Cantidad",
+      "reward": "Recompensa",
+      "slashes": "Slashes",
+      "produced_block": "Bloques producidos",
+      "status": "Status"
     }
   }
 }

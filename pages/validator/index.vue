@@ -4,7 +4,7 @@
       <b-container class="validator-page main pt-3 pb-5">
         <template v-for="(validator, index) in validators">
           <template v-if="validator.accountId === accountId">
-            <div :key="validator.accountId" class="row">
+            <div :key="validator.accountId" class="row accountIdMar mt-4">
               <div class="col-2 col-lg-1">
                 <template v-if="index > 0">
                   <nuxt-link
@@ -651,71 +651,75 @@
             </div>
           </template>
         </template>
-        <div id="stake-evolution-monthly-chart" class="mt-5 text-center">
-          <h3>
-            {{ $t("details.validator.total_bonded") }} -
-            {{ $t("details.validator.monthly_chart") }}
-            <small
-              v-if="monthly.last - monthly.first > 0"
-              class="change text-success ml-3"
-              ><i class="far fa-thumbs-up" /> +{{
-                formatAmount(monthly.last - monthly.first)
-              }}</small
-            ><small
-              v-if="monthly.last - monthly.first < 0"
-              class="change text-danger ml-3"
-              ><i class="far fa-thumbs-down" />
-              {{ formatAmount(monthly.last - monthly.first) }}</small
-            >
-          </h3>
-          <chart
-            :options="StakeEvolutionMonthlyChartOptions"
-            :series="StakeEvolutionMonthlySeries"
-          />
-        </div>
-        <div id="stake-evolution-weekly-chart" class="mt-5 mb-5 text-center">
-          <h3>
-            {{ $t("details.validator.total_bonded") }} -
-            {{ $t("details.validator.weekly_chart") }}
-            <small
-              v-if="weekly.last - weekly.first > 0"
-              class="change text-success ml-3"
-              ><i class="far fa-thumbs-up" /> +{{
-                formatAmount(weekly.last - weekly.first)
-              }}</small
-            ><small
-              v-if="weekly.last - weekly.first < 0"
-              class="change text-danger ml-3"
-              ><i class="far fa-thumbs-down" />
-              {{ formatAmount(weekly.last - weekly.first) }}</small
-            >
-          </h3>
-          <chart
-            :options="StakeEvolutionWeeklyChartOptions"
-            :series="StakeEvolutionWeeklySeries"
-          />
-        </div>
-        <div id="stake-evolution-daily-chart" class="mb-5 text-center">
-          <h3>
-            {{ $t("details.validator.total_bonded") }} -
-            {{ $t("details.validator.daily_chart") }}
-            <small
-              v-if="daily.last - daily.first > 0"
-              class="change text-success ml-3"
-              ><i class="far fa-thumbs-up" /> +{{
-                formatAmount(daily.last - daily.first)
-              }}</small
-            ><small
-              v-if="daily.last - daily.first < 0"
-              class="change text-danger ml-3"
-              ><i class="far fa-thumbs-down" />
-              {{ formatAmount(daily.last - daily.first) }}</small
-            >
-          </h3>
-          <chart
-            :options="StakeEvolutionDailyChartOptions"
-            :series="StakeEvolutionDailySeries"
-          />
+        <div>
+          <section>
+            <b-card>
+              <h3 class="mb-4">Charts</h3>
+              <b-tabs>
+                <b-tab :title="$t('details.validator.total_bonded')" active>
+                  <b-tabs
+                    pills
+                    :card="overBreakpoint"
+                    :vertical="overBreakpoint"
+                    :end="!overBreakpoint"
+                  >
+                    <b-tab :title="$t('details.validator.monthly')" active>
+                      <div
+                        id="stake-evolution-monthly-chart"
+                        class="text-center w-100"
+                      >
+                        <chartHeader
+                          :first="parseInt(monthly.first)"
+                          :last="parseInt(monthly.last)"
+                        />
+                        <chart
+                          :options="StakeEvolutionMonthlyChartOptions"
+                          :series="StakeEvolutionMonthlySeries"
+                        />
+                      </div>
+                    </b-tab>
+                    <b-tab :title="$t('details.validator.weekly')">
+                      <div
+                        id="stake-evolution-weekly-chart"
+                        class="text-center"
+                      >
+                        <chartHeader
+                          :first="parseInt(weekly.first)"
+                          :last="parseInt(weekly.last)"
+                        />
+                        <chart
+                          :options="StakeEvolutionWeeklyChartOptions"
+                          :series="StakeEvolutionWeeklySeries"
+                        />
+                      </div>
+                    </b-tab>
+                    <b-tab :title="$t('details.validator.daily')">
+                      <div id="stake-evolution-daily-chart" class="text-center">
+                        <chartHeader
+                          :first="parseInt(daily.first)"
+                          :last="parseInt(daily.last)"
+                        />
+                        <chart
+                          :options="StakeEvolutionDailyChartOptions"
+                          :series="StakeEvolutionDailySeries"
+                        />
+                      </div>
+                    </b-tab>
+                  </b-tabs>
+                </b-tab>
+                <b-tab :title="$t('details.validator.reward')"
+                  ><p>Here is Rewards charts tab</p></b-tab
+                >
+                <b-tab :title="$t('details.validator.slashes')"
+                  ><p>Here is Slashes charts tab!</p></b-tab
+                >
+                <b-tab :title="$t('details.validator.produced_block')"
+                  ><p>Here is Produced Block charts tab!</p></b-tab
+                >
+                <b-tab title="Status"><p>Here is Status charts tab!</p></b-tab>
+              </b-tabs>
+            </b-card>
+          </section>
         </div>
       </b-container>
     </section>
@@ -728,6 +732,7 @@ import moment from "moment";
 import chart from "../../components/chart";
 import { commonChartOptions } from "../commons/chartOptions";
 import Identicon from "../../components/identicon.vue";
+import chartHeader from "../../components/chart-header.vue";
 import { isHex } from "@polkadot/util";
 import BN from "bn.js";
 import { backendBaseURL, blockExplorer } from "../../polkastats.config.js";
@@ -736,7 +741,8 @@ import commonMixin from "../../mixins/commonMixin.js";
 export default {
   components: {
     chart,
-    Identicon
+    Identicon,
+    chartHeader
   },
   mixins: [commonMixin],
   data: function() {
@@ -814,7 +820,9 @@ export default {
       StakeEvolutionMonthlyChartOptions: {
         ...commonChartOptions
       },
-      totalIssuance: ""
+      totalIssuance: "",
+      windowWidth: window.innerWidth,
+      overBreakpoint: window.innerWidth > this.mediumBreakpoint
     };
   },
   computed: {
@@ -928,6 +936,21 @@ export default {
         .map(f => {
           return { text: f.label, value: f.key };
         });
+    },
+    getChartHeader: function() {
+      return '<h3> \
+                <small v-if="monthly.last - monthly.first > 0" \
+                  class="change text-success ml-3" \
+                  ><i class="far fa-thumbs-up" /> +{{ \
+                    formatAmount(this.monthly.last - this.monthly.first) \
+                  }}</small><small v-if="monthly.last - monthly.first < 0"  \
+                  class="change text-danger ml-3"><i class="far fa-thumbs-down" /> \
+                  {{ \
+                    formatAmount(monthly.last - monthly.first) \
+                  }} \
+                </small> \
+            </h3> \
+      ';
     }
   },
   watch: {
@@ -999,12 +1022,21 @@ export default {
       this.getValidatorMonthlyGraphData();
       vm.$store.dispatch("indexes/update");
     }, 60000);
+
+    window.addEventListener("resize", this.resizeWindow);
+  },
+  destroyed() {
+    window.removeEventListener("resize", this.resizeWindow);
   },
   beforeDestroy: function() {
     clearInterval(this.polling);
     clearInterval(this.graphPolling);
   },
   methods: {
+    resizeWindow(e) {
+      this.windowWidth = window.innerWidth;
+      this.overBreakpoint = window.innerWidth > this.mediumBreakpoint;
+    },
     getValidatorDailyGraphData: function() {
       var vm = this;
       axios

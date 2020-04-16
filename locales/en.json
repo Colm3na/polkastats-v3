@@ -372,13 +372,17 @@
       "nominators": "Nominators",
       "search_placeholder": "Search staker by account or account index",
       "nominator_details": "Nominator details",
-      "monthly_chart": "Monthly chart",
-      "weekly_chart": "Weekly chart",
-      "daily_chart": "Daily chart",
+      "monthly": "Monthly",
+      "weekly": "Weekly",
+      "daily": "Daily",
       "rank": "Rank",
       "staker": "Staker",
       "percentage": "Percentage",
-      "amount": "Amount"
+      "amount": "Amount",
+      "reward": "Reward",
+      "slashes": "Slashes",
+      "produced_block": "Produced Block",
+      "status": "Status"
     }
   }
 }
