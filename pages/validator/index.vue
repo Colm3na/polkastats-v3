@@ -1271,6 +1271,7 @@ export default {
           vm.StakeEvolutionWeeklyChartOptions = {
             ...vm.StakeEvolutionWeeklyChartOptions,
             ...{
+              markers: { size: 4 },
               xaxis: {
                 categories: newCategories,
                 type: "datetime",
@@ -1360,6 +1361,7 @@ export default {
           vm.StakeEvolutionMonthlyChartOptions = {
             ...vm.StakeEvolutionMonthlyChartOptions,
             ...{
+              markers: { size: 2 },
               xaxis: {
                 categories: newCategories,
                 type: "datetime",
@@ -1452,6 +1454,7 @@ export default {
           vm.RewardsMonthlyChartOptions = {
             ...vm.RewardsMonthlyChartOptions,
             ...{
+              markers: { size: 2 },
               xaxis: {
                 categories: newCategories,
                 type: "datetime",
@@ -1544,6 +1547,7 @@ export default {
           vm.RewardsWeeklyChartOptions = {
             ...vm.RewardsWeeklyChartOptions,
             ...{
+              markers: { size: 4 },
               xaxis: {
                 categories: newCategories,
                 type: "datetime",
