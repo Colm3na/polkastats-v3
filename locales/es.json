@@ -385,7 +385,8 @@
       "slashes": "Slashes",
       "produced_block": "Bloques producidos",
       "status": "Status",
-      "date_time": "Día y hora"
+      "date_time": "Día y hora",
+      "charts": "Gráficas"
     }
   }
 }

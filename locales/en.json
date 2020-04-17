@@ -383,7 +383,8 @@
       "slashes": "Slashes",
       "produced_block": "Produced Block",
       "status": "Status",
-      "date_time": "Date and Time"
+      "date_time": "Date and Time",
+      "charts": "Charts"
     }
   }
 }

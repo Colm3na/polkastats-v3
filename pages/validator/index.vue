@@ -654,7 +654,7 @@
         <div>
           <section>
             <b-card>
-              <h3 class="mb-4">Charts</h3>
+              <h3 class="mb-4">{{ $t("details.validator.charts") }}</h3>
               <b-tabs>
                 <b-tab :title="$t('details.validator.total_bonded')" active>
                   <b-tabs
