@@ -197,15 +197,6 @@
                     </p>
                   </div>
                   <div class="col-md-9">
-                    <div v-if="hasNickname(validator.accountId)" class="row">
-                      <div class="col-md-12">
-                        <h4
-                          class="card-title mb-4 account mt-4 mt-sm-0 mt-md-0 mt-lg-0 mt-xl-0"
-                        >
-                          {{ getNickname(validator.accountId) }}
-                        </h4>
-                      </div>
-                    </div>
                     <div v-if="validator.accountId" class="row">
                       <div class="col-md-3 mb-2">
                         <strong>Stash</strong>
@@ -988,9 +979,6 @@ export default {
     identities() {
       return this.$store.state.identities.list;
     },
-    nicknames() {
-      return this.$store.state.nicknames.list;
-    },
     indexes() {
       return this.$store.state.indexes.list;
     },
@@ -1068,11 +1056,6 @@ export default {
     // Force update of indentity list if empty
     if (this.$store.state.identities.list.length == 0) {
       vm.$store.dispatch("identities/update");
-    }
-
-    // Force update of nicknames list if empty
-    if (this.$store.state.nicknames.list.length == 0) {
-      vm.$store.dispatch("nicknames/update");
     }
 
     // Force update of account indexes list if empty
@@ -1711,17 +1694,6 @@ export default {
         return obj.stashId === stashId;
       });
       return filteredArray[0];
-    },
-    hasNickname(accountId) {
-      return this.$store.state.nicknames.list.some(obj => {
-        return obj.accountId === accountId;
-      });
-    },
-    getNickname(accountId) {
-      let filteredArray = this.$store.state.nicknames.list.filter(obj => {
-        return obj.accountId === accountId;
-      });
-      return filteredArray[0].nickname;
     },
     onFiltered(filteredItems) {
       // Trigger pagination to update the number of buttons/pages due to filtering

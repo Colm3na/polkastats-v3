@@ -121,10 +121,7 @@
                   <h4
                     class="card-title mb-4 account mt-4 mt-sm-0 mt-md-0 mt-lg-0 mt-xl-0"
                   >
-                    <span v-if="hasNickname(candidate.pub_key_stash)">
-                      {{ getNickname(candidate.pub_key_stash) }}
-                    </span>
-                    <span v-else>
+                    <span>
                       {{ candidate.pub_key_stash }}
                     </span>
                   </h4>
@@ -442,9 +439,6 @@ export default {
     identities() {
       return this.$store.state.identities.list;
     },
-    nicknames() {
-      return this.$store.state.nicknames.list;
-    },
     indexes() {
       return this.$store.state.indexes.list;
     }
@@ -472,11 +466,6 @@ export default {
       vm.$store.dispatch("identities/update");
     }
 
-    // Force update of nicknames list if empty
-    if (this.$store.state.nicknames.list.length === 0) {
-      vm.$store.dispatch("nicknames/update");
-    }
-
     // Force update of account indexes list if empty
     if (this.$store.state.indexes.list.length == 0) {
       vm.$store.dispatch("indexes/update");
@@ -485,7 +474,6 @@ export default {
     this.polling = setInterval(() => {
       vm.$store.dispatch("phragmen/update");
       vm.$store.dispatch("identities/update");
-      vm.$store.dispatch("nicknames/update");
       vm.$store.dispatch("stakingIdentities/update");
     }, 10000);
 
@@ -522,17 +510,6 @@ export default {
       return this.$store.state.identities.list.some(obj => {
         return obj.stashId === stashId;
       });
-    },
-    hasNickname(accountId) {
-      return this.$store.state.nicknames.list.some(obj => {
-        return obj.accountId === accountId;
-      });
-    },
-    getNickname(accountId) {
-      let filteredArray = this.$store.state.nicknames.list.filter(obj => {
-        return obj.accountId === accountId;
-      });
-      return filteredArray[0].nickname;
     }
   },
   head() {
