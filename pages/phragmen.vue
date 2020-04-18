@@ -304,7 +304,7 @@ export default {
       enabled: false,
       tableOptions: numItemsTableOptions,
       perPage: localStorage.numItemsTableSelected
-        ? localStorage.numItemsTableSelected
+        ? parseInt(localStorage.numItemsTableSelected)
         : 10,
       currentPage: 1,
       sortBy: `rank`,
@@ -477,7 +477,7 @@ export default {
   },
   methods: {
     handleNumFields(num) {
-      this.perPage = num;
+      this.perPage = parseInt(num);
     },
     toggleFavorite(accountId) {
       if (this.favorites.indexOf(accountId) !== -1) {
