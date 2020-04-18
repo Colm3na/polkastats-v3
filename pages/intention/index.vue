@@ -13,7 +13,9 @@
                       query: { accountId: intentions[index - 1].accountId }
                     }"
                     :title="
-                      'Previous intention: ' + intentions[index - 1].accountId
+                      $t('details.intention.previous_intention').concat(
+                        intentions[index - 1].accountId
+                      )
                     "
                   >
                     <i class="fas fa-2x fa-chevron-left" />
@@ -21,7 +23,9 @@
                 </template>
               </div>
               <div class="col-8 col-lg-10 text-center">
-                <h4 class="mb-1">Intention {{ accountId }}</h4>
+                <h4 class="mb-1">
+                  {{ $t("details.intention.intention") }} {{ accountId }}
+                </h4>
               </div>
               <div class="col-2 col-lg-1 text-right">
                 <template v-if="index < intentions.length - 1">
@@ -31,7 +35,9 @@
                       query: { accountId: intentions[index + 1].accountId }
                     }"
                     :title="
-                      'Next intention: ' + intentions[index + 1].accountId
+                      $t('details.intention.next_intention').concat(
+                        intentions[index + 1].accountId
+                      )
                     "
                   >
                     <i class="fas fa-2x fa-chevron-right" />
@@ -46,14 +52,14 @@
                   v-b-tooltip.hover
                   class="favorite fas fa-star"
                   style="color: #f1bd23"
-                  title="In Favorites"
+                  :title="$t('details.intention.in_favorites')"
                 />
                 <i
                   v-else
                   v-b-tooltip.hover
                   class="favorite fas fa-star"
                   style="color: #e6dfdf;"
-                  title="Not in Favorites"
+                  :title="$t('details.intention.not_in_favorites')"
                 />
                 <div class="row">
                   <div class="col-md-3 mb-2 text-center">
@@ -101,7 +107,7 @@
                     <p
                       v-b-tooltip.hover
                       class="bonded mb-0"
-                      title="Active bonded"
+                      :title="$t('details.intention.active_bonded')"
                     >
                       {{ formatAmount(validator.stakingLedger.active) }}
                     </p>
@@ -181,7 +187,9 @@
                     </div>
                     <div v-if="validator.sessionIdHex" class="row">
                       <div class="col-md-3 mb-2">
-                        <strong>Session id</strong>
+                        <strong>{{
+                          $t("details.intention.session_id")
+                        }}</strong>
                       </div>
                       <div id="session-id-info" class="col-md-9 mb-2">
                         <a
@@ -206,7 +214,9 @@
                     </div>
                     <div v-if="validator.nextSessionIdHex" class="row">
                       <div class="col-md-3 mb-2">
-                        <strong>Next session id</strong>
+                        <strong>{{
+                          $t("details.intention.next_session_id")
+                        }}</strong>
                       </div>
                       <div id="next-session-id-info" class="col-md-9 mb-2">
                         <a
@@ -236,7 +246,9 @@
                       class="row"
                     >
                       <div class="col-md-3 mb-2">
-                        <strong>Commission</strong>
+                        <strong>{{
+                          $t("details.intention.commission")
+                        }}</strong>
                       </div>
                       <div class="col-md-9 mb-2 fee">
                         {{
@@ -248,7 +260,9 @@
                     </div>
                     <div class="row mb-2">
                       <div class="col-md-3 mb-2">
-                        <strong>Reward destination</strong>
+                        <strong>{{
+                          $t("details.intention.reward_destination")
+                        }}</strong>
                       </div>
                       <div class="col-md-9 mb-2 fee">
                         {{ formatRewardDest(validator.rewardDestination) }}
@@ -265,7 +279,7 @@
                         class="row"
                       >
                         <div class="col-md-3 mb-1">
-                          <strong>Name</strong>
+                          <strong>{{ $t("details.intention.name") }}</strong>
                         </div>
                         <div class="col-md-9 mb-1 fee">
                           {{
@@ -282,7 +296,7 @@
                         class="row"
                       >
                         <div class="col-md-3 mb-2">
-                          <strong>Email</strong>
+                          <strong>{{ $t("details.intention.email") }}</strong>
                         </div>
                         <div class="col-md-9 mb-2 fee">
                           <a
@@ -308,7 +322,7 @@
                         class="row"
                       >
                         <div class="col-md-3 mb-2">
-                          <strong>Legal</strong>
+                          <strong>{{ $t("details.intention.legal") }}</strong>
                         </div>
                         <div class="col-md-9 mb-2 fee">
                           {{ getIdentity(validator.accountId).identity.legal }}
@@ -323,7 +337,7 @@
                         class="row"
                       >
                         <div class="col-md-3 mb-2">
-                          <strong>Riot</strong>
+                          <strong>{{ $t("details.intention.riot") }}</strong>
                         </div>
                         <div class="col-md-9 mb-2 fee">
                           <a
@@ -400,7 +414,8 @@
                           :aria-controls="'staker' + index"
                         >
                           <h6 class="h6 nominators d-inline mr-4">
-                            <i class="fas" /> Stakers ({{
+                            <i class="fas" />
+                            {{ $t("details.intention.stakers") }} ({{
                               validator.exposure.others.length
                             }})
                           </h6>
@@ -416,9 +431,9 @@
                           :aria-controls="'current-session-id-' + index"
                         >
                           <h6 class="h6 nominators d-inline mr-4">
-                            <i class="fas" /> Current session ids ({{
-                              validator.sessionIds.length
-                            }})
+                            <i class="fas" />
+                            {{ $t("details.intention.current_session_ids") }}
+                            ({{ validator.sessionIds.length }})
                           </h6>
                         </a>
                       </template>
@@ -432,7 +447,8 @@
                           :aria-controls="'session-id-' + index"
                         >
                           <h6 class="h6 nominators d-inline mr-4">
-                            <i class="fas" /> Next session ids ({{
+                            <i class="fas" />
+                            {{ $t("details.intention.next_session_ids") }} ({{
                               validator.nextSessionIds.length
                             }})
                           </h6>
@@ -564,7 +580,8 @@
         </template>
         <div id="stake-evolution-monthly-chart" class="mt-5 text-center">
           <h3>
-            Total bonded - Monthly chart
+            {{ $t("details.intention.total_bonded") }} -
+            {{ $t("details.intention.monthly_chart") }}
             <small
               v-if="monthly.last - monthly.first > 0"
               class="change text-success ml-3"
@@ -585,7 +602,8 @@
         </div>
         <div id="stake-evolution-weekly-chart" class="mt-5 mb-5 text-center">
           <h3>
-            Total bonded - Weekly chart
+            {{ $t("details.intention.total_bonded") }} -
+            {{ $t("details.intention.weekly_chart") }}
             <small
               v-if="weekly.last - weekly.first > 0"
               class="change text-success ml-3"
@@ -606,7 +624,8 @@
         </div>
         <div id="stake-evolution-daily-chart" class="mb-5 text-center">
           <h3>
-            Total bonded - Daily chart
+            {{ $t("details.intention.total_bonded") }} -
+            {{ $t("details.intention.daily_chart") }}
             <small
               v-if="daily.last - daily.first > 0"
               class="change text-success ml-3"

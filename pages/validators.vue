@@ -9,7 +9,7 @@
               id="filterInput"
               v-model="filter"
               type="search"
-              placeholder="Search validator by account, account index, identity display name or keybase name"
+              :placeholder="$t('pages.validators.search_placeholder')"
             />
           </b-col>
           <b-col cols="auto">
@@ -35,7 +35,7 @@
               <b-card>
                 <b-row>
                   <b-col cols="2" class="filter-label">
-                    <span>Filter</span>
+                    <span>{{ $t("pages.validators.filter") }}</span>
                   </b-col>
                   <b-col>
                     <b-form-select
@@ -48,7 +48,9 @@
                 </b-row>
                 <b-row>
                   <b-col cols="2" class="filter-label">
-                    <span style="font-size: 1rem">where</span>
+                    <span style="font-size: 1rem">{{
+                      $t("pages.validators.where")
+                    }}</span>
                   </b-col>
                   <b-col>
                     <b-form-select
@@ -60,7 +62,9 @@
                 </b-row>
                 <b-row>
                   <b-col cols="2" class="filter-label">
-                    <span style="font-size: 1rem">than</span>
+                    <span style="font-size: 1rem">{{
+                      $t("pages.validators.than")
+                    }}</span>
                   </b-col>
                   <b-col>
                     <b-form-input v-model="filterText" class="filters" />
@@ -185,13 +189,16 @@
                         v-if="data.item.currentElected"
                         v-b-tooltip.hover
                         class="elected fas fa-chevron-circle-right"
-                        title="Elected for next session"
+                        :title="$t('pages.validators.elected_for_next_session')"
                       />
                       <i
                         v-else
                         v-b-tooltip.hover
-                        class="notElected fas fa-times-circle"
-                        title="Not elected for next session"
+                        class="notElected fas
+                      fa-times-circle"
+                        :title="
+                          $t('pages.validators.not_elected_for_next_session')
+                        "
                       />
                     </p>
                     <a
@@ -203,14 +210,14 @@
                         v-b-tooltip.hover
                         class="fas fa-star"
                         style="color: #f1bd23"
-                        title="Remove from Favorites"
+                        :title="$t('pages.validators.remove_from_favorites')"
                       />
                       <i
                         v-else
                         v-b-tooltip.hover
                         class="fas fa-star"
                         style="color: #e6dfdf;"
-                        title="Add to Favorites"
+                        :title="$t('pages.validators.add_to_favorites')"
                       />
                     </a>
                   </b-row>
@@ -221,7 +228,7 @@
                           name: 'validator',
                           query: { accountId: data.item.accountId }
                         }"
-                        title="Validator details"
+                        :title="$t('pages.validators.validator_details')"
                       >
                         <div v-if="hasIdentity(data.item.accountId)">
                           <div
@@ -250,7 +257,7 @@
                             name: 'validator',
                             query: { accountId: data.item.accountId }
                           }"
-                          title="Validator details"
+                          :title="$t('pages.validators.validator_details')"
                         >
                           <h4 v-if="hasIdentity(data.item.accountId)">
                             {{ getIdentity(data.item.accountId).full_name }}
@@ -275,7 +282,7 @@
                               v-if="data.item.stake && data.item.stake > 0"
                               v-b-tooltip.hover
                               class="bonded mb-0"
-                              title="Total bonded"
+                              :title="$t('pages.validators.total_bonded')"
                             >
                               <!-- <i class="far fa-handshake"></i> -->
                               <font-awesome-icon
@@ -292,7 +299,11 @@
                               <p
                                 v-if="data.item.stakers.total"
                                 v-b-tooltip.hover
-                                title="Percentage over total bonded stake"
+                                :title="
+                                  $t(
+                                    'pages.validators.percentage_over_total_bonded_stake'
+                                  )
+                                "
                               >
                                 <span>
                                   <!-- <i class="fas fa-share-alt"></i>-> -->
@@ -375,7 +386,7 @@
                     name: 'validator',
                     query: { accountId: data.item.accountId }
                   }"
-                  title="Validator details"
+                  :title="$t('pages.validators.validator_details')"
                 >
                   <span v-if="hasIdentity(data.item.accountId)">
                     {{ getIdentity(data.item.accountId).full_name }}
@@ -440,14 +451,14 @@
                     v-b-tooltip.hover
                     class="fas fa-star"
                     style="color: #f1bd23"
-                    title="Remove from Favorites"
+                    :title="$t('pages.validators.remove_from_favorites')"
                   />
                   <i
                     v-else
                     v-b-tooltip.hover
                     class="fas fa-star"
                     style="color: #e6dfdf;"
-                    title="Add to Favorites"
+                    :title="$t('pages.validators.add_to_favorites')"
                   />
                 </a>
               </p>
@@ -527,37 +538,37 @@ export default {
         },
         {
           key: "accountId",
-          label: "✅ Validator",
+          label: "✅ " + this.$t("pages.validators.validator"),
           sortable: true,
           filterByFormatted: true
         },
         {
           key: "numStakers",
-          label: "👥 Stakers",
+          label: "👥 " + this.$t("pages.validators.stakers"),
           sortable: true,
           class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
         },
         {
           key: "stakeIndex",
-          label: "💰Total stake",
+          label: "💰" + this.$t("pages.validators.total_stake"),
           sortable: true,
           class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
         },
         {
           key: "percent",
-          label: "% Stake",
+          label: "% " + this.$t("pages.validators.stake"),
           sortable: true,
           class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
         },
         {
           key: "commission",
-          label: "💸Commission",
+          label: "💸 " + this.$t("pages.validators.commission"),
           sortable: true,
           class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
         },
         {
           key: "eraPoints",
-          label: "Era points",
+          label: this.$t("pages.validators.era_points"),
           sortable: true,
           class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
         },
@@ -891,12 +902,12 @@ export default {
   },
   head() {
     return {
-      title: "PolkaStats - Polkadot Kusama network statistics",
+      title: this.$t("pages.validators.head_title"),
       meta: [
         {
           hid: "description",
           name: "description",
-          content: "Polkadot Kusama network statistics"
+          content: this.$t("pages.validators.head_content")
         }
       ]
     };

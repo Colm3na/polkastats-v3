@@ -11,10 +11,10 @@
           data-testid="serverAlert"
         >
           <strong
-            >⚡ We have a new awesome dedicated server graciously sponsored by
+            >⚡ {{ $t("pages.index.we_have_a_new_TEXT") }}
             <a href="https://www.colmenalabs.org/" target="_blank"
               >La Colmena Labs</a
-            >. Thanks! ⚡</strong
+            >. {{ $t("pages.index.thanks") }} ⚡</strong
           >
         </b-alert>
         <!-- Economics info message -->
@@ -25,7 +25,7 @@
           class="text-center"
           data-testid="infoAlert"
         >
-          Total issuance is
+          {{ $t("pages.index.total_issuance_is") }}
           <strong>{{ formatAmount(network.totalIssuance) }}</strong>
           <span
             v-if="
@@ -33,11 +33,11 @@
                 totalStakeBondedPercen !== 0
             "
           >
-            , total stake bonded is
+            , {{ $t("pages.index.total_stake_bonded_is") }}
             <strong
               >{{ formatAmount(totalStakeBonded) }} ({{
                 totalStakeBondedPercen.toString(10)
-              }}% of total)</strong
+              }}% {{ $t("pages.index.of_total") }})</strong
             >
           </span>
         </b-alert>
@@ -49,10 +49,13 @@
           class="text-center"
           data-testid="validatorsAlert"
         >
-          Currently there are <strong>{{ validators.length }}</strong> active
-          validators of
-          <strong>{{ network.session.validatorCount }}</strong> available slots
-          and <strong>{{ intentions.length }}</strong> waiting
+          {{ $t("pages.index.currently_there_are") }}
+          <strong>{{ validators.length }}</strong>
+          {{ $t("pages.index.active_validators_of") }}
+          <strong>{{ network.session.validatorCount }}</strong>
+          {{ $t("pages.index.available_slots_and") }}
+          <strong>{{ intentions.length }}</strong>
+          {{ $t("pages.index.waiting") }}
         </b-alert>
         <!-- Network component -->
         <Network :network="network" />
@@ -63,7 +66,7 @@
               id="filterInput"
               v-model="filter"
               type="search"
-              placeholder="Search validator by account, account index, identity display name or keybase name"
+              :placeholder="$t('pages.index.search_placeholder')"
               data-testid="searchBar"
             />
           </b-col>
@@ -72,7 +75,7 @@
         <div class="row d-block d-sm-block d-md-block d-lg-none d-xl-none">
           <b-col lg="6" class="my-1">
             <b-form-group
-              label="Sort"
+              :label="$t('pages.index.sort')"
               label-cols-sm="3"
               label-align-sm="right"
               label-size="sm"
@@ -152,7 +155,10 @@
                 <b-container>
                   <b-row>
                     <p class="mt-3 mb-0 rank">
-                      <span v-b-tooltip.hover class="rank-detail" title="Rank"
+                      <span
+                        v-b-tooltip.hover
+                        class="rank-detail"
+                        :title="$t('pages.index.rank')"
                         >#{{ data.item.rank }}</span
                       >
                       <i
@@ -171,13 +177,13 @@
                         v-if="data.item.currentElected"
                         v-b-tooltip.hover
                         class="elected fas fa-chevron-circle-right"
-                        title="Elected for next session"
+                        :title="$t('pages.index.elected_for_next_session')"
                       />
                       <i
                         v-else
                         v-b-tooltip.hover
                         class="notElected fas fa-times-circle"
-                        title="Not elected for next session"
+                        :title="$t('pages.index.not_elected_for_next_session')"
                       />
                     </p>
                     <a
@@ -189,14 +195,14 @@
                         v-b-tooltip.hover
                         class="fas fa-star"
                         style="color: #f1bd23"
-                        title="Remove from Favorites"
+                        :title="$t('pages.index.remove_from_favorites')"
                       />
                       <i
                         v-else
                         v-b-tooltip.hover
                         class="fas fa-star"
                         style="color: #e6dfdf;"
-                        title="Add to Favorites"
+                        :title="$t('pages.index.add_to_favorites')"
                       />
                     </a>
                   </b-row>
@@ -207,7 +213,7 @@
                           name: 'validator',
                           query: { accountId: data.item.accountId }
                         }"
-                        title="Validator details"
+                        :title="$t('pages.index.validator_details')"
                       >
                         <div v-if="hasIdentity(data.item.accountId)">
                           <div
@@ -236,7 +242,7 @@
                             name: 'validator',
                             query: { accountId: data.item.accountId }
                           }"
-                          title="Validator details"
+                          :title="$t('pages.index.validator_details')"
                         >
                           <h4 v-if="hasIdentity(data.item.accountId)">
                             {{ getIdentity(data.item.accountId).full_name }}
@@ -261,7 +267,7 @@
                               v-if="data.item.stake && data.item.stake > 0"
                               v-b-tooltip.hover
                               class="bonded mb-0"
-                              title="Total bonded"
+                              :title="$t('pages.index.total_bonded')"
                             >
                               <!-- <i class="far fa-handshake"></i> -->
                               <font-awesome-icon
@@ -278,7 +284,11 @@
                               <p
                                 v-if="data.item.stakers.total"
                                 v-b-tooltip.hover
-                                title="Percentage over total bonded stake"
+                                :title="
+                                  $t(
+                                    'pages.index.percentage_over_total_bonded_stake'
+                                  )
+                                "
                               >
                                 <span>
                                   <!-- <i class="fas fa-share-alt"></i>-> -->
@@ -361,7 +371,7 @@
                     name: 'validator',
                     query: { accountId: data.item.accountId }
                   }"
-                  title="Validator details"
+                  :title="$t('pages.index.validator_details')"
                   data-testid="validatorLink"
                 >
                   <span v-if="hasIdentity(data.item.accountId)">
@@ -427,14 +437,14 @@
                     v-b-tooltip.hover
                     class="fas fa-star"
                     style="color: #f1bd23"
-                    title="Remove from Favorites"
+                    :title="$t('pages.index.remove_from_favorites')"
                   />
                   <i
                     v-else
                     v-b-tooltip.hover
                     class="fas fa-star"
                     style="color: #e6dfdf;"
-                    title="Add to Favorites"
+                    :title="$t('pages.index.add_to_favorites')"
                   />
                 </a>
               </p>
@@ -493,37 +503,37 @@ export default {
         },
         {
           key: "accountId",
-          label: "✅ Validator",
+          label: "✅ " + this.$t("pages.index.validator"),
           sortable: true,
           filterByFormatted: true
         },
         {
           key: "numStakers",
-          label: "👥 Stakers",
+          label: "👥 " + this.$t("pages.index.stakers"),
           sortable: true,
           class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
         },
         {
           key: "stakeIndex",
-          label: "💰Total stake",
+          label: "💰" + this.$t("pages.index.total_stake"),
           sortable: true,
           class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
         },
         {
           key: "percent",
-          label: "% Stake",
+          label: "% " + this.$t("pages.index.stake"),
           sortable: true,
           class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
         },
         {
           key: "commission",
-          label: "💸Commission",
+          label: "💸 " + this.$t("pages.index.commission"),
           sortable: true,
           class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
         },
         {
           key: "eraPoints",
-          label: "Era points",
+          label: this.$t("pages.index.era_points"),
           sortable: true,
           class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
         },

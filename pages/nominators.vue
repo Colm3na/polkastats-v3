@@ -9,7 +9,7 @@
               id="filterInput"
               v-model="filter"
               type="search"
-              placeholder="Search nominator by account, account index or identity display name"
+              :placeholder="$t('pages.nominators.search_placeholder')"
             />
           </b-col>
         </b-row>
@@ -17,7 +17,7 @@
         <div class="row d-block d-sm-block d-md-block d-lg-none d-xl-none">
           <b-col lg="6" class="my-1">
             <b-form-group
-              label="Sort"
+              label="$t('pages.nominators.sort)"
               label-cols-sm="3"
               label-align-sm="right"
               label-size="sm"
@@ -88,7 +88,7 @@
                     name: 'nominator',
                     query: { accountId: data.item.accountId }
                   }"
-                  title="Nominator details"
+                  :title="$t('pages.nominators.nominator_details')"
                 >
                   <span v-if="hasKusamaIdentity(data.item.accountId)">
                     {{ getKusamaIdentity(data.item.accountId).display }}
@@ -121,7 +121,7 @@
                     name: 'nominator',
                     query: { accountId: data.item.accountId }
                   }"
-                  title="Nominator details"
+                  :title="$t('pages.nominators.nominator_details')"
                 >
                   <span v-if="hasKusamaIdentity(data.item.accountId)">
                     {{ getKusamaIdentity(data.item.accountId).display }}
@@ -160,14 +160,14 @@
                     v-b-tooltip.hover
                     class="fas fa-star"
                     style="color: #f1bd23"
-                    title="Remove from Favorites"
+                    :title="$t('pages.nominators.remove_from_favorites')"
                   />
                   <i
                     v-else
                     v-b-tooltip.hover
                     class="fas fa-star"
                     style="color: #e6dfdf;"
-                    title="Add to Favorites"
+                    :title="$t('pages.nominators.add_to_favorites')"
                   />
                 </a>
               </p>
@@ -228,20 +228,24 @@ export default {
       fields: [
         {
           key: "rank",
-          label: "Rank",
+          label: this.$t("pages.nominators.rank"),
           sortable: true,
           class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
         },
-        { key: "accountId", label: "Nominator", sortable: true },
+        {
+          key: "accountId",
+          label: this.$t("pages.nominators.nominator"),
+          sortable: true
+        },
         {
           key: "nominations",
-          label: "Nominations",
+          label: this.$t("pages.nominators.nominations"),
           sortable: true,
           class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
         },
         {
           key: "totalStake",
-          label: "Total stake",
+          label: this.$t("pages.nominators.total_stake"),
           sortable: true,
           class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
         },

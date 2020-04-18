@@ -3,7 +3,7 @@
     <section>
       <b-container class="page-accounts main pt-4">
         <h1 class="text-center mb-4">
-          Active accounts
+          {{ $t("pages.accounts.active_accounts") }}
         </h1>
         <!-- Filter -->
         <b-row>
@@ -12,7 +12,7 @@
               id="filterInput"
               v-model="filter"
               type="search"
-              placeholder="Search account by address, index or identity"
+              :placeholder="$t('pages.accounts.search_placeholder')"
             />
           </b-col>
         </b-row>
@@ -20,7 +20,7 @@
         <div class="row d-block d-sm-block d-md-block d-lg-none d-xl-none">
           <b-col lg="6" class="my-1">
             <b-form-group
-              label="Sort"
+              :label="$t('pages.accounts.sort')"
               label-cols-sm="3"
               label-align-sm="right"
               label-size="sm"
@@ -80,7 +80,9 @@
               <div
                 class="d-block d-sm-block d-md-none d-lg-none d-xl-none text-center"
               >
-                <p class="mb-2">rank #{{ data.item.rank }}</p>
+                <p class="mb-2">
+                  {{ $t("pages.accounts.rank") }} #{{ data.item.rank }}
+                </p>
                 <Identicon
                   :key="data.item.accountId"
                   :value="data.item.accountId"
@@ -92,7 +94,7 @@
                     name: 'account',
                     query: { accountId: data.item.accountId }
                   }"
-                  title="Account details"
+                  :title="$t('pages.accounts.account_details')"
                 >
                   <h4>{{ shortAddress(data.item.accountId) }}</h4>
                 </nuxt-link>
@@ -103,7 +105,7 @@
                   <tbody>
                     <tr>
                       <td class="text-left">
-                        <strong>Free Balance</strong>
+                        <strong>{{ $t("pages.accounts.free_balance") }}</strong>
                       </td>
                       <td class="text-right">
                         {{ formatAmount(data.item.freeBalance) }}
@@ -111,7 +113,9 @@
                     </tr>
                     <tr>
                       <td class="text-left">
-                        <strong>Available Balance</strong>
+                        <strong>{{
+                          $t("pages.accounts.available_balance")
+                        }}</strong>
                       </td>
                       <td class="text-right">
                         {{ formatAmount(data.item.availableBalance) }}
@@ -119,7 +123,9 @@
                     </tr>
                     <tr>
                       <td class="text-left">
-                        <strong>Locked Balance</strong>
+                        <strong>{{
+                          $t("pages.accounts.locked_balance")
+                        }}</strong>
                       </td>
                       <td class="text-right">
                         {{ formatAmount(data.item.lockedBalance) }}
@@ -140,7 +146,7 @@
                     name: 'account',
                     query: { accountId: data.item.accountId }
                   }"
-                  title="Account details"
+                  :title="$t('pages.accounts.account_details')"
                 >
                   {{ shortAddress(data.item.accountId) }}
                 </nuxt-link>
@@ -175,14 +181,14 @@
                     v-b-tooltip.hover
                     class="fas fa-star"
                     style="color: #f1bd23"
-                    title="Remove from Favorites"
+                    :title="$t('pages.accounts.remove_from_favorites')"
                   />
                   <i
                     v-else
                     v-b-tooltip.hover
                     class="fas fa-star"
                     style="color: #e6dfdf;"
-                    title="Add to Favorites"
+                    :title="$t('pages.accounts.add_to_favorites')"
                   />
                 </a>
               </p>
@@ -238,32 +244,32 @@ export default {
       fields: [
         {
           key: "rank",
-          label: "Rank",
+          label: this.$t("pages.accounts.rank"),
           sortable: true,
           class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
         },
         { key: "accountId", label: "Account", sortable: true },
         {
           key: "identity",
-          label: "Identity",
+          label: this.$t("pages.accounts.identity"),
           sortable: true,
           class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
         },
         {
           key: "freeBalance",
-          label: "Total balance",
+          label: this.$t("pages.accounts.free_balance"),
           sortable: true,
           class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
         },
         {
           key: "lockedBalance",
-          label: "Locked balance",
+          label: this.$t("pages.accounts.locked_balance"),
           sortable: true,
           class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
         },
         {
           key: "availableBalance",
-          label: "Available balance",
+          label: this.$t("pages.accounts.available_balance"),
           sortable: true,
           class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
         },
@@ -356,12 +362,12 @@ export default {
   },
   head() {
     return {
-      title: "PolkaStats - Polkadot Kusama active accounts",
+      title: this.$t("pages.accounts.head_title"),
       meta: [
         {
           hid: "description",
           name: "description",
-          content: "Polkadot Kusama active accounts"
+          content: this.$t("pages.accounts.head_content")
         }
       ]
     };

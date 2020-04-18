@@ -3,7 +3,7 @@
     <section>
       <b-container class="page-phragmen main pt-4">
         <h1 class="text-center mb-4">
-          Predicted candidates by phragmen election algorithm
+          {{ $t("pages.phragmen.predicted_candidates_by_TEXT") }}
         </h1>
 
         <b-alert
@@ -13,10 +13,7 @@
           class="text-center"
           data-testid="serverAlert"
         >
-          <strong
-            >offline-phragmen is currently broken so this is temporary
-            disabled!</strong
-          >
+          <strong>{{ $t("pages.phragmen.offline_phragmen_is_TEXT") }}</strong>
         </b-alert>
 
         <template v-if="enabled">
@@ -27,7 +24,7 @@
                 id="filterInput"
                 v-model="filter"
                 type="search"
-                placeholder="Search candidate by account, account index, identity display name or keybase name"
+                :placeholder="$t('pages.phragmen.offline_phragmen_is_TEXT')"
               />
             </b-col>
           </b-row>
@@ -35,7 +32,7 @@
           <div class="row d-block d-sm-block d-md-block d-lg-none d-xl-none">
             <b-col lg="6" class="my-1">
               <b-form-group
-                label="Sort"
+                :label="$t('pages.phragmen.sort')"
                 label-cols-sm="3"
                 label-align-sm="right"
                 label-size="sm"
@@ -120,7 +117,7 @@
                       name: 'phragmen-candidate',
                       query: { accountId: data.item.pub_key_stash }
                     }"
-                    title="Candidate details"
+                    title="$t('pages.phragmen.candidate_details')"
                   >
                     <h4
                       v-if="hasIdentity(data.item.pub_key_stash)"
@@ -146,15 +143,23 @@
                     </h4>
                   </nuxt-link>
                   <p class="mt-2 mb-2 rank">rank #{{ data.item.rank }}</p>
-                  <p v-b-tooltip.hover class="bonded mb-0" title="Total stake">
+                  <p
+                    v-b-tooltip.hover
+                    class="bonded mb-0"
+                    title="$t('pages.phragmen.total_stake')"
+                  >
                     {{ formatAmount(data.item.stake_total) }}
                   </p>
                   <p class="mb-0">
                     <small>
-                      <span v-b-tooltip.hover title="Self bonded">{{
-                        formatAmount(data.item.stake_validator)
-                      }}</span>
-                      <span v-b-tooltip.hover title="Bonded by nominators"
+                      <span
+                        v-b-tooltip.hover
+                        title="$t('pages.phragmen.self_bonded')"
+                        >{{ formatAmount(data.item.stake_validator) }}</span
+                      >
+                      <span
+                        v-b-tooltip.hover
+                        title="$t('pages.phragmen.bonded_by_nominators')"
                         >(+{{ formatAmount(data.item.other_stake_sum) }})</span
                       >
                     </small>
@@ -188,7 +193,7 @@
                       name: 'phragmen-candidate',
                       query: { accountId: data.item.pub_key_stash }
                     }"
-                    title="Candidate details"
+                    title="$t('pages.phragmen.candidate_details')"
                   >
                     <span v-if="hasIdentity(data.item.pub_key_stash)">
                       {{ getIdentity(data.item.pub_key_stash).full_name }}
@@ -242,14 +247,14 @@
                       v-b-tooltip.hover
                       class="fas fa-star"
                       style="color: #f1bd23"
-                      title="Remove from Favorites"
+                      title="$t('pages.phragmen.remove_from_favorites')"
                     />
                     <i
                       v-else
                       v-b-tooltip.hover
                       class="fas fa-star"
                       style="color: #e6dfdf;"
-                      title="Add to Favorites"
+                      title="$t('pages.phragmen.add_to_favorites')"
                     />
                   </a>
                 </p>
@@ -316,31 +321,31 @@ export default {
         },
         {
           key: "pub_key_stash",
-          label: "Candidate",
+          label: "$t('pages.phragmen.candidate')",
           sortable: true,
           filterByFormatted: true
         },
         {
           key: "other_stake_count",
-          label: "Voters",
+          label: "$t('pages.phragmen.voters')",
           sortable: true,
           class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
         },
         {
           key: "stake_validator",
-          label: "Self stake",
+          label: "$t('pages.phragmen.self_stake')",
           sortable: true,
           class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
         },
         {
           key: "other_stake_sum",
-          label: "Voters stake",
+          label: "$t('pages.phragmen.voters_stake')",
           sortable: true,
           class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
         },
         {
           key: "stake_total",
-          label: "Total stake",
+          label: "$t('pages.phragmen.total_stake')",
           sortable: true,
           class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
         },
@@ -517,12 +522,12 @@ export default {
   },
   head() {
     return {
-      title: "PolkaStats - Polkadot Kusama phragmen candidates",
+      title: this.$t("pages.phragmen.head_title"),
       meta: [
         {
           hid: "description",
           name: "description",
-          content: "Polkadot Kusama phragmen candidates"
+          content: this.$t("pages.phragmen.head_content")
         }
       ]
     };

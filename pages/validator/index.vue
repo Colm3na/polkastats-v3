@@ -13,7 +13,9 @@
                       query: { accountId: validators[index - 1].accountId }
                     }"
                     :title="
-                      'Previous validator: ' + validators[index - 1].accountId
+                      $t('details.validator.previous_validator').concat(
+                        validators[index - 1].accountId
+                      )
                     "
                   >
                     <i class="fas fa-2x fa-chevron-left" />
@@ -21,7 +23,9 @@
                 </template>
               </div>
               <div class="col-8 col-lg-10 text-center">
-                <h4 class="mb-1">Validator {{ accountId }}</h4>
+                <h4 class="mb-1">
+                  {{ $t("details.validator.validator") }} {{ accountId }}
+                </h4>
               </div>
               <div class="col-2 col-lg-1 text-right">
                 <template v-if="index < validators.length - 1">
@@ -31,7 +35,9 @@
                       query: { accountId: validators[index + 1].accountId }
                     }"
                     :title="
-                      'Next validator: ' + validators[index + 1].accountId
+                      $t('details.validator.next_validator').concat(
+                        validators[index + 1].accountId
+                      )
                     "
                   >
                     <i class="fas fa-2x fa-chevron-right" />
@@ -57,27 +63,27 @@
                   v-if="validator.currentElected"
                   v-b-tooltip.hover
                   class="elected fas fa-chevron-circle-right"
-                  title="Elected for next session"
+                  :title="$t('details.validator.elected_for_next_session')"
                 />
                 <i
                   v-else
                   v-b-tooltip.hover
                   class="notElected fas fa-times-circle"
-                  title="Not elected for next session"
+                  :title="$t('details.validator.not_elected_for_next_session')"
                 />
                 <i
                   v-if="isFavorite(validator.accountId)"
                   v-b-tooltip.hover
                   class="favorite fas fa-star"
                   style="color: #f1bd23"
-                  title="In Favorites"
+                  :title="$t('details.validator.in_favorites')"
                 />
                 <i
                   v-else
                   v-b-tooltip.hover
                   class="favorite fas fa-star"
                   style="color: #e6dfdf;"
-                  title="Not in Favorites"
+                  :title="$t('details.validator.not_in_favorites')"
                 />
                 <div class="row">
                   <div class="col-md-3 mb-2 text-center">
@@ -124,7 +130,7 @@
                         v-if="validator.exposure.total > 0"
                         v-b-tooltip.hover
                         class="bonded mb-0"
-                        title="Total bonded"
+                        :title="$t('details.validator.total_bonded')"
                       >
                         {{ formatAmount(validator.exposure.total) }}
                       </p>
@@ -132,7 +138,7 @@
                         v-else
                         v-b-tooltip.hover
                         class="bonded mb-0"
-                        title="Total bonded"
+                        :title="$t('details.validator.total_bonded')"
                       >
                         {{ formatAmount(validator.stakingLedger.total) }}
                       </p>
@@ -146,7 +152,7 @@
                           <span
                             v-if="validator.exposure.own > 0"
                             v-b-tooltip.hover
-                            title="Self bonded"
+                            :title="$t('details.validator.self_bonded')"
                             >{{ formatAmount(validator.exposure.own) }}</span
                           >
                           <span
@@ -156,7 +162,9 @@
                                 0
                             "
                             v-b-tooltip.hover
-                            title="Bonded by nominators"
+                            :title="
+                              $t('details.validator.bonded_by_nominators')
+                            "
                             >(+{{
                               formatAmount(
                                 validator.exposure.total -
@@ -169,18 +177,23 @@
                       <p
                         v-b-tooltip.hover
                         class="mb-0"
-                        title="Percentage over total bonded stake"
+                        :title="
+                          $t(
+                            'details.validator.percentage_over_total_bonded_stake'
+                          )
+                        "
                       >
                         {{
                           getStakePercent(
                             validator.exposure.total,
                             totalStakeBonded
                           )
-                        }}% of total stake
+                        }}% {{ $t("details.validator.of_total_stake") }}
                       </p>
                     </template>
                     <p v-if="validator.currentEraPointsEarned" class="mb-0">
-                      {{ validator.currentEraPointsEarned }} era points
+                      {{ validator.currentEraPointsEarned }}
+                      {{ $t("details.validator.era_points") }}
                     </p>
                   </div>
                   <div class="col-md-9">
@@ -251,7 +264,9 @@
                     </div>
                     <div v-if="validator.sessionIdHex" class="row">
                       <div class="col-md-3 mb-2">
-                        <strong>Session id</strong>
+                        <strong>{{
+                          $t("details.validator.session_id")
+                        }}</strong>
                       </div>
                       <div id="session-id-info" class="col-md-9 mb-2">
                         <a
@@ -276,7 +291,9 @@
                     </div>
                     <div v-if="validator.nextSessionIdHex" class="row">
                       <div class="col-md-3 mb-2">
-                        <strong>Next session id</strong>
+                        <strong>{{
+                          $t("details.validator.next_session_id")
+                        }}</strong>
                       </div>
                       <div id="next-session-id-info" class="col-md-9 mb-2">
                         <a
@@ -301,7 +318,9 @@
                     </div>
                     <div v-if="validator.validatorPrefs.commission" class="row">
                       <div class="col-md-3 mb-2">
-                        <strong>Commission</strong>
+                        <strong>{{
+                          $t("details.validator.commission")
+                        }}</strong>
                       </div>
                       <div class="col-md-9 mb-2 fee">
                         {{
@@ -313,7 +332,9 @@
                     </div>
                     <div class="row mb-2">
                       <div class="col-md-3 mb-2">
-                        <strong>Reward destination</strong>
+                        <strong>{{
+                          $t("details.validator.reward_destination")
+                        }}</strong>
                       </div>
                       <div class="col-md-9 mb-2 fee">
                         {{ formatRewardDest(validator.rewardDestination) }}
@@ -330,7 +351,7 @@
                         class="row"
                       >
                         <div class="col-md-3 mb-1">
-                          <strong>Name</strong>
+                          <strong>{{ $t("details.validator.name") }}</strong>
                         </div>
                         <div class="col-md-9 mb-1 fee">
                           {{
@@ -347,7 +368,7 @@
                         class="row"
                       >
                         <div class="col-md-3 mb-2">
-                          <strong>Email</strong>
+                          <strong>{{ $t("details.validator.email") }}</strong>
                         </div>
                         <div class="col-md-9 mb-2 fee">
                           <a
@@ -373,7 +394,7 @@
                         class="row"
                       >
                         <div class="col-md-3 mb-2">
-                          <strong>Legal</strong>
+                          <strong>{{ $t("details.validator.legal") }}</strong>
                         </div>
                         <div class="col-md-9 mb-2 fee">
                           {{ getIdentity(validator.accountId).identity.legal }}
@@ -388,7 +409,7 @@
                         class="row"
                       >
                         <div class="col-md-3 mb-2">
-                          <strong>Riot</strong>
+                          <strong>{{ $t("details.validator.riot") }}</strong>
                         </div>
                         <div class="col-md-9 mb-2 fee">
                           <a
@@ -457,7 +478,7 @@
 
                     <!-- Stakers -->
                     <h5 class="h5 account my-3">
-                      Nominators
+                      {{ $t("details.validator.nominators") }}
                     </h5>
                     <!-- Filter -->
                     <b-row class="mb-4">
@@ -466,7 +487,9 @@
                           id="filterInput"
                           v-model="filter"
                           type="search"
-                          placeholder="Search staker by account or account index"
+                          :placeholder="
+                            $t('details.validator.search_placeholder')
+                          "
                         />
                       </b-col>
                     </b-row>
@@ -588,7 +611,7 @@
                                   name: 'nominator',
                                   query: { accountId: data.item.who }
                                 }"
-                                title="Nominator details"
+                                title="$t('details.validator.nominator_details')"
                               >
                                 <span
                                   v-b-tooltip.hover
@@ -630,7 +653,8 @@
         </template>
         <div id="stake-evolution-monthly-chart" class="mt-5 text-center">
           <h3>
-            Total bonded - Monthly chart
+            {{ $t("details.validator.total_bonded") }} -
+            {{ $t("details.validator.monthly_chart") }}
             <small
               v-if="monthly.last - monthly.first > 0"
               class="change text-success ml-3"
@@ -651,7 +675,8 @@
         </div>
         <div id="stake-evolution-weekly-chart" class="mt-5 mb-5 text-center">
           <h3>
-            Total bonded - Weekly chart
+            {{ $t("details.validator.total_bonded") }} -
+            {{ $t("details.validator.weekly_chart") }}
             <small
               v-if="weekly.last - weekly.first > 0"
               class="change text-success ml-3"
@@ -672,7 +697,8 @@
         </div>
         <div id="stake-evolution-daily-chart" class="mb-5 text-center">
           <h3>
-            Total bonded - Daily chart
+            {{ $t("details.validator.total_bonded") }} -
+            {{ $t("details.validator.daily_chart") }}
             <small
               v-if="daily.last - daily.first > 0"
               class="change text-success ml-3"
@@ -731,20 +757,20 @@ export default {
       fields: [
         {
           key: "rank",
-          label: "Rank",
+          label: this.$t("details.validator.rank"),
           sortable: true,
           class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
         },
         { key: "who", label: "Staker", sortable: true },
         {
           key: "percent",
-          label: "Percentage",
+          label: this.$t("details.validator.percentage"),
           sortable: true,
           class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
         },
         {
           key: "amountOrder",
-          label: "Amount",
+          label: this.$t("details.validator.amount"),
           sortable: true,
           class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
         }

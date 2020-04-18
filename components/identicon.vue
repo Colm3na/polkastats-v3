@@ -2,15 +2,8 @@
   <a
     v-clipboard:copy="value"
     class="clipboard"
-    :title="'Copy address ' + value + ' to clipboard'"
-    @click="
-      makeToast(
-        'Address ' + value + ' copied to the clipboard',
-        'Notification',
-        'success',
-        true
-      )
-    "
+    :title="title"
+    @click="makeToast(toastText, 'Notification', 'success', true)"
   >
     <Identicon :value="value" :size="size" :theme="theme" class="identicon" />
   </a>
@@ -24,6 +17,18 @@ export default {
   },
   // eslint-disable-next-line vue/require-prop-types
   props: ["value", "size", "theme"],
+  data: function() {
+    return {
+      title:
+        this.$t("components.identicon.copy_address") +
+        this.value +
+        this.$t("components.identicon.to_clipboard"),
+      toastText:
+        this.$t("components.identicon.address") +
+        this.value +
+        this.$t("components.identicon.copied_to_the_clipboard")
+    };
+  },
   methods: {
     makeToast(content = "", title = "", variant = null, solid = false) {
       this.$bvToast.toast(content, {

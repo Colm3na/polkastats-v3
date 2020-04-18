@@ -8,9 +8,10 @@
           class="alert alert-warning alert-dismissible fade show mt-3 mb-4"
           role="alert"
         >
-          <strong>Hi there!</strong> You can click in the star icon
-          <i class="fas fa-star" /> of a validator or intention to track it on
-          this page.
+          <strong>{{ $t("pages.favorites.hi_there") }}</strong>
+          {{ $t("pages.favorites.you_can_click_TEXT") }}
+          <i class="fas fa-star" />
+          {{ $t("pages.favorites.of_a_validator_TEXT") }}.
           <button
             type="button"
             class="close"
@@ -40,13 +41,13 @@
                 v-if="validator.currentElected"
                 v-b-tooltip.hover
                 class="elected fas fa-chevron-circle-right"
-                title="Elected for next session"
+                :title="$t('pages.favorites.elected_for_next_session')"
               />
               <i
                 v-else
                 v-b-tooltip.hover
                 class="notElected fas fa-times-circle"
-                title="Not elected for next session"
+                :title="$t('pages.favorites.not_elected_for_next_session')"
               />
               <a class="favorite" @click="toggleFavorite(validator.accountId)">
                 <i
@@ -54,14 +55,14 @@
                   v-b-tooltip.hover
                   class="fas fa-star"
                   style="color: #f1bd23"
-                  title="Unset as Favorite"
+                  :title="$t('pages.favorites.unset_as_favorite')"
                 />
                 <i
                   v-else
                   v-b-tooltip.hover
                   class="fas fa-star"
                   style="color: #e6dfdf;"
-                  title="Set as Favorite"
+                  :title="$t('pages.favorites.set_as_favorite')"
                 />
               </a>
               <div class="card-body">
@@ -109,18 +110,18 @@
                       />
                     </div>
                     <p class="mt-3 mb-0 rank">
-                      rank #{{ index + 1 }}
+                      {{ $t("pages.favorites.rank") }} #{{ index + 1 }}
                       <i
                         v-b-tooltip.hover
                         class="fas fa-shield-alt"
-                        title="Active validator"
+                        :title="$t('pages.favorites.active_validator')"
                       />
                     </p>
                     <p
                       v-if="validator.exposure.total > 0"
                       v-b-tooltip.hover
                       class="bonded mb-0"
-                      title="Total bonded"
+                      :title="$t('pages.favorites.total_bonded')"
                     >
                       {{ formatAmount(validator.exposure.total) }}
                     </p>
@@ -128,7 +129,7 @@
                       v-else
                       v-b-tooltip.hover
                       class="bonded mb-0"
-                      title="Total bonded"
+                      :title="$t('pages.favorites.total_bonded')"
                     >
                       {{ formatAmount(validator.stakingLedger.total) }}
                     </p>
@@ -137,7 +138,7 @@
                         <span
                           v-if="validator.exposure.own > 0"
                           v-b-tooltip.hover
-                          title="Self bonded"
+                          :title="$t('pages.favorites.self_bonded')"
                           >{{ formatAmount(validator.exposure.own) }}</span
                         >
                         <span
@@ -146,7 +147,7 @@
                               0
                           "
                           v-b-tooltip.hover
-                          title="Bonded by nominators"
+                          :title="$t('pages.favorites.bonded_by_nominators')"
                           >(+{{
                             formatAmount(
                               validator.exposure.total - validator.exposure.own
@@ -158,17 +159,20 @@
                     <p
                       v-b-tooltip.hover
                       class="mb-0"
-                      title="Percentage over total bonded stake"
+                      :title="
+                        $t('pages.favorites.percentage_over_total_bonded_stake')
+                      "
                     >
                       {{
                         getStakePercent(
                           validator.exposure.total,
                           totalStakeBonded
                         )
-                      }}% of total stake
+                      }}% {{ $t("pages.favorites.of_total_stake") }}
                     </p>
                     <p v-if="validator.currentEraPointsEarned" class="mb-0">
-                      {{ validator.currentEraPointsEarned }} era points
+                      {{ validator.currentEraPointsEarned }}
+                      {{ $t("pages.favorites.era_points") }}
                     </p>
                   </div>
                   <div class="col-md-9">
@@ -180,7 +184,7 @@
                           name: 'validator',
                           query: { accountId: validator.accountId }
                         }"
-                        title="Validator details"
+                        title="$t('pages.favorites.validator_details')"
                       >
                         <span v-if="hasIdentity(validator.accountId)">
                           {{ getIdentity(validator.accountId).full_name }}
@@ -197,7 +201,7 @@
                     </h4>
                     <div v-if="validator.stashId" class="row">
                       <div class="col-md-3 mb-1">
-                        <strong>Stash</strong>
+                        <strong>{{ $t("pages.favorites.stash") }}</strong>
                       </div>
                       <div class="col-md-9 mb-1">
                         <Identicon
@@ -225,7 +229,7 @@
                     </div>
                     <div v-if="validator.controllerId" class="row">
                       <div class="col-md-3 mb-1">
-                        <strong>Controller</strong>
+                        <strong>{{ $t("pages.favorites.controller") }}</strong>
                       </div>
                       <div class="col-md-9 mb-1">
                         <Identicon
@@ -253,7 +257,7 @@
                     </div>
                     <div v-if="validator.sessionIdHex" class="row">
                       <div class="col-md-3 mb-1">
-                        <strong>Session id</strong>
+                        <strong>{{ $t("pages.favorites.session_id") }}</strong>
                       </div>
                       <div
                         :id="'val-session-id-info-' + index"
@@ -281,7 +285,9 @@
                     </div>
                     <div v-if="validator.nextSessionIdHex" class="row">
                       <div class="col-md-3 mb-1">
-                        <strong>Next session id</strong>
+                        <strong>{{
+                          $t("pages.favorites.next_session_id")
+                        }}</strong>
                       </div>
                       <div
                         :id="'val-next-session-id-info-' + index"
@@ -309,7 +315,7 @@
                     </div>
                     <div v-if="validator.validatorPrefs.commission" class="row">
                       <div class="col-md-3 mb-1">
-                        <strong>Commission</strong>
+                        <strong>{{ $t("pages.favorites.commission") }}n</strong>
                       </div>
                       <div class="col-md-9 mb-1 fee">
                         {{
@@ -321,7 +327,9 @@
                     </div>
                     <div class="row mb-2">
                       <div class="col-md-3 mb-1">
-                        <strong>Reward destination</strong>
+                        <strong>{{
+                          $t("pages.favorites.reward_destination")
+                        }}</strong>
                       </div>
                       <div class="col-md-9 mb-1 fee">
                         {{ formatRewardDest(validator.rewardDestination) }}
@@ -342,7 +350,7 @@
                               <i class="fas mr-1" />{{
                                 validator.exposure.others.length
                               }}
-                              nominators
+                              {{ $t("pages.favorites.nominators") }}
                             </h6>
                           </a>
                         </template>
@@ -408,14 +416,14 @@
                   v-b-tooltip.hover
                   class="fas fa-star"
                   style="color: #f1bd23"
-                  title="Unset as Favorite"
+                  :title="$t('pages.favorites.unset_as_favorite')"
                 />
                 <i
                   v-else
                   v-b-tooltip.hover
                   class="fas fa-star"
                   style="color: #e6dfdf;"
-                  title="Set as Favorite"
+                  :title="$t('pages.favorites.set_as_favorite')"
                 />
               </a>
               <div class="card-body">
@@ -461,18 +469,18 @@
                       />
                     </div>
                     <p class="mt-3 mb-0 rank">
-                      rank #{{ index + 1 }}
+                      {{ $t("pages.favorites.rank") }} #{{ index + 1 }}
                       <i
                         v-b-tooltip.hover
                         class="fas fa-exclamation-triangle"
-                        title="Intention"
+                        :title="$t('pages.favorites.intention')"
                       />
                     </p>
                     <template v-if="validator.stakingLedger">
                       <p
                         v-b-tooltip.hover
                         class="bonded mb-0"
-                        title="Active bonded"
+                        :title="$t('pages.favorites.active_bonded')"
                       >
                         {{ formatAmount(validator.stakingLedger.active) }}
                       </p>
@@ -494,7 +502,7 @@
                           name: 'intention',
                           query: { accountId: validator.accountId }
                         }"
-                        title="Validator details"
+                        title="$t('pages.favorites.validator_details')"
                       >
                         <span v-if="hasIdentity(validator.accountId)">
                           {{ getIdentity(validator.accountId).full_name }}
@@ -511,7 +519,7 @@
                     </h4>
                     <div v-if="validator.stashId" class="row">
                       <div class="col-md-3 mb-1">
-                        <strong>Stash</strong>
+                        <strong>{{ $t("pages.favorites.stash") }}</strong>
                       </div>
                       <div class="col-md-9 mb-1">
                         <Identicon
@@ -539,7 +547,7 @@
                     </div>
                     <div v-if="validator.controllerId" class="row">
                       <div class="col-md-3 mb-1">
-                        <strong>Controller</strong>
+                        <strong>{{ $t("pages.favorites.controller") }}</strong>
                       </div>
                       <div class="col-md-9 mb-1">
                         <Identicon
@@ -567,7 +575,7 @@
                     </div>
                     <div v-if="validator.sessionIdHex" class="row">
                       <div class="col-md-3 mb-1">
-                        <strong>Session id</strong>
+                        <strong>{{ $t("pages.favorites.session_id") }}</strong>
                       </div>
                       <div
                         :id="'int-session-id-info-' + index"
@@ -595,7 +603,9 @@
                     </div>
                     <div v-if="validator.nextSessionIdHex" class="row">
                       <div class="col-md-3 mb-1">
-                        <strong>Next session id</strong>
+                        <strong>{{
+                          $t("pages.favorites.next_session_id")
+                        }}</strong>
                       </div>
                       <div
                         :id="'int-next-session-id-info-' + index"
@@ -623,7 +633,7 @@
                     </div>
                     <div v-if="validator.validatorPrefs.commission" class="row">
                       <div class="col-md-3 mb-1">
-                        <strong>Commission</strong>
+                        <strong>{{ $t("pages.favorites.commission") }}</strong>
                       </div>
                       <div class="col-md-9 mb-1 fee">
                         {{
@@ -635,7 +645,9 @@
                     </div>
                     <div class="row mb-2">
                       <div class="col-md-3 mb-1">
-                        <strong>Reward destination</strong>
+                        <strong>{{
+                          $t("pages.favorites.reward_destination")
+                        }}</strong>
                       </div>
                       <div class="col-md-9 mb-1 fee">
                         {{ formatRewardDest(validator.rewardDestination) }}
@@ -655,7 +667,7 @@
                             <i class="fas mr-1" />{{
                               validator.exposure.others.length
                             }}
-                            nominators
+                            {{ $t("pages.favorites.nominators") }}
                           </h6>
                         </a>
                       </template>
@@ -730,7 +742,8 @@ export default {
     return {
       blockExplorer,
       favorites: [],
-      polling: null
+      polling: null,
+      intention: this.$t("pages.favorites.intention")
     };
   },
   computed: {
@@ -862,12 +875,12 @@ export default {
   },
   head() {
     return {
-      title: "PolkaStats - Polkadot Kusama favorite validators and intentions",
+      title: this.$t("pages.favorites.head_title"),
       meta: [
         {
           hid: "description",
           name: "description",
-          content: "Polkadot Kusama favorite validators and intentions"
+          content: this.$t("pages.favorites.head_content")
         }
       ]
     };

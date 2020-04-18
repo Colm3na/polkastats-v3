@@ -3,48 +3,43 @@
     <section>
       <b-container class="main pt-4 pb-5 support-us">
         <h1 class="mb-4">
-          SUPPORT POLKASTATS
+          {{ $t("pages.support-us.support_polkastats") }}
         </h1>
 
         <p>
-          PolkaStats software is open source and the services hosted at
-          https://polkastats.io are provided for free (as in free beer).
+          {{ $t("pages.support-us.polkastats_software_TEXT") }}
         </p>
 
         <p>
-          I enjoy developing PolkaStats and providing the services without
-          annoying ads and I plan to continue doing it in that way :-).
+          {{ $t("pages.support-us.i_enjoy_developing_TEXT") }}
         </p>
 
         <p>
-          If you like my work and want to support the hosting payments or the
-          time I spend developing and maintaining the server, you can do it in
-          several ways.
+          {{ $t("pages.support-us.if_you_like_TEXT") }}
         </p>
 
         <h2 class="mt-5 mb-4">
-          Feedback!
+          {{ $t("pages.support-us.feedback") }}
         </h2>
 
         <p>
-          We love getting feedback from the community, if you find a bug, want
-          to comment some behaviour or want a feature being added please place
-          an Issue in our
-          <a href="https://github.com/Colm3na/polkastats-v2" target="_blank"
-            >GitHub repository</a
+          {{ $t("pages.support-us.we_love_feedback_TEXT") }}
+          <a href="https://github.com/Colm3na/polkastats-v2" target="_blank">{{
+            $t("pages.support-us.github_repository")
+          }}</a
           >.
         </p>
 
         <h2 class="mt-5 mb-4">
-          Stake in our validators
+          {{ $t("pages.support-us.stake_in_our_validator") }}
         </h2>
 
         <p>
-          This is an easy way you can support me and the Polkadot folks at
+          {{ $t("pages.support-us.this_is_an_TEXT") }}
           <a href="https://www.colmenalabs.org/" target="_blank"
             >La Colmena Labs</a
           >
-          blockchain colective.
+          {{ $t("pages.support-us.blockchain_colective") }}.
         </p>
 
         <b-card class="mb-3">
@@ -171,14 +166,14 @@
           </div>
         </b-card>
         <h2 class="mt-5 mb-4">
-          Follow @PolkaStats on Twitter
+          {{ $t("pages.support-us.follow_polkastats_on_twitter") }}
         </h2>
         <p>
-          Are you a happy PolkaStats user? Make sure you follow
+          {{ $t("pages.support-us.are_you_a_TEXT") }}
           <a target="_blank" href="https://twitter.com/polkastats"
             ><i class="fab fa-twitter" /> @PolkaStats</a
           >
-          on Twitter to get the last platform updates.
+          {{ $t("pages.support-us.on_twitter_to_get_TEXT") }}.
         </p>
       </b-container>
     </section>
@@ -199,8 +194,14 @@ export default {
   },
   head() {
     return {
-      title: "PolkaStats - Support us",
-      meta: [{ hid: "description", name: "description", content: "Support us" }]
+      title: this.$t("pages.support-us.head_title"),
+      meta: [
+        {
+          hid: "description",
+          name: "description",
+          content: this.$t("pages.support-us.head_content")
+        }
+      ]
     };
   }
 };
