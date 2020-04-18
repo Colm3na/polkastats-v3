@@ -118,7 +118,6 @@
 </template>
 <script>
 import { mapMutations } from "vuex";
-import axios from "axios";
 import bootstrap from "bootstrap";
 import commonMixin from "../mixins/commonMixin.js";
 

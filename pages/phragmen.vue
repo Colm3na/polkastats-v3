@@ -285,7 +285,6 @@
 </template>
 <script>
 import { mapMutations } from "vuex";
-import axios from "axios";
 import bootstrap from "bootstrap";
 import Identicon from "../components/identicon.vue";
 import Network from "../components/network.vue";

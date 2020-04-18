@@ -272,7 +272,6 @@
 </template>
 <script>
 import { mapMutations } from "vuex";
-import axios from "axios";
 import moment from "moment";
 import Identicon from "../../components/identicon.vue";
 import { formatBalance, isHex } from "@polkadot/util";

@@ -756,7 +756,6 @@
 </template>
 <script>
 import { mapMutations } from "vuex";
-import axios from "axios";
 import gql from "graphql-tag";
 import moment from "moment";
 import chart from "../../components/chart";
@@ -766,7 +765,6 @@ import chartHeader from "../../components/chart-header.vue";
 import { isHex } from "@polkadot/util";
 import BN from "bn.js";
 import {
-  backendBaseURL,
   blockExplorer,
   mediumBreakpoint,
   mobileBreakpoint
@@ -784,7 +782,6 @@ export default {
     return {
       accountId: this.$route.query.accountId,
       blockExplorer,
-      backendBaseURL,
       mediumBreakpoint,
       mobileBreakpoint,
       polling: null,
