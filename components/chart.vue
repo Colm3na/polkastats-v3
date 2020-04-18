@@ -32,6 +32,7 @@ import VueApexCharts from "vue-apexcharts";
 import moment from "moment";
 import mergeDeepRight from "ramda/src/mergeDeepRight";
 import defaultOptions from "./chart/options";
+import { mobileBreakpoint } from "../polkastats.config";
 
 Vue.component("apexchart", VueApexCharts);
 
@@ -99,7 +100,8 @@ export default {
   data: function() {
     return {
       selected: this.type,
-      chartTypes: ["area", "bar", "heatmap", "line", "histogram", "scatter"]
+      chartTypes: ["area", "bar", "heatmap", "line", "histogram", "scatter"],
+      mobileBreakpoint
     };
   },
   computed: {
@@ -125,19 +127,23 @@ export default {
       };
 
       const customizedOptions = {
-        ...propsOptions,
         responsive: [
           {
-            ...propsOptions
+            breakpoint: this.mobileBreakpoint,
+            options: {
+              chart: {
+                height: 300
+              }
+            }
           }
-        ]
+        ],
+        ...propsOptions
       };
 
-      const opt = mergeDeepRight(
+      return mergeDeepRight(
         defaultOptions,
         mergeDeepRight(customizedOptions, this.options)
       );
-      return opt;
     }
   }
 };
@@ -149,6 +155,13 @@ export default {
   border-radius: 1rem;
   padding: 1rem 1rem 0 0;
 }
+
+@media (max-width: 765px) {
+  .chart {
+    margin-bottom: 1rem;
+  }
+}
+
 .chart_types {
   text-align: center;
   padding-bottom: 0.5rem;

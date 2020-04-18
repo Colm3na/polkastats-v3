@@ -14,6 +14,7 @@ const yaxis = {
     align: "right",
     minWidth: 0,
     maxWidth: 160,
+    height: 600,
     style: {
       colors: [],
       fontSize: "12px",

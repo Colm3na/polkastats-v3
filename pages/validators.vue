@@ -488,7 +488,6 @@
 </template>
 <script>
 import { mapMutations } from "vuex";
-import axios from "axios";
 import bootstrap from "bootstrap";
 import Identicon from "../components/identicon.vue";
 import { isHex } from "@polkadot/util";
@@ -498,7 +497,6 @@ import {
   numItemsTableValidatorOptions
 } from "../polkastats.config.js";
 import commonMixin from "../mixins/commonMixin.js";
-import gql from "graphql-tag";
 
 export default {
   components: {
@@ -1054,6 +1052,9 @@ body {
   font-size: 0.8rem;
 }
 @media (max-width: 767px) {
+  table.b-table.b-table-stacked-md > tbody > tr > [data-label] {
+    grid-template-columns: inherit !important;
+  }
   .table th,
   .table td {
     border-top: 0;
