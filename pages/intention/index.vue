@@ -712,9 +712,6 @@ export default {
     },
     identities() {
       return this.$store.state.identities.list;
-    },
-    indexes() {
-      return this.$store.state.indexes.list;
     }
   },
   watch: {
@@ -763,23 +760,17 @@ export default {
       vm.$store.dispatch("identities/update");
     }
 
-    // Force update of account indexes list if empty
-    if (this.$store.state.indexes.list.length == 0) {
-      vm.$store.dispatch("indexes/update");
-    }
-
     // Update intention validators every 10 seconds
     this.polling = setInterval(() => {
       vm.$store.dispatch("intentions/update");
       vm.$store.dispatch("stakingIdentities/update");
     }, 10000);
 
-    // Refresh graph data and account indexes every minute
+    // Refresh graph data every minute
     this.graphPolling = setInterval(() => {
       this.getValidatorDailyGraphData();
       this.getValidatorWeeklyGraphData();
       this.getValidatorMonthlyGraphData();
-      vm.$store.dispatch("indexes/update");
     }, 60000);
   },
   beforeDestroy: function() {

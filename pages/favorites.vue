@@ -761,9 +761,6 @@ export default {
     },
     identities() {
       return this.$store.state.identities.list;
-    },
-    indexes() {
-      return this.$store.state.indexes.list;
     }
   },
   watch: {
@@ -800,11 +797,6 @@ export default {
       vm.$store.dispatch("stakingIdentities/update");
     }
 
-    // Force update of account indexes list if empty
-    if (this.$store.state.indexes.list.length == 0) {
-      vm.$store.dispatch("indexes/update");
-    }
-
     // Force update of intention validators list if empty
     if (this.$store.state.intentions.list.length == 0) {
       vm.$store.dispatch("intentions/update");
@@ -817,15 +809,9 @@ export default {
       vm.$store.dispatch("intentions/update");
       vm.$store.dispatch("stakingIdentities/update");
     }, 10000);
-
-    // Update account indexes every 1 min
-    this.pollingIndexes = setInterval(() => {
-      vm.$store.dispatch("indexes/update");
-    }, 60000);
   },
   beforeDestroy: function() {
     clearInterval(this.polling);
-    clearInterval(this.pollingIndexes);
   },
   methods: {
     toggleFavorite(accountId) {

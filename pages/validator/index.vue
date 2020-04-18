@@ -970,7 +970,6 @@ export default {
             ...staker,
             rank: index + 1,
             amountOrder: index + 1,
-            accountIndex: this.indexes[staker.who],
             percent: this.getStakePercent(staker.value, stakeOthers)
           };
         });
@@ -978,9 +977,6 @@ export default {
     },
     identities() {
       return this.$store.state.identities.list;
-    },
-    indexes() {
-      return this.$store.state.indexes.list;
     },
     totalStakeBonded() {
       return this.$store.state.validators.totalStakeBonded;
@@ -1049,18 +1045,13 @@ export default {
       vm.$store.dispatch("identities/update");
     }
 
-    // Force update of account indexes list if empty
-    if (this.$store.state.indexes.list.length == 0) {
-      vm.$store.dispatch("indexes/update");
-    }
-
     // Update validators every 10 seconds
     this.polling = setInterval(() => {
       vm.$store.dispatch("validators/update");
       vm.$store.dispatch("stakingIdentities/update");
     }, 10000);
 
-    // Refresh graph data and account indexes every minute
+    // Refresh graph data every minute
     this.graphPolling = setInterval(() => {
       this.getValidatorDailyGraphData();
       this.getValidatorWeeklyGraphData();
@@ -1068,8 +1059,6 @@ export default {
       this.getRewardsMonthlyGraphData();
       this.getRewardsWeeklyGraphData();
       this.getRewardsDailyGraphData();
-
-      vm.$store.dispatch("indexes/update");
     }, 60000);
 
     window.addEventListener("resize", this.resizeWindow);

@@ -594,7 +594,6 @@ export default {
           imOnline: validator.imOnline.isOnline,
           imOnlineMessage: this.getImOnlineMessage(validator),
           accountId: validator.accountId,
-          accountIndex: this.indexes[validator.accountId],
           stake: stake,
           stakers: validator.exposure,
           numStakers: validator.exposure.others.length,
@@ -614,9 +613,6 @@ export default {
     },
     identities() {
       return this.$store.state.identities.list;
-    },
-    indexes() {
-      return this.$store.state.indexes.list;
     },
     totalStakeBondedPercen() {
       if (
@@ -678,11 +674,6 @@ export default {
       vm.$store.dispatch("identities/update");
     }
 
-    // Force update of indexes list if empty
-    if (this.$store.state.indexes.list.length === 0) {
-      vm.$store.dispatch("indexes/update");
-    }
-
     // Force update of staking identities list if empty
     if (this.$store.state.stakingIdentities.list.length === 0) {
       vm.$store.dispatch("stakingIdentities/update");
@@ -697,15 +688,9 @@ export default {
       if (!this.filter)
         this.totalRows = this.$store.state.validators.list.length;
     }, 10000);
-
-    // Update account indexes every 1 min
-    this.pollingIndexes = setInterval(() => {
-      vm.$store.dispatch("indexes/update");
-    }, 60000);
   },
   beforeDestroy: function() {
     clearInterval(this.polling);
-    clearInterval(this.pollingIndexes);
   },
   methods: {
     toggleFavorite(accountId) {

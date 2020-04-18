@@ -306,9 +306,6 @@ export default {
     identities() {
       return this.$store.state.identities.list;
     },
-    indexes() {
-      return this.$store.state.indexes.list;
-    },
     nominators() {
       let nominatorStaking = [];
       for (let i = 0; i < this.validators.length; i++) {
@@ -398,26 +395,15 @@ export default {
       vm.$store.dispatch("identities/update");
     }
 
-    // Force update of account indexes list if empty
-    if (this.$store.state.indexes.list.length == 0) {
-      vm.$store.dispatch("indexes/update");
-    }
-
     // Update validators, identities every 10 seconds
     this.polling = setInterval(() => {
       vm.$store.dispatch("validators/update");
       vm.$store.dispatch("identities/update");
       vm.$store.dispatch("stakingIdentities/update");
     }, 10000);
-
-    // Update account indexes every 1 min
-    this.pollingIndexes = setInterval(() => {
-      vm.$store.dispatch("indexes/update");
-    }, 60000);
   },
   beforeDestroy: function() {
     clearInterval(this.polling);
-    clearInterval(this.pollingIndexes);
   },
   methods: {
     getIndex(validator) {
