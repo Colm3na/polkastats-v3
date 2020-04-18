@@ -19,6 +19,7 @@
         </b-alert>
         <!-- Economics info message -->
         <b-alert
+          v-if="network.totalIssuance !== 0"
           show
           dismissible
           variant="success"
@@ -621,7 +622,7 @@ export default {
       if (
         this.totalStakeBonded !== 0 &&
         this.network.totalIssuance !== "" &&
-        this.network.totalIssuance !== "0"
+        this.network.totalIssuance !== 0
       ) {
         let totalIssuance = new BN(this.network.totalIssuance, 10);
         let totalStakeBonded = this.totalStakeBonded.mul(new BN("100", 10));

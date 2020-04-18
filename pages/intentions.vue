@@ -359,15 +359,6 @@ export default {
     indexes() {
       return this.$store.state.indexes.list;
     },
-    totalStakeBondedPercen() {
-      if (this.totalStakeBonded !== 0 && this.network.totalIssuance !== "") {
-        let totalIssuance = new BN(this.network.totalIssuance, 10);
-        let totalStakeBonded = this.totalStakeBonded.mul(new BN("100", 10));
-        return totalStakeBonded.div(totalIssuance);
-      } else {
-        return 0;
-      }
-    },
     totalStakeBonded() {
       return this.$store.state.validators.totalStakeBonded;
     },
