@@ -5,8 +5,13 @@ export const state = () => ({
 });
 
 export const mutations = {
-  update(state, identities) {
-    state.list = identities;
+  update(state, accounts) {
+    state.list = accounts.map(account => {
+      return {
+        accountId: account.account_id,
+        identity: JSON.parse(account.identity)
+      };
+    });
   },
   getters: function() {
     state => state.list;
@@ -30,13 +35,7 @@ export const actions = {
         query: GET_IDENTITIES
       })
       .then(({ data }) => {
-        let identities = [];
-        data.account.forEach(identity => {
-          const ident = JSON.parse(identity.identity);
-          ident.stashId = identity.account_id;
-          identities.push(ident);
-        });
-        commit("update", identities);
+        commit("update", data.account);
       })
       .catch(error => {
         console.log("Error fetching Validator table: ", error);
