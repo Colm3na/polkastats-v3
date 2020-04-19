@@ -1071,7 +1071,7 @@ export default {
     resizeWindow(e) {
       this.overBreakpoint = window.innerWidth > this.mediumBreakpoint;
     },
-    getTimetamp(time) {
+    getTimestamp(time) {
       switch (time) {
         case "day":
           return parseInt(new Date().getTime() / 1000) - 86400;
@@ -1088,7 +1088,7 @@ export default {
       const GET_VALIDATOR_BONDED = gql`
         query validator_bonded {
           validator_bonded(
-            where: { timestamp: { _gt: ${this.getTimetamp(
+            where: { timestamp: { _gt: ${this.getTimestamp(
               "day"
             )} }, account_id: { _eq: "${this.accountId}" } },
             order_by: {timestamp: desc}
@@ -1185,7 +1185,7 @@ export default {
       const GET_VALIDATOR_BONDED = gql`
         query validator_bonded {
           validator_bonded(
-            where: { timestamp: { _gt: ${this.getTimetamp(
+            where: { timestamp: { _gt: ${this.getTimestamp(
               "week"
             )} }, account_id: { _eq: "${this.accountId}" } },
             order_by: {timestamp: desc}
@@ -1275,7 +1275,7 @@ export default {
       const GET_VALIDATOR_BONDED = gql`
         query validator_bonded {
           validator_bonded(
-            where: { timestamp: { _gt: ${this.getTimetamp(
+            where: { timestamp: { _gt: ${this.getTimestamp(
               "month"
             )} }, account_id: { _eq: "${this.accountId}" } },
             order_by: {timestamp: desc}
@@ -1367,7 +1367,7 @@ export default {
           rewards(
             where: { stash_id: { _eq: "${
               this.accountId
-            }" }, timestamp: { _gt: ${this.getTimetamp("month")} } }
+            }" }, timestamp: { _gt: ${this.getTimestamp("month")} } }
             order_by: { timestamp: desc }
           ) {
             block_number
@@ -1460,7 +1460,7 @@ export default {
           rewards(
             where: { stash_id: { _eq: "${
               this.accountId
-            }" }, timestamp: { _gt: ${this.getTimetamp("week")} } }
+            }" }, timestamp: { _gt: ${this.getTimestamp("week")} } }
             order_by: { timestamp: desc }
           ) {
             block_number
@@ -1553,7 +1553,7 @@ export default {
           rewards(
             where: { stash_id: { _eq: "${
               this.accountId
-            }" }, timestamp: { _gt: ${this.getTimetamp("day")} } }
+            }" }, timestamp: { _gt: ${this.getTimestamp("day")} } }
             order_by: { timestamp: desc }
           ) {
             block_number
