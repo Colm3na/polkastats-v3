@@ -197,7 +197,6 @@
 </template>
 <script>
 import { mapMutations } from "vuex";
-import axios from "axios";
 import bootstrap from "bootstrap";
 import Identicon from "../components/identicon.vue";
 import Network from "../components/network.vue";
@@ -266,9 +265,6 @@ export default {
     identities() {
       return this.$store.state.identities.list;
     },
-    indexes() {
-      return this.$store.state.indexes.list;
-    },
     nominators() {
       let nominatorStaking = [];
       for (let i = 0; i < this.validators.length; i++) {
@@ -276,7 +272,6 @@ export default {
         if (validator.exposure.others.length > 0) {
           for (let j = 0; j < validator.exposure.others.length; j++) {
             let nominator = validator.exposure.others[j];
-            const accountIndex = this.indexes[nominator.who];
             if (nominatorStaking.find(nom => nom.accountId === nominator.who)) {
               let nominatorTmp = nominatorStaking.filter(nom => {
                 return nom.accountId === nominator.who;
@@ -314,7 +309,6 @@ export default {
 
               nominatorStaking.push({
                 accountId: nominator.who,
-                accountIndex,
                 kusamaIdentity,
                 totalStake: bn,
                 nominations: 1,
@@ -386,26 +380,14 @@ export default {
       vm.$store.dispatch("stakingIdentities/update");
     }
 
-    // Force update of account indexes list if empty
-    if (this.$store.state.indexes.list.length == 0) {
-      vm.$store.dispatch("indexes/update");
-    }
-
     // Update validators and staking identities every 10 seconds
     this.polling = setInterval(() => {
       vm.$store.dispatch("validators/update");
       vm.$store.dispatch("stakingIdentities/update");
     }, 10000);
-
-    // Update PolkaStats identities and account indexes every 1 min
-    this.pollingIndexes = setInterval(() => {
-      vm.$store.dispatch("identities/update");
-      vm.$store.dispatch("indexes/update");
-    }, 60000);
   },
   beforeDestroy: function() {
     clearInterval(this.polling);
-    clearInterval(this.pollingIndexes);
   },
   methods: {
     handleNumFields(num) {

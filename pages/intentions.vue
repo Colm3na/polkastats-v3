@@ -263,7 +263,6 @@
 </template>
 <script>
 import { mapMutations } from "vuex";
-import axios from "axios";
 import bootstrap from "bootstrap";
 import Identicon from "../components/identicon.vue";
 import { isHex } from "@polkadot/util";
@@ -342,7 +341,6 @@ export default {
         intentionsObject.push({
           rank: i + 1,
           accountId: intention.accountId,
-          accountIndex: this.indexes[intention.accountId],
           totalStake: intention.stakingLedger.total,
           activeStake: intention.stakingLedger.active,
           commission: intention.validatorPrefs.commission,
@@ -355,18 +353,6 @@ export default {
     },
     identities() {
       return this.$store.state.identities.list;
-    },
-    indexes() {
-      return this.$store.state.indexes.list;
-    },
-    totalStakeBondedPercen() {
-      if (this.totalStakeBonded !== 0 && this.network.totalIssuance !== "") {
-        let totalIssuance = new BN(this.network.totalIssuance, 10);
-        let totalStakeBonded = this.totalStakeBonded.mul(new BN("100", 10));
-        return totalStakeBonded.div(totalIssuance);
-      } else {
-        return 0;
-      }
     },
     totalStakeBonded() {
       return this.$store.state.validators.totalStakeBonded;
@@ -415,11 +401,6 @@ export default {
       vm.$store.dispatch("stakingIdentities/update");
     }
 
-    // Force update of indexes list if empty
-    if (this.$store.state.indexes.list.length === 0) {
-      vm.$store.dispatch("indexes/update");
-    }
-
     // Update network info and intention validators every 10 seconds
     this.polling = setInterval(() => {
       vm.$store.dispatch("network/update");
@@ -428,15 +409,9 @@ export default {
       if (!this.filter)
         this.totalRows = this.$store.state.intentions.list.length;
     }, 10000);
-
-    // Update account indexes every 1 min
-    this.pollingIndexes = setInterval(() => {
-      vm.$store.dispatch("indexes/update");
-    }, 60000);
   },
   beforeDestroy: function() {
     clearInterval(this.polling);
-    clearInterval(this.pollingIndexes);
   },
   methods: {
     handleNumFields(num) {

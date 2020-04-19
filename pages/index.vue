@@ -19,6 +19,7 @@
         </b-alert>
         <!-- Economics info message -->
         <b-alert
+          v-if="network.totalIssuance !== 0"
           show
           dismissible
           variant="success"
@@ -463,7 +464,6 @@
 </template>
 <script>
 import { mapMutations } from "vuex";
-import axios from "axios";
 import bootstrap from "bootstrap";
 import Identicon from "../components/identicon.vue";
 import Network from "../components/network.vue";
@@ -593,7 +593,6 @@ export default {
           imOnline: validator.imOnline.isOnline,
           imOnlineMessage: this.getImOnlineMessage(validator),
           accountId: validator.accountId,
-          accountIndex: this.indexes[validator.accountId],
           stake: stake,
           stakers: validator.exposure,
           numStakers: validator.exposure.others.length,
@@ -614,14 +613,11 @@ export default {
     identities() {
       return this.$store.state.identities.list;
     },
-    indexes() {
-      return this.$store.state.indexes.list;
-    },
     totalStakeBondedPercen() {
       if (
         this.totalStakeBonded !== 0 &&
         this.network.totalIssuance !== "" &&
-        this.network.totalIssuance !== "0"
+        this.network.totalIssuance !== 0
       ) {
         let totalIssuance = new BN(this.network.totalIssuance, 10);
         let totalStakeBonded = this.totalStakeBonded.mul(new BN("100", 10));
@@ -677,11 +673,6 @@ export default {
       vm.$store.dispatch("identities/update");
     }
 
-    // Force update of indexes list if empty
-    if (this.$store.state.indexes.list.length === 0) {
-      vm.$store.dispatch("indexes/update");
-    }
-
     // Force update of staking identities list if empty
     if (this.$store.state.stakingIdentities.list.length === 0) {
       vm.$store.dispatch("stakingIdentities/update");
@@ -696,15 +687,9 @@ export default {
       if (!this.filter)
         this.totalRows = this.$store.state.validators.list.length;
     }, 10000);
-
-    // Update account indexes every 1 min
-    this.pollingIndexes = setInterval(() => {
-      vm.$store.dispatch("indexes/update");
-    }, 60000);
   },
   beforeDestroy: function() {
     clearInterval(this.polling);
-    clearInterval(this.pollingIndexes);
   },
   methods: {
     toggleFavorite(accountId) {

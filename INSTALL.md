@@ -291,7 +291,6 @@ Include in `/etc/crontab`:
 # Execute every 5m
 */5 *  * * *   root     node /usr/local/polkastats-backend-v2/crawlers/intention_bonded.js 2>&1 >/dev/null
 */5 *  * * *   root     node /usr/local/polkastats-backend-v2/crawlers/validator_bonded.js 2>&1 >/dev/null
-*/5 *  * * *   root     /usr/local/polkastats-backend-v2/nicknames.sh 2>&1 >/dev/null
 */5 *  * * *   root     node /usr/local/polkastats-backend-v2/crawlers/index.js 2>&1 >/dev/null
 */5 *  * * *   root     node /usr/local/polkastats-backend-v2/crawlers/account.js 2>&1 >/dev/null
 
@@ -313,5 +312,3 @@ systemctl start polkablocks
 ## Enjoy!
 
 Open in your browser `https//yourdomain.com` and enjoy your fresh installed PolkaStats! ;-)
-
-

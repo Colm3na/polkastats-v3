@@ -24,7 +24,7 @@
             <div class="col-8 col-lg-10 text-center">
               <h4 class="mb-1">
                 {{ $t("details.phragmen-candidate.candidate") }}
-                {{ indexes[accountId] }}
+                <!-- {{ indexes[accountId] }} -->
               </h4>
             </div>
             <div class="col-2 col-lg-1 text-right">
@@ -121,10 +121,7 @@
                   <h4
                     class="card-title mb-4 account mt-4 mt-sm-0 mt-md-0 mt-lg-0 mt-xl-0"
                   >
-                    <span v-if="hasNickname(candidate.pub_key_stash)">
-                      {{ getNickname(candidate.pub_key_stash) }}
-                    </span>
-                    <span v-else>
+                    <span>
                       {{ candidate.pub_key_stash }}
                     </span>
                   </h4>
@@ -139,7 +136,7 @@
                         :size="20"
                         :theme="'polkadot'"
                       />
-                      <a
+                      <!-- <a
                         :href="blockExplorer.account + candidate.pub_key_stash"
                         target="_blank"
                       >
@@ -153,7 +150,7 @@
                           class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline"
                           >{{ indexes[candidate.pub_key_stash] }}</span
                         >
-                      </a>
+                      </a> -->
                     </div>
                   </div>
                   <div v-if="candidate.pub_key_controller" class="row">
@@ -167,7 +164,7 @@
                         :size="20"
                         :theme="'polkadot'"
                       />
-                      <a
+                      <!-- <a
                         :href="
                           blockExplorer.account + candidate.pub_key_controller
                         "
@@ -183,7 +180,7 @@
                           class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline"
                           >{{ indexes[candidate.pub_key_controller] }}</span
                         >
-                      </a>
+                      </a> -->
                     </div>
                   </div>
 
@@ -376,7 +373,7 @@
                                 :size="20"
                                 :theme="'polkadot'"
                               />
-                              <a
+                              <!-- <a
                                 :href="
                                   blockExplorer.account +
                                     voter.pub_key_nominator
@@ -393,7 +390,7 @@
                                   class="d-none d-sm-inline-block d-md-inline-block d-lg-inline-block d-xl-inline-block"
                                   >{{ indexes[voter.pub_key_nominator] }}</span
                                 >
-                              </a>
+                              </a> -->
                             </div>
                             <div class="col-4 text-right value">
                               {{ formatAmount(voter.stake_nominator) }}
@@ -414,12 +411,11 @@
 </template>
 <script>
 import { mapMutations } from "vuex";
-import axios from "axios";
 import moment from "moment";
 import Identicon from "../../components/identicon.vue";
 import { isHex } from "@polkadot/util";
 import BN from "bn.js";
-import { backendBaseURL, blockExplorer } from "../../polkastats.config.js";
+import { blockExplorer } from "../../polkastats.config.js";
 import commonMixin from "../../mixins/commonMixin.js";
 
 export default {
@@ -431,7 +427,6 @@ export default {
     return {
       accountId: this.$route.query.accountId,
       blockExplorer,
-      backendBaseURL,
       polling: null
     };
   },
@@ -441,12 +436,6 @@ export default {
     },
     identities() {
       return this.$store.state.identities.list;
-    },
-    nicknames() {
-      return this.$store.state.nicknames.list;
-    },
-    indexes() {
-      return this.$store.state.indexes.list;
     }
   },
   watch: {
@@ -472,31 +461,15 @@ export default {
       vm.$store.dispatch("identities/update");
     }
 
-    // Force update of nicknames list if empty
-    if (this.$store.state.nicknames.list.length === 0) {
-      vm.$store.dispatch("nicknames/update");
-    }
-
-    // Force update of account indexes list if empty
-    if (this.$store.state.indexes.list.length == 0) {
-      vm.$store.dispatch("indexes/update");
-    }
     // Update data every 10 seconds
     this.polling = setInterval(() => {
       vm.$store.dispatch("phragmen/update");
       vm.$store.dispatch("identities/update");
-      vm.$store.dispatch("nicknames/update");
       vm.$store.dispatch("stakingIdentities/update");
     }, 10000);
-
-    // Update account indexes every 1 min
-    this.pollingIndexes = setInterval(() => {
-      vm.$store.dispatch("indexes/update");
-    }, 60000);
   },
   beforeDestroy: function() {
     clearInterval(this.polling);
-    clearInterval(this.pollingIndexes);
   },
   methods: {
     getIdentity(stashId) {
@@ -522,17 +495,6 @@ export default {
       return this.$store.state.identities.list.some(obj => {
         return obj.stashId === stashId;
       });
-    },
-    hasNickname(accountId) {
-      return this.$store.state.nicknames.list.some(obj => {
-        return obj.accountId === accountId;
-      });
-    },
-    getNickname(accountId) {
-      let filteredArray = this.$store.state.nicknames.list.filter(obj => {
-        return obj.accountId === accountId;
-      });
-      return filteredArray[0].nickname;
     }
   },
   head() {

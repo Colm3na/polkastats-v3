@@ -197,15 +197,6 @@
                     </p>
                   </div>
                   <div class="col-md-9">
-                    <div v-if="hasNickname(validator.accountId)" class="row">
-                      <div class="col-md-12">
-                        <h4
-                          class="card-title mb-4 account mt-4 mt-sm-0 mt-md-0 mt-lg-0 mt-xl-0"
-                        >
-                          {{ getNickname(validator.accountId) }}
-                        </h4>
-                      </div>
-                    </div>
                     <div v-if="validator.accountId" class="row">
                       <div class="col-md-3 mb-2">
                         <strong>Stash</strong>
@@ -765,7 +756,6 @@
 </template>
 <script>
 import { mapMutations } from "vuex";
-import axios from "axios";
 import gql from "graphql-tag";
 import moment from "moment";
 import chart from "../../components/chart";
@@ -775,7 +765,6 @@ import chartHeader from "../../components/chart-header.vue";
 import { isHex } from "@polkadot/util";
 import BN from "bn.js";
 import {
-  backendBaseURL,
   blockExplorer,
   mediumBreakpoint,
   mobileBreakpoint
@@ -793,7 +782,6 @@ export default {
     return {
       accountId: this.$route.query.accountId,
       blockExplorer,
-      backendBaseURL,
       mediumBreakpoint,
       mobileBreakpoint,
       polling: null,
@@ -979,7 +967,6 @@ export default {
             ...staker,
             rank: index + 1,
             amountOrder: index + 1,
-            accountIndex: this.indexes[staker.who],
             percent: this.getStakePercent(staker.value, stakeOthers)
           };
         });
@@ -988,23 +975,8 @@ export default {
     identities() {
       return this.$store.state.identities.list;
     },
-    nicknames() {
-      return this.$store.state.nicknames.list;
-    },
-    indexes() {
-      return this.$store.state.indexes.list;
-    },
     totalStakeBonded() {
       return this.$store.state.validators.totalStakeBonded;
-    },
-    totalStakeBondedPercen() {
-      if (this.totalStakeBonded !== 0 && this.totalIssuance !== "") {
-        let totalIssuance = new BN(this.totalIssuance, 10);
-        let totalStakeBonded = this.totalStakeBonded.mul(new BN("100000", 10));
-        return totalStakeBonded.div(totalIssuance);
-      } else {
-        return 0;
-      }
     },
     sortOptions() {
       // Create an options list from our fields
@@ -1070,23 +1042,13 @@ export default {
       vm.$store.dispatch("identities/update");
     }
 
-    // Force update of nicknames list if empty
-    if (this.$store.state.nicknames.list.length == 0) {
-      vm.$store.dispatch("nicknames/update");
-    }
-
-    // Force update of account indexes list if empty
-    if (this.$store.state.indexes.list.length == 0) {
-      vm.$store.dispatch("indexes/update");
-    }
-
     // Update validators every 10 seconds
     this.polling = setInterval(() => {
       vm.$store.dispatch("validators/update");
       vm.$store.dispatch("stakingIdentities/update");
     }, 10000);
 
-    // Refresh graph data and account indexes every minute
+    // Refresh graph data every minute
     this.graphPolling = setInterval(() => {
       this.getValidatorDailyGraphData();
       this.getValidatorWeeklyGraphData();
@@ -1094,8 +1056,6 @@ export default {
       this.getRewardsMonthlyGraphData();
       this.getRewardsWeeklyGraphData();
       this.getRewardsDailyGraphData();
-
-      vm.$store.dispatch("indexes/update");
     }, 60000);
 
     window.addEventListener("resize", this.resizeWindow);
@@ -1111,7 +1071,7 @@ export default {
     resizeWindow(e) {
       this.overBreakpoint = window.innerWidth > this.mediumBreakpoint;
     },
-    getTimetamp(time) {
+    getTimestamp(time) {
       switch (time) {
         case "day":
           return parseInt(new Date().getTime() / 1000) - 86400;
@@ -1128,7 +1088,7 @@ export default {
       const GET_VALIDATOR_BONDED = gql`
         query validator_bonded {
           validator_bonded(
-            where: { timestamp: { _gt: ${this.getTimetamp(
+            where: { timestamp: { _gt: ${this.getTimestamp(
               "day"
             )} }, account_id: { _eq: "${this.accountId}" } },
             order_by: {timestamp: desc}
@@ -1225,7 +1185,7 @@ export default {
       const GET_VALIDATOR_BONDED = gql`
         query validator_bonded {
           validator_bonded(
-            where: { timestamp: { _gt: ${this.getTimetamp(
+            where: { timestamp: { _gt: ${this.getTimestamp(
               "week"
             )} }, account_id: { _eq: "${this.accountId}" } },
             order_by: {timestamp: desc}
@@ -1315,7 +1275,7 @@ export default {
       const GET_VALIDATOR_BONDED = gql`
         query validator_bonded {
           validator_bonded(
-            where: { timestamp: { _gt: ${this.getTimetamp(
+            where: { timestamp: { _gt: ${this.getTimestamp(
               "month"
             )} }, account_id: { _eq: "${this.accountId}" } },
             order_by: {timestamp: desc}
@@ -1407,7 +1367,7 @@ export default {
           rewards(
             where: { stash_id: { _eq: "${
               this.accountId
-            }" }, timestamp: { _gt: ${this.getTimetamp("month")} } }
+            }" }, timestamp: { _gt: ${this.getTimestamp("month")} } }
             order_by: { timestamp: desc }
           ) {
             block_number
@@ -1500,7 +1460,7 @@ export default {
           rewards(
             where: { stash_id: { _eq: "${
               this.accountId
-            }" }, timestamp: { _gt: ${this.getTimetamp("week")} } }
+            }" }, timestamp: { _gt: ${this.getTimestamp("week")} } }
             order_by: { timestamp: desc }
           ) {
             block_number
@@ -1593,7 +1553,7 @@ export default {
           rewards(
             where: { stash_id: { _eq: "${
               this.accountId
-            }" }, timestamp: { _gt: ${this.getTimetamp("day")} } }
+            }" }, timestamp: { _gt: ${this.getTimestamp("day")} } }
             order_by: { timestamp: desc }
           ) {
             block_number
@@ -1711,17 +1671,6 @@ export default {
         return obj.stashId === stashId;
       });
       return filteredArray[0];
-    },
-    hasNickname(accountId) {
-      return this.$store.state.nicknames.list.some(obj => {
-        return obj.accountId === accountId;
-      });
-    },
-    getNickname(accountId) {
-      let filteredArray = this.$store.state.nicknames.list.filter(obj => {
-        return obj.accountId === accountId;
-      });
-      return filteredArray[0].nickname;
     },
     onFiltered(filteredItems) {
       // Trigger pagination to update the number of buttons/pages due to filtering

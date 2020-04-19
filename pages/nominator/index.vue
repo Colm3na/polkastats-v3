@@ -224,18 +224,6 @@
                       :theme="'polkadot'"
                     />
                     <nuxt-link
-                      v-if="hasNickname(nomination.validator)"
-                      :to="{
-                        name: 'validator',
-                        query: { accountId: nomination.validator }
-                      }"
-                      :title="$t('details.nominator.validator_details')"
-                      class="mt-2 mb-0 d-block"
-                    >
-                      {{ getNickname(nomination.validator) }}
-                    </nuxt-link>
-                    <nuxt-link
-                      v-else
                       :to="{
                         name: 'validator',
                         query: { accountId: nomination.validator }
@@ -284,7 +272,6 @@
 </template>
 <script>
 import { mapMutations } from "vuex";
-import axios from "axios";
 import moment from "moment";
 import Identicon from "../../components/identicon.vue";
 import { formatBalance, isHex } from "@polkadot/util";
@@ -317,12 +304,6 @@ export default {
     },
     identities() {
       return this.$store.state.identities.list;
-    },
-    nicknames() {
-      return this.$store.state.nicknames.list;
-    },
-    indexes() {
-      return this.$store.state.indexes.list;
     },
     nominators() {
       let nominatorStaking = [];
@@ -413,32 +394,15 @@ export default {
       vm.$store.dispatch("identities/update");
     }
 
-    // Force update of nicknames list if empty
-    if (this.$store.state.nicknames.list.length === 0) {
-      vm.$store.dispatch("nicknames/update");
-    }
-
-    // Force update of account indexes list if empty
-    if (this.$store.state.indexes.list.length == 0) {
-      vm.$store.dispatch("indexes/update");
-    }
-
-    // Update validators, identities and nicknames every 10 seconds
+    // Update validators, identities every 10 seconds
     this.polling = setInterval(() => {
       vm.$store.dispatch("validators/update");
       vm.$store.dispatch("identities/update");
-      vm.$store.dispatch("nicknames/update");
       vm.$store.dispatch("stakingIdentities/update");
     }, 10000);
-
-    // Update account indexes every 1 min
-    this.pollingIndexes = setInterval(() => {
-      vm.$store.dispatch("indexes/update");
-    }, 60000);
   },
   beforeDestroy: function() {
     clearInterval(this.polling);
-    clearInterval(this.pollingIndexes);
   },
   methods: {
     getIndex(validator) {
@@ -489,17 +453,6 @@ export default {
         return obj.stashId === stashId;
       });
       return filteredArray[0];
-    },
-    hasNickname(accountId) {
-      return this.$store.state.nicknames.list.some(obj => {
-        return obj.accountId === accountId;
-      });
-    },
-    getNickname(accountId) {
-      let filteredArray = this.$store.state.nicknames.list.filter(obj => {
-        return obj.accountId === accountId;
-      });
-      return filteredArray[0].nickname;
     },
     getTotalStake(stake) {
       let totalStake = new BN("0", 10);

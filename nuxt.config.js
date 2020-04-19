@@ -1,4 +1,3 @@
-import axios from "axios";
 export default {
   mode: "spa",
   /*
@@ -35,8 +34,6 @@ export default {
   modules: [
     // Doc: https://bootstrap-vue.js.org/docs/
     "bootstrap-vue/nuxt",
-    // Doc: https://axios.nuxtjs.org/usage
-    "@nuxtjs/axios",
     // https://www.npmjs.com/package/nuxt-clipboard2
     "nuxt-clipboard2",
     // https://www.npmjs.com/package/cookie-universal-nuxt
@@ -52,11 +49,6 @@ export default {
       }
     ]
   ],
-  /*
-   ** Axios module configuration
-   ** See https://axios.nuxtjs.org/options
-   */
-  axios: {},
   /*
    ** Apollo module configuration
    ** See https://github.com/nuxt-community/apollo-module

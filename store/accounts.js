@@ -1,7 +1,5 @@
-import axios from "axios";
 import BN from "bn.js";
 import { isHex } from "@polkadot/util";
-import { backendBaseURL } from "../polkastats.config.js";
 import gql from "graphql-tag";
 
 export const state = () => ({
@@ -69,9 +67,5 @@ export const actions = {
     `;
     const response = await client.query({ query });
     context.commit("update", response.data.account);
-
-    // axios.get(`${backendBaseURL}/accounts`).then(function(response) {
-    //   context.commit("update", response.data);
-    // });
   }
 };

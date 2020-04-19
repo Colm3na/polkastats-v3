@@ -131,7 +131,7 @@
                     >
                       {{ hasKusamaIdentity(data.item.pub_key_stash).display }}
                     </h4>
-                    <h4 v-else class="mt-2 mb-2">
+                    <!-- <h4 v-else class="mt-2 mb-2">
                       <span
                         class="d-inline d-sm-inline d-md-inline d-lg-inline d-xl-none"
                         >{{ indexes[data.item.pub_key_stash] }}</span
@@ -140,7 +140,7 @@
                         class="d-none d-sm-none d-md-none d-lg-none d-xl-inline"
                         >{{ indexes[data.item.pub_key_stash] }}</span
                       >
-                    </h4>
+                    </h4> -->
                   </nuxt-link>
                   <p class="mt-2 mb-2 rank">rank #{{ data.item.rank }}</p>
                   <p
@@ -203,7 +203,7 @@
                     >
                       {{ getKusamaIdentity(data.item.pub_key_stash).display }}
                     </span>
-                    <span v-else>
+                    <!-- <span v-else>
                       <span
                         class="d-inline d-sm-inline d-md-inline d-lg-inline d-xl-none"
                         >{{ indexes[data.item.pub_key_stash] }}</span
@@ -212,7 +212,7 @@
                         class="d-none d-sm-none d-md-none d-lg-none d-xl-inline"
                         >{{ indexes[data.item.pub_key_stash] }}</span
                       >
-                    </span>
+                    </span> -->
                   </nuxt-link>
                 </div>
               </template>
@@ -285,7 +285,6 @@
 </template>
 <script>
 import { mapMutations } from "vuex";
-import axios from "axios";
 import bootstrap from "bootstrap";
 import Identicon from "../components/identicon.vue";
 import Network from "../components/network.vue";
@@ -374,7 +373,6 @@ export default {
       ) {
         let candidate = this.$store.state.phragmen.info.candidates[i];
         let identity = "";
-        const accountIndex = this.indexes[candidate.pub_key_stash];
         if (this.hasIdentity(candidate.pub_key_stash)) {
           identity = this.getIdentity(candidate.pub_key_stash);
         }
@@ -385,9 +383,7 @@ export default {
         candidates.push({
           ...candidate,
           identity,
-          kusamaIdentity,
-          accountIndex,
-          favorite: this.isFavorite(accountIndex)
+          kusamaIdentity
         });
       }
       return candidates;
@@ -403,9 +399,6 @@ export default {
     },
     identities() {
       return this.$store.state.identities.list;
-    },
-    indexes() {
-      return this.$store.state.indexes.list;
     },
     sortOptions() {
       // Create an options list from our fields
@@ -451,11 +444,6 @@ export default {
       vm.$store.dispatch("stakingIdentities/update");
     }
 
-    // Force update of indexes list if empty
-    if (this.$store.state.indexes.list.length === 0) {
-      vm.$store.dispatch("indexes/update");
-    }
-
     // Update data every 10 seconds
     this.polling = setInterval(() => {
       vm.$store.dispatch("network/update");
@@ -465,15 +453,9 @@ export default {
       if (!this.filter)
         this.totalRows = this.$store.state.phragmen.info.candidates.length;
     }, 10000);
-
-    // Update account indexes every 1 min
-    this.pollingIndexes = setInterval(() => {
-      vm.$store.dispatch("indexes/update");
-    }, 60000);
   },
   beforeDestroy: function() {
     clearInterval(this.polling);
-    clearInterval(this.pollingIndexes);
   },
   methods: {
     handleNumFields(num) {

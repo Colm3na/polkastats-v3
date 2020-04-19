@@ -1,5 +1,4 @@
-import axios from "axios";
-import { backendBaseURL } from "../polkastats.config.js";
+import gql from "graphql-tag";
 
 export const state = () => ({
   info: {
@@ -22,10 +21,28 @@ export const mutations = {
   }
 };
 
+const GET_PHRAGMEN = gql`
+  query phragmen {
+    phragmen {
+      timestamp
+      phragmen_json
+      block_height
+    }
+  }
+`;
+
 export const actions = {
-  update(context) {
-    axios.get(`${backendBaseURL}/phragmen`).then(function(response) {
-      context.commit("update", response.data);
-    });
+  update({ commit }) {
+    const client = this.app.apolloProvider.defaultClient;
+    client
+      .query({
+        query: GET_PHRAGMEN
+      })
+      .then(({ data }) => {
+        commit("update", data.phragmen);
+      })
+      .catch(error => {
+        console.log("Error fetching Phragmen table: ", error);
+      });
   }
 };
