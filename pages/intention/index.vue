@@ -641,7 +641,7 @@
 </template>
 <script>
 import { mapMutations } from "vuex";
-import axios from "axios";
+import gql from "graphql-tag";
 import moment from "moment";
 import chart from "../../components/chart";
 import { commonChartOptions } from "../commons/chartOptions";
@@ -778,38 +778,68 @@ export default {
     clearInterval(this.graphPolling);
   },
   methods: {
+    getTimestamp(time) {
+      switch (time) {
+        case "day":
+          return parseInt(new Date().getTime() / 1000) - 86400;
+        case "week":
+          return parseInt(new Date().getTime() / 1000) - 604800;
+        case "month":
+          return parseInt(new Date().getTime() / 1000) - 2592000;
+        default:
+          return parseInt(new Date().getTime() / 1000) - 2592000;
+      }
+    },
     getValidatorDailyGraphData: function() {
       var vm = this;
-      axios
-        .get(`${this.backendBaseURL}/intention/graph/daily/${this.accountId}`)
+
+      const GET_INTENTION_BONDED = gql`
+        query MyQuery {
+          intention_bonded(
+            where: { account_id: { _eq: "${
+              this.accountId
+            }" }, timestamp: { _gt: ${this.getTimestamp("day")} } }
+            order_by: { timestamp: desc }
+          ) {
+            account_id
+            amount
+            block_number
+            session_index
+            timestamp
+          }
+        }
+      `;
+
+      vm.$apolloProvider.defaultClient
+        .query({ query: GET_INTENTION_BONDED })
         .then(function(response) {
           // Update chart data
           var newCategories = [];
           var newData = [];
+          const { intention_bonded } = response.data;
 
-          //console.log(response.data);
-
-          for (var i = 0; i < response.data.length; i++) {
+          for (var i = 0; i < intention_bonded.length; i++) {
             // Insert firt point, last point and points with different values
             if (
               i == 0 ||
-              i == response.data.length - 1 ||
-              (i > 0 && response.data[i].amount != response.data[i - 1].amount)
+              i == intention_bonded.length - 1 ||
+              (i > 0 &&
+                intention_bonded[i].amount != intention_bonded[i - 1].amount)
             ) {
               // Save first and last point
-              if (i == 0) vm.daily.last = response.data[i].amount;
-              if (i == response.data.length - 1)
-                vm.daily.first = response.data[i].amount;
+              if (i == 0) vm.daily.last = intention_bonded[i].amount;
+              if (i == intention_bonded.length - 1)
+                vm.daily.first = intention_bonded[i].amount;
 
               newCategories.push(
                 moment
                   .unix(
-                    response.data[i].timestamp,
+                    intention_bonded[i].timestamp,
                     "YYYY-MM-DD HH:mm:ss.SSSSSS Z"
                   )
                   .format("YYYY-MM-DD HH:mm:ss")
               );
-              newData.push(response.data[i].amount);
+              newData.push(intention_bonded[i].amount);
             }
           }
 
@@ -855,28 +885,47 @@ export default {
     },
     getValidatorWeeklyGraphData: function() {
       var vm = this;
-      axios
-        .get(`${this.backendBaseURL}/intention/graph/weekly/${this.accountId}`)
+
+      const GET_INTENTION_BONDED = gql`
+        query MyQuery {
+          intention_bonded(
+            where: { account_id: { _eq: "${
+              this.accountId
+            }" }, timestamp: { _gt: ${this.getTimestamp("week")} } }
+            order_by: { timestamp: desc }
+          ) {
+            account_id
+            amount
+            block_number
+            session_index
+            timestamp
+          }
+        }
+      `;
+
+      vm.$apolloProvider.defaultClient
+        .query({ query: GET_INTENTION_BONDED })
         .then(function(response) {
           // Update chart data
           var newCategories = [];
           var newData = [];
+          const { intention_bonded } = response.data;
 
-          for (var i = 0; i < response.data.length; i++) {
+          for (var i = 0; i < intention_bonded.length; i++) {
             // Save first and last point
-            if (i == 0) vm.weekly.last = response.data[i].amount;
-            if (i == response.data.length - 1)
-              vm.weekly.first = response.data[i].amount;
+            if (i == 0) vm.weekly.last = intention_bonded[i].amount;
+            if (i == intention_bonded.length - 1)
+              vm.weekly.first = intention_bonded[i].amount;
 
             newCategories.push(
               moment
                 .unix(
-                  response.data[i].timestamp,
+                  intention_bonded[i].timestamp,
                   "YYYY-MM-DD HH:mm:ss.SSSSSS Z"
                 )
                 .format("YYYY-MM-DD HH:mm:ss")
             );
-            newData.push(response.data[i].amount);
+            newData.push(intention_bonded[i].amount);
           }
 
           newCategories.reverse();
@@ -921,28 +970,47 @@ export default {
     },
     getValidatorMonthlyGraphData: function() {
       var vm = this;
-      axios
-        .get(`${this.backendBaseURL}/intention/graph/monthly/${this.accountId}`)
+
+      const GET_INTENTION_BONDED = gql`
+        query MyQuery {
+          intention_bonded(
+            where: { account_id: { _eq: "${
+              this.accountId
+            }" }, timestamp: { _gt: ${this.getTimestamp("month")} } }
+            order_by: { timestamp: desc }
+          ) {
+            account_id
+            amount
+            block_number
+            session_index
+            timestamp
+          }
+        }
+      `;
+
+      vm.$apolloProvider.defaultClient
+        .query({ query: GET_INTENTION_BONDED })
         .then(function(response) {
           // Update chart data
           var newCategories = [];
           var newData = [];
+          const { intention_bonded } = response.data;
 
-          for (var i = 0; i < response.data.length; i++) {
+          for (var i = 0; i < intention_bonded.length; i++) {
             // Save first and last point
-            if (i == 0) vm.monthly.last = response.data[i].amount;
-            if (i == response.data.length - 1)
-              vm.monthly.first = response.data[i].amount;
+            if (i == 0) vm.monthly.last = intention_bonded[i].amount;
+            if (i == intention_bonded.length - 1)
+              vm.monthly.first = intention_bonded[i].amount;
 
             newCategories.push(
               moment
                 .unix(
-                  response.data[i].timestamp,
+                  intention_bonded[i].timestamp,
                   "YYYY-MM-DD HH:mm:ss.SSSSSS Z"
                 )
                 .format("YYYY-MM-DD HH:mm:ss")
             );
-            newData.push(response.data[i].amount);
+            newData.push(intention_bonded[i].amount);
           }
 
           newCategories.reverse();
