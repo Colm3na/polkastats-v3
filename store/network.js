@@ -18,16 +18,31 @@ export const state = () => ({
 
 export const mutations = {
   update(state, network) {
-    state.info.session.currentEra = network.current_era;
-    state.info.session.currentIndex = network.current_index;
-    state.info.session.eraLength = network.era_length;
-    state.info.session.eraProgress = network.era_progress;
-    state.info.session.sessionLength = network.session_length;
-    state.info.session.sessionsPerEra = network.session_per_era;
-    state.info.session.sessionProgress = network.session_progress;
-    state.info.session.validatorCount = network.validator_count;
+    const { block, chain } = network;
+    const {
+      current_era,
+      current_index,
+      era_length,
+      era_progress,
+      session_length,
+      session_per_era,
+      session_progress,
+      validator_count
+    } = block[0];
 
-    // state.info.totalIssuance = network.total_issuance;
+    state.info = {
+      session: {
+        currentEra: current_era,
+        currentIndex: current_index,
+        eraLength: era_length,
+        eraProgress: era_progress,
+        sessionLength: session_length,
+        sessionsPerEra: session_per_era,
+        sessionProgress: session_progress,
+        validatorCount: validator_count
+      },
+      totalIssuance: chain[0].total_issuance.toString()
+    };
   },
   getters: function() {
     state => state.info;
@@ -41,6 +56,7 @@ const GET_BLOCK = gql`
       block_author_name
       block_hash
       block_number
+      block_number_finalized
       current_era
       current_index
       era_length
@@ -60,6 +76,9 @@ const GET_BLOCK = gql`
       total_events
       validator_count
     }
+    chain(limit: 1, order_by: { timestamp: desc }) {
+      total_issuance
+    }
   }
 `;
 
@@ -71,7 +90,7 @@ export const actions = {
         query: GET_BLOCK
       })
       .then(({ data }) => {
-        commit("update", data.block[0]);
+        commit("update", data);
       })
       .catch(error => {
         console.log("Error fetching Block table: ", error);
