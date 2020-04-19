@@ -134,7 +134,7 @@
                   <p
                     v-b-tooltip.hover
                     class="bonded mb-0"
-                    :title="$t('pages.intention.active_bonded')"
+                    :title="$t('pages.intentions.active_bonded')"
                   >
                     {{ formatAmount(data.item.activeStake) }}
                   </p>
@@ -144,7 +144,7 @@
                     <small>
                       <span
                         v-b-tooltip.hover
-                        :title="$t('pages.intention.total_bonded')"
+                        :title="$t('pages.intentions.total_bonded')"
                       >
                         {{ formatAmount(data.item.totalStake) }}
                       </span>
@@ -226,14 +226,14 @@
                     v-b-tooltip.hover
                     class="fas fa-star"
                     style="color: #f1bd23"
-                    :title="$t('pages.intention.remove_from_favorites')"
+                    :title="$t('pages.intentions.remove_from_favorites')"
                   />
                   <i
                     v-else
                     v-b-tooltip.hover
                     class="fas fa-star"
                     style="color: #e6dfdf;"
-                    :title="$t('pages.intention.add_to_favorites')"
+                    :title="$t('pages.intentions.add_to_favorites')"
                   />
                 </a>
               </p>
@@ -280,7 +280,7 @@ export default {
     return {
       tableOptions: numItemsTableOptions,
       perPage: localStorage.numItemsTableSelected
-        ? localStorage.numItemsTableSelected
+        ? parseInt(localStorage.numItemsTableSelected)
         : 10,
       currentPage: 1,
       sortBy: `favorite`,
@@ -440,7 +440,7 @@ export default {
   },
   methods: {
     handleNumFields(num) {
-      this.perPage = num;
+      this.perPage = parseInt(num);
     },
     toggleFavorite(accountId) {
       if (this.favorites.indexOf(accountId) !== -1) {
