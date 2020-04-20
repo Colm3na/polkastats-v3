@@ -114,130 +114,113 @@
           </b-col>
         </div>
         <!-- Table with sorting and pagination-->
-        <div class="table-responsive">
-          <b-table
-            id="validators-table"
-            stacked="md"
-            head-variant="dark"
-            data-testid="validatorsTable"
-            :fields="fields"
-            :items="validators"
-            :per-page="perPage"
-            :current-page="currentPage"
-            :sort-by.sync="sortBy"
-            :sort-desc.sync="sortDesc"
-            :filter="filter"
-            :filter-included-fields="filterOn"
-            @filtered="onFiltered"
-          >
-            <template slot="rank" slot-scope="data">
-              <p class="text-center mb-0">
-                {{ data.item.rank }}
-              </p>
-            </template>
-            <template slot="imOnline" slot-scope="data">
-              <p class="text-center mb-0">
-                <i
-                  v-if="data.item.imOnline"
-                  v-b-tooltip.hover
-                  class="imOnline fas fa-check-circle"
-                  :title="data.item.imOnlineMessage"
-                />
-                <i
-                  v-else
-                  v-b-tooltip.hover
-                  class="imOffline fas fa-times-circle"
-                  :title="data.item.imOnlineMessage"
-                />
-              </p>
-            </template>
-            <template slot="accountId" slot-scope="data">
-              <div class="d-block d-sm-block d-md-none d-lg-none d-xl-none">
-                <b-container>
-                  <b-row>
-                    <p class="mt-3 mb-0 rank">
-                      <span
-                        v-b-tooltip.hover
-                        class="rank-detail"
-                        :title="$t('pages.index.rank')"
-                        >#{{ data.item.rank }}</span
+        <div v-if="!dataReady">
+          <b-container class="w-100 loader">
+            <div class="lds-ripple center">
+              <div></div>
+              <div></div>
+            </div>
+            <div>{{ $t("pages.index.loading_data") }}</div>
+          </b-container>
+        </div>
+        <div v-else>
+          <div class="table-responsive">
+            <b-table
+              id="validators-table"
+              stacked="md"
+              head-variant="dark"
+              data-testid="validatorsTable"
+              :fields="fields"
+              :items="validators"
+              :per-page="perPage"
+              :current-page="currentPage"
+              :sort-by.sync="sortBy"
+              :sort-desc.sync="sortDesc"
+              :filter="filter"
+              :filter-included-fields="filterOn"
+              @filtered="onFiltered"
+            >
+              <template slot="rank" slot-scope="data">
+                <p class="text-center mb-0">
+                  {{ data.item.rank }}
+                </p>
+              </template>
+              <template slot="imOnline" slot-scope="data">
+                <p class="text-center mb-0">
+                  <i
+                    v-if="data.item.imOnline"
+                    v-b-tooltip.hover
+                    class="imOnline fas fa-check-circle"
+                    :title="data.item.imOnlineMessage"
+                  />
+                  <i
+                    v-else
+                    v-b-tooltip.hover
+                    class="imOffline fas fa-times-circle"
+                    :title="data.item.imOnlineMessage"
+                  />
+                </p>
+              </template>
+              <template slot="accountId" slot-scope="data">
+                <div class="d-block d-sm-block d-md-none d-lg-none d-xl-none">
+                  <b-container>
+                    <b-row>
+                      <p class="mt-3 mb-0 rank">
+                        <span
+                          v-b-tooltip.hover
+                          class="rank-detail"
+                          :title="$t('pages.index.rank')"
+                          >#{{ data.item.rank }}</span
+                        >
+                        <i
+                          v-if="data.item.imOnline"
+                          v-b-tooltip.hover
+                          class="imOnline fas fa-check-circle ml-1"
+                          :title="data.item.imOnlineMessage"
+                        />
+                        <i
+                          v-else
+                          v-b-tooltip.hover
+                          class="imOffline fas fa-times-circle ml-1"
+                          :title="data.item.imOnlineMessage"
+                        />
+                        <i
+                          v-if="data.item.currentElected"
+                          v-b-tooltip.hover
+                          class="elected fas fa-chevron-circle-right"
+                          :title="$t('pages.index.elected_for_next_session')"
+                        />
+                        <i
+                          v-else
+                          v-b-tooltip.hover
+                          class="notElected fas fa-times-circle"
+                          :title="
+                            $t('pages.index.not_elected_for_next_session')
+                          "
+                        />
+                      </p>
+                      <a
+                        class="favorite"
+                        @click="toggleFavorite(data.item.accountId)"
                       >
-                      <i
-                        v-if="data.item.imOnline"
-                        v-b-tooltip.hover
-                        class="imOnline fas fa-check-circle ml-1"
-                        :title="data.item.imOnlineMessage"
-                      />
-                      <i
-                        v-else
-                        v-b-tooltip.hover
-                        class="imOffline fas fa-times-circle ml-1"
-                        :title="data.item.imOnlineMessage"
-                      />
-                      <i
-                        v-if="data.item.currentElected"
-                        v-b-tooltip.hover
-                        class="elected fas fa-chevron-circle-right"
-                        :title="$t('pages.index.elected_for_next_session')"
-                      />
-                      <i
-                        v-else
-                        v-b-tooltip.hover
-                        class="notElected fas fa-times-circle"
-                        :title="$t('pages.index.not_elected_for_next_session')"
-                      />
-                    </p>
-                    <a
-                      class="favorite"
-                      @click="toggleFavorite(data.item.accountId)"
-                    >
-                      <i
-                        v-if="data.item.favorite"
-                        v-b-tooltip.hover
-                        class="fas fa-star"
-                        style="color: #f1bd23"
-                        :title="$t('pages.index.remove_from_favorites')"
-                      />
-                      <i
-                        v-else
-                        v-b-tooltip.hover
-                        class="fas fa-star"
-                        style="color: #e6dfdf;"
-                        :title="$t('pages.index.add_to_favorites')"
-                      />
-                    </a>
-                  </b-row>
-                  <b-row>
-                    <b-col cols="4">
-                      <nuxt-link
-                        :to="{
-                          name: 'validator',
-                          query: { accountId: data.item.accountId }
-                        }"
-                        :title="$t('pages.index.validator_details')"
-                      >
-                        <div v-if="hasIdentity(data.item.accountId)">
-                          <div
-                            v-if="getIdentity(data.item.accountId).logo !== ''"
-                          >
-                            <img
-                              :src="getIdentity(data.item.accountId).logo"
-                              class="identity mt-2"
-                            />
-                          </div>
-                        </div>
-                        <div v-else class="logo">
-                          <Identicon
-                            :key="data.item.accountId"
-                            :value="data.item.accountId"
-                            :size="48"
-                            :theme="'polkadot'"
-                          />
-                        </div>
-                      </nuxt-link>
-                    </b-col>
-                    <b-col cols="8">
-                      <div>
+                        <i
+                          v-if="data.item.favorite"
+                          v-b-tooltip.hover
+                          class="fas fa-star"
+                          style="color: #f1bd23"
+                          :title="$t('pages.index.remove_from_favorites')"
+                        />
+                        <i
+                          v-else
+                          v-b-tooltip.hover
+                          class="fas fa-star"
+                          style="color: #e6dfdf;"
+                          :title="$t('pages.index.add_to_favorites')"
+                        />
+                      </a>
+                    </b-row>
+                    <b-row>
+                      <b-col cols="4">
                         <nuxt-link
                           :to="{
                             name: 'validator',
@@ -245,218 +228,254 @@
                           }"
                           :title="$t('pages.index.validator_details')"
                         >
-                          <h4 v-if="hasIdentity(data.item.accountId)">
-                            {{ getIdentity(data.item.accountId).full_name }}
-                          </h4>
-                          <h4
-                            v-else-if="hasKusamaIdentity(data.item.accountId)"
-                          >
-                            {{ getKusamaIdentity(data.item.accountId).display }}
-                          </h4>
-                          <h4 v-else>
-                            <span
-                              class="validator-name d-inline d-sm-inline d-md-inline d-lg-inline d-xl-none"
-                              >{{ shortAddress(data.item.accountId) }}</span
+                          <div v-if="hasIdentity(data.item.accountId)">
+                            <div
+                              v-if="
+                                getIdentity(data.item.accountId).logo !== ''
+                              "
                             >
-                            <span
-                              class="d-none d-sm-none d-md-none d-lg-none d-xl-inline"
-                              >{{ shortAddress(data.item.accountId) }}</span
-                            >
-                          </h4>
-                          <div v-if="data.item.stakers">
-                            <p
-                              v-if="data.item.stake && data.item.stake > 0"
-                              v-b-tooltip.hover
-                              class="bonded mb-0"
-                              :title="$t('pages.index.total_bonded')"
-                            >
-                              <!-- <i class="far fa-handshake"></i> -->
-                              <font-awesome-icon
-                                :icon="['fas', 'plug']"
-                                :style="{
-                                  color: 'black',
-                                  width: '20px',
-                                  height: '20px'
-                                }"
+                              <img
+                                :src="getIdentity(data.item.accountId).logo"
+                                class="identity mt-2"
                               />
-                              {{ formatAmount(data.item.stake) }}
-                            </p>
-                            <div style="margin-top: 8px">
-                              <p
-                                v-if="data.item.stakers.total"
-                                v-b-tooltip.hover
-                                :title="
-                                  $t(
-                                    'pages.index.percentage_over_total_bonded_stake'
-                                  )
-                                "
-                              >
-                                <span>
-                                  <!-- <i class="fas fa-share-alt"></i>-> -->
-                                  <font-awesome-icon
-                                    :icon="['fas', 'chart-line']"
-                                    :style="{
-                                      color: 'black',
-                                      width: '15px',
-                                      height: '15px'
-                                    }"
-                                  />
-                                  {{
-                                    parseFloat(
-                                      getStakePercent(
-                                        data.item.stakers.total,
-                                        totalStakeBonded
-                                      )
-                                    ).toFixed(2)
-                                  }}%
-                                </span>
-                                <span
-                                  v-if="typeof data.item.commission == 'number'"
-                                  style="position:relative;left:25%"
-                                >
-                                  <!-- <i class="fas fa-percentage"></i> -->
-                                  <font-awesome-icon
-                                    :icon="['fas', 'project-diagram']"
-                                    :style="{
-                                      color: 'black',
-                                      width: '15px',
-                                      height: '15px'
-                                    }"
-                                  />
-                                  {{
-                                    (data.item.commission / 10000000).toFixed(
-                                      2
-                                    )
-                                  }}%
-                                </span>
-                              </p>
                             </div>
-                            <!-- <p class="mb-0 small-text" v-if="data.item.stakers.own !== data.item.stake">
+                          </div>
+                          <div v-else class="logo">
+                            <Identicon
+                              :key="data.item.accountId"
+                              :value="data.item.accountId"
+                              :size="48"
+                              :theme="'polkadot'"
+                            />
+                          </div>
+                        </nuxt-link>
+                      </b-col>
+                      <b-col cols="8">
+                        <div>
+                          <nuxt-link
+                            :to="{
+                              name: 'validator',
+                              query: { accountId: data.item.accountId }
+                            }"
+                            :title="$t('pages.index.validator_details')"
+                          >
+                            <h4 v-if="hasIdentity(data.item.accountId)">
+                              {{ getIdentity(data.item.accountId).full_name }}
+                            </h4>
+                            <h4
+                              v-else-if="hasKusamaIdentity(data.item.accountId)"
+                            >
+                              {{
+                                getKusamaIdentity(data.item.accountId).display
+                              }}
+                            </h4>
+                            <h4 v-else>
+                              <span
+                                class="validator-name d-inline d-sm-inline d-md-inline d-lg-inline d-xl-none"
+                                >{{ shortAddress(data.item.accountId) }}</span
+                              >
+                              <span
+                                class="d-none d-sm-none d-md-none d-lg-none d-xl-inline"
+                                >{{ shortAddress(data.item.accountId) }}</span
+                              >
+                            </h4>
+                            <div v-if="data.item.stakers">
+                              <p
+                                v-if="data.item.stake && data.item.stake > 0"
+                                v-b-tooltip.hover
+                                class="bonded mb-0"
+                                :title="$t('pages.index.total_bonded')"
+                              >
+                                <!-- <i class="far fa-handshake"></i> -->
+                                <font-awesome-icon
+                                  :icon="['fas', 'plug']"
+                                  :style="{
+                                    color: 'black',
+                                    width: '20px',
+                                    height: '20px'
+                                  }"
+                                />
+                                {{ formatAmount(data.item.stake) }}
+                              </p>
+                              <div style="margin-top: 8px">
+                                <p
+                                  v-if="data.item.stakers.total"
+                                  v-b-tooltip.hover
+                                  :title="
+                                    $t(
+                                      'pages.index.percentage_over_total_bonded_stake'
+                                    )
+                                  "
+                                >
+                                  <span>
+                                    <!-- <i class="fas fa-share-alt"></i>-> -->
+                                    <font-awesome-icon
+                                      :icon="['fas', 'chart-line']"
+                                      :style="{
+                                        color: 'black',
+                                        width: '15px',
+                                        height: '15px'
+                                      }"
+                                    />
+                                    {{
+                                      parseFloat(
+                                        getStakePercent(
+                                          data.item.stakers.total,
+                                          totalStakeBonded
+                                        )
+                                      ).toFixed(2)
+                                    }}%
+                                  </span>
+                                  <span
+                                    v-if="
+                                      typeof data.item.commission == 'number'
+                                    "
+                                    style="position:relative;left:25%"
+                                  >
+                                    <!-- <i class="fas fa-percentage"></i> -->
+                                    <font-awesome-icon
+                                      :icon="['fas', 'project-diagram']"
+                                      :style="{
+                                        color: 'black',
+                                        width: '15px',
+                                        height: '15px'
+                                      }"
+                                    />
+                                    {{
+                                      (data.item.commission / 10000000).toFixed(
+                                        2
+                                      )
+                                    }}%
+                                  </span>
+                                </p>
+                              </div>
+                              <!-- <p class="mb-0 small-text" v-if="data.item.stakers.own !== data.item.stake">
                     <small>
                       <span v-b-tooltip.hover title="Self bonded" v-if="data.item.stakers.own > 0">{{ formatAmount(data.item.stakers.own) }}</span>
                       <span v-b-tooltip.hover title="Bonded by nominators" v-if="(data.item.stakers.total - data.item.stakers.own) > 0">(+{{ formatAmount(data.item.stakers.total - data.item.stakers.own) }})</span>
                     </small>
                   </p> -->
-                          </div>
-                        </nuxt-link>
-                      </div>
-                    </b-col>
-                  </b-row>
-                </b-container>
-              </div>
-              <div class="d-none d-sm-none d-md-block d-lg-block d-xl-block">
-                <div
-                  v-if="hasIdentity(data.item.accountId)"
-                  class="d-inline-block"
-                >
+                            </div>
+                          </nuxt-link>
+                        </div>
+                      </b-col>
+                    </b-row>
+                  </b-container>
+                </div>
+                <div class="d-none d-sm-none d-md-block d-lg-block d-xl-block">
                   <div
-                    v-if="getIdentity(data.item.accountId).logo !== ''"
+                    v-if="hasIdentity(data.item.accountId)"
                     class="d-inline-block"
                   >
-                    <img
-                      :src="getIdentity(data.item.accountId).logo"
-                      class="identity-small d-inline-block"
+                    <div
+                      v-if="getIdentity(data.item.accountId).logo !== ''"
+                      class="d-inline-block"
+                    >
+                      <img
+                        :src="getIdentity(data.item.accountId).logo"
+                        class="identity-small d-inline-block"
+                      />
+                    </div>
+                  </div>
+                  <div v-else class="d-inline-block">
+                    <Identicon
+                      :key="data.item.accountId"
+                      :value="data.item.accountId"
+                      :size="20"
+                      :theme="'polkadot'"
                     />
                   </div>
+                  <nuxt-link
+                    :to="{
+                      name: 'validator',
+                      query: { accountId: data.item.accountId }
+                    }"
+                    :title="$t('pages.index.validator_details')"
+                    data-testid="validatorLink"
+                  >
+                    <span v-if="hasIdentity(data.item.accountId)">
+                      {{ getIdentity(data.item.accountId).full_name }}
+                    </span>
+                    <span v-else-if="hasKusamaIdentity(data.item.accountId)">
+                      {{ getKusamaIdentity(data.item.accountId).display }}
+                    </span>
+                    <span v-else>
+                      <span
+                        class="d-inline d-sm-inline d-md-inline d-lg-inline d-xl-none"
+                        >{{ shortAddress(data.item.accountId) }}</span
+                      >
+                      <span
+                        class="d-none d-sm-none d-md-none d-lg-none d-xl-inline"
+                        >{{ shortAddress(data.item.accountId) }}</span
+                      >
+                    </span>
+                  </nuxt-link>
                 </div>
-                <div v-else class="d-inline-block">
-                  <Identicon
-                    :key="data.item.accountId"
-                    :value="data.item.accountId"
-                    :size="20"
-                    :theme="'polkadot'"
-                  />
-                </div>
-                <nuxt-link
-                  :to="{
-                    name: 'validator',
-                    query: { accountId: data.item.accountId }
-                  }"
-                  :title="$t('pages.index.validator_details')"
-                  data-testid="validatorLink"
+              </template>
+              <template slot="numStakers" slot-scope="data">
+                <p class="text-center mb-0">
+                  {{ data.item.numStakers }}
+                </p>
+              </template>
+              <template slot="stakeIndex" slot-scope="data">
+                <p v-if="data.item.stake > 0" class="text-center mb-0">
+                  {{ formatAmount(data.item.stake) }}
+                </p>
+              </template>
+              <template slot="percent" slot-scope="data">
+                <p class="text-center mb-0">
+                  <!-- {{ formatNumber(data.item.percent) }}% -->
+                  {{
+                    parseFloat(
+                      getStakePercent(data.item.stakers.total, totalStakeBonded)
+                    ).toFixed(2)
+                  }}%
+                </p>
+              </template>
+              <template slot="commission" slot-scope="data">
+                <p
+                  v-if="typeof data.item.commission == 'number'"
+                  class="text-center mb-0"
                 >
-                  <span v-if="hasIdentity(data.item.accountId)">
-                    {{ getIdentity(data.item.accountId).full_name }}
-                  </span>
-                  <span v-else-if="hasKusamaIdentity(data.item.accountId)">
-                    {{ getKusamaIdentity(data.item.accountId).display }}
-                  </span>
-                  <span v-else>
-                    <span
-                      class="d-inline d-sm-inline d-md-inline d-lg-inline d-xl-none"
-                      >{{ shortAddress(data.item.accountId) }}</span
-                    >
-                    <span
-                      class="d-none d-sm-none d-md-none d-lg-none d-xl-inline"
-                      >{{ shortAddress(data.item.accountId) }}</span
-                    >
-                  </span>
-                </nuxt-link>
-              </div>
-            </template>
-            <template slot="numStakers" slot-scope="data">
-              <p class="text-center mb-0">
-                {{ data.item.numStakers }}
-              </p>
-            </template>
-            <template slot="stakeIndex" slot-scope="data">
-              <p v-if="data.item.stake > 0" class="text-center mb-0">
-                {{ formatAmount(data.item.stake) }}
-              </p>
-            </template>
-            <template slot="percent" slot-scope="data">
-              <p class="text-center mb-0">
-                <!-- {{ formatNumber(data.item.percent) }}% -->
-                {{
-                  parseFloat(
-                    getStakePercent(data.item.stakers.total, totalStakeBonded)
-                  ).toFixed(2)
-                }}%
-              </p>
-            </template>
-            <template slot="commission" slot-scope="data">
-              <p
-                v-if="typeof data.item.commission == 'number'"
-                class="text-center mb-0"
-              >
-                {{ (data.item.commission / 10000000).toFixed(2) }}%
-              </p>
-            </template>
-            <template slot="eraPoints" slot-scope="data">
-              <p class="text-center mb-0">
-                {{ data.item.eraPoints }}
-              </p>
-            </template>
-            <template slot="favorite" slot-scope="data">
-              <p class="text-center mb-0">
-                <a
-                  class="favorite"
-                  @click="toggleFavorite(data.item.accountId)"
-                >
-                  <i
-                    v-if="data.item.favorite"
-                    v-b-tooltip.hover
-                    class="fas fa-star"
-                    style="color: #f1bd23"
-                    :title="$t('pages.index.remove_from_favorites')"
-                  />
-                  <i
-                    v-else
-                    v-b-tooltip.hover
-                    class="fas fa-star"
-                    style="color: #e6dfdf;"
-                    :title="$t('pages.index.add_to_favorites')"
-                  />
-                </a>
-              </p>
-            </template>
-          </b-table>
-          <b-pagination
-            v-model="currentPage"
-            :total-rows="totalRows"
-            :per-page="perPage"
-            aria-controls="validators-table"
-          />
+                  {{ (data.item.commission / 10000000).toFixed(2) }}%
+                </p>
+              </template>
+              <template slot="eraPoints" slot-scope="data">
+                <p class="text-center mb-0">
+                  {{ data.item.eraPoints }}
+                </p>
+              </template>
+              <template slot="favorite" slot-scope="data">
+                <p class="text-center mb-0">
+                  <a
+                    class="favorite"
+                    @click="toggleFavorite(data.item.accountId)"
+                  >
+                    <i
+                      v-if="data.item.favorite"
+                      v-b-tooltip.hover
+                      class="fas fa-star"
+                      style="color: #f1bd23"
+                      :title="$t('pages.index.remove_from_favorites')"
+                    />
+                    <i
+                      v-else
+                      v-b-tooltip.hover
+                      class="fas fa-star"
+                      style="color: #e6dfdf;"
+                      :title="$t('pages.index.add_to_favorites')"
+                    />
+                  </a>
+                </p>
+              </template>
+            </b-table>
+            <b-pagination
+              v-model="currentPage"
+              :total-rows="totalRows"
+              :per-page="perPage"
+              aria-controls="validators-table"
+            />
+          </div>
         </div>
       </b-container>
     </section>
@@ -546,7 +565,8 @@ export default {
       ],
       blockExplorer,
       favorites: [],
-      polling: null
+      polling: null,
+      dataReady: false
     };
   },
   computed: {
@@ -555,55 +575,55 @@ export default {
     },
     validators() {
       let validatorsObject = [];
-      for (let i = 0; i < this.$store.state.validators.list.length; i++) {
-        let validator = this.$store.state.validators.list[i];
-        let stake = 0;
-        if (validator.exposure || validator.stakingLedger) {
-          if (validator.exposure.total > 0) {
-            stake = validator.exposure.total;
-          } else {
-            stake = validator.stakingLedger.total;
+      if (
+        this.$store.state.validators.dataLoaded &&
+        this.$store.state.identities.dataLoaded
+      ) {
+        for (let i = 0; i < this.$store.state.validators.list.length; i++) {
+          let validator = this.$store.state.validators.list[i];
+          let stake = 0;
+          if (validator.exposure || validator.stakingLedger) {
+            if (validator.exposure.total > 0) {
+              stake = validator.exposure.total;
+            } else {
+              stake = validator.stakingLedger.total;
+            }
           }
-        }
-        let stakePercent = 0;
-        if (validator.exposure) {
-          stakePercent = this.getStakePercent(
-            validator.exposure.total,
-            this.totalStakeBonded
-          );
+          let stakePercent = 0;
+          if (validator.exposure) {
+            stakePercent = this.getStakePercent(
+              validator.exposure.total,
+              this.totalStakeBonded
+            );
+          }
+
+          let commission = 0;
+          if (validator.validatorPrefs) {
+            commission = validator.validatorPrefs.commission;
+          }
+
+          const next = {
+            rank: i + 1,
+            imOnline: validator.imOnline.isOnline,
+            imOnlineMessage: this.getImOnlineMessage(validator),
+            accountId: validator.accountId,
+            stake: stake,
+            stakers: validator.exposure,
+            numStakers: validator.exposure.others.length,
+            eraPoints: validator.currentEraPointsEarned,
+            commission,
+            percent: stakePercent,
+            favorite: this.isFavorite(validator.accountId),
+            currentElected: validator.currentElected,
+            kusamaIdentity: JSON.stringify(
+              this.hasKusamaIdentity(validator.accountId)
+            ),
+            identity: JSON.stringify(this.getIdentity(validator.accountId))
+          };
+          validatorsObject.push(next);
         }
 
-        let commission = 0;
-        if (validator.validatorPrefs) {
-          commission = validator.validatorPrefs.commission;
-        }
-
-        let identity = "";
-        if (this.hasIdentity(validator.accountId)) {
-          identity = this.getIdentity(validator.accountId);
-        }
-
-        let kusamaIdentity = "";
-        if (this.hasKusamaIdentity(validator.accountId)) {
-          kusamaIdentity = this.hasKusamaIdentity(validator.accountId);
-        }
-
-        validatorsObject.push({
-          rank: i + 1,
-          imOnline: validator.imOnline.isOnline,
-          imOnlineMessage: this.getImOnlineMessage(validator),
-          accountId: validator.accountId,
-          stake: stake,
-          stakers: validator.exposure,
-          numStakers: validator.exposure.others.length,
-          eraPoints: validator.currentEraPointsEarned,
-          commission,
-          percent: stakePercent,
-          favorite: this.isFavorite(validator.accountId),
-          currentElected: validator.currentElected,
-          kusamaIdentity,
-          identity
-        });
+        this.setDataLoaded();
       }
       return validatorsObject;
     },
@@ -692,6 +712,9 @@ export default {
     clearInterval(this.polling);
   },
   methods: {
+    setDataLoaded: function() {
+      this.dataReady = true;
+    },
     toggleFavorite(accountId) {
       if (this.favorites.indexOf(accountId) !== -1) {
         this.favorites.splice(this.favorites.indexOf(accountId), 1);
@@ -719,7 +742,7 @@ export default {
     },
     getIdentity(stashId) {
       let filteredArray = this.$store.state.identities.list.filter(obj => {
-        return obj.stashId === stashId;
+        return obj.accountId === stashId;
       });
       return filteredArray[0];
     },
@@ -870,6 +893,45 @@ body {
 .table.b-table > tfoot > tr > th[aria-sort]::before {
   margin-left: -0.5em;
 }
+
+.loader {
+  text-align: center;
+}
+
+.lds-ripple {
+  display: inline-block;
+  position: relative;
+  width: 80px;
+  height: 80px;
+  text-align: center;
+}
+.lds-ripple div {
+  position: absolute;
+  border: 4px solid #d75ea1;
+  opacity: 1;
+  border-radius: 50%;
+  animation: lds-ripple 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+}
+.lds-ripple div:nth-child(2) {
+  animation-delay: -0.5s;
+}
+@keyframes lds-ripple {
+  0% {
+    top: 36px;
+    left: 36px;
+    width: 0;
+    height: 0;
+    opacity: 1;
+  }
+  100% {
+    top: 0px;
+    left: 0px;
+    width: 72px;
+    height: 72px;
+    opacity: 0;
+  }
+}
+
 @media (max-width: 767px) {
   table.b-table.b-table-stacked-md > tbody > tr > [data-label] {
     grid-template-columns: inherit !important;

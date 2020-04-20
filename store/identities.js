@@ -1,7 +1,8 @@
 import gql from "graphql-tag";
 
 export const state = () => ({
-  list: []
+  list: [],
+  dataLoaded: false
 });
 
 export const mutations = {
@@ -12,6 +13,7 @@ export const mutations = {
         identity: JSON.parse(account.identity)
       };
     });
+    state.dataLoaded = true;
   },
   getters: function() {
     state => state.list;

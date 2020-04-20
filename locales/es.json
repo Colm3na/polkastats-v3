@@ -171,7 +171,8 @@
       "total_stake": "Participación total",
       "stake": "Participado",
       "commission": "Comisión",
-      "era_points": "Puntos era"
+      "era_points": "Puntos era",
+      "loading_data": "Cargando datos"
     },
     "intentions": {
       "search_placeholder": "Buscar validador por cuenta, índice de cuenta, nombre mostrado como identidad o nombre de keybase",

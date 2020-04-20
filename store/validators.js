@@ -4,7 +4,8 @@ import gql from "graphql-tag";
 
 export const state = () => ({
   list: [],
-  totalStakeBonded: 0
+  totalStakeBonded: 0,
+  dataLoaded: false
 });
 
 export const mutations = {
@@ -57,6 +58,7 @@ export const mutations = {
       }
     }
     state.totalStakeBonded = accum;
+    state.dataLoaded = true;
   },
   getters: function() {
     state => state.list;
