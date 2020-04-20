@@ -171,7 +171,8 @@
       "total_stake": "Total stake",
       "stake": "Stake",
       "commission": "Commission",
-      "era_points": "Era points"
+      "era_points": "Era points",
+      "loading_data": "Loading data"
     },
     "intentions": {
       "search_placeholder": "Search intention by account, account index, identity display name or keybase name",
