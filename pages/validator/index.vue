@@ -47,6 +47,7 @@
             </div>
             <div :key="index" class="validator-detail card mt-4 mb-3">
               <div class="card-body">
+                <!-- // TODO fix validators online
                 <i
                   v-if="validator.imOnline.isOnline"
                   v-b-tooltip.hover
@@ -58,7 +59,6 @@
                   v-b-tooltip.hover
                   class="imOffline fas fa-times-circle"
                   :title="getImOnlineMessage(validator)"
-                />
                 <i
                   v-if="validator.currentElected"
                   v-b-tooltip.hover
@@ -71,6 +71,7 @@
                   class="notElected fas fa-times-circle"
                   :title="$t('details.validator.not_elected_for_next_session')"
                 />
+                /> -->
                 <i
                   v-if="isFavorite(validator.accountId)"
                   v-b-tooltip.hover
