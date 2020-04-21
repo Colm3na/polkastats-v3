@@ -507,19 +507,19 @@ export default {
       filterOn: [],
       totalRows: 1,
       fields: [
-        // ≥
         {
           key: "rank",
           label: "#",
           sortable: true,
           class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
         },
-        {
-          key: "imOnline",
-          label: "✔️",
-          sortable: true,
-          class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
-        },
+        // TODO fix validators online
+        // {
+        //   key: "imOnline",
+        //   label: "✔️",
+        //   sortable: true,
+        //   class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
+        // },
         {
           key: "accountId",
           label: "✅ " + this.$t("pages.index.validator"),
