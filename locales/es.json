@@ -68,7 +68,7 @@
       "show_last_block_and_sessionera_info": "Mostrar información del último bloque y sesión/era",
       "improved_navigation_speed": "Mejorada la velocidad de navegación",
       "head_title": "PolkaStats - Sobre PolkaStats",
-      "head_content": "Cuentas activas en Polkadot Kusama"
+      "head_content": "Sobre Polkadot"
     },
     "accounts": {
       "active_accounts": "Cuentas activas",
@@ -82,7 +82,9 @@
       "remove_from_favorites": "Eliminar de Favoritos",
       "add_to_favorites": "Añadir a Favoritos",
       "identity": "Identidad",
-      "head_title": "PolkaStats - Cuentas activas en Polkadot Kusama"
+      "head_title": "PolkaStats - Cuentas activas en Polkadot Kusama",
+      "head_content": "Cuentas activas en Polkadot Kusama",
+      "loading_data": "Cargando datos, puede tardar tiempo. Sea paciente, por favor"
     },
     "events": {
       "latest_5000_kusama_events": "ültimos 5,000 eventos en Kusama",
