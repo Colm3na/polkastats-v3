@@ -3,7 +3,8 @@ import { isHex } from "@polkadot/util";
 import gql from "graphql-tag";
 
 export const state = () => ({
-  list: []
+  list: [],
+  dataLoaded: false
 });
 
 export const mutations = {
@@ -46,6 +47,7 @@ export const mutations = {
           rank: index + 1
         };
       });
+    state.dataLoaded = true;
   },
   getters: function() {
     state => state.list;
