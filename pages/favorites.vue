@@ -36,7 +36,6 @@
                 v-b-tooltip.hover
                 class="imOffline fas fa-times-circle"
                 :title="getImOnlineMessage(validator)"
-              /> -->
               <i
                 v-if="validator.currentElected"
                 v-b-tooltip.hover
@@ -49,6 +48,7 @@
                 class="notElected fas fa-times-circle"
                 :title="$t('pages.favorites.not_elected_for_next_session')"
               />
+              /> -->
               <a class="favorite" @click="toggleFavorite(validator.accountId)">
                 <i
                   v-if="isFavorite(validator.accountId)"

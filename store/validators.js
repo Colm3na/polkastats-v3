@@ -82,11 +82,6 @@ export const actions = {
       })
       .then(({ data }) => {
         const validators = JSON.parse(data.validator_staking[0].json);
-        const prueba = validators.filter(
-          valid =>
-            valid.accountId ===
-            "HeeJfizAEvorbkinL4GfRUYpxUiFST3dpnUHrh9ga2Z8Cpm"
-        );
         commit("update", validators);
       })
       .catch(error => {
