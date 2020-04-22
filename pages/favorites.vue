@@ -25,7 +25,7 @@
         <template v-for="(validator, index) in validators">
           <template v-if="isFavorite(validator.accountId)">
             <div :key="validator.accountId" class="validator card mb-3">
-              <i
+              <!-- <i
                 v-if="validator.imOnline.isOnline"
                 v-b-tooltip.hover
                 class="imOnline fas fa-check-circle"
@@ -36,7 +36,7 @@
                 v-b-tooltip.hover
                 class="imOffline fas fa-times-circle"
                 :title="getImOnlineMessage(validator)"
-              />
+              /> -->
               <i
                 v-if="validator.currentElected"
                 v-b-tooltip.hover
@@ -963,14 +963,14 @@ body {
 .page-favorites .elected {
   position: absolute;
   top: 0.4rem;
-  left: 2rem;
+  left: 0.2rem;
   font-size: 1.1rem;
   color: #2697e2;
 }
 .page-favorites .notElected {
   position: absolute;
   top: 0.4rem;
-  left: 2rem;
+  left: 0.2rem;
   font-size: 1.1rem;
   color: red;
 }
