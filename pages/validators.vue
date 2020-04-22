@@ -168,58 +168,64 @@
             <template slot="accountId" slot-scope="data">
               <div class="d-block d-sm-block d-md-none d-lg-none d-xl-none">
                 <b-container>
-                  <b-row>
-                    <p class="mt-3 mb-0 rank">
-                      <span v-b-tooltip.hover class="rank-detail" title="Rank"
-                        >#{{ data.item.rank }}</span
+                  <b-row class="flags">
+                    <div class="activity-container">
+                      <p class="ml-2 rank">
+                        <!-- <span
+                            v-b-tooltip.hover
+                            class="rank-detail"
+                            :title="$t('pages.index.rank')"
+                            >#{{ data.item.rank }}</span
+                          >
+                          <i
+                            v-if="data.item.imOnline"
+                            v-b-tooltip.hover
+                            class="imOnline fas fa-check-circle ml-1"
+                            :title="data.item.imOnlineMessage"
+                          />
+                          <i
+                            v-else
+                            v-b-tooltip.hover
+                            class="imOffline fas fa-times-circle ml-1"
+                            :title="data.item.imOnlineMessage"
+                          /> -->
+                        <i
+                          v-if="data.item.currentElected"
+                          v-b-tooltip.hover
+                          class="elected fas fa-chevron-circle-right"
+                          :title="$t('pages.index.elected_for_next_session')"
+                        />
+                        <i
+                          v-else
+                          v-b-tooltip.hover
+                          class="notElected fas fa-times-circle"
+                          :title="
+                            $t('pages.index.not_elected_for_next_session')
+                          "
+                        />
+                      </p>
+                    </div>
+                    <div class="favorite-container">
+                      <a
+                        class="favorite"
+                        @click="toggleFavorite(data.item.accountId)"
                       >
-                      <i
-                        v-if="data.item.imOnline"
-                        v-b-tooltip.hover
-                        class="imOnline fas fa-check-circle ml-1"
-                        :title="data.item.imOnlineMessage"
-                      />
-                      <i
-                        v-else
-                        v-b-tooltip.hover
-                        class="imOffline fas fa-times-circle ml-1"
-                        :title="data.item.imOnlineMessage"
-                      />
-                      <i
-                        v-if="data.item.currentElected"
-                        v-b-tooltip.hover
-                        class="elected fas fa-chevron-circle-right"
-                        :title="$t('pages.validators.elected_for_next_session')"
-                      />
-                      <i
-                        v-else
-                        v-b-tooltip.hover
-                        class="notElected fas
-                      fa-times-circle"
-                        :title="
-                          $t('pages.validators.not_elected_for_next_session')
-                        "
-                      />
-                    </p>
-                    <a
-                      class="favorite"
-                      @click="toggleFavorite(data.item.accountId)"
-                    >
-                      <i
-                        v-if="data.item.favorite"
-                        v-b-tooltip.hover
-                        class="fas fa-star"
-                        style="color: #f1bd23"
-                        :title="$t('pages.validators.remove_from_favorites')"
-                      />
-                      <i
-                        v-else
-                        v-b-tooltip.hover
-                        class="fas fa-star"
-                        style="color: #e6dfdf;"
-                        :title="$t('pages.validators.add_to_favorites')"
-                      />
-                    </a>
+                        <i
+                          v-if="data.item.favorite"
+                          v-b-tooltip.hover
+                          class="fas fa-star"
+                          style="color: #f1bd23"
+                          :title="$t('pages.index.remove_from_favorites')"
+                        />
+                        <i
+                          v-else
+                          v-b-tooltip.hover
+                          class="fas fa-star"
+                          style="color: #e6dfdf;"
+                          :title="$t('pages.index.add_to_favorites')"
+                        />
+                      </a>
+                    </div>
                   </b-row>
                   <b-row>
                     <b-col cols="4">
@@ -982,12 +988,12 @@ body {
   text-align: center;
 }
 #validators-table .identicon {
-  display: inline;
-  margin-right: 0.2rem;
   cursor: copy;
 }
-#validators-table .identicon div {
-  display: inline;
+.image-container {
+  flex: 1;
+  justify-content: center;
+  align-items: center;
 }
 .page-item.active .page-link {
   z-index: 1;
@@ -1038,7 +1044,7 @@ body {
     padding: 0 0.5rem;
   }
   #validators-table tr {
-    border-radius: 0.8rem;
+    border-radius: 0.3rem;
     box-shadow: 1px 1px 2px 2px #a2a6a8;
     padding: 0.5rem 1rem 0 0;
     margin: 1rem 0;
@@ -1052,49 +1058,42 @@ body {
   #validators-table tr td:nth-child(3) div .d-block {
     position: relative;
   }
+  .flags {
+    margin: 0;
+    display: flex;
+    flex: 1;
+    max-height: 35px;
+  }
+
+  .favorite-container {
+    flex: 1;
+    text-align: right;
+  }
+
+  .identity-container {
+    display: flex;
+    flex: 1;
+  }
   #validators-table tr td:nth-child(3) div .d-block .favorite {
-    position: absolute;
-    top: -5px;
-    right: 0rem;
+    right: 0;
+    text-align: right;
   }
   #validators-table .elected {
-    position: absolute;
-    top: 0rem;
-    left: 1.8rem;
     font-size: 1.1rem;
     color: #2697e2;
   }
   #validators-table .notElected {
-    position: absolute;
-    top: 0rem;
-    left: 1.8rem;
     font-size: 1.1rem;
     color: red;
   }
   #validators-table .validator-name {
     font-size: 1.7em;
   }
-  #validators-table .imOnline {
-    position: absolute;
-    top: 0rem;
-    left: 0rem;
-  }
-  #validators-table .imOffline {
-    position: absolute;
-    top: 0rem;
-    left: 0rem;
-  }
   .bonded {
     color: #d75ea1;
     font-weight: 700;
     font-size: 1.3rem;
   }
-  #validators-table .logo {
-    position: relative;
-    top: 3em;
-    left: 10%;
-  }
-
   #validators-table .fullname {
     font-size: 3em;
     position: relative;
@@ -1108,19 +1107,15 @@ body {
     top: -1.1em;
   }
   #validators-table .rank-detail {
-    position: absolute;
-    top: -4px;
-    left: 3.3rem;
     width: 50px;
     font-size: 1.1rem;
   }
-  #validators-table .logo-identity {
-    position: relative;
-    top: 3em;
-    left: 5rem;
-  }
   #validators-table .small-text small {
     font-size: 0.9rem;
+  }
+  .logo {
+    text-align: center;
+    margin-top: 1rem;
   }
 }
 
@@ -1140,9 +1135,6 @@ body {
 @media (max-width: 470px) {
   td {
     border-top: 0;
-  }
-  #validators-table .logo {
-    position: relative;
   }
   #validators-table h4 {
     margin-bottom: 0;
@@ -1171,9 +1163,6 @@ body {
   }
   #validators-table .identicon {
     cursor: copy;
-    position: relative;
-    top: -1.5rem;
-    left: -0.6rem;
   }
   .identity {
     max-width: 48px;

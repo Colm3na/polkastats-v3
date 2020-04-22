@@ -47,7 +47,8 @@
             </div>
             <div :key="index" class="validator-detail card mt-4 mb-3">
               <div class="card-body">
-                <!-- // TODO fix validators online
+                <div>
+                  <!-- // TODO fix validators online
                 <i
                   v-if="validator.imOnline.isOnline"
                   v-b-tooltip.hover
@@ -59,33 +60,38 @@
                   v-b-tooltip.hover
                   class="imOffline fas fa-times-circle"
                   :title="getImOnlineMessage(validator)"
-                <i
-                  v-if="validator.currentElected"
-                  v-b-tooltip.hover
-                  class="elected fas fa-chevron-circle-right"
-                  :title="$t('details.validator.elected_for_next_session')"
-                />
-                <i
-                  v-else
-                  v-b-tooltip.hover
-                  class="notElected fas fa-times-circle"
-                  :title="$t('details.validator.not_elected_for_next_session')"
-                />
                 /> -->
-                <i
-                  v-if="isFavorite(validator.accountId)"
-                  v-b-tooltip.hover
-                  class="favorite fas fa-star"
-                  style="color: #f1bd23"
-                  :title="$t('details.validator.in_favorites')"
-                />
-                <i
-                  v-else
-                  v-b-tooltip.hover
-                  class="favorite fas fa-star"
-                  style="color: #e6dfdf;"
-                  :title="$t('details.validator.not_in_favorites')"
-                />
+                  <i
+                    v-if="validator.currentElected"
+                    v-b-tooltip.hover
+                    class="elected fas fa-chevron-circle-right"
+                    :title="$t('details.validator.elected_for_next_session')"
+                  />
+                  <i
+                    v-else
+                    v-b-tooltip.hover
+                    class="notElected fas fa-times-circle"
+                    :title="
+                      $t('details.validator.not_elected_for_next_session')
+                    "
+                  />
+                </div>
+                <div>
+                  <i
+                    v-if="isFavorite(validator.accountId)"
+                    v-b-tooltip.hover
+                    class="favorite fas fa-star"
+                    style="color: #f1bd23"
+                    :title="$t('details.validator.in_favorites')"
+                  />
+                  <i
+                    v-else
+                    v-b-tooltip.hover
+                    class="favorite fas fa-star"
+                    style="color: #e6dfdf;"
+                    :title="$t('details.validator.not_in_favorites')"
+                  />
+                </div>
                 <div class="row">
                   <div class="col-md-3 mb-2 text-center">
                     <div v-if="hasPolkaStatsIdentity(validator.stashId)">
