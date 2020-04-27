@@ -317,6 +317,15 @@
 <script>
 import { mapMutations } from "vuex";
 import languages from "../components/languages";
+import { nodeURL } from "../polkastats.config";
+import {
+  web3Accounts,
+  web3Enable,
+  web3FromAddress,
+  web3ListRpcProviders,
+  web3UseRpcProvider
+} from "@polkadot/extension-dapp";
+import { ApiPromise, WsProvider } from "@polkadot/api";
 
 export default {
   components: { languages },
@@ -325,8 +334,122 @@ export default {
       return this.$store.state.system.info;
     }
   },
-  created: function() {
+  created: async function() {
     this.$store.dispatch("system/update");
+
+    const wsProvider = new WsProvider(nodeURL);
+    console.log("PROVIDER: ", wsProvider);
+    // const api = ApiPromise.create({ provider: wsProvider }).then(
+    //   async response => {
+    //     console.log("API: ", response);
+
+    //     // //  console.log("API: ", api);
+    //     // const now = response.query.timestamp.now().then(now => {
+    //     //   console.log("NOW: ", now);
+    //     //   return now;
+    //     // });
+
+    //     // const { nonce, data: balance } = response.query.system
+    //     //   .account("5GnQQFmEx85iuAoL3J1cWtMfoYTWVEgFV4T85LNRUiG5tXaB")
+    //     //   .then(({ nonce, data }) => {
+    //     //     console.log("DATA: ", data);
+    //     //     console.log(
+    //     //       `${now}: balance of ${data.free} and a nonce of ${nonce}`
+    //     //     );
+    //     //     return { nonce, data };
+    //     //   });
+
+    //     // The amount required to create a new account
+    //     // console.log(response.consts.balances.creationFee.toNumber());
+
+    //     // The amount required per byte on an extrinsic
+    //     // console.log(response.consts.balances.transactionByteFee.toNumber());
+    //     const [now, { nonce, data: balances }] = await Promise.all([
+    //       response.query.timestamp.now(),
+    //       response.query.system.account(
+    //         "5GnQQFmEx85iuAoL3J1cWtMfoYTWVEgFV4T85LNRUiG5tXaB"
+    //       )
+    //     ]);
+
+    //     console.log(
+    //       `${now}: balance of ${balances.free} and a nonce of ${nonce}`
+    //     );
+
+    //     // Retrieve the chain name
+    //     const chain = await response.rpc.system.chain();
+
+    //     // Retrieve the latest header
+    //     const lastHeader = await response.rpc.chain.getHeader();
+
+    //     // Log the information
+    //     console.log(
+    //       `${chain}: last block #${lastHeader.number} has hash ${lastHeader.hash}`
+    //     );
+
+    //     return response;
+    //   }
+    // );
+
+    const api = await ApiPromise.create({ provider: wsProvider });
+    console.log("API: ", api);
+
+    // await api.isReady;
+    const enableWeb3 = await web3Enable("PolkaStats");
+    const accounts = await web3Accounts();
+    // console.log("ALLACCOUNTS: ", accounts);
+
+    // const injector = await web3FromAddress(accounts[0].address);
+    web3FromAddress(accounts[0].address).then(async injector => {
+      console.log("Injector: ", injector);
+      api.setSigner(injector.signer);
+      const value = 10000000000;
+
+      const txHash = await api.tx.balances
+        .transfer(accounts[0].address, value)
+        .signAndSend(accounts[1].address, ({ status, events }) => {
+          console.log("The operation is in process: ", status);
+          if (status.isInBlock || status.isFinalized) {
+            events
+              // find/filter for failed events
+              .filter(
+                ({ section, method }) =>
+                  section === "system" && method === "ExtrinsicFailed"
+              )
+              // we know that data for system.ExtrinsicFailed is
+              // (DispatchError, DispatchInfo)
+              .forEach(({ data: [error, info] }) => {
+                if (error.isModule) {
+                  // for module errors, we have the section indexed, lookup
+                  const decoded = api.registry.findMetaError(error.asModule);
+                  const { documentation, method, section } = decoded;
+
+                  console.log(
+                    `${section}.${method}: ${documentation.join(" ")}`
+                  );
+                } else {
+                  // Other, CannotLookup, BadOrigin, no extra info
+                  console.log(error.toString());
+                }
+              });
+          }
+        });
+    });
+
+    // web3Enable("Polkastats").then(response => {
+    //   console.log("ALLINJECTED: ", response);
+    //   console.log("ALLINJECTED-ALLACOUNTS: ", response[0].accounts);
+    //   // console.log("API: ", api);
+    //   // returns an array of { address, meta: { name, source } }
+    //   // meta.source contains the name of the extension that provides this account
+    //   web3Accounts().then(response => {
+    //     console.log("ALLACCOUNTS: ", response);
+    //     const { address } = response[0];
+
+    //     // web3FromAddress().then(response => {
+    //     //   console.log("Injector: ", response);
+    //     // });
+    //   });
+    // });
   }
 };
 </script>
