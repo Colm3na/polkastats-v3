@@ -764,8 +764,8 @@
 import { mapMutations } from "vuex";
 import gql from "graphql-tag";
 import moment from "moment";
+import mergeDeepRight from "ramda/src/mergeDeepRight";
 import chart from "../../components/chart";
-import { commonChartOptions } from "../commons/chartOptions";
 import Identicon from "../../components/identicon.vue";
 import chartHeader from "../../components/chart-header.vue";
 import { isHex } from "@polkadot/util";
@@ -776,6 +776,7 @@ import {
   mobileBreakpoint
 } from "../../polkastats.config.js";
 import commonMixin from "../../mixins/commonMixin.js";
+import { createQueryRewards, createQueryValidadorBonded } from "./queries";
 
 export default {
   components: {
@@ -856,15 +857,9 @@ export default {
           data: []
         }
       ],
-      StakeEvolutionDailyChartOptions: {
-        ...commonChartOptions
-      },
-      StakeEvolutionWeeklyChartOptions: {
-        ...commonChartOptions
-      },
-      StakeEvolutionMonthlyChartOptions: {
-        ...commonChartOptions
-      },
+      StakeEvolutionDailyChartOptions: this.createStakeEvolutionChartOptions(),
+      StakeEvolutionWeeklyChartOptions: this.createStakeEvolutionChartOptions(),
+      StakeEvolutionMonthlyChartOptions: this.createStakeEvolutionChartOptions(),
       RewardEvolutionDailySeries: [
         {
           name: "Era rewards (KSM)",
@@ -883,15 +878,9 @@ export default {
           data: []
         }
       ],
-      RewardsDailyChartOptions: {
-        ...commonChartOptions
-      },
-      RewardsWeeklyChartOptions: {
-        ...commonChartOptions
-      },
-      RewardsMonthlyChartOptions: {
-        ...commonChartOptions
-      },
+      RewardsDailyChartOptions: this.createRewardsChartOptions(),
+      RewardsWeeklyChartOptions: this.createRewardsChartOptions(),
+      RewardsMonthlyChartOptions: this.createRewardsChartOptions(),
       totalIssuance: "",
       overBreakpoint: window.innerWidth > mediumBreakpoint
     };
@@ -1089,96 +1078,114 @@ export default {
           return parseInt(new Date().getTime() / 1000) - 2592000;
       }
     },
-    getValidatorDailyGraphData: function() {
-      var vm = this;
-      const GET_VALIDATOR_BONDED = gql`
-        query validator_bonded {
-          validator_bonded(
-            where: { timestamp: { _gt: ${this.getTimestamp(
-              "day"
-            )} }, account_id: { _eq: "${this.accountId}" } },
-            order_by: {timestamp: desc}
-          ) {
-            account_id
-            amount
-            timestamp
-            session_index
-            block_number
-          }
-        }
-      `;
-
-      vm.$apolloProvider.defaultClient
-        .query({ query: GET_VALIDATOR_BONDED })
-        .then(function(response) {
-          // Update chart data
-          var newCategories = [];
-          var newData = [];
-          const { validator_bonded } = response.data;
-
-          for (var i = 0; i < validator_bonded.length; i++) {
-            // Insert firt point, last point and points with different values
-            if (
-              i == 0 ||
-              i == validator_bonded.length - 1 ||
-              (i > 0 &&
-                validator_bonded[i].amount != validator_bonded[i - 1].amount)
-            ) {
-              // Save first and last point
-              if (i == 0) vm.daily.last = validator_bonded[i].amount;
+    createValidatorsCategoriesAndData: function(validator_bonded, time) {
+      let newCategories = [];
+      let newData = [];
+      for (var i = 0; i < validator_bonded.length; i++) {
+        // Insert firt point, last point and points with different values
+        if (
+          i == 0 ||
+          i == validator_bonded.length - 1 ||
+          (i > 0 &&
+            validator_bonded[i].amount != validator_bonded[i - 1].amount)
+        ) {
+          // Save first and last point
+          switch (time) {
+            case "day":
+              if (i == 0) this.daily.last = validator_bonded[i].amount;
               if (i == validator_bonded.length - 1)
-                vm.daily.first = validator_bonded[i].amount;
+                this.daily.first = validator_bonded[i].amount;
+              break;
+            case "week":
+              if (i == 0) this.weekly.last = validator_bonded[i].amount;
+              if (i == validator_bonded.length - 1)
+                this.weekly.first = validator_bonded[i].amount;
+              break;
+            case "month":
+              if (i == 0) this.monthly.last = validator_bonded[i].amount;
+              if (i == validator_bonded.length - 1)
+                this.monthly.first = validator_bonded[i].amount;
+              break;
+            default:
+              break;
+          }
 
-              newCategories.push(
-                moment
-                  .unix(
-                    validator_bonded[i].timestamp,
-                    "YYYY-MM-DD HH:mm:ss.SSSSSS Z"
-                  )
-                  .format("YYYY-MM-DD HH:mm:ss")
-              );
-              newData.push(validator_bonded[i].amount);
+          newCategories.push(
+            moment
+              .unix(
+                validator_bonded[i].timestamp,
+                "YYYY-MM-DD HH:mm:ss.SSSSSS Z"
+              )
+              .format("YYYY-MM-DD HH:mm:ss")
+          );
+          newData.push(validator_bonded[i].amount);
+        }
+      }
+
+      newCategories.reverse();
+      newData.reverse();
+
+      return { newCategories, newData };
+    },
+    createStakeEvolutionChartOptions: function() {
+      return {
+        xaxis: {
+          type: "datetime",
+          title: {
+            text: this.$t("details.validator.date_time") + " (UTC)"
+          },
+          labels: {
+            formatter: val => {
+              return moment.unix(val / 1000).format("MM/DD/YYYY HH:mm");
             }
           }
-
-          newCategories.reverse();
-          newData.reverse();
-
-          // Make sure to update the whole options config and not just a single property to allow the Vue watch catch the change.
-          vm.StakeEvolutionDailyChartOptions = {
-            ...vm.StakeEvolutionDailyChartOptions,
-            ...{
-              xaxis: {
-                categories: newCategories,
-                type: "datetime",
-                title: {
-                  text: vm.$t("details.validator.date_time") + " (UTC)"
-                },
-                labels: {
-                  formatter: function(val) {
-                    return moment.unix(val / 1000).format("MM/DD/YYYY HH:mm");
-                  }
-                }
-              },
-              yaxis: {
-                title: {
-                  text: vm.$t("details.validator.total_bonded") + " (KSM)"
-                },
-                labels: {
-                  formatter: function(val) {
-                    if (vm.overBreakpoint) {
-                      return (val / 1000000000000).toFixed(6);
-                    } else {
-                      return (val / 1000000000000).toFixed(2);
-                    }
-                  }
-                }
+        },
+        yaxis: {
+          title: {
+            text: this.$t("details.validator.total_bonded") + " (KSM)"
+          },
+          labels: {
+            formatter: val => {
+              if (this.overBreakpoint) {
+                return (val / 1000000000000).toFixed(6);
+              } else {
+                return (val / 1000000000000).toFixed(2);
               }
             }
-          };
+          }
+        }
+      };
+    },
+    getValidatorDailyGraphData: function() {
+      const timestamp = this.getTimestamp("day");
+
+      const GET_VALIDATOR_BONDED = gql`
+        ${createQueryValidadorBonded(timestamp, this.accountId)}
+      `;
+
+      this.$apolloProvider.defaultClient
+        .query({ query: GET_VALIDATOR_BONDED })
+        .then(response => {
+          const { validator_bonded } = response.data;
+
+          const {
+            newCategories,
+            newData
+          } = this.createValidatorsCategoriesAndData(validator_bonded, "day");
+
+          // Make sure to update the whole options config and not just a single property to allow the Vue watch catch the change.
+          this.StakeEvolutionDailyChartOptions = mergeDeepRight(
+            this.StakeEvolutionDailyChartOptions,
+            {
+              markers: { size: 6 },
+              xaxis: {
+                categories: newCategories
+              }
+            }
+          );
 
           // In the same way, update the series option
-          vm.StakeEvolutionDailySeries = [
+          this.StakeEvolutionDailySeries = [
             {
               data: newData
             }
@@ -1186,89 +1193,35 @@ export default {
         });
     },
     getValidatorWeeklyGraphData: function() {
-      var vm = this;
+      const timestamp = this.getTimestamp("week");
 
       const GET_VALIDATOR_BONDED = gql`
-        query validator_bonded {
-          validator_bonded(
-            where: { timestamp: { _gt: ${this.getTimestamp(
-              "week"
-            )} }, account_id: { _eq: "${this.accountId}" } },
-            order_by: {timestamp: desc}
-          ) {
-            account_id
-            amount
-            timestamp
-            session_index
-            block_number
-          }
-        }
+        ${createQueryValidadorBonded(timestamp, this.accountId)}
       `;
 
-      vm.$apolloProvider.defaultClient
+      this.$apolloProvider.defaultClient
         .query({ query: GET_VALIDATOR_BONDED })
-        .then(function(response) {
-          // Update chart data
-          var newCategories = [];
-          var newData = [];
+        .then(response => {
           const { validator_bonded } = response.data;
 
-          for (var i = 0; i < validator_bonded.length; i++) {
-            // Save first and last point
-            if (i == 0) vm.weekly.last = validator_bonded[i].amount;
-            if (i == validator_bonded.length - 1)
-              vm.weekly.first = validator_bonded[i].amount;
-
-            newCategories.push(
-              moment
-                .unix(
-                  validator_bonded[i].timestamp,
-                  "YYYY-MM-DD HH:mm:ss.SSSSSS Z"
-                )
-                .format("YYYY-MM-DD HH:mm:ss")
-            );
-            newData.push(validator_bonded[i].amount);
-          }
-
-          newCategories.reverse();
-          newData.reverse();
+          const {
+            newCategories,
+            newData
+          } = this.createValidatorsCategoriesAndData(validator_bonded, "week");
 
           // Make sure to update the whole options config and not just a single property to allow the Vue watch catch the change.
-          vm.StakeEvolutionWeeklyChartOptions = {
-            ...vm.StakeEvolutionWeeklyChartOptions,
-            ...{
+          this.StakeEvolutionWeeklyChartOptions = mergeDeepRight(
+            this.StakeEvolutionWeeklyChartOptions,
+            {
               markers: { size: 4 },
               xaxis: {
-                categories: newCategories,
-                type: "datetime",
-                title: {
-                  text: vm.$t("details.validator.date_time") + " (UTC)"
-                },
-                labels: {
-                  formatter: function(val) {
-                    return moment.unix(val / 1000).format("MM/DD/YYYY HH:mm");
-                  }
-                }
-              },
-              yaxis: {
-                title: {
-                  text: vm.$t("details.validator.total_bonded") + " (KSM)"
-                },
-                labels: {
-                  formatter: function(val) {
-                    if (vm.overBreakpoint) {
-                      return (val / 1000000000000).toFixed(6);
-                    } else {
-                      return (val / 1000000000000).toFixed(2);
-                    }
-                  }
-                }
+                categories: newCategories
               }
             }
-          };
+          );
 
           // In the same way, update the series option
-          vm.StakeEvolutionWeeklySeries = [
+          this.StakeEvolutionWeeklySeries = [
             {
               data: newData
             }
@@ -1276,182 +1229,141 @@ export default {
         });
     },
     getValidatorMonthlyGraphData: function() {
-      var vm = this;
+      const timestamp = this.getTimestamp("month");
 
       const GET_VALIDATOR_BONDED = gql`
-        query validator_bonded {
-          validator_bonded(
-            where: { timestamp: { _gt: ${this.getTimestamp(
-              "month"
-            )} }, account_id: { _eq: "${this.accountId}" } },
-            order_by: {timestamp: desc}
-          ) {
-            account_id
-            amount
-            timestamp
-            session_index
-            block_number
-          }
-        }
+        ${createQueryValidadorBonded(timestamp, this.accountId)}
       `;
 
-      vm.$apolloProvider.defaultClient
+      this.$apolloProvider.defaultClient
         .query({ query: GET_VALIDATOR_BONDED })
-        .then(function(response) {
-          // Update chart data
-          var newCategories = [];
-          var newData = [];
+        .then(response => {
           const { validator_bonded } = response.data;
 
-          for (var i = 0; i < validator_bonded.length; i++) {
-            // Save first and last point
-            if (i == 0) vm.monthly.last = validator_bonded[i].amount;
-            if (i == validator_bonded.length - 1)
-              vm.monthly.first = validator_bonded[i].amount;
-
-            newCategories.push(
-              moment
-                .unix(
-                  validator_bonded[i].timestamp,
-                  "YYYY-MM-DD HH:mm:ss.SSSSSS Z"
-                )
-                .format("YYYY-MM-DD HH:mm:ss")
-            );
-            newData.push(validator_bonded[i].amount);
-          }
-
-          newCategories.reverse();
-          newData.reverse();
+          const {
+            newCategories,
+            newData
+          } = this.createValidatorsCategoriesAndData(validator_bonded, "month");
 
           // Make sure to update the whole options config and not just a single property to allow the Vue watch catch the change.
-          vm.StakeEvolutionMonthlyChartOptions = {
-            ...vm.StakeEvolutionMonthlyChartOptions,
-            ...{
+          this.StakeEvolutionMonthlyChartOptions = mergeDeepRight(
+            this.StakeEvolutionMonthlyChartOptions,
+            {
               markers: { size: 2 },
               xaxis: {
-                categories: newCategories,
-                type: "datetime",
-                title: {
-                  text: vm.$t("details.validator.date_time") + " (UTC)"
-                },
-                labels: {
-                  formatter: function(val) {
-                    return moment.unix(val / 1000).format("MM/DD/YYYY HH:mm");
-                  }
-                }
-              },
-              yaxis: {
-                title: {
-                  text: vm.$t("details.validator.total_bonded") + " (KSM)"
-                },
-                labels: {
-                  formatter: function(val) {
-                    if (vm.overBreakpoint) {
-                      return (val / 1000000000000).toFixed(6);
-                    } else {
-                      return (val / 1000000000000).toFixed(2);
-                    }
-                  }
-                }
+                categories: newCategories
               }
             }
-          };
+          );
 
           // In the same way, update the series option
-          vm.StakeEvolutionMonthlySeries = [
+          this.StakeEvolutionMonthlySeries = [
             {
               data: newData
             }
           ];
         });
     },
-    getRewardsMonthlyGraphData: function() {
-      var vm = this;
-
-      const GET_REWARDS = gql`
-        query rewards {
-          rewards(
-            where: { stash_id: { _eq: "${
-              this.accountId
-            }" }, timestamp: { _gt: ${this.getTimestamp("month")} } }
-            order_by: { timestamp: desc }
-          ) {
-            block_number
-            commission
-            era_index
-            era_points
-            era_rewards
-            estimated_payout
-            stake_info
-            stash_id
-            timestamp
-          }
-        }
-      `;
-
-      vm.$apolloProvider.defaultClient
-        .query({ query: GET_REWARDS })
-        .then(function(response) {
-          // Update chart data
-          var newCategories = [];
-          var newData = [];
-          vm.rewards.month = 0;
-          const { rewards } = response.data;
-
-          for (var i = 0; i < rewards.length; i++) {
-            // Save first and last point
-            if (i == 0) vm.monthly.last = rewards[i].estimated_payout;
+    createRewardsCategoriesAndData: function(rewards, time) {
+      let newCategories = [];
+      let newData = [];
+      for (var i = 0; i < rewards.length; i++) {
+        // Save first and last point
+        switch (time) {
+          case "day":
+            if (i == 0) this.daily.last = rewards[i].estimated_payout;
             if (i == rewards.length - 1)
-              vm.monthly.first = rewards[i].estimated_payout;
+              this.daily.first = rewards[i].estimated_payout;
+            break;
+          case "week":
+            if (i == 0) this.weekly.last = rewards[i].estimated_payout;
+            if (i == rewards.length - 1)
+              this.weekly.first = rewards[i].estimated_payout;
+            break;
+          case "month":
+            if (i == 0) this.monthly.last = rewards[i].estimated_payout;
+            if (i == rewards.length - 1)
+              this.monthly.first = rewards[i].estimated_payout;
+            break;
+          default:
+            break;
+        }
 
-            newCategories.push(
-              moment
-                .unix(rewards[i].timestamp, "YYYY-MM-DD HH:mm:ss.SSSSSS Z")
-                .format("YYYY-MM-DD HH:mm:ss")
-            );
-            newData.push(rewards[i].estimated_payout);
-            vm.rewards.month += rewards[i].estimated_payout;
+        newCategories.push(
+          moment
+            .unix(rewards[i].timestamp, "YYYY-MM-DD HH:mm:ss.SSSSSS Z")
+            .format("YYYY-MM-DD HH:mm:ss")
+        );
+        newData.push(rewards[i].estimated_payout);
+        this.rewards[time] += rewards[i].estimated_payout;
+      }
+
+      newCategories.reverse();
+      newData.reverse();
+
+      return { newCategories, newData };
+    },
+    createRewardsChartOptions: function() {
+      return {
+        xaxis: {
+          type: "datetime",
+          title: {
+            text: this.$t("details.validator.date_time") + " (UTC)"
+          },
+          labels: {
+            formatter: val => {
+              return moment.unix(val / 1000).format("MM/DD/YYYY HH:mm");
+            }
           }
-
-          newCategories.reverse();
-          newData.reverse();
-
-          // Make sure to update the whole options config and not just a single property to allow the Vue watch catch the change.
-          vm.RewardsMonthlyChartOptions = {
-            ...vm.RewardsMonthlyChartOptions,
-            ...{
-              markers: { size: 2 },
-              xaxis: {
-                categories: newCategories,
-                type: "datetime",
-                title: {
-                  text: vm.$t("details.validator.date_time") + " (UTC)"
-                },
-                labels: {
-                  formatter: function(val) {
-                    return moment.unix(val / 1000).format("MM/DD/YYYY HH:mm");
-                  }
-                }
-              },
-              yaxis: {
-                title: {
-                  text: "REWARDS (KSM)"
-                },
-                labels: {
-                  formatter: function(val) {
-                    if (vm.overBreakpoint) {
-                      return (val / 1000000000000).toFixed(6);
-                    } else {
-                      return (val / 1000000000000).toFixed(4);
-                    }
-                  }
-                }
+        },
+        yaxis: {
+          title: {
+            text: this.$t("details.validator.reward") + " (KSM)"
+          },
+          labels: {
+            formatter: val => {
+              if (this.overBreakpoint) {
+                return (val / 1000000000000).toFixed(6);
+              } else {
+                return (val / 1000000000000).toFixed(4);
               }
             }
-          };
+          }
+        }
+      };
+    },
+    getRewardsMonthlyGraphData: function() {
+      const timestamp = this.getTimestamp("month");
+      const query = createQueryRewards(timestamp, this.accountId);
+      const GET_REWARDS = gql`
+        ${query}
+      `;
+
+      this.$apolloProvider.defaultClient
+        .query({ query: GET_REWARDS })
+        .then(response => {
+          // Update chart data
+          this.rewards.month = 0;
+          const { rewards: r } = response.data;
+
+          const {
+            newCategories,
+            newData
+          } = this.createRewardsCategoriesAndData(r, "month");
+
+          // Make sure to update the whole options config and not just a single property to allow the Vue watch catch the change.
+          this.RewardsMonthlyChartOptions = mergeDeepRight(
+            this.RewardsMonthlyChartOptions,
+            {
+              markers: { size: 2 },
+              xaxis: {
+                categories: newCategories
+              }
+            }
+          );
 
           // In the same way, update the series option
-          vm.RewardEvolutionMonthlySeries = [
+          this.RewardEvolutionMonthlySeries = [
             {
               data: newData
             }
@@ -1459,92 +1371,37 @@ export default {
         });
     },
     getRewardsWeeklyGraphData: function() {
-      var vm = this;
-
+      const timestamp = this.getTimestamp("week");
+      const query = createQueryRewards(timestamp, this.accountId);
       const GET_REWARDS = gql`
-        query rewards {
-          rewards(
-            where: { stash_id: { _eq: "${
-              this.accountId
-            }" }, timestamp: { _gt: ${this.getTimestamp("week")} } }
-            order_by: { timestamp: desc }
-          ) {
-            block_number
-            commission
-            era_index
-            era_points
-            era_rewards
-            estimated_payout
-            stake_info
-            stash_id
-            timestamp
-          }
-        }
+        ${query}
       `;
 
-      vm.$apolloProvider.defaultClient
+      this.$apolloProvider.defaultClient
         .query({ query: GET_REWARDS })
-        .then(function(response) {
+        .then(response => {
           // Update chart data
-          var newCategories = [];
-          var newData = [];
-          vm.rewards.week = 0;
-          const { rewards } = response.data;
+          this.rewards.week = 0;
+          const { rewards: r } = response.data;
 
-          for (var i = 0; i < rewards.length; i++) {
-            // Save first and last point
-            if (i == 0) vm.weekly.last = rewards[i].estimated_payout;
-            if (i == rewards.length - 1)
-              vm.weekly.first = rewards[i].estimated_payout;
-
-            newCategories.push(
-              moment
-                .unix(rewards[i].timestamp, "YYYY-MM-DD HH:mm:ss.SSSSSS Z")
-                .format("YYYY-MM-DD HH:mm:ss")
-            );
-            newData.push(rewards[i].estimated_payout);
-            vm.rewards.week += rewards[i].estimated_payout;
-          }
-
-          newCategories.reverse();
-          newData.reverse();
+          const {
+            newCategories,
+            newData
+          } = this.createRewardsCategoriesAndData(r, "week");
 
           // Make sure to update the whole options config and not just a single property to allow the Vue watch catch the change.
-          vm.RewardsWeeklyChartOptions = {
-            ...vm.RewardsWeeklyChartOptions,
-            ...{
+          this.RewardsWeeklyChartOptions = mergeDeepRight(
+            this.RewardsWeeklyChartOptions,
+            {
               markers: { size: 4 },
               xaxis: {
-                categories: newCategories,
-                type: "datetime",
-                title: {
-                  text: vm.$t("details.validator.date_time") + " (UTC)"
-                },
-                labels: {
-                  formatter: function(val) {
-                    return moment.unix(val / 1000).format("MM/DD/YYYY HH:mm");
-                  }
-                }
-              },
-              yaxis: {
-                title: {
-                  text: "REWARDS (KSM)"
-                },
-                labels: {
-                  formatter: function(val) {
-                    if (vm.overBreakpoint) {
-                      return (val / 1000000000000).toFixed(6);
-                    } else {
-                      return (val / 1000000000000).toFixed(4);
-                    }
-                  }
-                }
+                categories: newCategories
               }
             }
-          };
+          );
 
           // In the same way, update the series option
-          vm.RewardEvolutionWeeklySeries = [
+          this.RewardEvolutionWeeklySeries = [
             {
               data: newData
             }
@@ -1552,91 +1409,36 @@ export default {
         });
     },
     getRewardsDailyGraphData: function() {
-      var vm = this;
-
+      const timestamp = this.getTimestamp("day");
+      const query = createQueryRewards(timestamp, this.accountId);
       const GET_REWARDS = gql`
-        query rewards {
-          rewards(
-            where: { stash_id: { _eq: "${
-              this.accountId
-            }" }, timestamp: { _gt: ${this.getTimestamp("day")} } }
-            order_by: { timestamp: desc }
-          ) {
-            block_number
-            commission
-            era_index
-            era_points
-            era_rewards
-            estimated_payout
-            stake_info
-            stash_id
-            timestamp
-          }
-        }
+        ${query}
       `;
 
-      vm.$apolloProvider.defaultClient
+      this.$apolloProvider.defaultClient
         .query({ query: GET_REWARDS })
-        .then(function(response) {
+        .then(response => {
           // Update chart data
-          var newCategories = [];
-          var newData = [];
-          vm.rewards.day = 0;
-          const { rewards } = response.data;
+          this.rewards.day = 0;
+          const { rewards: r } = response.data;
 
-          for (var i = 0; i < rewards.length; i++) {
-            // Save first and last point
-            if (i == 0) vm.daily.last = rewards[i].estimated_payout;
-            if (i == rewards.length - 1)
-              vm.daily.first = rewards[i].estimated_payout;
-
-            newCategories.push(
-              moment
-                .unix(rewards[i].timestamp, "YYYY-MM-DD HH:mm:ss.SSSSSS Z")
-                .format("YYYY-MM-DD HH:mm:ss")
-            );
-            newData.push(rewards[i].estimated_payout);
-            vm.rewards.day += rewards[i].estimated_payout;
-          }
-
-          newCategories.reverse();
-          newData.reverse();
+          const {
+            newCategories,
+            newData
+          } = this.createRewardsCategoriesAndData(r, "day");
 
           // Make sure to update the whole options config and not just a single property to allow the Vue watch catch the change.
-          vm.RewardsDailyChartOptions = {
-            ...vm.RewardsDailyChartOptions,
-            ...{
+          this.RewardsDailyChartOptions = mergeDeepRight(
+            this.RewardsDailyChartOptions,
+            {
               xaxis: {
-                categories: newCategories,
-                type: "datetime",
-                title: {
-                  text: vm.$t("details.validator.date_time") + " (UTC)"
-                },
-                labels: {
-                  formatter: function(val) {
-                    return moment.unix(val / 1000).format("MM/DD/YYYY HH:mm");
-                  }
-                }
-              },
-              yaxis: {
-                title: {
-                  text: "REWARDS (KSM)"
-                },
-                labels: {
-                  formatter: function(val) {
-                    if (vm.overBreakpoint) {
-                      return (val / 1000000000000).toFixed(6);
-                    } else {
-                      return (val / 1000000000000).toFixed(4);
-                    }
-                  }
-                }
+                categories: newCategories
               }
             }
-          };
+          );
 
           // In the same way, update the series option
-          vm.RewardEvolutionDailySeries = [
+          this.RewardEvolutionDailySeries = [
             {
               data: newData
             }
