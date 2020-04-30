@@ -32,12 +32,13 @@ export default {
       return this.last - this.first;
     },
     iconDirection: function() {
-      return this.last - this.first > 0
+      if (this.last - this.first === 0) return "";
+      return this.last - this.first >= 0
         ? "far fa-thumbs-up"
         : "far fa-thumbs-down";
     },
     textClass: function() {
-      return this.last - this.first > 0
+      return this.last - this.first >= 0
         ? "change text-success ml-3"
         : "change text-danger ml-3";
     }

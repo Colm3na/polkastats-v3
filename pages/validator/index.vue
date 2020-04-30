@@ -666,8 +666,8 @@
                         class="text-center w-100"
                       >
                         <chartHeader
-                          :first="parseInt(monthly.first)"
-                          :last="parseInt(monthly.last)"
+                          :first="parseInt(Stake.monthly.first)"
+                          :last="parseInt(Stake.monthly.last)"
                         />
                         <chart
                           :options="StakeEvolutionMonthlyChartOptions"
@@ -681,8 +681,8 @@
                         class="text-center"
                       >
                         <chartHeader
-                          :first="parseInt(weekly.first)"
-                          :last="parseInt(weekly.last)"
+                          :first="parseInt(Stake.weekly.first)"
+                          :last="parseInt(Stake.weekly.last)"
                         />
                         <chart
                           :options="StakeEvolutionWeeklyChartOptions"
@@ -693,8 +693,8 @@
                     <b-tab :title="$t('details.validator.daily')">
                       <div id="stake-evolution-daily-chart" class="text-center">
                         <chartHeader
-                          :first="parseInt(daily.first)"
-                          :last="parseInt(daily.last)"
+                          :first="parseInt(Stake.daily.first)"
+                          :last="parseInt(Stake.daily.last)"
                         />
                         <chart
                           :options="StakeEvolutionDailyChartOptions"
@@ -713,7 +713,7 @@
                   >
                     <b-tab :title="$t('details.validator.monthly')" active>
                       <div
-                        id="stake-evolution-monthly-chart"
+                        id="rewards-evolution-monthly-chart"
                         class="text-center w-100"
                       >
                         <chartHeader
@@ -722,13 +722,13 @@
                         />
                         <chart
                           :options="RewardsMonthlyChartOptions"
-                          :series="RewardEvolutionMonthlySeries"
+                          :series="RewardsEvolutionMonthlySeries"
                         />
                       </div>
                     </b-tab>
                     <b-tab :title="$t('details.validator.weekly')">
                       <div
-                        id="stake-evolution-weekly-chart"
+                        id="rewards-evolution-weekly-chart"
                         class="text-center"
                       >
                         <chartHeader
@@ -737,16 +737,124 @@
                         />
                         <chart
                           :options="RewardsWeeklyChartOptions"
-                          :series="RewardEvolutionWeeklySeries"
+                          :series="RewardsEvolutionWeeklySeries"
                         />
                       </div>
                     </b-tab>
                     <b-tab :title="$t('details.validator.daily')">
-                      <div id="stake-evolution-daily-chart" class="text-center">
+                      <div
+                        id="rewards-evolution-daily-chart"
+                        class="text-center"
+                      >
                         <chartHeader :first="0" :last="parseInt(rewards.day)" />
                         <chart
                           :options="RewardsDailyChartOptions"
-                          :series="RewardEvolutionDailySeries"
+                          :series="RewardsEvolutionDailySeries"
+                        />
+                      </div>
+                    </b-tab>
+                  </b-tabs>
+                </b-tab>
+                <b-tab :title="$t('details.validator.slashes')">
+                  <b-tabs
+                    pills
+                    :card="overBreakpoint"
+                    :vertical="overBreakpoint"
+                    :end="!overBreakpoint"
+                  >
+                    <b-tab :title="$t('details.validator.monthly')" active>
+                      <div
+                        id="slashes-evolution-monthly-chart"
+                        class="text-center w-100"
+                      >
+                        <chartHeader
+                          :first="0"
+                          :last="parseInt(slashes.month)"
+                        />
+                        <chart
+                          :options="SlashesMonthlyChartOptions"
+                          :series="SlashesEvolutionMonthlySeries"
+                        />
+                      </div>
+                    </b-tab>
+                    <b-tab :title="$t('details.validator.weekly')">
+                      <div
+                        id="slashes-evolution-weekly-chart"
+                        class="text-center"
+                      >
+                        <chartHeader
+                          :first="0"
+                          :last="parseInt(slashes.week)"
+                        />
+                        <chart
+                          :options="SlashesWeeklyChartOptions"
+                          :series="SlashesEvolutionWeeklySeries"
+                        />
+                      </div>
+                    </b-tab>
+                    <b-tab :title="$t('details.validator.daily')">
+                      <div
+                        id="slashes-evolution-daily-chart"
+                        class="text-center"
+                      >
+                        <chartHeader :first="0" :last="parseInt(slashes.day)" />
+                        <chart
+                          :options="SlashesDailyChartOptions"
+                          :series="SlashesEvolutionDailySeries"
+                        />
+                      </div>
+                    </b-tab>
+                  </b-tabs>
+                </b-tab>
+                <b-tab :title="$t('details.validator.produced_blocks')">
+                  <b-tabs
+                    pills
+                    :card="overBreakpoint"
+                    :vertical="overBreakpoint"
+                    :end="!overBreakpoint"
+                  >
+                    <b-tab :title="$t('details.validator.monthly')" active>
+                      <div
+                        id="produced-blocks-evolution-monthly-chart"
+                        class="text-center w-100"
+                      >
+                        <chartHeader
+                          :first="parseInt(ProducedBlocks.monthly.first)"
+                          :last="parseInt(ProducedBlocks.monthly.last)"
+                        />
+                        <chart
+                          :options="ProducedBlocksMonthlyChartOptions"
+                          :series="ProducedBlocksEvolutionMonthlySeries"
+                        />
+                      </div>
+                    </b-tab>
+                    <b-tab :title="$t('details.validator.weekly')">
+                      <div
+                        id="produced-blockss-evolution-weekly-chart"
+                        class="text-center"
+                      >
+                        <chartHeader
+                          :first="parseInt(ProducedBlocks.weekly.first)"
+                          :last="parseInt(ProducedBlocks.weekly.last)"
+                        />
+                        <chart
+                          :options="ProducedBlocksWeeklyChartOptions"
+                          :series="ProducedBlocksEvolutionWeeklySeries"
+                        />
+                      </div>
+                    </b-tab>
+                    <b-tab :title="$t('details.validator.daily')">
+                      <div
+                        id="produced-blocks-evolution-daily-chart"
+                        class="text-center"
+                      >
+                        <chartHeader
+                          :first="parseInt(ProducedBlocks.daily.first)"
+                          :last="parseInt(ProducedBlocks.daily.last)"
+                        />
+                        <chart
+                          :options="ProducedBlocksDailyChartOptions"
+                          :series="ProducedBlocksEvolutionDailySeries"
                         />
                       </div>
                     </b-tab>
@@ -776,7 +884,12 @@ import {
   mobileBreakpoint
 } from "../../polkastats.config.js";
 import commonMixin from "../../mixins/commonMixin.js";
-import { createQueryRewards, createQueryValidadorBonded } from "./queries";
+import {
+  createQueryProducedBlocks,
+  createQueryRewards,
+  createQuerySlashes,
+  createQueryValidadorBonded
+} from "./queries";
 
 export default {
   components: {
@@ -822,17 +935,19 @@ export default {
           class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
         }
       ],
-      daily: {
-        last: 0,
-        first: 0
-      },
-      weekly: {
-        last: 0,
-        first: 0
-      },
-      monthly: {
-        last: 0,
-        first: 0
+      Stake: {
+        daily: {
+          last: 0,
+          first: 0
+        },
+        weekly: {
+          last: 0,
+          first: 0
+        },
+        monthly: {
+          last: 0,
+          first: 0
+        }
       },
       StakeEvolutionDailySeries: [
         {
@@ -840,11 +955,6 @@ export default {
           data: []
         }
       ],
-      rewards: {
-        day: 0,
-        week: 0,
-        month: 0
-      },
       StakeEvolutionWeeklySeries: [
         {
           name: "Total bonded (KSM)",
@@ -857,30 +967,138 @@ export default {
           data: []
         }
       ],
-      StakeEvolutionDailyChartOptions: this.createStakeEvolutionChartOptions(),
-      StakeEvolutionWeeklyChartOptions: this.createStakeEvolutionChartOptions(),
-      StakeEvolutionMonthlyChartOptions: this.createStakeEvolutionChartOptions(),
-      RewardEvolutionDailySeries: [
+      StakeEvolutionDailyChartOptions: this.createChartOptions(
+        this.$t("details.validator.total_bonded") + " (KSM)"
+      ),
+      StakeEvolutionWeeklyChartOptions: this.createChartOptions(
+        this.$t("details.validator.total_bonded") + " (KSM)"
+      ),
+      StakeEvolutionMonthlyChartOptions: this.createChartOptions(
+        this.$t("details.validator.total_bonded") + " (KSM)"
+      ),
+      rewards: {
+        day: 0,
+        week: 0,
+        month: 0
+      },
+      RewardsEvolutionDailySeries: [
         {
           name: "Era rewards (KSM)",
           data: []
         }
       ],
-      RewardEvolutionWeeklySeries: [
+      RewardsEvolutionWeeklySeries: [
         {
           name: "Era rewards (KSM)",
           data: []
         }
       ],
-      RewardEvolutionMonthlySeries: [
+      RewardsEvolutionMonthlySeries: [
         {
           name: "Era rewards (KSM)",
           data: []
         }
       ],
-      RewardsDailyChartOptions: this.createRewardsChartOptions(),
-      RewardsWeeklyChartOptions: this.createRewardsChartOptions(),
-      RewardsMonthlyChartOptions: this.createRewardsChartOptions(),
+      RewardsDailyChartOptions: this.createChartOptions(
+        this.$t("details.validator.reward") + " (KSM)"
+      ),
+      RewardsWeeklyChartOptions: this.createChartOptions(
+        this.$t("details.validator.reward") + " (KSM)"
+      ),
+      RewardsMonthlyChartOptions: this.createChartOptions(
+        this.$t("details.validator.reward") + " (KSM)"
+      ),
+      // Slashes
+      Slashes: {
+        daily: {
+          last: 0,
+          first: 0
+        },
+        weekly: {
+          last: 0,
+          first: 0
+        },
+        monthly: {
+          last: 0,
+          first: 0
+        }
+      },
+      slashes: {
+        day: 0,
+        week: 0,
+        month: 0
+      },
+      SlashesEvolutionDailySeries: [
+        {
+          name: "Slashes",
+          data: []
+        }
+      ],
+      SlashesEvolutionWeeklySeries: [
+        {
+          name: "Slashes",
+          data: []
+        }
+      ],
+      SlashesEvolutionMonthlySeries: [
+        {
+          name: "Slashes",
+          data: []
+        }
+      ],
+      SlashesDailyChartOptions: this.createChartOptions(
+        this.$t("details.validator.slashes")
+      ),
+      SlashesWeeklyChartOptions: this.createChartOptions(
+        this.$t("details.validator.slashes")
+      ),
+      SlashesMonthlyChartOptions: this.createChartOptions(
+        this.$t("details.validator.slashes")
+      ),
+      //
+      // Pruduced Blocks
+      ProducedBlocks: {
+        daily: {
+          last: 0,
+          first: 0
+        },
+        weekly: {
+          last: 0,
+          first: 0
+        },
+        monthly: {
+          last: 0,
+          first: 0
+        }
+      },
+      ProducedBlocksEvolutionDailySeries: [
+        {
+          name: "Produced Blocks",
+          data: []
+        }
+      ],
+      ProducedBlocksEvolutionWeeklySeries: [
+        {
+          name: "Produced Blocks",
+          data: []
+        }
+      ],
+      ProducedBlocksEvolutionMonthlySeries: [
+        {
+          name: "Produced Blocks",
+          data: []
+        }
+      ],
+      ProducedBlocksDailyChartOptions: this.createChartOptions(
+        this.$t("details.validator.produced_blocks")
+      ),
+      ProducedBlocksWeeklyChartOptions: this.createChartOptions(
+        this.$t("details.validator.produced_blocks")
+      ),
+      ProducedBlocksMonthlyChartOptions: this.createChartOptions(
+        this.$t("details.validator.produced_blocks")
+      ),
+      //
       totalIssuance: "",
       overBreakpoint: window.innerWidth > mediumBreakpoint
     };
@@ -987,22 +1205,12 @@ export default {
       this.accountId = this.$route.query.accountId;
 
       // Update graph data
-      this.getValidatorDailyGraphData();
-      this.getValidatorWeeklyGraphData();
-      this.getValidatorMonthlyGraphData();
-      this.getRewardsMonthlyGraphData();
-      this.getRewardsWeeklyGraphData();
-      this.getRewardsDailyGraphData();
+      this.getAllChartsData();
 
       // Restart graph data polling
       clearInterval(this.graphPolling);
       this.graphPolling = setInterval(() => {
-        this.getValidatorDailyGraphData();
-        this.getValidatorWeeklyGraphData();
-        this.getValidatorMonthlyGraphData();
-        this.getRewardsMonthlyGraphData();
-        this.getRewardsWeeklyGraphData();
-        this.getRewardsDailyGraphData();
+        this.getAllChartsData();
       }, 60000);
     }
   },
@@ -1015,12 +1223,7 @@ export default {
     }
 
     // Load graph data first time
-    this.getValidatorDailyGraphData();
-    this.getValidatorWeeklyGraphData();
-    this.getValidatorMonthlyGraphData();
-    this.getRewardsMonthlyGraphData();
-    this.getRewardsWeeklyGraphData();
-    this.getRewardsDailyGraphData();
+    this.getAllChartsData();
 
     // Force update of validators list if empty
     if (this.$store.state.validators.list.length == 0) {
@@ -1045,12 +1248,7 @@ export default {
 
     // Refresh graph data every minute
     this.graphPolling = setInterval(() => {
-      this.getValidatorDailyGraphData();
-      this.getValidatorWeeklyGraphData();
-      this.getValidatorMonthlyGraphData();
-      this.getRewardsMonthlyGraphData();
-      this.getRewardsWeeklyGraphData();
-      this.getRewardsDailyGraphData();
+      this.getAllChartsData();
     }, 60000);
 
     window.addEventListener("resize", this.resizeWindow);
@@ -1066,6 +1264,20 @@ export default {
     resizeWindow(e) {
       this.overBreakpoint = window.innerWidth > this.mediumBreakpoint;
     },
+    getAllChartsData() {
+      this.getValidatorDailyGraphData();
+      this.getValidatorWeeklyGraphData();
+      this.getValidatorMonthlyGraphData();
+      this.getRewardsMonthlyGraphData();
+      this.getRewardsWeeklyGraphData();
+      this.getRewardsDailyGraphData();
+      this.getSlashesDailyGraphData();
+      this.getSlashesWeeklyGraphData();
+      this.getSlashesMonthlyGraphData();
+      this.getProducedBlocksDailyGraphData();
+      this.getProducedBlocksWeeklyGraphData();
+      this.getProducedBlocksMonthlyGraphData();
+    },
     getTimestamp(time) {
       switch (time) {
         case "day":
@@ -1078,9 +1290,39 @@ export default {
           return parseInt(new Date().getTime() / 1000) - 2592000;
       }
     },
+    createChartOptions: function(yTitle) {
+      return {
+        xaxis: {
+          type: "datetime",
+          title: {
+            text: this.$t("details.validator.date_time") + " (UTC)"
+          },
+          labels: {
+            formatter: val => {
+              return moment.unix(val / 1000).format("MM/DD/YYYY HH:mm");
+            }
+          }
+        },
+        yaxis: {
+          title: {
+            text: yTitle
+          },
+          labels: {
+            formatter: val => {
+              if (this.overBreakpoint) {
+                return (val / 1000000000000).toFixed(6);
+              } else {
+                return (val / 1000000000000).toFixed(4);
+              }
+            }
+          }
+        }
+      };
+    },
     createValidatorsCategoriesAndData: function(validator_bonded, time) {
       let newCategories = [];
       let newData = [];
+
       for (var i = 0; i < validator_bonded.length; i++) {
         // Insert firt point, last point and points with different values
         if (
@@ -1092,19 +1334,19 @@ export default {
           // Save first and last point
           switch (time) {
             case "day":
-              if (i == 0) this.daily.last = validator_bonded[i].amount;
+              if (i == 0) this.Stake.daily.last = validator_bonded[i].amount;
               if (i == validator_bonded.length - 1)
-                this.daily.first = validator_bonded[i].amount;
+                this.Stake.daily.first = validator_bonded[i].amount;
               break;
             case "week":
-              if (i == 0) this.weekly.last = validator_bonded[i].amount;
+              if (i == 0) this.Stake.weekly.last = validator_bonded[i].amount;
               if (i == validator_bonded.length - 1)
-                this.weekly.first = validator_bonded[i].amount;
+                this.Stake.weekly.first = validator_bonded[i].amount;
               break;
             case "month":
-              if (i == 0) this.monthly.last = validator_bonded[i].amount;
+              if (i == 0) this.Stake.monthly.last = validator_bonded[i].amount;
               if (i == validator_bonded.length - 1)
-                this.monthly.first = validator_bonded[i].amount;
+                this.Stake.monthly.first = validator_bonded[i].amount;
               break;
             default:
               break;
@@ -1126,35 +1368,6 @@ export default {
       newData.reverse();
 
       return { newCategories, newData };
-    },
-    createStakeEvolutionChartOptions: function() {
-      return {
-        xaxis: {
-          type: "datetime",
-          title: {
-            text: this.$t("details.validator.date_time") + " (UTC)"
-          },
-          labels: {
-            formatter: val => {
-              return moment.unix(val / 1000).format("MM/DD/YYYY HH:mm");
-            }
-          }
-        },
-        yaxis: {
-          title: {
-            text: this.$t("details.validator.total_bonded") + " (KSM)"
-          },
-          labels: {
-            formatter: val => {
-              if (this.overBreakpoint) {
-                return (val / 1000000000000).toFixed(6);
-              } else {
-                return (val / 1000000000000).toFixed(2);
-              }
-            }
-          }
-        }
-      };
     },
     getValidatorDailyGraphData: function() {
       const timestamp = this.getTimestamp("day");
@@ -1209,7 +1422,6 @@ export default {
             newData
           } = this.createValidatorsCategoriesAndData(validator_bonded, "week");
 
-          // Make sure to update the whole options config and not just a single property to allow the Vue watch catch the change.
           this.StakeEvolutionWeeklyChartOptions = mergeDeepRight(
             this.StakeEvolutionWeeklyChartOptions,
             {
@@ -1267,70 +1479,29 @@ export default {
     createRewardsCategoriesAndData: function(rewards, time) {
       let newCategories = [];
       let newData = [];
-      for (var i = 0; i < rewards.length; i++) {
-        // Save first and last point
-        switch (time) {
-          case "day":
-            if (i == 0) this.daily.last = rewards[i].estimated_payout;
-            if (i == rewards.length - 1)
-              this.daily.first = rewards[i].estimated_payout;
-            break;
-          case "week":
-            if (i == 0) this.weekly.last = rewards[i].estimated_payout;
-            if (i == rewards.length - 1)
-              this.weekly.first = rewards[i].estimated_payout;
-            break;
-          case "month":
-            if (i == 0) this.monthly.last = rewards[i].estimated_payout;
-            if (i == rewards.length - 1)
-              this.monthly.first = rewards[i].estimated_payout;
-            break;
-          default:
-            break;
+      this.rewards[time] = 0;
+      if (rewards.length !== 0) {
+        for (var i = 0; i < rewards.length; i++) {
+          newCategories.push(
+            moment
+              .unix(rewards[i].timestamp, "YYYY-MM-DD HH:mm:ss.SSSSSS Z")
+              .format("YYYY-MM-DD HH:mm:ss")
+          );
+          newData.push(rewards[i].estimated_payout);
+          this.rewards[time] += rewards[i].estimated_payout;
         }
-
+      } else {
         newCategories.push(
           moment
-            .unix(rewards[i].timestamp, "YYYY-MM-DD HH:mm:ss.SSSSSS Z")
+            .unix(this.getTimestamp(time), "YYYY-MM-DD HH:mm:ss.SSSSSS Z")
             .format("YYYY-MM-DD HH:mm:ss")
         );
-        newData.push(rewards[i].estimated_payout);
-        this.rewards[time] += rewards[i].estimated_payout;
       }
 
       newCategories.reverse();
       newData.reverse();
 
       return { newCategories, newData };
-    },
-    createRewardsChartOptions: function() {
-      return {
-        xaxis: {
-          type: "datetime",
-          title: {
-            text: this.$t("details.validator.date_time") + " (UTC)"
-          },
-          labels: {
-            formatter: val => {
-              return moment.unix(val / 1000).format("MM/DD/YYYY HH:mm");
-            }
-          }
-        },
-        yaxis: {
-          title: {
-            text: this.$t("details.validator.reward") + " (KSM)"
-          },
-          labels: {
-            formatter: val => {
-              if (this.overBreakpoint) {
-                return (val / 1000000000000).toFixed(6);
-              } else {
-                return (val / 1000000000000).toFixed(4);
-              }
-            }
-          }
-        }
-      };
     },
     getRewardsMonthlyGraphData: function() {
       const timestamp = this.getTimestamp("month");
@@ -1363,7 +1534,7 @@ export default {
           );
 
           // In the same way, update the series option
-          this.RewardEvolutionMonthlySeries = [
+          this.RewardsEvolutionMonthlySeries = [
             {
               data: newData
             }
@@ -1401,7 +1572,7 @@ export default {
           );
 
           // In the same way, update the series option
-          this.RewardEvolutionWeeklySeries = [
+          this.RewardsEvolutionWeeklySeries = [
             {
               data: newData
             }
@@ -1438,7 +1609,268 @@ export default {
           );
 
           // In the same way, update the series option
-          this.RewardEvolutionDailySeries = [
+          this.RewardsEvolutionDailySeries = [
+            {
+              data: newData
+            }
+          ];
+        });
+    },
+    createSlashesChartOptions(slashes, time) {
+      let newCategories = [];
+      let newData = [];
+
+      if (slashes.length !== 0) {
+        for (var i = 0; i < slashes.length; i++) {
+          newCategories.push(
+            moment
+              .unix(slashes[i].timestamp, "YYYY-MM-DD HH:mm:ss.SSSSSS Z")
+              .format("YYYY-MM-DD HH:mm:ss")
+          );
+          newData.push(slashes[i].block_number);
+          this.slashes[time] += slashes[i].amount;
+        }
+      } else {
+        newCategories.push(
+          moment
+            .unix(this.getTimestamp(time), "YYYY-MM-DD HH:mm:ss.SSSSSS Z")
+            .format("YYYY-MM-DD HH:mm:ss")
+        );
+      }
+
+      newCategories.reverse();
+      newData.reverse();
+
+      return { newCategories, newData };
+    },
+    getSlashesDailyGraphData() {
+      const timestamp = this.getTimestamp("day");
+
+      const query = createQuerySlashes(timestamp, this.accountId);
+      const GET_SLASHES = gql`
+        ${query}
+      `;
+
+      this.$apolloProvider.defaultClient
+        .query({ query: GET_SLASHES })
+        .then(response => {
+          // Update chart data
+          this.slashes.day = 0;
+          const { validator_slashes_era } = response.data;
+          const { newCategories, newData } = this.createSlashesChartOptions(
+            validator_slashes_era,
+            "day"
+          );
+          // Make sure to update the whole options config and not just a single property to allow the Vue watch catch the change.
+          this.SlashesDailyChartOptions = mergeDeepRight(
+            this.SlashesDailyChartOptions,
+            {
+              xaxis: {
+                categories: newCategories
+              }
+            }
+          );
+          // In the same way, update the series option
+          this.SlashesEvolutionDailySeries = [
+            {
+              data: newData
+            }
+          ];
+        });
+    },
+    getSlashesWeeklyGraphData() {
+      const timestamp = this.getTimestamp("week");
+
+      const query = createQuerySlashes(timestamp, this.accountId);
+      const GET_SLASHES = gql`
+        ${query}
+      `;
+
+      this.$apolloProvider.defaultClient
+        .query({ query: GET_SLASHES })
+        .then(response => {
+          // Update chart data
+          this.slashes.week = 0;
+          const { validator_slashes_era } = response.data;
+          const { newCategories, newData } = this.createSlashesChartOptions(
+            validator_slashes_era,
+            "week"
+          );
+          // Make sure to update the whole options config and not just a single property to allow the Vue watch catch the change.
+          this.SlashesWeeklyChartOptions = mergeDeepRight(
+            this.SlashesWeeklyChartOptions,
+            {
+              markers: { size: 4 },
+              xaxis: {
+                categories: newCategories
+              }
+            }
+          );
+          // In the same way, update the series option
+          this.SlashesEvolutionWeeklySeries = [
+            {
+              data: newData
+            }
+          ];
+        });
+    },
+    getSlashesMonthlyGraphData() {
+      const timestamp = this.getTimestamp("month");
+      const query = createQuerySlashes(timestamp, this.accountId);
+      const GET_SLASHES = gql`
+        ${query}
+      `;
+
+      this.$apolloProvider.defaultClient
+        .query({ query: GET_SLASHES })
+        .then(response => {
+          // Update chart data
+          this.slashes.month = 0;
+          const { validator_slashes_era } = response.data;
+          const { newCategories, newData } = this.createSlashesChartOptions(
+            validator_slashes_era,
+            "month"
+          );
+          // Make sure to update the whole options config and not just a single property to allow the Vue watch catch the change.
+          this.SlashesMonthlyChartOptions = mergeDeepRight(
+            this.SlashesMonthlyChartOptions,
+            {
+              markers: { size: 2 },
+              xaxis: {
+                categories: newCategories
+              }
+            }
+          );
+          // In the same way, update the series option
+          this.SlashesEvolutionMonthlySeries = [
+            {
+              data: newData
+            }
+          ];
+        });
+    },
+    createProducedBlocksChartOptions(producedBlocks, time) {
+      let newCategories = [];
+      let newData = [];
+
+      for (var i = 0; i < producedBlocks.length; i++) {
+        const timestamp = producedBlocks[i].timestamp / 1000;
+        newCategories.push(
+          moment
+            .unix(timestamp, "YYYY-MM-DD HH:mm:ss.SSSSSS Z")
+            .format("YYYY-MM-DD HH:mm:ss")
+        );
+        newData.push(producedBlocks[i].block_number);
+      }
+
+      newCategories.reverse();
+      newData.reverse();
+
+      return { newCategories, newData };
+    },
+    getProducedBlocksDailyGraphData() {
+      const timestamp = this.getTimestamp("day") * 1000;
+      const query = createQueryProducedBlocks(timestamp, this.accountId);
+      const GET_PRODUCED_BLOCKS = gql`
+        ${query}
+      `;
+
+      this.$apolloProvider.defaultClient
+        .query({ query: GET_PRODUCED_BLOCKS })
+        .then(response => {
+          // Update chart data
+          const { block } = response.data;
+          const {
+            newCategories,
+            newData
+          } = this.createProducedBlocksChartOptions(block, "day");
+          // Make sure to update the whole options config and not just a single property to allow the Vue watch catch the change.
+          this.ProducedBlocksDailyChartOptions = mergeDeepRight(
+            this.ProducedBlocksDailyChartOptions,
+            {
+              xaxis: {
+                categories: newCategories
+              }
+            }
+          );
+          // In the same way, update the series option
+          this.ProducedBlocksEvolutionDailySeries = [
+            {
+              data: newData
+            }
+          ];
+        });
+    },
+    getProducedBlocksWeeklyGraphData() {
+      const timestamp = this.getTimestamp("week") * 1000;
+
+      const query = createQueryProducedBlocks(timestamp, this.accountId);
+      const GET_PRODUCED_BLOCKS = gql`
+        ${query}
+      `;
+
+      this.$apolloProvider.defaultClient
+        .query({ query: GET_PRODUCED_BLOCKS })
+        .then(response => {
+          // Update chart data
+          const { block } = response.data;
+
+          const {
+            newCategories,
+            newData
+          } = this.createProducedBlocksChartOptions(block, "week");
+
+          // Make sure to update the whole options config and not just a single property to allow the Vue watch catch the change.
+          this.ProducedBlocksWeeklyChartOptions = mergeDeepRight(
+            this.ProducedBlocksWeeklyChartOptions,
+            {
+              markers: { size: 4 },
+              xaxis: {
+                categories: newCategories
+              }
+            }
+          );
+
+          // In the same way, update the series option
+          this.ProducedBlocksEvolutionWeeklySeries = [
+            {
+              data: newData
+            }
+          ];
+        });
+    },
+    getProducedBlocksMonthlyGraphData() {
+      const timestamp = this.getTimestamp("month") * 1000;
+
+      const query = createQueryProducedBlocks(timestamp, this.accountId);
+      const GET_PRODUCED_BLOCKS = gql`
+        ${query}
+      `;
+
+      this.$apolloProvider.defaultClient
+        .query({ query: GET_PRODUCED_BLOCKS })
+        .then(response => {
+          // Update chart data
+          const { block } = response.data;
+
+          const {
+            newCategories,
+            newData
+          } = this.createProducedBlocksChartOptions(block, "month");
+
+          // Make sure to update the whole options config and not just a single property to allow the Vue watch catch the change.
+          this.ProducedBlocksMonthlyChartOptions = mergeDeepRight(
+            this.ProducedBlocksMonthlyChartOptions,
+            {
+              markers: { size: 2 },
+              xaxis: {
+                categories: newCategories
+              }
+            }
+          );
+
+          // In the same way, update the series option
+          this.ProducedBlocksEvolutionMonthlySeries = [
             {
               data: newData
             }

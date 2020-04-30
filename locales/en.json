@@ -386,7 +386,8 @@
       "produced_block": "Produced Block",
       "status": "Status",
       "date_time": "Date and Time",
-      "charts": "Charts"
+      "charts": "Charts",
+      "produced_blocks": "Produced blocks"
     }
   }
 }
