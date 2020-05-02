@@ -45,6 +45,15 @@
                 </b-nav-item>
                 <b-nav-item>
                   <nuxt-link
+                    to="/transferir"
+                    class="nav-link"
+                    data-testid="menu-transferir"
+                  >
+                    Transferir
+                  </nuxt-link>
+                </b-nav-item>
+                <b-nav-item>
+                  <nuxt-link
                     to="/intentions"
                     active-class="nuxt-link-exact-active"
                     class="nav-link"
@@ -389,41 +398,41 @@ export default {
     // console.log("ALLACCOUNTS: ", accounts);
 
     // const injector = await web3FromAddress(accounts[0].address);
-    web3FromAddress(accounts[0].address).then(async injector => {
-      console.log("Injector: ", injector);
-      api.setSigner(injector.signer);
-      const value = 10000000000;
+    // web3FromAddress(accounts[0].address).then(async injector => {
+    //   console.log("Injector: ", injector);
+    //   api.setSigner(injector.signer);
+    //   const value = 10000000000;
 
-      const txHash = await api.tx.balances
-        .transfer(accounts[0].address, value)
-        .signAndSend(accounts[1].address, ({ status, events }) => {
-          console.log("The operation is in process: ", status);
-          if (status.isInBlock || status.isFinalized) {
-            events
-              // find/filter for failed events
-              .filter(
-                ({ section, method }) =>
-                  section === "system" && method === "ExtrinsicFailed"
-              )
-              // we know that data for system.ExtrinsicFailed is
-              // (DispatchError, DispatchInfo)
-              .forEach(({ data: [error, info] }) => {
-                if (error.isModule) {
-                  // for module errors, we have the section indexed, lookup
-                  const decoded = api.registry.findMetaError(error.asModule);
-                  const { documentation, method, section } = decoded;
+    //   const txHash = await api.tx.balances
+    //     .transfer(accounts[0].address, value)
+    //     .signAndSend(accounts[1].address, ({ status, events }) => {
+    //       console.log("The operation is in process: ", status);
+    //       if (status.isInBlock || status.isFinalized) {
+    //         events
+    //           // find/filter for failed events
+    //           .filter(
+    //             ({ section, method }) =>
+    //               section === "system" && method === "ExtrinsicFailed"
+    //           )
+    //           // we know that data for system.ExtrinsicFailed is
+    //           // (DispatchError, DispatchInfo)
+    //           .forEach(({ data: [error, info] }) => {
+    //             if (error.isModule) {
+    //               // for module errors, we have the section indexed, lookup
+    //               const decoded = api.registry.findMetaError(error.asModule);
+    //               const { documentation, method, section } = decoded;
 
-                  console.log(
-                    `${section}.${method}: ${documentation.join(" ")}`
-                  );
-                } else {
-                  // Other, CannotLookup, BadOrigin, no extra info
-                  console.log(error.toString());
-                }
-              });
-          }
-        });
-    });
+    //               console.log(
+    //                 `${section}.${method}: ${documentation.join(" ")}`
+    //               );
+    //             } else {
+    //               // Other, CannotLookup, BadOrigin, no extra info
+    //               console.log(error.toString());
+    //             }
+    //           });
+    //       }
+    //     });
+    // });
 
     // web3Enable("Polkastats").then(response => {
     //   console.log("ALLINJECTED: ", response);
