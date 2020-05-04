@@ -202,6 +202,9 @@
                       {{ $t("details.validator.era_points") }}
                     </p>
                   </div>
+
+                  <hr v-if="!overBreakpoint" class="separator w-100" />
+
                   <div class="col-md-9">
                     <div v-if="validator.accountId" class="row">
                       <div class="col-md-3 mb-2">
@@ -337,6 +340,7 @@
                         {{ formatRewardDest(validator.rewardDestination) }}
                       </div>
                     </div>
+
                     <!-- identity start -->
                     <div v-if="hasIdentity(validator.accountId)">
                       <div
@@ -472,7 +476,251 @@
                       </div>
                     </div>
                     <!-- identity end -->
+                    <hr class="separator" />
+                    <!-- Charts -->
+                    <section>
+                      <h5 class="h5 account my-3">
+                        {{ $t("details.validator.charts") }}
+                      </h5>
+                      <b-tabs>
+                        <b-tab
+                          :title="$t('details.validator.total_bonded')"
+                          active
+                        >
+                          <b-tabs
+                            pills
+                            :card="overBreakpoint"
+                            :vertical="overBreakpoint"
+                            :end="!overBreakpoint"
+                          >
+                            <b-tab
+                              :title="$t('details.validator.monthly')"
+                              active
+                            >
+                              <div
+                                id="stake-evolution-monthly-chart"
+                                class="text-center charts"
+                              >
+                                <chartHeader
+                                  :first="parseInt(Stake.monthly.first)"
+                                  :last="parseInt(Stake.monthly.last)"
+                                />
+                                <chart
+                                  :options="StakeEvolutionMonthlyChartOptions"
+                                  :series="StakeEvolutionMonthlySeries"
+                                />
+                              </div>
+                            </b-tab>
+                            <b-tab :title="$t('details.validator.weekly')">
+                              <div
+                                id="stake-evolution-weekly-chart"
+                                class="text-center charts"
+                              >
+                                <chartHeader
+                                  :first="parseInt(Stake.weekly.first)"
+                                  :last="parseInt(Stake.weekly.last)"
+                                />
+                                <chart
+                                  :options="StakeEvolutionWeeklyChartOptions"
+                                  :series="StakeEvolutionWeeklySeries"
+                                />
+                              </div>
+                            </b-tab>
+                            <b-tab :title="$t('details.validator.daily')">
+                              <div
+                                id="stake-evolution-daily-chart"
+                                class="text-center charts"
+                              >
+                                <chartHeader
+                                  :first="parseInt(Stake.daily.first)"
+                                  :last="parseInt(Stake.daily.last)"
+                                />
+                                <chart
+                                  :options="StakeEvolutionDailyChartOptions"
+                                  :series="StakeEvolutionDailySeries"
+                                />
+                              </div>
+                            </b-tab>
+                          </b-tabs>
+                        </b-tab>
+                        <b-tab :title="$t('details.validator.reward')">
+                          <b-tabs
+                            pills
+                            :card="overBreakpoint"
+                            :vertical="overBreakpoint"
+                            :end="!overBreakpoint"
+                          >
+                            <b-tab
+                              :title="$t('details.validator.monthly')"
+                              active
+                            >
+                              <div
+                                id="rewards-evolution-monthly-chart"
+                                class="text-center charts"
+                              >
+                                <chartHeader
+                                  :first="0"
+                                  :last="parseInt(rewards.month)"
+                                />
+                                <chart
+                                  :options="RewardsMonthlyChartOptions"
+                                  :series="RewardsEvolutionMonthlySeries"
+                                />
+                              </div>
+                            </b-tab>
+                            <b-tab :title="$t('details.validator.weekly')">
+                              <div
+                                id="rewards-evolution-weekly-chart"
+                                class="text-center charts"
+                              >
+                                <chartHeader
+                                  :first="0"
+                                  :last="parseInt(rewards.week)"
+                                />
+                                <chart
+                                  :options="RewardsWeeklyChartOptions"
+                                  :series="RewardsEvolutionWeeklySeries"
+                                />
+                              </div>
+                            </b-tab>
+                            <b-tab :title="$t('details.validator.daily')">
+                              <div
+                                id="rewards-evolution-daily-chart"
+                                class="text-center charts"
+                              >
+                                <chartHeader
+                                  :first="0"
+                                  :last="parseInt(rewards.day)"
+                                />
+                                <chart
+                                  :options="RewardsDailyChartOptions"
+                                  :series="RewardsEvolutionDailySeries"
+                                />
+                              </div>
+                            </b-tab>
+                          </b-tabs>
+                        </b-tab>
+                        <b-tab :title="$t('details.validator.slashes')">
+                          <b-tabs
+                            pills
+                            :card="overBreakpoint"
+                            :vertical="overBreakpoint"
+                            :end="!overBreakpoint"
+                          >
+                            <b-tab
+                              :title="$t('details.validator.monthly')"
+                              active
+                            >
+                              <div
+                                id="slashes-evolution-monthly-chart"
+                                class="text-center charts"
+                              >
+                                <chartHeader
+                                  :first="0"
+                                  :last="parseInt(slashes.month)"
+                                />
+                                <chart
+                                  :options="SlashesMonthlyChartOptions"
+                                  :series="SlashesEvolutionMonthlySeries"
+                                />
+                              </div>
+                            </b-tab>
+                            <b-tab :title="$t('details.validator.weekly')">
+                              <div
+                                id="slashes-evolution-weekly-chart"
+                                class="text-center charts"
+                              >
+                                <chartHeader
+                                  :first="0"
+                                  :last="parseInt(slashes.week)"
+                                />
+                                <chart
+                                  :options="SlashesWeeklyChartOptions"
+                                  :series="SlashesEvolutionWeeklySeries"
+                                />
+                              </div>
+                            </b-tab>
+                            <b-tab :title="$t('details.validator.daily')">
+                              <div
+                                id="slashes-evolution-daily-chart"
+                                class="text-center charts"
+                              >
+                                <chartHeader
+                                  :first="0"
+                                  :last="parseInt(slashes.day)"
+                                />
+                                <chart
+                                  :options="SlashesDailyChartOptions"
+                                  :series="SlashesEvolutionDailySeries"
+                                />
+                              </div>
+                            </b-tab>
+                          </b-tabs>
+                        </b-tab>
+                        <b-tab :title="$t('details.validator.produced_blocks')">
+                          <b-tabs
+                            pills
+                            :card="overBreakpoint"
+                            :vertical="overBreakpoint"
+                            :end="!overBreakpoint"
+                          >
+                            <b-tab
+                              :title="$t('details.validator.monthly')"
+                              active
+                            >
+                              <div
+                                id="produced-blocks-evolution-monthly-chart"
+                                class="text-center charts"
+                              >
+                                <chartHeader
+                                  :first="
+                                    parseInt(ProducedBlocks.monthly.first)
+                                  "
+                                  :last="parseInt(ProducedBlocks.monthly.last)"
+                                />
+                                <chart
+                                  :options="ProducedBlocksMonthlyChartOptions"
+                                  :series="ProducedBlocksEvolutionMonthlySeries"
+                                />
+                              </div>
+                            </b-tab>
+                            <b-tab :title="$t('details.validator.weekly')">
+                              <div
+                                id="produced-blockss-evolution-weekly-chart"
+                                class="text-center charts"
+                              >
+                                <chartHeader
+                                  :first="parseInt(ProducedBlocks.weekly.first)"
+                                  :last="parseInt(ProducedBlocks.weekly.last)"
+                                />
+                                <chart
+                                  :options="ProducedBlocksWeeklyChartOptions"
+                                  :series="ProducedBlocksEvolutionWeeklySeries"
+                                />
+                              </div>
+                            </b-tab>
+                            <b-tab :title="$t('details.validator.daily')">
+                              <div
+                                id="produced-blocks-evolution-daily-chart"
+                                class="text-center charts"
+                              >
+                                <chartHeader
+                                  :first="parseInt(ProducedBlocks.daily.first)"
+                                  :last="parseInt(ProducedBlocks.daily.last)"
+                                />
+                                <chart
+                                  :options="ProducedBlocksDailyChartOptions"
+                                  :series="ProducedBlocksEvolutionDailySeries"
+                                />
+                              </div>
+                            </b-tab>
+                          </b-tabs>
+                        </b-tab>
+                      </b-tabs>
+                    </section>
 
+                    <!-- Charts end -->
+                    <hr class="separator" />
                     <!-- Stakers -->
                     <h5 class="h5 account my-3">
                       {{ $t("details.validator.nominators") }}
@@ -648,222 +896,7 @@
             </div>
           </template>
         </template>
-        <div>
-          <section>
-            <b-card>
-              <h3 class="mb-4">{{ $t("details.validator.charts") }}</h3>
-              <b-tabs>
-                <b-tab :title="$t('details.validator.total_bonded')" active>
-                  <b-tabs
-                    pills
-                    :card="overBreakpoint"
-                    :vertical="overBreakpoint"
-                    :end="!overBreakpoint"
-                  >
-                    <b-tab :title="$t('details.validator.monthly')" active>
-                      <div
-                        id="stake-evolution-monthly-chart"
-                        class="text-center w-100"
-                      >
-                        <chartHeader
-                          :first="parseInt(Stake.monthly.first)"
-                          :last="parseInt(Stake.monthly.last)"
-                        />
-                        <chart
-                          :options="StakeEvolutionMonthlyChartOptions"
-                          :series="StakeEvolutionMonthlySeries"
-                        />
-                      </div>
-                    </b-tab>
-                    <b-tab :title="$t('details.validator.weekly')">
-                      <div
-                        id="stake-evolution-weekly-chart"
-                        class="text-center"
-                      >
-                        <chartHeader
-                          :first="parseInt(Stake.weekly.first)"
-                          :last="parseInt(Stake.weekly.last)"
-                        />
-                        <chart
-                          :options="StakeEvolutionWeeklyChartOptions"
-                          :series="StakeEvolutionWeeklySeries"
-                        />
-                      </div>
-                    </b-tab>
-                    <b-tab :title="$t('details.validator.daily')">
-                      <div id="stake-evolution-daily-chart" class="text-center">
-                        <chartHeader
-                          :first="parseInt(Stake.daily.first)"
-                          :last="parseInt(Stake.daily.last)"
-                        />
-                        <chart
-                          :options="StakeEvolutionDailyChartOptions"
-                          :series="StakeEvolutionDailySeries"
-                        />
-                      </div>
-                    </b-tab>
-                  </b-tabs>
-                </b-tab>
-                <b-tab :title="$t('details.validator.reward')">
-                  <b-tabs
-                    pills
-                    :card="overBreakpoint"
-                    :vertical="overBreakpoint"
-                    :end="!overBreakpoint"
-                  >
-                    <b-tab :title="$t('details.validator.monthly')" active>
-                      <div
-                        id="rewards-evolution-monthly-chart"
-                        class="text-center w-100"
-                      >
-                        <chartHeader
-                          :first="0"
-                          :last="parseInt(rewards.month)"
-                        />
-                        <chart
-                          :options="RewardsMonthlyChartOptions"
-                          :series="RewardsEvolutionMonthlySeries"
-                        />
-                      </div>
-                    </b-tab>
-                    <b-tab :title="$t('details.validator.weekly')">
-                      <div
-                        id="rewards-evolution-weekly-chart"
-                        class="text-center"
-                      >
-                        <chartHeader
-                          :first="0"
-                          :last="parseInt(rewards.week)"
-                        />
-                        <chart
-                          :options="RewardsWeeklyChartOptions"
-                          :series="RewardsEvolutionWeeklySeries"
-                        />
-                      </div>
-                    </b-tab>
-                    <b-tab :title="$t('details.validator.daily')">
-                      <div
-                        id="rewards-evolution-daily-chart"
-                        class="text-center"
-                      >
-                        <chartHeader :first="0" :last="parseInt(rewards.day)" />
-                        <chart
-                          :options="RewardsDailyChartOptions"
-                          :series="RewardsEvolutionDailySeries"
-                        />
-                      </div>
-                    </b-tab>
-                  </b-tabs>
-                </b-tab>
-                <b-tab :title="$t('details.validator.slashes')">
-                  <b-tabs
-                    pills
-                    :card="overBreakpoint"
-                    :vertical="overBreakpoint"
-                    :end="!overBreakpoint"
-                  >
-                    <b-tab :title="$t('details.validator.monthly')" active>
-                      <div
-                        id="slashes-evolution-monthly-chart"
-                        class="text-center w-100"
-                      >
-                        <chartHeader
-                          :first="0"
-                          :last="parseInt(slashes.month)"
-                        />
-                        <chart
-                          :options="SlashesMonthlyChartOptions"
-                          :series="SlashesEvolutionMonthlySeries"
-                        />
-                      </div>
-                    </b-tab>
-                    <b-tab :title="$t('details.validator.weekly')">
-                      <div
-                        id="slashes-evolution-weekly-chart"
-                        class="text-center"
-                      >
-                        <chartHeader
-                          :first="0"
-                          :last="parseInt(slashes.week)"
-                        />
-                        <chart
-                          :options="SlashesWeeklyChartOptions"
-                          :series="SlashesEvolutionWeeklySeries"
-                        />
-                      </div>
-                    </b-tab>
-                    <b-tab :title="$t('details.validator.daily')">
-                      <div
-                        id="slashes-evolution-daily-chart"
-                        class="text-center"
-                      >
-                        <chartHeader :first="0" :last="parseInt(slashes.day)" />
-                        <chart
-                          :options="SlashesDailyChartOptions"
-                          :series="SlashesEvolutionDailySeries"
-                        />
-                      </div>
-                    </b-tab>
-                  </b-tabs>
-                </b-tab>
-                <b-tab :title="$t('details.validator.produced_blocks')">
-                  <b-tabs
-                    pills
-                    :card="overBreakpoint"
-                    :vertical="overBreakpoint"
-                    :end="!overBreakpoint"
-                  >
-                    <b-tab :title="$t('details.validator.monthly')" active>
-                      <div
-                        id="produced-blocks-evolution-monthly-chart"
-                        class="text-center w-100"
-                      >
-                        <chartHeader
-                          :first="parseInt(ProducedBlocks.monthly.first)"
-                          :last="parseInt(ProducedBlocks.monthly.last)"
-                        />
-                        <chart
-                          :options="ProducedBlocksMonthlyChartOptions"
-                          :series="ProducedBlocksEvolutionMonthlySeries"
-                        />
-                      </div>
-                    </b-tab>
-                    <b-tab :title="$t('details.validator.weekly')">
-                      <div
-                        id="produced-blockss-evolution-weekly-chart"
-                        class="text-center"
-                      >
-                        <chartHeader
-                          :first="parseInt(ProducedBlocks.weekly.first)"
-                          :last="parseInt(ProducedBlocks.weekly.last)"
-                        />
-                        <chart
-                          :options="ProducedBlocksWeeklyChartOptions"
-                          :series="ProducedBlocksEvolutionWeeklySeries"
-                        />
-                      </div>
-                    </b-tab>
-                    <b-tab :title="$t('details.validator.daily')">
-                      <div
-                        id="produced-blocks-evolution-daily-chart"
-                        class="text-center"
-                      >
-                        <chartHeader
-                          :first="parseInt(ProducedBlocks.daily.first)"
-                          :last="parseInt(ProducedBlocks.daily.last)"
-                        />
-                        <chart
-                          :options="ProducedBlocksDailyChartOptions"
-                          :series="ProducedBlocksEvolutionDailySeries"
-                        />
-                      </div>
-                    </b-tab>
-                  </b-tabs>
-                </b-tab>
-              </b-tabs>
-            </b-card>
-          </section>
-        </div>
+        <div></div>
       </b-container>
     </section>
   </div>
@@ -1442,7 +1475,7 @@ export default {
     },
     getValidatorMonthlyGraphData: function() {
       const timestamp = this.getTimestamp("month");
-
+      console.log("Time: ", timestamp);
       const GET_VALIDATOR_BONDED = gql`
         ${createQueryValidadorBonded(timestamp, this.accountId)}
       `;
@@ -1934,6 +1967,9 @@ export default {
 };
 </script>
 <style>
+.charts {
+  display: table;
+}
 .fas.fa-copy {
   cursor: pointer;
   color: #d75ea1;
@@ -1943,6 +1979,9 @@ export default {
 .rank {
   font-size: 1.4rem;
   color: #7d7378;
+}
+.separator {
+  margin-bottom: 2rem;
 }
 .validator-detail .favorite {
   cursor: initial;
