@@ -3,7 +3,7 @@
     v-clipboard:copy="value"
     class="clipboard"
     :title="title"
-    @click="makeToast(toastText, 'Notification', 'success', true)"
+    @click="showToast"
   >
     <Identicon :value="value" :size="size" :theme="theme" class="identicon" />
   </a>
@@ -11,6 +11,7 @@
 
 <script>
 import Identicon from "@polkadot/vue-identicon";
+
 export default {
   components: {
     Identicon: Identicon
@@ -30,11 +31,14 @@ export default {
     };
   },
   methods: {
-    makeToast(content = "", title = "", variant = null, solid = false) {
-      this.$bvToast.toast(content, {
-        title: title,
-        variant: variant,
-        solid: solid
+    showToast() {
+      this.$toast.success(this.title, {
+        action: {
+          icon: "X",
+          onClick: (e, toastObject) => {
+            toastObject.goAway(0);
+          }
+        }
       });
     }
   }
