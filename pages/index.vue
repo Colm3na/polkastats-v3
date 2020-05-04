@@ -167,13 +167,13 @@
                     <b-row class="flags">
                       <div class="activity-container">
                         <p class="ml-2 rank">
-                          <!-- <span
+                          <span
                             v-b-tooltip.hover
                             class="rank-detail"
                             :title="$t('pages.index.rank')"
                             >#{{ data.item.rank }}</span
                           >
-                          <i
+                          <!-- <i
                             v-if="data.item.imOnline"
                             v-b-tooltip.hover
                             class="imOnline fas fa-check-circle ml-1"
@@ -184,6 +184,7 @@
                             v-b-tooltip.hover
                             class="imOffline fas fa-times-circle ml-1"
                             :title="data.item.imOnlineMessage"
+                          /> -->
                           <i
                             v-if="data.item.currentElected"
                             v-b-tooltip.hover
@@ -198,7 +199,6 @@
                               $t('pages.index.not_elected_for_next_session')
                             "
                           />
-                          /> -->
                         </p>
                       </div>
                       <div class="favorite-container">
