@@ -38,7 +38,8 @@ export default {
     "nuxt-clipboard2",
     // https://www.npmjs.com/package/cookie-universal-nuxt
     ["cookie-universal-nuxt", { alias: "cookies" }],
-    ["@nuxtjs/apollo"]
+    ["@nuxtjs/apollo"],
+    "@nuxtjs/toast"
   ],
   buildModules: [
     // https://github.com/nuxt-community/analytics-module
@@ -83,5 +84,18 @@ export default {
   },
   router: {
     middleware: "i18n"
+  },
+  toast: {
+    position: "top-right"
+    // register: [
+    //   // Register custom toasts
+    //   {
+    //     name: "my-error",
+    //     message: "Oops...Something went wrong",
+    //     options: {
+    //       type: "error"
+    //     }
+    //   }
+    // ]
   }
 };

@@ -1,6 +1,6 @@
 {
   "name": "polkastats-v3",
-  "version": "3.0.0-milestone2",
+  "version": "3.0.0-milestone2-1",
   "description": "PolkaStats, Polkadot Kusama network statistics",
   "author": "Mario Pino Uceda",
   "private": true,
@@ -21,6 +21,7 @@
     "@fortawesome/vue-fontawesome": "^0.1.9",
     "@nuxtjs/apollo": "^4.0.0-rc19",
     "@nuxtjs/google-analytics": "^2.2.0",
+    "@nuxtjs/toast": "^3.3.0",
     "@polkadot/util": "^2.8.1",
     "@polkadot/util-crypto": "^2.8.1",
     "@polkadot/vue-identicon": "^0.51.1",
@@ -37,6 +38,7 @@
     "nuxt": "^2.12.2",
     "nuxt-clipboard2": "^0.2.1",
     "ramda": "^0.27.0",
+    "regenerator-runtime": "^0.13.5",
     "vue-apexcharts": "^1.4.0",
     "vue-i18n": "^8.16.0"
   },

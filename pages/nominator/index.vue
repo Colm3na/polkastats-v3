@@ -91,7 +91,6 @@
                     "
                     class="row"
                   >
-                    >
                     <div class="col-md-3 mb-1">
                       <strong>{{ $t("details.nominator.name") }}</strong>
                     </div>
@@ -107,7 +106,6 @@
                     "
                     class="row"
                   >
-                    >
                     <div class="col-md-3 mb-2">
                       <strong>{{ $t("details.nominator.email") }}</strong>
                     </div>
