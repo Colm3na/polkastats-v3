@@ -171,38 +171,36 @@
                   <b-row class="flags">
                     <div class="activity-container">
                       <p class="ml-2 rank">
-                        <!-- <span
-                            v-b-tooltip.hover
-                            class="rank-detail"
-                            :title="$t('pages.index.rank')"
-                            >#{{ data.item.rank }}</span
-                          >
-                          <i
-                            v-if="data.item.imOnline"
-                            v-b-tooltip.hover
-                            class="imOnline fas fa-check-circle ml-1"
-                            :title="data.item.imOnlineMessage"
-                          />
-                          <i
-                            v-else
-                            v-b-tooltip.hover
-                            class="imOffline fas fa-times-circle ml-1"
-                            :title="data.item.imOnlineMessage"
+                        <span
+                          v-b-tooltip.hover
+                          class="rank-detail"
+                          :title="$t('pages.index.rank')"
+                          >#{{ data.item.rank }}</span
+                        >
+                        <!-- <i
+                          v-if="data.item.imOnline"
+                          v-b-tooltip.hover
+                          class="imOnline fas fa-check-circle ml-1"
+                          :title="data.item.imOnlineMessage"
+                        />
+                        <i
+                          v-else
+                          v-b-tooltip.hover
+                          class="imOffline fas fa-times-circle ml-1"
+                          :title="data.item.imOnlineMessage"
+                        /> -->
                         <i
                           v-if="data.item.currentElected"
                           v-b-tooltip.hover
                           class="elected fas fa-chevron-circle-right"
-                          :title="$t('pages.index.elected_for_next_session')"
+                          title="$t('pages.index.elected_for_next_session')"
                         />
                         <i
                           v-else
                           v-b-tooltip.hover
                           class="notElected fas fa-times-circle"
-                          :title="
-                            $t('pages.index.not_elected_for_next_session')
-                          "
+                          title="$t('pages.index.not_elected_for_next_session')"
                         />
-                          /> -->
                       </p>
                     </div>
                     <div class="favorite-container">
@@ -527,7 +525,6 @@ export default {
       filterOperatorsOptions: [">", "=", "<"],
       totalRows: 1,
       fields: [
-        // ≥
         {
           key: "rank",
           label: "#",

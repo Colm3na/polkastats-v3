@@ -48,19 +48,18 @@
             <div :key="index" class="validator-detail card mt-4 mb-3">
               <div class="card-body">
                 <div>
-                  <!-- // TODO fix validators online
-                <i
-                  v-if="validator.imOnline.isOnline"
-                  v-b-tooltip.hover
-                  class="imOnline fas fa-check-circle"
-                  :title="getImOnlineMessage(validator)"
-                />
-                <i
-                  v-else
-                  v-b-tooltip.hover
-                  class="imOffline fas fa-times-circle"
-                  :title="getImOnlineMessage(validator)"
-                /> -->
+                  <!-- <i
+                    v-if="validator.imOnline.isOnline"
+                    v-b-tooltip.hover
+                    class="imOnline fas fa-check-circle"
+                    :title="getImOnlineMessage(validator)"
+                  />
+                  <i
+                    v-else
+                    v-b-tooltip.hover
+                    class="imOffline fas fa-times-circle"
+                    :title="getImOnlineMessage(validator)"
+                  /> -->
                   <i
                     v-if="validator.currentElected"
                     v-b-tooltip.hover

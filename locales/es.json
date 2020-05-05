@@ -1,7 +1,7 @@
 {
   "components": {
     "identicon": {
-      "copy_address": "Copiar dirección ",
+      "copy_address": "Se ha copiado la dirección ",
       "to_clipboard": " al portapapeles",
       "address": "Dirección ",
       "copied_to_the_clipboard": " copiada al portapapeles"
