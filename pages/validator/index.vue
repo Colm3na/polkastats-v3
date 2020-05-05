@@ -805,8 +805,8 @@
                         <template slot="who" slot-scope="data">
                           <div
                             class="d-block d-sm-block d-md-none d-lg-none d-xl-none text-center py-2"
+                            style="border: 1px solid #bbb; border-radius: 0.3rem;"
                           >
-                            >
                             <p class="mb-0">rank #{{ data.item.rank }}</p>
                             <p class="mt-2 mb-0">
                               <Identicon
@@ -1475,7 +1475,6 @@ export default {
     },
     getValidatorMonthlyGraphData: function() {
       const timestamp = this.getTimestamp("month");
-      console.log("Time: ", timestamp);
       const GET_VALIDATOR_BONDED = gql`
         ${createQueryValidadorBonded(timestamp, this.accountId)}
       `;
