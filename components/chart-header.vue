@@ -2,7 +2,7 @@
   <h3>
     <small :class="textClass">
       <i :class="iconDirection" /> {{ difference > 0 ? "+" : ""
-      }}{{ formatAmount(difference) }}
+      }}{{ formated ? formatAmount(difference) : difference }}
     </small>
   </h3>
 </template>
@@ -22,6 +22,11 @@ export default {
       type: Number,
       default: 0,
       required: true
+    },
+    formated: {
+      type: Boolean,
+      default: true,
+      required: false
     }
   },
   data: function() {
