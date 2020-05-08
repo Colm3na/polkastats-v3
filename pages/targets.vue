@@ -8,7 +8,7 @@
         :placeholder="$t('pages.targets.search_placeholder')"
       />
     </b-row>
-    <div v-if="rewards === null" class="pt-4">
+    <div v-if="rewards === null || era === null" class="pt-4">
       <b-container class="w-100 loader">
         <div class="lds-ripple center">
           <div></div>
@@ -19,116 +19,109 @@
     </div>
     <div v-else class="pt-2">
       <b-container>
-        <div class="row d-block d-sm-none d-md-block d-lg-block d-xl-block">
-          <div class="table-responsive">
-            <b-table
-              id="rewards-table"
-              stacked="md"
-              head-variant="dark"
-              :fields="fields"
-              :items="rewards"
-              :per-page="perPage"
-              :current-page="currentPage"
-              :sort-by.sync="sortBy"
-              :sort-desc.sync="sortDesc"
-              :filter="filter"
-              :filter-included-fields="filterOn"
-              @filtered="onFiltered"
-            >
-              <template slot="stash_id" slot-scope="data">
-                <div
-                  v-if="hasIdentity(data.item.stash_id)"
-                  class="d-inline-block"
-                >
-                  <div
-                    v-if="getIdentity(data.item.stash_id).logo !== ''"
-                    class="d-inline-block"
+        <!-- <div class="row d-block d-sm-none d-md-block d-lg-block d-xl-block"> -->
+        <div class="table-responsive">
+          <b-table
+            id="rewards-table"
+            head-variant="dark"
+            :fields="fields"
+            :items="rewards"
+            :per-page="perPage"
+            :current-page="currentPage"
+            :sort-by.sync="sortBy"
+            :sort-desc.sync="sortDesc"
+            :filter="filter"
+            :filter-included-fields="filterOn"
+            @filtered="onFiltered"
+          >
+            <template slot="stash_id" slot-scope="data">
+              <div
+                v-if="data.item.identity && data.item.identity.logo"
+                class="d-inline-block"
+              >
+                <img
+                  :src="data.item.identity.logo"
+                  class="identity-small d-inline-block"
+                />
+              </div>
+              <div v-else class="d-inline-block">
+                <Identicon
+                  :key="data.item.stash_id"
+                  :value="data.item.stash_id"
+                  :size="20"
+                  :theme="'polkadot'"
+                />
+              </div>
+              <nuxt-link
+                :to="{
+                  name: 'validator',
+                  query: { accountId: data.item.stash_id }
+                }"
+                :title="$t('pages.validators.validator_details')"
+              >
+                <span v-if="data.item.identity !== null">
+                  {{
+                    data.item.identity.fullname || data.item.identity.display
+                  }}
+                </span>
+                <!-- <span v-else-if="hasKusamaIdentity(data.item.stash_id)">
+                    data.item.stash_id).display }}
+                  </span> -->
+                <span v-else>
+                  <span
+                    class="d-inline d-sm-inline d-md-inline d-lg-inline d-xl-none"
+                    >{{ shortAddress(data.item.stash_id) }}</span
                   >
-                    <img
-                      :src="getIdentity(data.item.stash_id).logo"
-                      class="identity-small d-inline-block"
-                    />
-                  </div>
-                </div>
-                <div v-else class="d-inline-block">
-                  <Identicon
-                    :key="data.item.stash_id"
-                    :value="data.item.stash_id"
-                    :size="20"
-                    :theme="'polkadot'"
+                  <span
+                    class="d-none d-sm-none d-md-none d-lg-none d-xl-inline"
+                    >{{ shortAddress(data.item.stash_id) }}</span
+                  >
+                </span>
+              </nuxt-link>
+            </template>
+            <template slot="favorite" slot-scope="data">
+              <p class="text-center mb-0">
+                <a class="favorite" @click="toggleFavorite(data.item.stash_id)">
+                  <i
+                    v-if="data.item.favorite"
+                    v-b-tooltip.hover
+                    class="fas fa-star"
+                    style="color: #f1bd23"
+                    :title="$t('pages.targets.remove_from_favorites')"
                   />
-                </div>
-                <nuxt-link
-                  :to="{
-                    name: 'validator',
-                    query: { accountId: data.item.stash_id }
-                  }"
-                  :title="$t('pages.validators.validator_details')"
-                >
-                  <span v-if="hasIdentity(data.item.stash_id)">
-                    {{ getIdentity(data.item.stash_id).full_name }}
-                  </span>
-                  <span v-else-if="hasKusamaIdentity(data.item.stash_id)">
-                    {{ getKusamaIdentity(data.item.stash_id).display }}
-                  </span>
-                  <span v-else>
-                    <span
-                      class="d-inline d-sm-inline d-md-inline d-lg-inline d-xl-none"
-                      >{{ shortAddress(data.item.stash_id) }}</span
-                    >
-                    <span
-                      class="d-none d-sm-none d-md-none d-lg-none d-xl-inline"
-                      >{{ shortAddress(data.item.stash_id) }}</span
-                    >
-                  </span>
-                </nuxt-link>
-              </template>
-              <template slot="favorite" slot-scope="data">
-                <p class="text-center mb-0">
-                  <a
-                    class="favorite"
-                    @click="toggleFavorite(data.item.stash_id)"
-                  >
-                    <i
-                      v-if="data.item.favorite"
-                      v-b-tooltip.hover
-                      class="fas fa-star"
-                      style="color: #f1bd23"
-                      :title="$t('pages.targets.remove_from_favorites')"
-                    />
-                    <i
-                      v-else
-                      v-b-tooltip.hover
-                      class="fas fa-star"
-                      style="color: #e6dfdf;"
-                      :title="$t('pages.targets.add_to_favorites')"
-                    />
-                  </a>
-                </p>
-              </template>
-            </b-table>
-            <div style="display: flex">
-              <b-pagination
-                v-model="currentPage"
-                :total-rows="totalRows"
-                :per-page="perPage"
-                aria-controls="validators-table"
-              />
-              <b-button-group class="mx-4">
-                <b-button
-                  v-for="(item, index) in tableOptions"
-                  :key="index"
-                  @click="handleNumFields(item)"
-                >
-                  {{ item }}
-                </b-button>
-              </b-button-group>
-            </div>
+                  <i
+                    v-else
+                    v-b-tooltip.hover
+                    class="fas fa-star"
+                    style="color: #e6dfdf;"
+                    :title="$t('pages.targets.add_to_favorites')"
+                  />
+                </a>
+              </p>
+            </template>
+          </b-table>
+          <div style="display: flex">
+            <b-pagination
+              v-model="currentPage"
+              :total-rows="totalRows"
+              :per-page="perPage"
+              aria-controls="validators-table"
+            />
+            <b-button-group class="mx-4">
+              <b-button
+                v-for="(item, index) in tableOptions"
+                :key="index"
+                @click="handleNumFields(item)"
+              >
+                {{ item }}
+              </b-button>
+            </b-button-group>
           </div>
         </div>
-        <div class="row d-block d-sm-block d-md-none d-lg-none d-xl-none">
+        <!-- </div> -->
+        <!-- <div class="row d-block d-sm-block d-md-none d-lg-none d-xl-none">
           <h1>Vista mobile</h1>
-        </div>
+        </div> -->
       </b-container>
     </div>
   </b-container>
@@ -148,6 +141,7 @@ export default {
   mixins: [commonMixin],
   data: function() {
     return {
+      era: null,
       rewards: null,
       tableOptions: numItemsTableValidatorOptions,
       perPage: localStorage.numItemsTableSelected
@@ -172,13 +166,13 @@ export default {
           key: "commission",
           label: "% " + this.$t("pages.targets.commission"),
           sortable: true,
-          class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
+          class: `d-table-cell d-sm-table-cell d-md-table-cell d-lg-table-cell d-xl-table-cell`
         },
         {
           key: "stake_info.total",
           label: this.$t("pages.targets.total_stake"),
           sortable: false,
-          class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
+          class: `d-table-cell d-sm-table-cell d-md-table-cell d-lg-table-cell d-xl-table-cell`
         },
         {
           key: "stake_info.own",
@@ -196,16 +190,24 @@ export default {
           key: "estimated_payout",
           label: this.$t("pages.targets.estimated_payout"),
           sortable: true,
-          class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
+          class: `d-table-cell d-sm-table-cell d-md-table-cell d-lg-table-cell d-xl-table-cell`
         },
         {
           key: "favorite",
           label: "⭐",
           sortable: true,
-          class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
+          class: `d-table-cell d-sm-table-cell d-md-table-cell d-lg-table-cell d-xl-table-cell`
         }
       ]
     };
+  },
+  computed: {
+    identitiesLoaded() {
+      return this.$store.state.identities.dataLoaded;
+    },
+    kusamaIdentitiesLoaded() {
+      return this.$store.state.stakingIdentities.dataLoaded;
+    }
   },
   watch: {
     favorites: function(favorites) {
@@ -226,12 +228,12 @@ export default {
   methods: {
     hasIdentity(stashId) {
       return this.$store.state.identities.list.some(obj => {
-        return obj.stashId === stashId;
+        return obj.accountId === stashId;
       });
     },
     getIdentity(stashId) {
       let filteredArray = this.$store.state.identities.list.filter(obj => {
-        return obj.stashId === stashId;
+        return obj.accountId === stashId;
       });
       return filteredArray[0];
     },
@@ -290,7 +292,6 @@ export default {
       return true;
     },
     getSmallNumber(amount) {
-      console.log("AMOUNT: ", amount);
       if (amount === 0) return 0;
       if (isHex(amount)) {
         const bn = new BN(amount.substring(2, amount.length), 16);
@@ -304,16 +305,27 @@ export default {
     }
   },
   apollo: {
+    block: {
+      query: gql`
+        query MyQuery {
+          block(limit: 1, order_by: { timestamp: desc }) {
+            current_era
+          }
+        }
+      `,
+      result({ data }) {
+        this.era = data.block[0].current_era - 1;
+      }
+    },
     $subscribe: {
       rewards: {
         query: gql`
-          subscription MySubscription {
-            rewards(order_by: { timestamp: desc }) {
-              block_number
+          subscription MySubscription($era: Int) {
+            rewards(
+              where: { era_index: { _eq: $era } }
+              order_by: { commission: asc }
+            ) {
               commission
-              era_index
-              era_points
-              era_rewards
               estimated_payout
               stake_info
               stash_id
@@ -323,9 +335,10 @@ export default {
         `,
         result({ data }) {
           const { rewards } = data;
-          this.$store.dispatch("identities/update").then(() => {
+          if (rewards.length === 0) {
+            this.era--;
+          } else {
             const formatData = (value, key) => {
-              //   value.stash_id = this.formatId(value.stash_id);
               value.commission = (value.commission / 10000000).toFixed(2);
               value.stake_info = JSON.parse(value.stake_info);
               value.stake_info.total = this.formatAmount(
@@ -339,11 +352,39 @@ export default {
                 value.estimated_payout
               );
               value.favorite = this.isFavorite(value.stash_id);
+              const ident = this.getIdentity(value.stash_id);
+              if (ident !== [] && typeof ident !== "undefined") {
+                value.identity = ident.identity;
+                // console.log("ident: ", value.identity);
+              } else if (this.hasKusamaIdentity(value.stash_id)) {
+                const kusama = this.getKusamaIdentity(value.stash_id);
+                console.log("KUSAMA: ", kusama);
+              } else {
+                value.identity = null;
+              }
+              // if (kusama !== [] && typeof kusama !== "undefined") {
+              // }
             };
 
             R.mapObjIndexed(formatData, rewards);
             this.rewards = rewards;
-          });
+          }
+        },
+        variables() {
+          return {
+            era: parseInt(this.era)
+          };
+        },
+        skip() {
+          if (!this.identitiesLoaded) {
+            this.$store.dispatch("identities/update");
+            return true;
+          }
+          if (!this.kusamaIdentitiesLoaded) {
+            this.$store.dispatch("stakingIdentities/update");
+            return true;
+          }
+          return this.era === null;
         }
       }
     }
