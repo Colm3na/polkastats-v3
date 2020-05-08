@@ -1,0 +1,415 @@
+<template>
+  <b-container class="pt-4">
+    <b-row style="margin-bottom: 1rem">
+      <b-form-input
+        id="filterInput"
+        v-model="filter"
+        type="search"
+        :placeholder="$t('pages.targets.search_placeholder')"
+      />
+    </b-row>
+    <div v-if="rewards === null" class="pt-4">
+      <b-container class="w-100 loader">
+        <div class="lds-ripple center">
+          <div></div>
+          <div></div>
+        </div>
+        <div>{{ $t("pages.targets.loading_data") }}</div>
+      </b-container>
+    </div>
+    <div v-else class="pt-2">
+      <b-container>
+        <div class="row d-block d-sm-none d-md-block d-lg-block d-xl-block">
+          <div class="table-responsive">
+            <b-table
+              id="rewards-table"
+              stacked="md"
+              head-variant="dark"
+              :fields="fields"
+              :items="rewards"
+              :per-page="perPage"
+              :current-page="currentPage"
+              :sort-by.sync="sortBy"
+              :sort-desc.sync="sortDesc"
+              :filter="filter"
+              :filter-included-fields="filterOn"
+              @filtered="onFiltered"
+            >
+              <template slot="stash_id" slot-scope="data">
+                <div
+                  v-if="hasIdentity(data.item.stash_id)"
+                  class="d-inline-block"
+                >
+                  <div
+                    v-if="getIdentity(data.item.stash_id).logo !== ''"
+                    class="d-inline-block"
+                  >
+                    <img
+                      :src="getIdentity(data.item.stash_id).logo"
+                      class="identity-small d-inline-block"
+                    />
+                  </div>
+                </div>
+                <div v-else class="d-inline-block">
+                  <Identicon
+                    :key="data.item.stash_id"
+                    :value="data.item.stash_id"
+                    :size="20"
+                    :theme="'polkadot'"
+                  />
+                </div>
+                <nuxt-link
+                  :to="{
+                    name: 'validator',
+                    query: { accountId: data.item.stash_id }
+                  }"
+                  :title="$t('pages.validators.validator_details')"
+                >
+                  <span v-if="hasIdentity(data.item.stash_id)">
+                    {{ getIdentity(data.item.stash_id).full_name }}
+                  </span>
+                  <span v-else-if="hasKusamaIdentity(data.item.stash_id)">
+                    {{ getKusamaIdentity(data.item.stash_id).display }}
+                  </span>
+                  <span v-else>
+                    <span
+                      class="d-inline d-sm-inline d-md-inline d-lg-inline d-xl-none"
+                      >{{ shortAddress(data.item.stash_id) }}</span
+                    >
+                    <span
+                      class="d-none d-sm-none d-md-none d-lg-none d-xl-inline"
+                      >{{ shortAddress(data.item.stash_id) }}</span
+                    >
+                  </span>
+                </nuxt-link>
+              </template>
+              <template slot="favorite" slot-scope="data">
+                <p class="text-center mb-0">
+                  <a
+                    class="favorite"
+                    @click="toggleFavorite(data.item.stash_id)"
+                  >
+                    <i
+                      v-if="data.item.favorite"
+                      v-b-tooltip.hover
+                      class="fas fa-star"
+                      style="color: #f1bd23"
+                      :title="$t('pages.targets.remove_from_favorites')"
+                    />
+                    <i
+                      v-else
+                      v-b-tooltip.hover
+                      class="fas fa-star"
+                      style="color: #e6dfdf;"
+                      :title="$t('pages.targets.add_to_favorites')"
+                    />
+                  </a>
+                </p>
+              </template>
+            </b-table>
+            <div style="display: flex">
+              <b-pagination
+                v-model="currentPage"
+                :total-rows="totalRows"
+                :per-page="perPage"
+                aria-controls="validators-table"
+              />
+              <b-button-group class="mx-4">
+                <b-button
+                  v-for="(item, index) in tableOptions"
+                  :key="index"
+                  @click="handleNumFields(item)"
+                >
+                  {{ item }}
+                </b-button>
+              </b-button-group>
+            </div>
+          </div>
+        </div>
+        <div class="row d-block d-sm-block d-md-none d-lg-none d-xl-none">
+          <h1>Vista mobile</h1>
+        </div>
+      </b-container>
+    </div>
+  </b-container>
+</template>
+
+<script>
+import gql from "graphql-tag";
+import * as R from "ramda";
+import commonMixin from "../mixins/commonMixin.js";
+import BN from "bn.js";
+import { isHex } from "@polkadot/util";
+import { numItemsTableValidatorOptions } from "../polkastats.config.js";
+import Identicon from "../components/identicon.vue";
+
+export default {
+  components: { Identicon },
+  mixins: [commonMixin],
+  data: function() {
+    return {
+      rewards: null,
+      tableOptions: numItemsTableValidatorOptions,
+      perPage: localStorage.numItemsTableSelected
+        ? parseInt(localStorage.numItemsTableSelected)
+        : 20,
+      currentPage: 1,
+      sortBy: `favorite`,
+      sortDesc: true,
+      totalRows: 1,
+      favorites: [],
+      filter: null,
+      filterOn: [],
+      filterField: null,
+      fields: [
+        {
+          key: "stash_id",
+          label: this.$t("pages.targets.validator"),
+          sortable: true,
+          filterByFormatted: true
+        },
+        {
+          key: "commission",
+          label: "% " + this.$t("pages.targets.commission"),
+          sortable: true,
+          class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
+        },
+        {
+          key: "stake_info.total",
+          label: this.$t("pages.targets.total_stake"),
+          sortable: false,
+          class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
+        },
+        {
+          key: "stake_info.own",
+          label: this.$t("pages.targets.own_stake"),
+          sortable: false,
+          class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
+        },
+        {
+          key: "stake_info.others_amount",
+          label: this.$t("pages.targets.other_stake"),
+          sortable: false,
+          class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
+        },
+        {
+          key: "estimated_payout",
+          label: this.$t("pages.targets.estimated_payout"),
+          sortable: true,
+          class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
+        },
+        {
+          key: "favorite",
+          label: "⭐",
+          sortable: true,
+          class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
+        }
+      ]
+    };
+  },
+  watch: {
+    favorites: function(favorites) {
+      this.$cookies.set("favorites", favorites, {
+        path: "/",
+        maxAge: 60 * 60 * 24 * 7
+      });
+    },
+    filterField: function() {
+      this.filterOn[0] = this.filterField;
+    }
+  },
+  created: function() {
+    if (this.$cookies.get("favorites")) {
+      this.favorites = this.$cookies.get("favorites");
+    }
+  },
+  methods: {
+    hasIdentity(stashId) {
+      return this.$store.state.identities.list.some(obj => {
+        return obj.stashId === stashId;
+      });
+    },
+    getIdentity(stashId) {
+      let filteredArray = this.$store.state.identities.list.filter(obj => {
+        return obj.stashId === stashId;
+      });
+      return filteredArray[0];
+    },
+    hasKusamaIdentity(stashId) {
+      return this.$store.state.stakingIdentities.list.some(obj => {
+        return obj.accountId === stashId;
+      });
+    },
+    getKusamaIdentity(stashId) {
+      let filteredArray = this.$store.state.stakingIdentities.list.filter(
+        obj => {
+          return obj.accountId === stashId;
+        }
+      );
+      return filteredArray[0].identity;
+    },
+    formatId(stashId) {
+      if (this.hasIdentity(stashId)) {
+        return this.getIdentity(stashId);
+      }
+      if (this.hasKusamaIdentity(stashId)) {
+        return this.getKusamaIdentity(stashId);
+      }
+      return this.shortAddress(stashId);
+    },
+    getOthersAmount(others) {
+      let amount = 0;
+      others.forEach(staker => {
+        const { value } = staker;
+        if (isHex(value)) {
+          amount = amount + parseInt(value, 16);
+        } else if (Number.isInteger(value)) {
+          amount = amount + value;
+        }
+      });
+
+      return this.formatAmount(amount);
+    },
+    onFiltered(filteredItems) {
+      this.totalRows = filteredItems.length;
+      this.currentPage = 1;
+    },
+    handleNumFields(num) {
+      localStorage.numItemsTableSelected = num;
+      this.perPage = parseInt(num);
+    },
+    isFavorite(accountId) {
+      return this.favorites.includes(accountId);
+    },
+    toggleFavorite(accountId) {
+      if (this.favorites.indexOf(accountId) !== -1) {
+        this.favorites.splice(this.favorites.indexOf(accountId), 1);
+      } else {
+        this.favorites.push(accountId);
+      }
+      return true;
+    },
+    getSmallNumber(amount) {
+      console.log("AMOUNT: ", amount);
+      if (amount === 0) return 0;
+      if (isHex(amount)) {
+        const bn = new BN(amount.substring(2, amount.length), 16);
+        const factor = new BN(1000000000);
+        return bn.div(factor);
+      }
+      const bn = new BN(amount);
+      const factor = new BN(1000000000);
+
+      return bn.div(factor);
+    }
+  },
+  apollo: {
+    $subscribe: {
+      rewards: {
+        query: gql`
+          subscription MySubscription {
+            rewards(order_by: { timestamp: desc }) {
+              block_number
+              commission
+              era_index
+              era_points
+              era_rewards
+              estimated_payout
+              stake_info
+              stash_id
+              timestamp
+            }
+          }
+        `,
+        result({ data }) {
+          const { rewards } = data;
+          this.$store.dispatch("identities/update").then(() => {
+            const formatData = (value, key) => {
+              //   value.stash_id = this.formatId(value.stash_id);
+              value.commission = (value.commission / 10000000).toFixed(2);
+              value.stake_info = JSON.parse(value.stake_info);
+              value.stake_info.total = this.formatAmount(
+                value.stake_info.total
+              );
+              value.stake_info.own = this.formatAmount(value.stake_info.own);
+              value.stake_info.others_amount = this.getOthersAmount(
+                value.stake_info.others
+              );
+              value.estimated_payout = this.formatAmount(
+                value.estimated_payout
+              );
+              value.favorite = this.isFavorite(value.stash_id);
+            };
+
+            R.mapObjIndexed(formatData, rewards);
+            this.rewards = rewards;
+          });
+        }
+      }
+    }
+  },
+  head() {
+    return {
+      title: `Polkastats - ${this.$t("pages.targets.targets")}`,
+      meta: [
+        {
+          hid: "description",
+          name: "description",
+          content: `Polkastats - ${this.$t("pages.targets.targets")}`
+        }
+      ]
+    };
+  }
+};
+</script>
+
+<style>
+.loader {
+  text-align: center;
+}
+.lds-ripple {
+  display: inline-block;
+  position: relative;
+  width: 80px;
+  height: 80px;
+  text-align: center;
+}
+.lds-ripple div {
+  position: absolute;
+  border: 4px solid #d75ea1;
+  opacity: 1;
+  border-radius: 50%;
+  animation: lds-ripple 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+}
+.lds-ripple div:nth-child(2) {
+  animation-delay: -0.5s;
+}
+@keyframes lds-ripple {
+  0% {
+    top: 36px;
+    left: 36px;
+    width: 0;
+    height: 0;
+    opacity: 1;
+  }
+  100% {
+    top: 0px;
+    left: 0px;
+    width: 72px;
+    height: 72px;
+    opacity: 0;
+  }
+}
+.favorite {
+  cursor: pointer;
+  font-size: 1.1rem;
+}
+.favorite {
+  cursor: pointer;
+  font-size: 1.1rem;
+}
+#validators-table tr td:nth-child(3) div .d-block .favorite {
+  right: 0;
+  text-align: right;
+}
+</style>

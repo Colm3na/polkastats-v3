@@ -21,6 +21,7 @@
       "validators": "Validadores",
       "intentions": "Intenciones",
       "favorites": "Favoritos",
+      "targets": "Targets",
       "phragmen": "Phragmen",
       "nominators": "Nominadores",
       "account": "Cuentas",
@@ -201,6 +202,19 @@
       "total_stake": "Participación total",
       "head_title": "PolkaStats - Polkadot Kusama nominators",
       "head_content": "Polkadot Kusama nominators"
+    },
+    "targets": {
+      "targets": "Targets",
+      "search_placeholder": "Buscar validador por nombre mostrado como identidad",
+      "loading_data": "Cargando datos, puede tardar tiempo. Sea paciente, por favor",
+      "remove_from_favorites": "Eliminar de Favoritos",
+      "add_to_favorites": "Añadir a Favoritos",
+      "validator": "Validador",
+      "commission": "Comisión",
+      "total_stake": "Participación total",
+      "own_stake": "Participación propia",
+      "other_stake": "Participación ajena",
+      "estimated_payout": "Pago estimado"
     },
     "phragmen": {
       "predicted_candidates_by_TEXT": "Predicción de candidatos por algoritmo de elección phragmen",
