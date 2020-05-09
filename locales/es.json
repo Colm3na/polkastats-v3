@@ -205,7 +205,7 @@
     "phragmen": {
       "predicted_candidates_by_TEXT": "Predicción de candidatos por algoritmo de elección phragmen",
       "offline_phragmen_is_TEXT": "offline-phragmen no está operativo por lo que está deshabilitado temporalmente",
-      "search_placeholder": "Buscar candidatos por cuenta, índice de cuenta, nombre mostrado como identidad o nombre en keybase",
+      "search_placeholder": "Buscar candidatos por cuenta, nombre mostrado como identidad o nombre en keybase",
       "sort": "Ordenar",
       "candidate_details": "Detalles del candidato",
       "self_bonded": "Depósito propio",
