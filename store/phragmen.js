@@ -1,20 +1,42 @@
 import gql from "graphql-tag";
+import BN from "bn.js";
 
 export const state = () => ({
   info: {
-    validator_count: 0,
-    nominator_count: 0,
-    total_issuance: "",
+    timestamp: undefined,
+    block_height: undefined,
     candidates: []
   }
 });
 
 export const mutations = {
   update(state, phragmen) {
-    state.info.validator_count = phragmen.validator_count;
-    state.info.nominator_count = phragmen.nominator_count;
-    state.info.total_issuance = phragmen.total_issuance;
-    state.info.candidates = phragmen.candidates;
+    let candidates = [];
+    Object.entries(phragmen.supports).forEach(([pub_key_stash, candidate]) => {
+      candidates.push({
+        pub_key_stash,
+        other_stake_count: candidate.voters.length,
+        stake_total: candidate.total
+      });
+    });
+    candidates = candidates.sort((a, b) => {
+      return new BN(a.stake_total.toString(), 10).lt(
+        new BN(b.stake_total.toString(), 10)
+      )
+        ? 1
+        : -1;
+    });
+
+    candidates = candidates.map((candidate, rank) => {
+      return {
+        rank: rank + 1,
+        ...candidate
+      };
+    });
+
+    state.info.timestamp = phragmen.timestamp;
+    state.info.block_height = phragmen.block_height;
+    state.info.candidates = candidates;
   },
   getters: function() {
     state => state.info;
@@ -23,7 +45,7 @@ export const mutations = {
 
 const GET_PHRAGMEN = gql`
   query phragmen {
-    phragmen {
+    phragmen(limit: 1, order_by: { timestamp: desc }) {
       timestamp
       phragmen_json
       block_height
@@ -39,7 +61,8 @@ export const actions = {
         query: GET_PHRAGMEN
       })
       .then(({ data }) => {
-        commit("update", data.phragmen);
+        // console.log(JSON.stringify(data.phragmen[0].phragmen_json, null, 2));
+        commit("update", JSON.parse(data.phragmen[0].phragmen_json));
       })
       .catch(error => {
         console.log("Error fetching Phragmen table: ", error);

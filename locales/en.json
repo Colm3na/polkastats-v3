@@ -204,7 +204,7 @@
     "phragmen": {
       "predicted_candidates_by_TEXT": "Predicted candidates by phragmen election algorithm",
       "offline_phragmen_is_TEXT": "offline-phragmen is currently broken so this is temporary disabled!",
-      "search_placeholder": "Search candidate by account, account index or identity display name",
+      "search_placeholder": "Search candidate by account, identity display name or keybase name",
       "sort": "Sort",
       "candidate_details": "Candidate details",
       "self_bonded": "Self bonded",
