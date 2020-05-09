@@ -1,6 +1,7 @@
 <template>
   <b-container class="pt-4">
-    <b-row style="margin-bottom: 1rem">
+    <TargetInfo class="pb-2" />
+    <b-row class="mb-1 ml-1 mr-1">
       <b-form-input
         id="filterInput"
         v-model="filter"
@@ -64,9 +65,6 @@
                     data.item.identity.fullname || data.item.identity.display
                   }}
                 </span>
-                <!-- <span v-else-if="hasKusamaIdentity(data.item.stash_id)">
-                    data.item.stash_id).display }}
-                  </span> -->
                 <span v-else>
                   <span
                     class="d-inline d-sm-inline d-md-inline d-lg-inline d-xl-none"
@@ -118,10 +116,6 @@
             </b-button-group>
           </div>
         </div>
-        <!-- </div> -->
-        <!-- <div class="row d-block d-sm-block d-md-none d-lg-none d-xl-none">
-          <h1>Vista mobile</h1>
-        </div> -->
       </b-container>
     </div>
   </b-container>
@@ -135,9 +129,10 @@ import BN from "bn.js";
 import { isHex } from "@polkadot/util";
 import { numItemsTableValidatorOptions } from "../polkastats.config.js";
 import Identicon from "../components/identicon.vue";
+import TargetInfo from "../components/targets-info";
 
 export default {
-  components: { Identicon },
+  components: { Identicon, TargetInfo },
   mixins: [commonMixin],
   data: function() {
     return {
@@ -307,7 +302,7 @@ export default {
   apollo: {
     block: {
       query: gql`
-        query MyQuery {
+        query block {
           block(limit: 1, order_by: { timestamp: desc }) {
             current_era
           }
@@ -320,7 +315,7 @@ export default {
     $subscribe: {
       rewards: {
         query: gql`
-          subscription MySubscription($era: Int) {
+          subscription rewards($era: Int) {
             rewards(
               where: { era_index: { _eq: $era } }
               order_by: { commission: asc }
@@ -339,7 +334,9 @@ export default {
             this.era--;
           } else {
             const formatData = (value, key) => {
-              value.commission = (value.commission / 10000000).toFixed(2);
+              value.commission = `${(value.commission / 10000000).toFixed(
+                2
+              )} %`;
               value.stake_info = JSON.parse(value.stake_info);
               value.stake_info.total = this.formatAmount(
                 value.stake_info.total
@@ -355,15 +352,11 @@ export default {
               const ident = this.getIdentity(value.stash_id);
               if (ident !== [] && typeof ident !== "undefined") {
                 value.identity = ident.identity;
-                // console.log("ident: ", value.identity);
               } else if (this.hasKusamaIdentity(value.stash_id)) {
                 const kusama = this.getKusamaIdentity(value.stash_id);
-                console.log("KUSAMA: ", kusama);
               } else {
                 value.identity = null;
               }
-              // if (kusama !== [] && typeof kusama !== "undefined") {
-              // }
             };
 
             R.mapObjIndexed(formatData, rewards);
