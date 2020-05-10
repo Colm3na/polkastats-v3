@@ -290,7 +290,12 @@ export default {
       return this.$store.state.network.info;
     },
     candidates() {
-      return this.$store.state.phragmen.info.candidates;
+      return this.$store.state.phragmen.info.candidates.map(candidate => {
+        if (this.hasKusamaIdentity(candidate.pub_key_stash)) {
+          candidate.identity = this.getKusamaIdentity(candidate.pub_key_stash);
+        }
+        return candidate;
+      });
     },
     identities() {
       return this.$store.state.identities.list;
