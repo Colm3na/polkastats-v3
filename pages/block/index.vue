@@ -114,11 +114,37 @@
                       <p class="mb-0">{{ parsedBlock.era_length }}</p>
                     </td>
                   </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </template>
+        <template v-if="parsedExtrinsics">
+          <div class="card mt-4 mb-3">
+            <div class="card-body">
+              <h4 class="text-center mb-4">
+                {{ $t("details.block.extrinsics") }}
+              </h4>
+              <table class="table table-striped">
+                <thead>
                   <tr>
-                    <td>{{ $t("details.block.era_progress") }}</td>
-                    <td class="text-right">
-                      <p class="mb-0">{{ parsedBlock.era_progress }}</p>
-                    </td>
+                    <th>{{ $t("details.block.hash") }}</th>
+                    <th>{{ $t("details.block.signer") }}</th>
+                    <th>{{ $t("details.block.section") }}</th>
+                    <th>{{ $t("details.block.method") }}</th>
+                    <th>{{ $t("details.block.args") }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    v-for="extrinsic in parsedExtrinsics"
+                    :key="extrinsic.hash"
+                  >
+                    <td>{{ extrinsic.hash }}</td>
+                    <td>{{ extrinsic.signer }}</td>
+                    <td>{{ extrinsic.section }}</td>
+                    <td>{{ extrinsic.method }}</td>
+                    <td>{{ extrinsic.args }}</td>
                   </tr>
                 </tbody>
               </table>
@@ -219,7 +245,8 @@ export default {
       blockNumber: this.$route.query.blockNumber,
       blockExplorer,
       parsedBlock: undefined,
-      parsedEvents: undefined
+      parsedEvents: undefined,
+      parsedExtrinsics: undefined
     };
   },
   watch: {
@@ -239,7 +266,6 @@ export default {
             current_era
             current_index
             era_length
-            era_progress
             extrinsics_root
             is_epoch
             new_accounts
@@ -289,6 +315,33 @@ export default {
       result({ data }) {
         this.parsedEvents = {
           ...data.event
+        };
+      }
+    },
+    extrinsic: {
+      query: gql`
+        query extrinsic($block_number: bigint!) {
+          extrinsic(where: { block_number: { _eq: $block_number } }) {
+            block_number
+            extrinsic_index
+            is_signed
+            signer
+            section
+            method
+            args
+            hash
+            doc
+          }
+        }
+      `,
+      variables() {
+        return {
+          block_number: this.$route.query.blockNumber
+        };
+      },
+      result({ data }) {
+        this.parsedExtrinsics = {
+          ...data.extrinsic
         };
       }
     }
