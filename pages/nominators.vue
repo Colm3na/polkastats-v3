@@ -77,39 +77,63 @@
               <div
                 class="d-block d-sm-block d-md-none d-lg-none d-xl-none text-center"
               >
-                <Identicon
-                  :key="data.item.accountId"
-                  :value="data.item.accountId"
-                  :size="20"
-                  :theme="'polkadot'"
-                />
-                <nuxt-link
-                  :to="{
-                    name: 'nominator',
-                    query: { accountId: data.item.accountId }
-                  }"
-                  :title="$t('pages.nominators.nominator_details')"
-                >
-                  <span v-if="data.item.identity">
-                    {{
-                      data.item.identity.display || data.item.identity.display
-                    }}
-                  </span>
-                  <span v-else>
-                    <span
-                      class="d-inline d-sm-inline d-md-inline d-lg-inline d-xl-none"
-                      >{{ shortAddress(data.item.accountId) }}</span
-                    >
-                    <span
-                      class="d-none d-sm-none d-md-none d-lg-none d-xl-inline"
-                      >{{ shortAddress(data.item.accountId) }}</span
-                    >
-                  </span>
-                </nuxt-link>
-                <p class="mt-2 mb-2">rank #{{ data.item.rank }}</p>
-                <p class="mb-0">
-                  {{ formatAmount(data.item.totalStake) }}
-                </p>
+                <template>
+                  <b-container>
+                    <b-row class="nominator-row">
+                      <b-col cols="6" class="column">
+                        <div>
+                          <Identicon
+                            :key="data.item.accountId"
+                            :value="data.item.accountId"
+                            :size="48"
+                            :theme="'polkadot'"
+                          />
+                        </div>
+                        <div>
+                          <nuxt-link
+                            :to="{
+                              name: 'nominator',
+                              query: { accountId: data.item.accountId }
+                            }"
+                            :title="$t('pages.nominators.nominator_details')"
+                          >
+                            <span v-if="data.item.identity">
+                              {{
+                                data.item.identity.display ||
+                                  data.item.identity.display
+                              }}
+                            </span>
+                            <span v-else>
+                              <span
+                                class="d-inline d-sm-inline d-md-inline d-lg-inline d-xl-none"
+                                >{{ shortAddress(data.item.accountId) }}</span
+                              >
+                              <span
+                                class="d-none d-sm-none d-md-none d-lg-none d-xl-inline"
+                                >{{ shortAddress(data.item.accountId) }}</span
+                              >
+                            </span>
+                          </nuxt-link>
+                        </div>
+                      </b-col>
+                      <b-col cols="6" class="column">
+                        <div>
+                          <p class="mt-2 mb-2">rank #{{ data.item.rank }}</p>
+                        </div>
+                        <div>
+                          <p class="mb-0">
+                            {{ $t("pages.nominators.total_stake") }}:
+                          </p>
+                        </div>
+                        <div>
+                          <p class="mb-0">
+                            {{ formatAmount(data.item.totalStake) }}
+                          </p>
+                        </div>
+                      </b-col>
+                    </b-row>
+                  </b-container>
+                </template>
               </div>
               <div class="d-none d-sm-none d-md-block d-lg-block d-xl-block">
                 <Identicon
@@ -514,5 +538,25 @@ export default {
 }
 .btn-secondary {
   font-size: 0.8rem;
+}
+@media (max-width: 765px) {
+  #nominators-table {
+    background-color: transparent;
+  }
+  .nominator-row {
+    border: 1px solid #bbb;
+    border-radius: 0.3rem;
+    text-align: center;
+    padding: 0.5rem;
+    margin-bottom: 0.3rem;
+    background-color: white;
+    display: flex;
+    flex: 1;
+  }
+  .column {
+    flex: 1;
+    flex-direction: column;
+    justify-content: center;
+  }
 }
 </style>

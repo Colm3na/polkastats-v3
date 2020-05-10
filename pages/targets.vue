@@ -617,10 +617,6 @@ export default {
   text-align: right;
 }
 
-table {
-  background-color: transparent;
-}
-
 .validators-row {
   border: 1px solid #bbb;
   border-radius: 0.3rem;
@@ -634,5 +630,25 @@ table {
   flex: 1;
   flex-direction: column;
   justify-content: space-around;
+}
+
+@media (max-width: 765px) {
+  #rewards-table {
+    background-color: transparent;
+  }
+  .validators-row {
+    border: 1px solid #bbb;
+    border-radius: 0.3rem;
+    text-align: center;
+    padding: 0.5rem;
+    margin-bottom: 0.3rem;
+    background-color: white;
+  }
+  .identity-column {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: space-around;
+  }
 }
 </style>
