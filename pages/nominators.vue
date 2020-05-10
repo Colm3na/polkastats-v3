@@ -14,10 +14,10 @@
           </b-col>
         </b-row>
         <!-- Mobile sorting -->
-        <div class="row d-block d-sm-block d-md-block d-lg-none d-xl-none">
+        <div class="row d-block d-sm-block d-md-none d-lg-none d-xl-none">
           <b-col lg="6" class="my-1">
             <b-form-group
-              label="$t('pages.nominators.sort)"
+              :label="$t('pages.nominators.sort')"
               label-cols-sm="3"
               label-align-sm="right"
               label-size="sm"
@@ -90,8 +90,10 @@
                   }"
                   :title="$t('pages.nominators.nominator_details')"
                 >
-                  <span v-if="hasKusamaIdentity(data.item.accountId)">
-                    {{ getKusamaIdentity(data.item.accountId).display }}
+                  <span v-if="data.item.identity">
+                    {{
+                      data.item.identity.display || data.item.identity.display
+                    }}
                   </span>
                   <span v-else>
                     <span
@@ -123,8 +125,10 @@
                   }"
                   :title="$t('pages.nominators.nominator_details')"
                 >
-                  <span v-if="hasKusamaIdentity(data.item.accountId)">
-                    {{ getKusamaIdentity(data.item.accountId).display }}
+                  <span v-if="data.item.identity">
+                    {{
+                      data.item.identity.display || data.item.identity.display
+                    }}
                   </span>
                   <span v-else>
                     <span
@@ -197,7 +201,8 @@
 </template>
 <script>
 import { mapMutations } from "vuex";
-import bootstrap from "bootstrap";
+import gql from "graphql-tag";
+import * as R from "ramda";
 import Identicon from "../components/identicon.vue";
 import Network from "../components/network.vue";
 import { isHex } from "@polkadot/util";
@@ -212,6 +217,7 @@ export default {
   mixins: [commonMixin],
   data: function() {
     return {
+      nominators: [],
       blockExplorer,
       polling: null,
       tableOptions: numItemsTableOptions,
@@ -219,7 +225,7 @@ export default {
         ? parseInt(localStorage.numItemsTableSelected)
         : 10,
       currentPage: 1,
-      sortBy: `favorite`,
+      sortBy: "favorite",
       sortDesc: true,
       filter: null,
       filterOn: [],
@@ -259,86 +265,8 @@ export default {
     };
   },
   computed: {
-    validators() {
-      return this.$store.state.validators.list;
-    },
     identities() {
       return this.$store.state.identities.list;
-    },
-    nominators() {
-      let nominatorStaking = [];
-      for (let i = 0; i < this.validators.length; i++) {
-        let validator = this.validators[i];
-        if (validator.exposure.others.length > 0) {
-          for (let j = 0; j < validator.exposure.others.length; j++) {
-            let nominator = validator.exposure.others[j];
-            if (nominatorStaking.find(nom => nom.accountId === nominator.who)) {
-              let nominatorTmp = nominatorStaking.filter(nom => {
-                return nom.accountId === nominator.who;
-              });
-              let bn;
-              if (isHex(nominator.value)) {
-                bn = new BN(
-                  nominator.value.substring(2, nominator.value.length),
-                  16
-                );
-              } else {
-                bn = new BN(nominator.value.toString(), 10);
-              }
-              nominatorTmp[0].totalStake = nominatorTmp[0].totalStake.add(bn);
-              nominatorTmp[0].nominations++;
-              nominatorTmp[0].staking.push({
-                validator: validator.accountId,
-                amount: nominator.value
-              });
-            } else {
-              let bn;
-              if (isHex(nominator.value)) {
-                bn = new BN(
-                  nominator.value.substring(2, nominator.value.length),
-                  16
-                );
-              } else {
-                bn = new BN(nominator.value.toString(), 10);
-              }
-
-              let kusamaIdentity = "";
-              if (this.hasKusamaIdentity(nominator.who)) {
-                kusamaIdentity = this.hasKusamaIdentity(nominator.who);
-              }
-
-              nominatorStaking.push({
-                accountId: nominator.who,
-                kusamaIdentity,
-                totalStake: bn,
-                nominations: 1,
-                staking: [
-                  {
-                    validator: validator.accountId,
-                    amount: nominator.value
-                  }
-                ],
-                favorite: this.isFavorite(nominator.who)
-              });
-            }
-          }
-        }
-      }
-      nominatorStaking.sort(function compare(a, b) {
-        if (a.totalStake.lt(b.totalStake)) {
-          return 1;
-        }
-        if (a.totalStake.gt(b.totalStake)) {
-          return -1;
-        }
-        return 0;
-      });
-      nominatorStaking.map((nominator, index) => {
-        nominator.rank = index + 1;
-      });
-      // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-      this.totalRows = nominatorStaking.length;
-      return nominatorStaking;
     },
     sortOptions() {
       // Create an options list from our fields
@@ -347,6 +275,12 @@ export default {
         .map(f => {
           return { text: f.label, value: f.key };
         });
+    },
+    identitiesLoaded() {
+      return this.$store.state.identities.dataLoaded;
+    },
+    kusamaIdentitiesLoaded() {
+      return this.$store.state.stakingIdentities.dataLoaded;
     }
   },
   watch: {
@@ -364,30 +298,6 @@ export default {
     if (this.$cookies.get("favorites")) {
       this.favorites = this.$cookies.get("favorites");
     }
-
-    // Force update of validators list if empty
-    if (this.$store.state.validators.list.length === 0) {
-      vm.$store.dispatch("validators/update");
-    }
-
-    // Force update of indentities list if empty
-    if (this.$store.state.identities.list.length === 0) {
-      vm.$store.dispatch("identities/update");
-    }
-
-    // Force update of staking identities list if empty
-    if (this.$store.state.stakingIdentities.list.length === 0) {
-      vm.$store.dispatch("stakingIdentities/update");
-    }
-
-    // Update validators and staking identities every 10 seconds
-    this.polling = setInterval(() => {
-      vm.$store.dispatch("validators/update");
-      vm.$store.dispatch("stakingIdentities/update");
-    }, 10000);
-  },
-  beforeDestroy: function() {
-    clearInterval(this.polling);
   },
   methods: {
     handleNumFields(num) {
@@ -399,6 +309,12 @@ export default {
       } else {
         this.favorites.push(accountId);
       }
+      this.nominators = this.nominators.map(nominator => {
+        if (nominator.accountId === accountId) {
+          nominator.favorite = !nominator.favorite;
+        }
+        return nominator;
+      });
       return true;
     },
     isFavorite(accountId) {
@@ -420,14 +336,9 @@ export default {
     },
     getIdentity(stashId) {
       let filteredArray = this.$store.state.identities.list.filter(obj => {
-        return obj.stashId === stashId;
-      });
-      return filteredArray[0];
-    },
-    hasKusamaIdentity(stashId) {
-      return this.$store.state.stakingIdentities.list.some(obj => {
         return obj.accountId === stashId;
       });
+      return filteredArray[0];
     },
     getKusamaIdentity(stashId) {
       let filteredArray = this.$store.state.stakingIdentities.list.filter(
@@ -435,12 +346,143 @@ export default {
           return obj.accountId === stashId;
         }
       );
-      return filteredArray[0].identity;
+      return filteredArray[0] ? filteredArray[0].identity : null;
     },
     onFiltered(filteredItems) {
       // Trigger pagination to update the number of buttons/pages due to filtering
       this.totalRows = filteredItems.length;
       this.currentPage = 1;
+    }
+  },
+  apollo: {
+    $subscribe: {
+      validators: {
+        query: gql`
+          subscription validator_staking {
+            validator_staking(limit: 1, order_by: { timestamp: desc }) {
+              json
+            }
+          }
+        `,
+        result({ data }) {
+          const { validator_staking } = data;
+          const validators = JSON.parse(validator_staking[0].json);
+          validators.sort((a, b) => {
+            let stakeA = 0;
+            let stakeB = 0;
+
+            if (a.stakers && b.stakers) {
+              if (a.stakers.total > 0) {
+                stakeA = a.stakers.total;
+              } else {
+                stakeA = a.stakingLedger.total;
+              }
+              if (b.stakers.total > 0) {
+                stakeB = b.stakers.total;
+              } else {
+                stakeB = b.stakingLedger.total;
+              }
+              return stakeA < stakeB ? 1 : -1;
+            } else {
+              return 1;
+            }
+          });
+          let nominatorStaking = [];
+          for (let i = 0; i < validators.length; i++) {
+            let validator = validators[i];
+            if (validator.exposure.others.length > 0) {
+              for (let j = 0; j < validator.exposure.others.length; j++) {
+                let nominator = validator.exposure.others[j];
+                if (
+                  nominatorStaking.find(nom => nom.accountId === nominator.who)
+                ) {
+                  let nominatorTmp = nominatorStaking.filter(nom => {
+                    return nom.accountId === nominator.who;
+                  });
+                  let bn;
+                  if (isHex(nominator.value)) {
+                    bn = new BN(
+                      nominator.value.substring(2, nominator.value.length),
+                      16
+                    );
+                  } else {
+                    bn = new BN(nominator.value.toString(), 10);
+                  }
+                  nominatorTmp[0].totalStake = nominatorTmp[0].totalStake.add(
+                    bn
+                  );
+                  nominatorTmp[0].nominations++;
+                  nominatorTmp[0].staking.push({
+                    validator: validator.accountId,
+                    amount: nominator.value
+                  });
+                } else {
+                  let bn;
+                  if (isHex(nominator.value)) {
+                    bn = new BN(
+                      nominator.value.substring(2, nominator.value.length),
+                      16
+                    );
+                  } else {
+                    bn = new BN(nominator.value.toString(), 10);
+                  }
+
+                  let identity = this.getIdentity(nominator.who);
+                  if (identity !== [] && typeof identity !== "undefined") {
+                    identity = identity.identity;
+                  } else {
+                    let kusamaIdentity = this.getKusamaIdentity(nominator.who);
+                    if (kusamaIdentity) {
+                      identity = kusamaIdentity;
+                    } else {
+                      identity = null;
+                    }
+                  }
+
+                  nominatorStaking.push({
+                    accountId: nominator.who,
+                    identity,
+                    totalStake: bn,
+                    nominations: 1,
+                    staking: [
+                      {
+                        validator: validator.accountId,
+                        amount: nominator.value
+                      }
+                    ],
+                    favorite: this.isFavorite(nominator.who)
+                  });
+                }
+              }
+            }
+          }
+          nominatorStaking.sort(function compare(a, b) {
+            if (a.totalStake.lt(b.totalStake)) {
+              return 1;
+            }
+            if (a.totalStake.gt(b.totalStake)) {
+              return -1;
+            }
+            return 0;
+          });
+          nominatorStaking.map((nominator, index) => {
+            nominator.rank = index + 1;
+          });
+          this.totalRows = nominatorStaking.length;
+          this.nominators = nominatorStaking;
+        },
+        skip() {
+          if (!this.identitiesLoaded) {
+            this.$store.dispatch("identities/update");
+            return true;
+          }
+          if (!this.kusamaIdentitiesLoaded) {
+            this.$store.dispatch("stakingIdentities/update");
+            return true;
+          }
+          return false;
+        }
+      }
     }
   },
   head() {
