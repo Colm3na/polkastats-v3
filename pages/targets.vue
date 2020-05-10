@@ -121,29 +121,6 @@
                     </span>
                   </nuxt-link>
                 </template>
-                <template slot="favorite" slot-scope="data">
-                  <p class="text-center mb-0">
-                    <a
-                      class="favorite"
-                      @click="toggleFavorite(data.item.stash_id)"
-                    >
-                      <i
-                        v-if="data.item.favorite"
-                        v-b-tooltip.hover
-                        class="fas fa-star"
-                        style="color: #f1bd23"
-                        :title="$t('pages.targets.remove_from_favorites')"
-                      />
-                      <i
-                        v-else
-                        v-b-tooltip.hover
-                        class="fas fa-star"
-                        style="color: #e6dfdf;"
-                        :title="$t('pages.targets.add_to_favorites')"
-                      />
-                    </a>
-                  </p>
-                </template>
               </div>
               <div class="d-block d-sm-block d-md-none d-lg-none d-xl-none">
                 <template>
@@ -214,6 +191,26 @@
                   </b-container>
                 </template>
               </div>
+            </template>
+            <template slot="favorite" slot-scope="data">
+              <p class="text-center mb-0">
+                <a class="favorite" @click="toggleFavorite(data.item.stash_id)">
+                  <i
+                    v-if="data.item.favorite"
+                    v-b-tooltip.hover
+                    class="fas fa-star"
+                    style="color: #f1bd23"
+                    :title="$t('pages.targets.remove_from_favorites')"
+                  />
+                  <i
+                    v-else
+                    v-b-tooltip.hover
+                    class="fas fa-star"
+                    style="color: #e6dfdf;"
+                    :title="$t('pages.targets.add_to_favorites')"
+                  />
+                </a>
+              </p>
             </template>
           </b-table>
           <div style="display: flex">
@@ -431,12 +428,21 @@ export default {
     toggleFavorite(accountId) {
       if (this.favorites.indexOf(accountId) !== -1) {
         this.favorites.splice(this.favorites.indexOf(accountId), 1);
-        this.rewards[accountId].favorite = false;
+        this.rewards = this.rewards.map(reward => {
+          if (reward.stash_id === accountId) {
+            reward.favorite = false;
+          }
+          return reward;
+        });
       } else {
         this.favorites.push(accountId);
-        this.rewards[accountId].favorite = true;
+        this.rewards = this.rewards.map(reward => {
+          if (reward.stash_id === accountId) {
+            reward.favorite = true;
+          }
+          return reward;
+        });
       }
-
       return true;
     },
     getSmallNumber(amount) {
