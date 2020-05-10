@@ -214,7 +214,7 @@
       "total_stake": "Participación total",
       "own_stake": "Participación propia",
       "other_stake": "Participación ajena",
-      "estimated_payout": "Pago estimado por era",
+      "estimated_payout": "Pago estimado/era 100 KSM",
       "estimated_annualized_payout_percentage": "Ganancia estimada anual",
       "accordion-info": {
         "delegator_rewards": "Recompensas de delegadores. ¿Cómo funciona?",

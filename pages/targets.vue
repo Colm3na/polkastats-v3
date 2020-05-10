@@ -10,7 +10,7 @@
       :button="$t('pages.targets.accordion-info.risks')"
       :text="$t('pages.targets.accordion-info.risks_TEXT')"
     />
-    <b-row class="pt-2 ml-1 mr-1">
+    <b-row class="pt-2 ml-1 mr-1 mb-4">
       <b-form-input
         id="filterInput"
         v-model="filter"
@@ -290,7 +290,7 @@ export default {
         {
           key: "estimated_payout",
           label: this.$t("pages.targets.estimated_payout"),
-          sortable: true,
+          sortable: false,
           class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
         },
         {
@@ -485,7 +485,7 @@ export default {
           subscription rewards($era: Int) {
             rewards(
               where: { era_index: { _eq: $era } }
-              order_by: { commission: asc }
+              order_by: { estimated_payout: desc }
             ) {
               commission
               estimated_payout

@@ -213,7 +213,7 @@
       "total_stake": "Total stake",
       "own_stake": "Own stake",
       "other_stake": "Other stake",
-      "estimated_payout": "Estimated payout/era",
+      "estimated_payout": "Estimated payout/era 100 KSM",
       "estimated_annualized_payout_percentage": "Estimated annualized rewards",
       "accordion-info": {
         "delegator_rewards": "Delegators rewards. How does it work",
