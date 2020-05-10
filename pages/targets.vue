@@ -1,7 +1,16 @@
 <template>
   <b-container class="pt-4">
-    <TargetInfo class="pb-2" />
-    <b-row class="mb-1 ml-1 mr-1">
+    <TargetInfo
+      id="delegators_rewards"
+      :button="$t('pages.targets.accordion-info.delegator_rewards')"
+      :list="infoList"
+    />
+    <TargetInfo
+      id="risks"
+      :button="$t('pages.targets.accordion-info.risks')"
+      :text="$t('pages.targets.accordion-info.risks_TEXT')"
+    />
+    <b-row class="pt-2 mb-1 ml-1 mr-1">
       <b-form-input
         id="filterInput"
         v-model="filter"
@@ -129,7 +138,7 @@ import BN from "bn.js";
 import { isHex } from "@polkadot/util";
 import { numItemsTableValidatorOptions } from "../polkastats.config.js";
 import Identicon from "../components/identicon.vue";
-import TargetInfo from "../components/targets-info";
+import TargetInfo from "../components/accordion-info";
 
 export default {
   components: { Identicon, TargetInfo },
@@ -192,6 +201,34 @@ export default {
           label: "⭐",
           sortable: true,
           class: `d-table-cell d-sm-table-cell d-md-table-cell d-lg-table-cell d-xl-table-cell`
+        }
+      ],
+      infoList: [
+        {
+          id: 1,
+          text: this.$t("pages.targets.accordion-info.there_are_225_TEXT")
+        },
+        {
+          id: 2,
+          text: this.$t("pages.targets.accordion-info.an_slot_is_TEXT")
+        },
+        {
+          id: 3,
+          text: this.$t(
+            "pages.targets.accordion-info.validators_acummulate_TEXT"
+          )
+        },
+        {
+          id: 4,
+          text: this.$t("pages.targets.accordion-info.at_the_end_TEXT")
+        },
+        {
+          id: 5,
+          text: this.$t("pages.targets.accordion-info.once_each_slots_TEXT")
+        },
+        {
+          id: 6,
+          text: this.$t("pages.targets.accordion-info.the_rest_of_TEXT")
         }
       ]
     };
