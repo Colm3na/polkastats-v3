@@ -234,15 +234,13 @@
                         }"
                         :title="$t('pages.validators.validator_details')"
                       >
-                        <div v-if="hasIdentity(data.item.accountId)">
-                          <div
-                            v-if="getIdentity(data.item.accountId).logo !== ''"
-                          >
-                            <img
-                              :src="getIdentity(data.item.accountId).logo"
-                              class="identity mt-2"
-                            />
-                          </div>
+                        <div
+                          v-if="data.item.identity && data.item.identity.logo"
+                        >
+                          <img
+                            :src="data.item.identity.logo"
+                            class="identity mt-2"
+                          />
                         </div>
                         <div v-else class="logo">
                           <Identicon
@@ -263,13 +261,11 @@
                           }"
                           :title="$t('pages.validators.validator_details')"
                         >
-                          <h4 v-if="hasIdentity(data.item.accountId)">
-                            {{ getIdentity(data.item.accountId).full_name }}
-                          </h4>
-                          <h4
-                            v-else-if="hasKusamaIdentity(data.item.accountId)"
-                          >
-                            {{ getKusamaIdentity(data.item.accountId).display }}
+                          <h4 v-if="data.item.identity">
+                            {{
+                              data.item.identity.full_name ||
+                                data.item.identity.display
+                            }}
                           </h4>
                           <h4 v-else>
                             <span
@@ -364,18 +360,13 @@
               </div>
               <div class="d-none d-sm-none d-md-block d-lg-block d-xl-block">
                 <div
-                  v-if="hasIdentity(data.item.accountId)"
+                  v-if="data.item.identity && data.item.identity.logo"
                   class="d-inline-block"
                 >
-                  <div
-                    v-if="getIdentity(data.item.accountId).logo !== ''"
-                    class="d-inline-block"
-                  >
-                    <img
-                      :src="getIdentity(data.item.accountId).logo"
-                      class="identity-small d-inline-block"
-                    />
-                  </div>
+                  <img
+                    :src="data.item.identity.logo"
+                    class="identity-small d-inline-block"
+                  />
                 </div>
                 <div v-else class="d-inline-block">
                   <Identicon
@@ -392,11 +383,10 @@
                   }"
                   :title="$t('pages.validators.validator_details')"
                 >
-                  <span v-if="hasIdentity(data.item.accountId)">
-                    {{ getIdentity(data.item.accountId).full_name }}
-                  </span>
-                  <span v-else-if="hasKusamaIdentity(data.item.accountId)">
-                    {{ getKusamaIdentity(data.item.accountId).display }}
+                  <span v-if="data.item.identity !== null">
+                    {{
+                      data.item.identity.fullname || data.item.identity.display
+                    }}
                   </span>
                   <span v-else>
                     <span
@@ -492,7 +482,8 @@
 </template>
 <script>
 import { mapMutations } from "vuex";
-import bootstrap from "bootstrap";
+import gql from "graphql-tag";
+import * as R from "ramda";
 import Identicon from "../components/identicon.vue";
 import { isHex } from "@polkadot/util";
 import BN from "bn.js";
@@ -509,6 +500,7 @@ export default {
   mixins: [commonMixin],
   data: function() {
     return {
+      validators: [],
       tableOptions: numItemsTableValidatorOptions,
       perPage: localStorage.numItemsTableSelected
         ? parseInt(localStorage.numItemsTableSelected)
@@ -682,60 +674,6 @@ export default {
 
       return this.validators;
     },
-    validators() {
-      let validatorsObject = [];
-      for (let i = 0; i < this.$store.state.validators.list.length; i++) {
-        let validator = this.$store.state.validators.list[i];
-        let stake = 0;
-        if (validator.exposure || validator.stakingLedger) {
-          if (validator.exposure.total > 0) {
-            stake = validator.exposure.total;
-          } else {
-            stake = validator.stakingLedger.total;
-          }
-        }
-        let stakePercent = 0;
-        if (validator.exposure) {
-          stakePercent = this.getStakePercent(
-            validator.exposure.total,
-            this.totalStakeBonded
-          );
-        }
-
-        let commission = 0;
-        if (validator.validatorPrefs) {
-          commission = validator.validatorPrefs.commission;
-        }
-
-        let identity = "";
-        if (this.hasIdentity(validator.accountId)) {
-          identity = this.getIdentity(validator.accountId);
-        }
-
-        let kusamaIdentity = "";
-        if (this.hasKusamaIdentity(validator.accountId)) {
-          kusamaIdentity = this.hasKusamaIdentity(validator.accountId);
-        }
-
-        validatorsObject.push({
-          rank: i + 1,
-          imOnline: validator.imOnline.isOnline,
-          imOnlineMessage: this.getImOnlineMessage(validator),
-          accountId: validator.accountId,
-          stake: stake,
-          stakers: validator.exposure,
-          numStakers: validator.exposure.others.length,
-          eraPoints: validator.currentEraPointsEarned,
-          commission,
-          percent: stakePercent,
-          favorite: this.isFavorite(validator.accountId),
-          currentElected: validator.currentElected,
-          kusamaIdentity,
-          identity
-        });
-      }
-      return validatorsObject;
-    },
     intentions() {
       return this.$store.state.intentions.list;
     },
@@ -744,6 +682,12 @@ export default {
     },
     totalStakeBonded() {
       return this.$store.state.validators.totalStakeBonded;
+    },
+    identitiesLoaded() {
+      return this.$store.state.identities.dataLoaded;
+    },
+    kusamaIdentitiesLoaded() {
+      return this.$store.state.stakingIdentities.dataLoaded;
     },
     sortOptions() {
       // Create an options list from our fields
@@ -776,9 +720,6 @@ export default {
     // Force update of network info
     vm.$store.dispatch("network/update");
 
-    // Initialize validators table
-    vm.$store.dispatch("validators/update");
-
     // Get the numbers of Rows
     this.totalRows = this.$store.state.validators.list.length;
 
@@ -800,7 +741,6 @@ export default {
     // Update network info validators and intentions every 10 seconds
     this.polling = setInterval(() => {
       vm.$store.dispatch("network/update");
-      vm.$store.dispatch("validators/update");
       vm.$store.dispatch("intentions/update");
       vm.$store.dispatch("stakingIdentities/update");
       if (!this.filter)
@@ -830,6 +770,11 @@ export default {
       } else {
         this.favorites.push(accountId);
       }
+      this.validators = this.validators.map(validator => {
+        if (validator.accountId === accountId)
+          validator.favorite = !validator.favorite;
+        return validator;
+      });
       return true;
     },
     isFavorite(accountId) {
@@ -851,7 +796,7 @@ export default {
     },
     getIdentity(stashId) {
       let filteredArray = this.$store.state.identities.list.filter(obj => {
-        return obj.stashId === stashId;
+        return obj.accountId === stashId;
       });
       return filteredArray[0];
     },
@@ -866,12 +811,136 @@ export default {
           return obj.accountId === stashId;
         }
       );
-      return filteredArray[0].identity;
+      return filteredArray[0] ? filteredArray[0].identity : null;
     },
     onFiltered(filteredItems) {
       // Trigger pagination to update the number of buttons/pages due to filtering
       this.totalRows = filteredItems.length;
       this.currentPage = 1;
+    },
+    setTotalStakeBonded(validators) {
+      let accum = new BN("0", 10);
+      for (let i = 0; i < validators.length; i++) {
+        let validator = validators[i];
+        let bn;
+        if (validator.exposure) {
+          if (isHex(validator.exposure.total)) {
+            bn = new BN(
+              validator.exposure.total.substring(
+                2,
+                validator.exposure.total.length
+              ),
+              16
+            );
+          } else {
+            bn = new BN(validator.exposure.total.toString(), 10);
+          }
+          accum = accum.add(bn);
+        }
+      }
+      this.$store.dispatch("validators/setTotalStakeBonded", accum);
+    }
+  },
+  apollo: {
+    $subscribe: {
+      validators: {
+        query: gql`
+          subscription validator_staking {
+            validator_staking(limit: 1, order_by: { timestamp: desc }) {
+              json
+            }
+          }
+        `,
+        result({ data }) {
+          const { validator_staking } = data;
+          const validators = JSON.parse(validator_staking[0].json);
+          validators.sort((a, b) => {
+            let stakeA = 0;
+            let stakeB = 0;
+
+            if (a.stakers && b.stakers) {
+              if (a.stakers.total > 0) {
+                stakeA = a.stakers.total;
+              } else {
+                stakeA = a.stakingLedger.total;
+              }
+              if (b.stakers.total > 0) {
+                stakeB = b.stakers.total;
+              } else {
+                stakeB = b.stakingLedger.total;
+              }
+              return stakeA < stakeB ? 1 : -1;
+            } else {
+              return 1;
+            }
+          });
+          this.setTotalStakeBonded(validators);
+          let validatorsObject = [];
+          let rank = 0;
+
+          const transformations = validator => {
+            let stake = 0;
+            if (validator.exposure || validator.stakingLedger) {
+              if (validator.exposure.total > 0) {
+                stake = validator.exposure.total;
+              } else {
+                stake = validator.stakingLedger.total;
+              }
+            }
+            validator.stake = stake;
+
+            let stakePercent = 0;
+            if (validator.exposure) {
+              stakePercent = this.getStakePercent(
+                validator.exposure.total,
+                this.totalStakeBonded
+              );
+            }
+            validator.percent = stakePercent;
+
+            let commission = 0;
+            if (validator.validatorPrefs) {
+              commission = validator.validatorPrefs.commission;
+            }
+            validator.commission = commission;
+
+            let identity = this.getIdentity(validator.accountId);
+            if (identity !== [] && typeof identity !== "undefined") {
+              validator.identity = identity.identity;
+            } else {
+              let kusamaIdentity = this.getKusamaIdentity(validator.accountId);
+              if (kusamaIdentity) {
+                validator.identity = kusamaIdentity;
+              } else {
+                validator.identity = null;
+              }
+            }
+
+            validator.rank = rank + 1;
+            validator.imOnline = validator.imOnline.isOnline;
+            validator.imOnlineMessage = this.getImOnlineMessage(validator);
+            validator.stakers = validator.exposure;
+            validator.numStakers = validator.exposure.others.length;
+            validator.eraPoints = validator.currentEraPointsEarned;
+            validator.favorite = this.isFavorite(validator.accountId);
+            rank++;
+          };
+          R.mapObjIndexed(transformations, validators);
+
+          this.validators = validators;
+        },
+        skip() {
+          if (!this.identitiesLoaded) {
+            this.$store.dispatch("identities/update");
+            return true;
+          }
+          if (!this.kusamaIdentitiesLoaded) {
+            this.$store.dispatch("stakingIdentities/update");
+            return true;
+          }
+          return false;
+        }
+      }
     }
   },
   head() {
@@ -1041,10 +1110,11 @@ body {
     padding: 0 0.5rem;
   }
   #validators-table tr {
+    border: 1px solid #bbb;
     border-radius: 0.3rem;
-    box-shadow: 1px 1px 2px 2px #a2a6a8;
     padding: 0.5rem 1rem 0 0;
     margin: 1rem 0;
+    background-color: white;
   }
   #validators-table td[data-label="Validator"] {
     border-left: 0;
