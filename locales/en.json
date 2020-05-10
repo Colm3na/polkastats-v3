@@ -21,6 +21,7 @@
       "validators": "Validators",
       "intentions": "Intentions",
       "favorites": "Favorites",
+      "targets": "Targets",
       "phragmen": "Phragmen",
       "nominators": "Nominators",
       "account": "Accounts",
@@ -200,6 +201,32 @@
       "total_stake": "Total Stake",
       "head_title": "PolkaStats - Polkadot Kusama nominators",
       "head_content": "Polkadot Kusama nominators"
+    },
+    "targets": {
+      "targets": "Targets",
+      "search_placeholder": "Search validator by identity",
+      "loading_data": "Loading data, it can tale a long time. Be patient, please",
+      "remove_from_favorites": "Remove from Favorites",
+      "add_to_favorites": "Add to Favorites",
+      "validator": "Validator",
+      "commission": "Commission",
+      "total_stake": "Total stake",
+      "own_stake": "Own stake",
+      "other_stake": "Other stake",
+      "estimated_payout": "Estimated payout/era 100 KSM",
+      "estimated_annualized_payout_percentage": "Estimated annualized rewards",
+      "accordion-info": {
+        "delegator_rewards": "Delegators rewards. How does it work",
+        "there_are_225_TEXT": "There are 225 slots currently, as there are 225 validators.",
+        "an_slot_is_TEXT": "An slot is the group of accounts that includes the validator account and its delegator accounts.",
+        "validators_acummulate_TEXT": "Validators accumulate points for their activity. They have to sign validity statments and produce blocks to gain points.",
+        "at_the_end_TEXT": "At the end of an era (6 epochs of 600 blocks each) the total reward is divided among the 225 slots based on their accumulated points.",
+        "once_each_slots_TEXT": "Once each slots gets its reward, the commission of the validator is subtracted from the slot earnings.",
+        "the_rest_of_TEXT": "The rest of the slot earnings is distributed among the delegators based in their percentaje of stake of in the slot.",
+        "risks": "Risks",
+        "risks_TEXT": "According to the game rules, you may think that the most profitable validator is the one occuping the slot with less total stake. This is partially true, but you better consider the folowing risks. Last slot of the list (number 225 currently) has great chances of being out of the list in the next epoch. When a validator gets out of the list that validator and its nominators stop receiving rewards and its slot is occupied by a new validator. Slashing is a different kind of risk you may consider. When a validator misbehaves it suffers an slashing event. Slashing is the punishment for failing to follow the protocol. The punishment is applied to the validator and all delegators of its slot. Downtimes and equivocations (bad signing) are the most common reasons that trigger a slashing event. The only way to protect yourself from slashing events is to carefully chose the validators you are nominating. Studing its history, setup and reputation may help you when selecting the validators where you are depositing your trust (your stake)"
+      },
+      "sort": "Sort"
     },
     "phragmen": {
       "predicted_candidates_by_TEXT": "Predicted candidates by phragmen election algorithm",
