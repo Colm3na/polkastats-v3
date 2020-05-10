@@ -213,7 +213,8 @@
       "total_stake": "Total stake",
       "own_stake": "Own stake",
       "other_stake": "Other stake",
-      "estimated_payout": "Estimated payout",
+      "estimated_payout": "Estimated payout/era",
+      "estimated_annualized_payout_percentage": "Estimated annualized rewards",
       "accordion-info": {
         "delegator_rewards": "Delegators rewards. How does it work",
         "there_are_225_TEXT": "There are 225 slots currently, as there are 225 validators.",

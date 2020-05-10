@@ -61,7 +61,6 @@
     </div>
     <div v-else class="pt-2">
       <b-container>
-        <!-- <div class="row d-block d-sm-none d-md-block d-lg-block d-xl-block"> -->
         <div class="table-responsive">
           <b-table
             id="rewards-table"
@@ -202,6 +201,14 @@
                           {{ $t("pages.targets.estimated_payout") }}:
                           {{ data.item.estimated_payout }}
                         </div>
+                        <div>
+                          {{
+                            $t(
+                              "pages.targets.estimated_annualized_payout_percentage"
+                            )
+                          }}:
+                          {{ data.item.estimated_annualized_payout_percentage }}
+                        </div>
                       </b-col>
                     </b-row>
                   </b-container>
@@ -281,20 +288,16 @@ export default {
           class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
         },
         {
-          key: "stake_info.own",
-          label: this.$t("pages.targets.own_stake"),
-          sortable: false,
-          class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
-        },
-        {
-          key: "stake_info.others_amount",
-          label: this.$t("pages.targets.other_stake"),
-          sortable: false,
-          class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
-        },
-        {
           key: "estimated_payout",
           label: this.$t("pages.targets.estimated_payout"),
+          sortable: true,
+          class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
+        },
+        {
+          key: "estimated_annualized_payout_percentage",
+          label: this.$t(
+            "pages.targets.estimated_annualized_payout_percentage"
+          ),
           sortable: true,
           class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
         },
@@ -447,6 +450,20 @@ export default {
       const factor = new BN(1000000000);
 
       return bn.div(factor);
+    },
+    getAnnualizedRewards(eraPayout) {
+      return (
+        (
+          parseInt(
+            new BN(eraPayout)
+              .mul(new BN(100))
+              .mul(new BN(4))
+              .mul(new BN(365))
+              .div(new BN(1e12))
+              .toString()
+          ) / 100
+        ).toFixed(2) + " %"
+      );
     }
   },
   apollo: {
@@ -491,10 +508,11 @@ export default {
               value.stake_info.total = this.formatAmount(
                 value.stake_info.total
               );
-              value.stake_info.own = this.formatAmount(value.stake_info.own);
-              value.stake_info.others_amount = this.getOthersAmount(
-                value.stake_info.others
+              // Annualized return percentage
+              value.estimated_annualized_payout_percentage = this.getAnnualizedRewards(
+                value.estimated_payout
               );
+              // Payout per era per 100 KSM
               value.estimated_payout = this.formatAmount(
                 value.estimated_payout
               );
