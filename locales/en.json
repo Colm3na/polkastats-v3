@@ -319,8 +319,12 @@
       "era_length": "Era length",
       "era_progress": "Era progress",
       "system_events": "System events",
+      "extrinsics": "Extrinsics",
       "section": "Section",
       "method": "Method",
+      "hash": "Hash",
+      "signer": "Signer",
+      "args": "Arguments",
       "phase": "Phase",
       "data": "Data",
       "account_details": "Account details"

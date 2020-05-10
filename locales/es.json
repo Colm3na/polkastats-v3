@@ -320,11 +320,14 @@
       "era_length": "Longitud era",
       "era_progress": "Progreso Era",
       "system_events": "Eventos de sistema",
+      "extrinsics": "Extrinsics",
       "section": "Sección",
       "method": "Método",
       "phase": "Fase",
       "data": "Datos",
-      "account_details": "Detalles de la cuenta"
+      "signer": "Firmante",
+      "hash": "Hash",
+      "args": "Argumentos"
     },
     "intention": {
       "previous_intention": "Intención previa",
