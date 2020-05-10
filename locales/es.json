@@ -205,7 +205,7 @@
     },
     "targets": {
       "targets": "Targets",
-      "search_placeholder": "Buscar validador por nombre mostrado como identidad",
+      "search_placeholder": "Buscar validador por identidad",
       "loading_data": "Cargando datos, puede tardar tiempo. Sea paciente, por favor",
       "remove_from_favorites": "Eliminar de Favoritos",
       "add_to_favorites": "Añadir a Favoritos",
@@ -225,7 +225,8 @@
         "the_rest_of_TEXT": "El resto de la recompoensa del slot es distribuidad entra los delegadores basandose en el porcentaje de su depósito en el slot.",
         "risks": "Riesgos",
         "risks_TEXT": "De acuerdo con las reglas del juego, se podría pensar que el validador más rentable sería el correspondiente al slot con menor depósito. En parte es verdad, pero mejor considerar los siguientes riesgos. El último slot de la lista (actuálmente el número 225) tiene muchas posibilidades de quedar fuera de la lista en la siguiente época. Cuando un validador queda fuera de la lista, el validador y sus nominadores dejan de recibir recompensas y su slot es ocupado por un nuevo validador. Slashing es otro tipo de riesgo que deberías considerar. Cuando un validador se comporta mal sufre un evento slashing, el cual es un castigo por no seguir el protocolo. La penalización es aplicada al validador y a todos los delegadores del slot. Los tiempor de inactividad y las equivoceciones (malas firmas) son las razones más comunes que desencadenan un evento de slashing. La única manera de protegerte del slashing es eligiendo cuidadosamente el valiador que vas a nominar. Estudiar su historia, configuración y reputación puede ayudarte a seleccionar el validador en cual confiar (tu stake)"
-      }
+      },
+      "sort": "Ordenar"
     },
     "phragmen": {
       "predicted_candidates_by_TEXT": "Predicción de candidatos por algoritmo de elección phragmen",

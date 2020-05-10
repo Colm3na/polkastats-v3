@@ -10,7 +10,7 @@
       :button="$t('pages.targets.accordion-info.risks')"
       :text="$t('pages.targets.accordion-info.risks_TEXT')"
     />
-    <b-row class="pt-2 mb-1 ml-1 mr-1">
+    <b-row class="pt-2 ml-1 mr-1">
       <b-form-input
         id="filterInput"
         v-model="filter"
@@ -18,6 +18,38 @@
         :placeholder="$t('pages.targets.search_placeholder')"
       />
     </b-row>
+    <div class="d-block d-sm-block d-md-none d-lg-none d-xl-none">
+      <b-col class="my-1 mt-3">
+        <b-form-group
+          label-align-sm="right"
+          label-size="sm"
+          label-for="sortBySelect"
+          class="mb-3"
+        >
+          <b-input-group size="sm">
+            <b-form-select
+              id="sortBySelect"
+              v-model="sortBy"
+              :options="sortOptions"
+            >
+              <template v-slot:first>
+                <option value="">
+                  -- none --
+                </option>
+              </template>
+            </b-form-select>
+            <b-form-select v-model="sortDesc" size="sm" :disabled="!sortBy">
+              <option :value="false">
+                Asc
+              </option>
+              <option :value="true">
+                Desc
+              </option>
+            </b-form-select>
+          </b-input-group>
+        </b-form-group>
+      </b-col>
+    </div>
     <div v-if="rewards === null || era === null" class="pt-4">
       <b-container class="w-100 loader">
         <div class="lds-ripple center">
@@ -33,6 +65,7 @@
         <div class="table-responsive">
           <b-table
             id="rewards-table"
+            stacked="md"
             head-variant="dark"
             :fields="fields"
             :items="rewards"
@@ -45,66 +78,135 @@
             @filtered="onFiltered"
           >
             <template slot="stash_id" slot-scope="data">
-              <div
-                v-if="data.item.identity && data.item.identity.logo"
-                class="d-inline-block"
-              >
-                <img
-                  :src="data.item.identity.logo"
-                  class="identity-small d-inline-block"
-                />
-              </div>
-              <div v-else class="d-inline-block">
-                <Identicon
-                  :key="data.item.stash_id"
-                  :value="data.item.stash_id"
-                  :size="20"
-                  :theme="'polkadot'"
-                />
-              </div>
-              <nuxt-link
-                :to="{
-                  name: 'validator',
-                  query: { accountId: data.item.stash_id }
-                }"
-                :title="$t('pages.validators.validator_details')"
-              >
-                <span v-if="data.item.identity !== null">
-                  {{
-                    data.item.identity.fullname || data.item.identity.display
-                  }}
-                </span>
-                <span v-else>
-                  <span
-                    class="d-inline d-sm-inline d-md-inline d-lg-inline d-xl-none"
-                    >{{ shortAddress(data.item.stash_id) }}</span
+              <div class="d-none d-sm-none d-md-block d-lg-block d-xl-block">
+                <template>
+                  <div
+                    v-if="data.item.identity && data.item.identity.logo"
+                    class="d-inline-block"
                   >
-                  <span
-                    class="d-none d-sm-none d-md-none d-lg-none d-xl-inline"
-                    >{{ shortAddress(data.item.stash_id) }}</span
+                    <img
+                      :src="data.item.identity.logo"
+                      class="identity-small d-inline-block"
+                    />
+                  </div>
+                  <div v-else class="d-inline-block">
+                    <Identicon
+                      :key="data.item.stash_id"
+                      :value="data.item.stash_id"
+                      :size="20"
+                      :theme="'polkadot'"
+                    />
+                  </div>
+                  <nuxt-link
+                    :to="{
+                      name: 'validator',
+                      query: { accountId: data.item.stash_id }
+                    }"
+                    :title="$t('pages.validators.validator_details')"
                   >
-                </span>
-              </nuxt-link>
-            </template>
-            <template slot="favorite" slot-scope="data">
-              <p class="text-center mb-0">
-                <a class="favorite" @click="toggleFavorite(data.item.stash_id)">
-                  <i
-                    v-if="data.item.favorite"
-                    v-b-tooltip.hover
-                    class="fas fa-star"
-                    style="color: #f1bd23"
-                    :title="$t('pages.targets.remove_from_favorites')"
-                  />
-                  <i
-                    v-else
-                    v-b-tooltip.hover
-                    class="fas fa-star"
-                    style="color: #e6dfdf;"
-                    :title="$t('pages.targets.add_to_favorites')"
-                  />
-                </a>
-              </p>
+                    <span v-if="data.item.identity !== null">
+                      {{
+                        data.item.identity.fullname ||
+                          data.item.identity.display
+                      }}
+                    </span>
+                    <span v-else>
+                      <span
+                        class="d-inline d-sm-inline d-md-inline d-lg-inline d-xl-none"
+                        >{{ shortAddress(data.item.stash_id) }}</span
+                      >
+                      <span
+                        class="d-none d-sm-none d-md-none d-lg-none d-xl-inline"
+                        >{{ shortAddress(data.item.stash_id) }}</span
+                      >
+                    </span>
+                  </nuxt-link>
+                </template>
+                <template slot="favorite" slot-scope="data">
+                  <p class="text-center mb-0">
+                    <a
+                      class="favorite"
+                      @click="toggleFavorite(data.item.stash_id)"
+                    >
+                      <i
+                        v-if="data.item.favorite"
+                        v-b-tooltip.hover
+                        class="fas fa-star"
+                        style="color: #f1bd23"
+                        :title="$t('pages.targets.remove_from_favorites')"
+                      />
+                      <i
+                        v-else
+                        v-b-tooltip.hover
+                        class="fas fa-star"
+                        style="color: #e6dfdf;"
+                        :title="$t('pages.targets.add_to_favorites')"
+                      />
+                    </a>
+                  </p>
+                </template>
+              </div>
+              <div class="d-block d-sm-block d-md-none d-lg-none d-xl-none">
+                <template>
+                  <b-container>
+                    <b-row class="validators-row">
+                      <b-col cols="4" class="identity-column">
+                        <div
+                          v-if="data.item.identity && data.item.identity.logo"
+                        >
+                          <img :src="data.item.identity.logo" />
+                        </div>
+                        <div v-else>
+                          <Identicon
+                            :key="data.item.stash_id"
+                            :value="data.item.stash_id"
+                            :size="48"
+                            :theme="'polkadot'"
+                          />
+                        </div>
+                        <nuxt-link
+                          :to="{
+                            name: 'validator',
+                            query: { accountId: data.item.stash_id }
+                          }"
+                          :title="$t('pages.validators.validator_details')"
+                        >
+                          <span v-if="data.item.identity !== null">
+                            {{
+                              data.item.identity.fullname ||
+                                data.item.identity.display
+                            }}
+                          </span>
+                          <span v-else>
+                            <span
+                              class="d-inline d-sm-inline d-md-inline d-lg-inline d-xl-none"
+                              >{{ shortAddress(data.item.stash_id) }}</span
+                            >
+                            <span
+                              class="d-none d-sm-none d-md-none d-lg-none d-xl-inline"
+                              >{{ shortAddress(data.item.stash_id) }}</span
+                            >
+                          </span>
+                        </nuxt-link>
+                      </b-col>
+                      <b-col cols="8">
+                        <div>
+                          {{ $t("pages.targets.commission") }}:
+                          {{ data.item.commission }}
+                        </div>
+                        <div>
+                          {{ $t("pages.targets.total_stake") }}:
+                          {{ data.item.stake_info.total }}
+                        </div>
+                        <div>
+                          {{ $t("pages.targets.estimated_payout") }}:
+                          {{ data.item.estimated_payout }}
+                        </div>
+                      </b-col>
+                    </b-row>
+                  </b-container>
+                </template>
+              </div>
             </template>
           </b-table>
           <div style="display: flex">
@@ -170,13 +272,13 @@ export default {
           key: "commission",
           label: "% " + this.$t("pages.targets.commission"),
           sortable: true,
-          class: `d-table-cell d-sm-table-cell d-md-table-cell d-lg-table-cell d-xl-table-cell`
+          class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
         },
         {
           key: "stake_info.total",
           label: this.$t("pages.targets.total_stake"),
           sortable: false,
-          class: `d-table-cell d-sm-table-cell d-md-table-cell d-lg-table-cell d-xl-table-cell`
+          class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
         },
         {
           key: "stake_info.own",
@@ -194,13 +296,13 @@ export default {
           key: "estimated_payout",
           label: this.$t("pages.targets.estimated_payout"),
           sortable: true,
-          class: `d-table-cell d-sm-table-cell d-md-table-cell d-lg-table-cell d-xl-table-cell`
+          class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
         },
         {
           key: "favorite",
           label: "⭐",
           sortable: true,
-          class: `d-table-cell d-sm-table-cell d-md-table-cell d-lg-table-cell d-xl-table-cell`
+          class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
         }
       ],
       infoList: [
@@ -239,6 +341,14 @@ export default {
     },
     kusamaIdentitiesLoaded() {
       return this.$store.state.stakingIdentities.dataLoaded;
+    },
+    sortOptions() {
+      // Create an options list from our fields
+      return this.fields
+        .filter(f => f.sortable)
+        .map(f => {
+          return { text: f.label, value: f.key };
+        });
     }
   },
   watch: {
@@ -323,6 +433,7 @@ export default {
         this.favorites.push(accountId);
         this.rewards[accountId].favorite = true;
       }
+
       return true;
     },
     getSmallNumber(amount) {
@@ -436,7 +547,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .loader {
   text-align: center;
 }
@@ -480,5 +591,24 @@ export default {
 #validators-table tr td:nth-child(3) div .d-block .favorite {
   right: 0;
   text-align: right;
+}
+
+table {
+  background-color: transparent;
+}
+
+.validators-row {
+  border: 1px solid #bbb;
+  border-radius: 0.3rem;
+  text-align: center;
+  padding: 0.5rem;
+  margin-bottom: 0.3rem;
+  background-color: white;
+}
+.identity-column {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: space-around;
 }
 </style>
