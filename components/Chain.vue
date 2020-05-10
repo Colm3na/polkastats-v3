@@ -50,11 +50,18 @@
                 formatNumber(lastBlock.current_index)
               }}
             </h4>
-            <h5>
-              {{ formatNumber(lastBlock.session_progress) }}/{{
-                formatNumber(lastBlock.session_length)
-              }}
-            </h5>
+            <b-progress
+              :max="lastBlock.session_length"
+              height="1.4rem"
+              class="mb-2"
+            >
+              <b-progress-bar :value="lastBlock.session_progress" animated>
+                <strong
+                  >{{ lastBlock.session_progress }} /
+                  {{ lastBlock.session_length }}</strong
+                >
+              </b-progress-bar>
+            </b-progress>
           </div>
         </div>
       </div>
@@ -66,11 +73,18 @@
                 formatNumber(lastBlock.current_era)
               }}
             </h4>
-            <h5>
-              {{ formatNumber(lastBlock.era_progress) }}/{{
-                formatNumber(lastBlock.era_length)
-              }}
-            </h5>
+            <b-progress
+              :max="lastBlock.era_length"
+              height="1.4rem"
+              class="mb-2"
+            >
+              <b-progress-bar :value="lastBlock.era_progress" animated>
+                <strong
+                  >{{ lastBlock.era_progress }} /
+                  {{ lastBlock.era_length }}</strong
+                >
+              </b-progress-bar>
+            </b-progress>
           </div>
         </div>
       </div>
