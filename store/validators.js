@@ -62,6 +62,9 @@ export const mutations = {
   },
   getters: function() {
     state => state.list;
+  },
+  setTotalStakeBonded: function(state, amount) {
+    state.totalStakeBonded = amount;
   }
 };
 
@@ -87,5 +90,8 @@ export const actions = {
       .catch(error => {
         console.log("Error fetching Validator table: ", error);
       });
+  },
+  setTotalStakeBonded(context, amount) {
+    context.commit("setTotalStakeBonded", amount);
   }
 };
