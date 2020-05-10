@@ -35,6 +35,16 @@
               <b-navbar-nav class="navbar-nav ml-auto flex-nowrap">
                 <b-nav-item>
                   <nuxt-link
+                    to="/dashboard"
+                    active-class="home-active"
+                    class="nav-link"
+                    data-testid="menu-validators"
+                  >
+                    {{ $t("layout.default.dashboard") }}
+                  </nuxt-link>
+                </b-nav-item>
+                <b-nav-item>
+                  <nuxt-link
                     to="/validators"
                     active-class="home-active"
                     class="nav-link"
