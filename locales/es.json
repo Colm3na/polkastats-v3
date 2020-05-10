@@ -8,10 +8,20 @@
     },
     "network": {
       "last_block": "Último bloque",
+      "last_block_finalized": "Último finalizado",
       "validator_count": "Núm Validadores",
       "current_session": "Sesión actual",
       "epoch": "Época",
       "current_era": "Era actual",
+      "era": "Era"
+    },
+    "chain": {
+      "last_block": "Last block",
+      "last_block_finalized": "Last finalized block",
+      "validator_count": "Validator count",
+      "current_session": "Sesión",
+      "epoch": "Epoch",
+      "current_era": "Era",
       "era": "Era"
     }
   },
@@ -35,7 +45,8 @@
       "by": "por",
       "in": "en",
       "built_with": "Hecho con",
-      "view_source_code_on_github": "Ver código fuente en GitHub"
+      "view_source_code_on_github": "Ver código fuente en GitHub",
+      "dashboard": "Dashboard"
     },
     "error": {
       "page_not_found": "¡Página no encontrada!",
@@ -284,6 +295,11 @@
       "era_points": "Puntos era",
       "head_title": "PolkaStats - Estadísticas de la red Polkadot Kusama",
       "head_content": "Polkadot Kusama estadísticas de la red"
+    },
+    "dashboard": {
+      "title": "Dashboard",
+      "head_title": "PolkaStats - Cuadro de mando Polkadot Kusama",
+      "head_content": "Cuadro de mando de la red Polkadot Kusama"
     }
   },
   "details": {

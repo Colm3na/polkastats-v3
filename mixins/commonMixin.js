@@ -28,6 +28,9 @@ export default {
         address.substring(0, 5) + "…" + address.substring(address.length - 5)
       );
     },
+    shortHash(hash) {
+      return `${hash.substr(0, 6)}…${hash.substr(hash.length - 5, 4)}`;
+    },
     shortSessionId(sessionId) {
       return (
         sessionId.substring(0, 10) +
