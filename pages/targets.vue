@@ -318,8 +318,10 @@ export default {
     toggleFavorite(accountId) {
       if (this.favorites.indexOf(accountId) !== -1) {
         this.favorites.splice(this.favorites.indexOf(accountId), 1);
+        this.rewards[accountId].favorite = false;
       } else {
         this.favorites.push(accountId);
+        this.rewards[accountId].favorite = true;
       }
       return true;
     },
@@ -470,10 +472,6 @@ export default {
     height: 72px;
     opacity: 0;
   }
-}
-.favorite {
-  cursor: pointer;
-  font-size: 1.1rem;
 }
 .favorite {
   cursor: pointer;
