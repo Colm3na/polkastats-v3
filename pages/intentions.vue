@@ -80,92 +80,91 @@
               <div
                 class="d-block d-sm-block d-md-none d-lg-none d-xl-none text-center"
               >
-                <div v-if="hasIdentity(data.item.accountId)">
-                  <div v-if="getIdentity(data.item.accountId).logo !== ''">
-                    <img
-                      :src="getIdentity(data.item.accountId).logo"
-                      class="identity mt-2"
-                    />
-                    <h4
-                      v-if="getIdentity(data.item.accountId).full_name !== ''"
-                      class="mt-2 mb-2"
-                    >
-                      {{ getIdentity(data.item.accountId).full_name }}
-                    </h4>
-                  </div>
-                </div>
-                <div v-else>
-                  <Identicon
-                    :key="data.item.accountId"
-                    :value="data.item.accountId"
-                    :size="80"
-                    :theme="'polkadot'"
-                  />
-                </div>
-                <nuxt-link
-                  :to="{
-                    name: 'intention',
-                    query: { accountId: data.item.accountId }
-                  }"
-                  :title="$t('pages.intentions.intention_details')"
-                >
-                  <h4 v-if="hasIdentity(data.item.accountId)" class="mt-2 mb-2">
-                    {{ getIdentity(data.item.accountId).full_name }}
-                  </h4>
-                  <h4
-                    v-else-if="hasKusamaIdentity(data.item.accountId)"
-                    class="mt-2 mb-2"
-                  >
-                    {{ hasKusamaIdentity(data.item.accountId).display }}
-                  </h4>
-                  <h4 v-else class="mt-2 mb-2">
-                    <span
-                      class="d-inline d-sm-inline d-md-inline d-lg-inline d-xl-none"
-                      >{{ shortAddress(data.item.accountId) }}</span
-                    >
-                    <span
-                      class="d-none d-sm-none d-md-none d-lg-none d-xl-inline"
-                      >{{ shortAddress(data.item.accountId) }}</span
-                    >
-                  </h4>
-                </nuxt-link>
-                <p class="mt-3 mb-0 rank">rank #{{ data.item.rank }}</p>
-                <div v-if="data.item.activeStake">
-                  <p
-                    v-b-tooltip.hover
-                    class="bonded mb-0"
-                    :title="$t('pages.intentions.active_bonded')"
-                  >
-                    {{ formatAmount(data.item.activeStake) }}
-                  </p>
-                </div>
-                <div v-if="data.item.totalStake">
-                  <p class="mb-0">
-                    <small>
-                      <span
-                        v-b-tooltip.hover
-                        :title="$t('pages.intentions.total_bonded')"
+                <template>
+                  <b-row class="intention-row">
+                    <b-col cols="6">
+                      <div v-if="data.item.identity && data.item.identity.logo">
+                        <img
+                          :src="data.item.identity.logo"
+                          class="identity mt-2"
+                        />
+                        <h4 class="mt-2 mb-2">
+                          {{
+                            data.item.identity.fullname ||
+                              data.item.identity.display
+                          }}
+                        </h4>
+                      </div>
+                      <div v-else>
+                        <Identicon
+                          :key="data.item.accountId"
+                          :value="data.item.accountId"
+                          :size="48"
+                          :theme="'polkadot'"
+                        />
+                      </div>
+                      <nuxt-link
+                        :to="{
+                          name: 'intention',
+                          query: { accountId: data.item.accountId }
+                        }"
+                        :title="$t('pages.intentions.intention_details')"
                       >
-                        {{ formatAmount(data.item.totalStake) }}
-                      </span>
-                    </small>
-                  </p>
-                </div>
+                        <h4 v-if="data.item.identity" class="mt-2 mb-2">
+                          {{
+                            data.item.identity.fullname ||
+                              data.item.identity.display
+                          }}
+                        </h4>
+                        <h4 v-else class="mt-2 mb-2">
+                          <span
+                            class="d-inline d-sm-inline d-md-inline d-lg-inline d-xl-none"
+                            >{{ shortAddress(data.item.accountId) }}</span
+                          >
+                          <span
+                            class="d-none d-sm-none d-md-none d-lg-none d-xl-inline"
+                            >{{ shortAddress(data.item.accountId) }}</span
+                          >
+                        </h4>
+                      </nuxt-link>
+                    </b-col>
+                    <b-col cols="6">
+                      <p class="mb-0 rank">rank #{{ data.item.rank }}</p>
+                      <div v-if="data.item.activeStake">
+                        <p
+                          v-b-tooltip.hover
+                          class="bonded mb-0"
+                          :title="$t('pages.intentions.active_bonded')"
+                        >
+                          {{ formatAmount(data.item.activeStake) }}
+                        </p>
+                      </div>
+                      <div v-if="data.item.totalStake">
+                        <p class="mb-0">
+                          <small>
+                            <span
+                              v-b-tooltip.hover
+                              :title="$t('pages.intentions.total_bonded')"
+                            >
+                              {{ $t("pages.intentions.total_stake") }}:
+                              {{ formatAmount(data.item.totalStake) }}
+                            </span>
+                          </small>
+                        </p>
+                      </div>
+                    </b-col>
+                  </b-row>
+                </template>
               </div>
               <div class="d-none d-sm-none d-md-block d-lg-block d-xl-block">
                 <div
-                  v-if="hasIdentity(data.item.accountId)"
+                  v-if="data.item.identity && data.item.identity.logo"
                   class="d-inline-block"
                 >
-                  <div
-                    v-if="getIdentity(data.item.accountId).logo !== ''"
-                    class="d-inline-block"
-                  >
-                    <img
-                      :src="getIdentity(data.item.accountId).logo"
-                      class="identity-small d-inline-block"
-                    />
-                  </div>
+                  <img
+                    :src="data.item.identity.logo"
+                    class="identity-small d-inline-block"
+                  />
                 </div>
                 <div v-else class="d-inline-block">
                   <Identicon
@@ -182,11 +181,10 @@
                   }"
                   :title="$t('pages.intentions.intention_details')"
                 >
-                  <span v-if="hasIdentity(data.item.accountId)">
-                    {{ getIdentity(data.item.accountId).full_name }}
-                  </span>
-                  <span v-else-if="hasKusamaIdentity(data.item.accountId)">
-                    {{ getKusamaIdentity(data.item.accountId).display }}
+                  <span v-if="data.item.identity !== null">
+                    {{
+                      data.item.identity.fullname || data.item.identity.display
+                    }}
                   </span>
                   <span v-else>
                     <span
@@ -263,7 +261,8 @@
 </template>
 <script>
 import { mapMutations } from "vuex";
-import bootstrap from "bootstrap";
+import gql from "graphql-tag";
+import * as R from "ramda";
 import Identicon from "../components/identicon.vue";
 import { isHex } from "@polkadot/util";
 import BN from "bn.js";
@@ -277,6 +276,7 @@ export default {
   mixins: [commonMixin],
   data: function() {
     return {
+      intentions: [],
       tableOptions: numItemsTableOptions,
       perPage: localStorage.numItemsTableSelected
         ? parseInt(localStorage.numItemsTableSelected)
@@ -323,34 +323,6 @@ export default {
     network() {
       return this.$store.state.network.info;
     },
-    intentions() {
-      let intentionsObject = [];
-      for (let i = 0; i < this.$store.state.intentions.list.length; i++) {
-        let intention = this.$store.state.intentions.list[i];
-
-        let identity = "";
-        if (this.hasIdentity(intention.accountId)) {
-          identity = this.getIdentity(intention.accountId);
-        }
-
-        let kusamaIdentity = "";
-        if (this.hasKusamaIdentity(intention.accountId)) {
-          kusamaIdentity = this.hasKusamaIdentity(intention.accountId);
-        }
-
-        intentionsObject.push({
-          rank: i + 1,
-          accountId: intention.accountId,
-          totalStake: intention.stakingLedger.total,
-          activeStake: intention.stakingLedger.active,
-          commission: intention.validatorPrefs.commission,
-          favorite: this.isFavorite(intention.accountId),
-          kusamaIdentity,
-          identity
-        });
-      }
-      return intentionsObject;
-    },
     identities() {
       return this.$store.state.identities.list;
     },
@@ -364,6 +336,12 @@ export default {
         .map(f => {
           return { text: f.label, value: f.key };
         });
+    },
+    identitiesLoaded() {
+      return this.$store.state.identities.dataLoaded;
+    },
+    kusamaIdentitiesLoaded() {
+      return this.$store.state.stakingIdentities.dataLoaded;
     }
   },
   watch: {
@@ -385,12 +363,6 @@ export default {
     // Force update of network info
     vm.$store.dispatch("network/update");
 
-    // Force update of intentions list if empty
-    if (this.$store.state.intentions.list.length == 0) {
-      vm.$store.dispatch("intentions/update");
-    }
-    this.totalRows = this.$store.state.intentions.list.length;
-
     // Force update of indentity list if empty
     if (this.$store.state.identities.list.length == 0) {
       vm.$store.dispatch("identities/update");
@@ -405,9 +377,6 @@ export default {
     this.polling = setInterval(() => {
       vm.$store.dispatch("network/update");
       vm.$store.dispatch("intentions/update");
-      vm.$store.dispatch("stakingIdentities/update");
-      if (!this.filter)
-        this.totalRows = this.$store.state.intentions.list.length;
     }, 10000);
   },
   beforeDestroy: function() {
@@ -459,12 +428,73 @@ export default {
           return obj.accountId === stashId;
         }
       );
-      return filteredArray[0].identity;
+      return filteredArray[0] ? filteredArray[0].identity : null;
     },
     onFiltered(filteredItems) {
       // Trigger pagination to update the number of buttons/pages due to filtering
       this.totalRows = filteredItems.length;
       this.currentPage = 1;
+    }
+  },
+  apollo: {
+    $subscribe: {
+      intentions: {
+        query: gql`
+          subscription intentions {
+            intention_staking(order_by: { timestamp: desc }) {
+              timestamp
+              session_index
+              json
+              block_number
+            }
+          }
+        `,
+        result({ data }) {
+          const { intention_staking } = data;
+          const intentions = JSON.parse(intention_staking[0].json);
+          intentions.sort((a, b) =>
+            a.stakingLedger.total < b.stakingLedger.total ? 1 : -1
+          );
+          let rank = 0;
+
+          const transformations = intention => {
+            let identity = this.getIdentity(intention.accountId);
+            if (identity !== [] && typeof identity !== "undefined") {
+              intention.identity = identity.identity;
+            } else {
+              let kusamaIdentity = this.getKusamaIdentity(intention.accountId);
+              if (kusamaIdentity) {
+                intention.identity = kusamaIdentity;
+              } else {
+                intention.identity = null;
+              }
+            }
+
+            intention.rank = rank + 1;
+            intention.totalStake = intention.stakingLedger.total;
+            intention.activeStake = intention.stakingLedger.active;
+            intention.commission = intention.validatorPrefs.commission;
+            intention.favorite = this.isFavorite(intention.accountId);
+            rank++;
+          };
+
+          R.mapObjIndexed(transformations, intentions);
+
+          this.intentions = intentions;
+          this.totalRows = this.intentions.length;
+        },
+        skip() {
+          if (!this.identitiesLoaded) {
+            this.$store.dispatch("identities/update");
+            return true;
+          }
+          if (!this.kusamaIdentitiesLoaded) {
+            this.$store.dispatch("stakingIdentities/update");
+            return true;
+          }
+          return false;
+        }
+      }
     }
   },
   head() {
@@ -551,9 +581,9 @@ body {
   font-size: 0.9rem;
   margin-left: 0.1rem;
 }
-.identity {
+/* .identity {
   max-width: 80px;
-}
+} */
 #intentions-table th {
   text-align: center;
 }
@@ -602,5 +632,38 @@ body {
 }
 .btn-secondary {
   font-size: 0.8rem;
+}
+@media (max-width: 765px) {
+  table.b-table.b-table-stacked-md > tbody > tr > [data-label] {
+    display: block;
+    grid-template-columns: inherit !important;
+  }
+
+  .table th,
+  .table td {
+    border-top: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+  .table tr {
+    padding: 0 0.2rem;
+  }
+  #intentions-table {
+    background-color: transparent;
+  }
+  .intention-row {
+    border: 1px solid #bbb;
+    border-radius: 0.3rem;
+    text-align: center;
+    padding: 0.5rem;
+    margin-bottom: 0.3rem;
+    background-color: white;
+  }
+  .identity-column {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: space-around;
+  }
 }
 </style>
