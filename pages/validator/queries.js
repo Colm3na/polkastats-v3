@@ -33,7 +33,7 @@ export const createQueryRewards = (timestamp, accountId) => `
 `;
 
 export const createQuerySlashes = (timestamp, accountId) => `
-    query MyQuery {
+    query slashes {
         validator_slashes_era(where: {account_id: {_eq: "${accountId}"}, timestamp: {_gt: ${timestamp}}}, order_by: {timestamp: desc}) {
             account_id
             amount
@@ -45,10 +45,12 @@ export const createQuerySlashes = (timestamp, accountId) => `
 `;
 
 export const createQueryProducedBlocks = (timestamp, accountId) => `
-    query MyQuery {
-        block(where: {block_author: {_eq: "${accountId}"}, timestamp: {_gt: ${timestamp}}}, order_by: {timestamp: desc}) {
+    query produced_blocks {
+        validator_produced_blocks(where: {account_id: {_eq: "${accountId}"}, timestamp: {_gt: ${timestamp}}}, order_by: {timestamp: desc}) {
+            account_id
+            produced_blocks
+            session_index
             timestamp
-            block_number
         }
     }
 `;
