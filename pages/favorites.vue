@@ -263,24 +263,21 @@
                         :id="'val-session-id-info-' + index"
                         class="col-md-9 mb-1"
                       >
-                        <a
-                          class=""
-                          data-toggle="collapse"
-                          :href="'#val-session-id-' + index"
-                          role="button"
-                          aria-expanded="false"
-                          :aria-controls="'val-session-id-' + index"
+                        <b-button
+                          v-b-toggle="`accordion-${index}-val-session`"
+                          variant="link"
+                          style="text-decoration: none; font-size: 1rem; padding: 0; border: 0; color: #670d35"
                         >
-                          <i class="fas" />
+                          >
                           {{ shortSessionId(validator.sessionIdHex) }}
-                        </a>
-                        <div
-                          :id="'val-session-id-' + index"
+                        </b-button>
+                        <b-collapse
+                          :id="`accordion-${index}-val-session`"
                           class="collapse pt-2 pb-3"
                           :data-parent="'#val-session-id-info-' + index"
                         >
                           {{ validator.sessionIdHex }}
-                        </div>
+                        </b-collapse>
                       </div>
                     </div>
                     <div v-if="validator.nextSessionIdHex" class="row">
@@ -293,24 +290,21 @@
                         :id="'val-next-session-id-info-' + index"
                         class="col-md-9 mb-1"
                       >
-                        <a
-                          class=""
-                          data-toggle="collapse"
-                          :href="'#val-next-session-id-' + index"
-                          role="button"
-                          aria-expanded="false"
-                          :aria-controls="'val-next-session-id-' + index"
+                        <b-button
+                          v-b-toggle="`accordion-${index}-val-next-session`"
+                          variant="link"
+                          style="text-decoration: none; font-size: 1rem; padding: 0; border: 0; color: #670d35"
                         >
-                          <i class="fas" />
+                          >
                           {{ shortSessionId(validator.nextSessionIdHex) }}
-                        </a>
-                        <div
-                          :id="'val-next-session-id-' + index"
+                        </b-button>
+                        <b-collapse
+                          :id="`accordion-${index}-val-next-session`"
                           class="collapse pt-2 pb-3"
                           :data-parent="'#val-next-session-id-info-' + index"
                         >
                           {{ validator.nextSessionIdHex }}
-                        </div>
+                        </b-collapse>
                       </div>
                     </div>
                     <div v-if="validator.validatorPrefs.commission" class="row">
@@ -338,65 +332,58 @@
                     <div :id="'validator-info-' + index">
                       <template v-if="validator.exposure">
                         <template v-if="validator.exposure.others.length > 0">
-                          <a
-                            class=""
-                            data-toggle="collapse"
-                            :href="'#staker' + index"
-                            role="button"
-                            aria-expanded="false"
-                            :aria-controls="'staker' + index"
+                          <b-button
+                            v-b-toggle="`accordion-${index}-staker`"
+                            variant="link"
+                            style="text-decoration: none"
                           >
                             <h6 class="h6 nominators d-inline mr-4">
-                              <i class="fas mr-1" />{{
-                                validator.exposure.others.length
-                              }}
+                              <i class="fas mr-1" />>
+                              {{ validator.exposure.others.length }}
                               {{ $t("pages.favorites.nominators") }}
                             </h6>
-                          </a>
+                          </b-button>
                         </template>
                       </template>
-                      <template v-if="validator.exposure">
-                        <template v-if="validator.exposure.others.length > 0">
+                      <template v-if="validator.exposure.others.length > 0">
+                        <b-collapse
+                          :id="`accordion-${index}-staker`"
+                          class="nominator collapse pt-2 pb-3"
+                          :data-parent="`#validator-info-${index}`"
+                        >
                           <div
-                            :id="'staker' + index"
-                            class="nominator collapse pt-2 pb-3"
-                            :data-parent="'#validator-info-' + index"
+                            v-for="(staker, index) in validator.exposure.others"
+                            :key="index"
+                            class="row"
                           >
-                            <div
-                              v-for="(staker, index) in validator.exposure
-                                .others"
-                              :key="index"
-                              class="row"
-                            >
-                              <div class="col-8 mb-1 who">
-                                <Identicon
-                                  :key="staker.who"
-                                  :value="staker.who"
-                                  :size="20"
-                                  :theme="'polkadot'"
-                                />
-                                <a
-                                  :href="blockExplorer.account + staker.who"
-                                  target="_blank"
+                            <div class="col-8 mb-1 who">
+                              <Identicon
+                                :key="staker.who"
+                                :value="staker.who"
+                                :size="20"
+                                :theme="'polkadot'"
+                              />
+                              <a
+                                :href="blockExplorer.account + staker.who"
+                                target="_blank"
+                              >
+                                <span
+                                  v-b-tooltip.hover
+                                  class="d-inline-block d-sm-none d-md-none d-lg-none d-xl-none"
+                                  :title="staker.who"
+                                  >{{ shortAddress(staker.who) }}</span
                                 >
-                                  <span
-                                    v-b-tooltip.hover
-                                    class="d-inline-block d-sm-none d-md-none d-lg-none d-xl-none"
-                                    :title="staker.who"
-                                    >{{ shortAddress(staker.who) }}</span
-                                  >
-                                  <span
-                                    class="d-none d-sm-inline-block d-md-inline-block d-lg-inline-block d-xl-inline-block"
-                                    >{{ shortAddress(staker.who) }}</span
-                                  >
-                                </a>
-                              </div>
-                              <div class="col-4 text-right value">
-                                {{ formatAmount(staker.value) }}
-                              </div>
+                                <span
+                                  class="d-none d-sm-inline-block d-md-inline-block d-lg-inline-block d-xl-inline-block"
+                                  >{{ shortAddress(staker.who) }}</span
+                                >
+                              </a>
+                            </div>
+                            <div class="col-4 text-right value">
+                              {{ formatAmount(staker.value) }}
                             </div>
                           </div>
-                        </template>
+                        </b-collapse>
                       </template>
                     </div>
                   </div>
@@ -581,24 +568,21 @@
                         :id="'int-session-id-info-' + index"
                         class="col-md-9 mb-1"
                       >
-                        <a
-                          class=""
-                          data-toggle="collapse"
-                          :href="'#int-session-id-' + index"
-                          role="button"
-                          aria-expanded="false"
-                          :aria-controls="'int-session-id-' + index"
+                        <b-button
+                          v-b-toggle="`accordion-${index}-int-session`"
+                          variant="link"
+                          style="text-decoration: none; font-size: 1rem; padding: 0; border: 0; color: #670d35"
                         >
                           <i class="fas" />
                           {{ shortSessionId(validator.sessionIdHex) }}
-                        </a>
-                        <div
-                          :id="'int-session-id-' + index"
+                        </b-button>
+                        <b-collapse
+                          :id="`accordion-${index}-int-session`"
                           class="collapse pt-2 pb-3"
                           :data-parent="'#int-session-id-info-' + index"
                         >
                           {{ validator.sessionIdHex }}
-                        </div>
+                        </b-collapse>
                       </div>
                     </div>
                     <div v-if="validator.nextSessionIdHex" class="row">
@@ -611,24 +595,21 @@
                         :id="'int-next-session-id-info-' + index"
                         class="col-md-9 mb-1"
                       >
-                        <a
-                          class=""
-                          data-toggle="collapse"
-                          :href="'#int-next-session-id-' + index"
-                          role="button"
-                          aria-expanded="false"
-                          :aria-controls="'int-next-session-id-' + index"
+                        <b-button
+                          v-b-toggle="`accordion-${index}-int-next-session`"
+                          variant="link"
+                          style="text-decoration: none; font-size: 1rem; padding: 0; border: 0; color: #670d35"
                         >
-                          <i class="fas" />
+                          >
                           {{ shortSessionId(validator.nextSessionIdHex) }}
-                        </a>
-                        <div
-                          :id="'int-next-session-id-' + index"
+                        </b-button>
+                        <b-collapse
+                          :id="`accordion-${index}-int-next-session`"
                           class="collapse pt-2 pb-3"
                           :data-parent="'#int-next-session-id-info-' + index"
                         >
                           {{ validator.nextSessionIdHex }}
-                        </div>
+                        </b-collapse>
                       </div>
                     </div>
                     <div v-if="validator.validatorPrefs.commission" class="row">
@@ -655,13 +636,10 @@
                     </div>
                     <div :id="'validator-info-' + index">
                       <template v-if="validator.exposure.others.length > 0">
-                        <a
-                          class=""
-                          data-toggle="collapse"
-                          :href="'#staker' + index"
-                          role="button"
-                          aria-expanded="false"
-                          :aria-controls="'staker' + index"
+                        <b-button
+                          v-b-toggle="`accordion-${index}-nominators`"
+                          variant="link"
+                          style="text-decoration: none; font-size: 1rem; padding: 0; border: 0; color: #670d35"
                         >
                           <h6 class="h6 nominators d-inline mr-4">
                             <i class="fas mr-1" />{{
@@ -669,11 +647,11 @@
                             }}
                             {{ $t("pages.favorites.nominators") }}
                           </h6>
-                        </a>
+                        </b-button>
                       </template>
                       <template v-if="validator.exposure.others.length > 0">
-                        <div
-                          :id="'staker' + index"
+                        <b-collapse
+                          :id="`accordion-${index}-nominators`"
                           class="nominator collapse pt-2 pb-3"
                           :data-parent="'#validator-info-' + index"
                         >
@@ -709,7 +687,7 @@
                               {{ formatAmount(staker.value) }}
                             </div>
                           </div>
-                        </div>
+                        </b-collapse>
                       </template>
                     </div>
                   </div>

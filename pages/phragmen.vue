@@ -177,21 +177,21 @@
                 <p class="text-center mb-0">
                   <a
                     class="favorite"
-                    @click="toggleFavorite(data.item.accountIndex)"
+                    @click="toggleFavorite(data.item.pub_key_stash)"
                   >
                     <i
                       v-if="data.item.favorite"
                       v-b-tooltip.hover
                       class="fas fa-star"
                       style="color: #f1bd23"
-                      title="$t('pages.phragmen.remove_from_favorites')"
+                      :title="$t('pages.phragmen.remove_from_favorites')"
                     />
                     <i
                       v-else
                       v-b-tooltip.hover
                       class="fas fa-star"
                       style="color: #e6dfdf;"
-                      title="$t('pages.phragmen.add_to_favorites')"
+                      :title="$t('pages.phragmen.add_to_favorites')"
                     />
                   </a>
                 </p>
@@ -243,8 +243,8 @@ export default {
         ? parseInt(localStorage.numItemsTableSelected)
         : 10,
       currentPage: 1,
-      sortBy: `rank`,
-      sortDesc: false,
+      sortBy: `favorite`,
+      sortDesc: true,
       filter: null,
       filterOn: [],
       totalRows: 1,
@@ -294,6 +294,7 @@ export default {
         if (this.hasKusamaIdentity(candidate.pub_key_stash)) {
           candidate.identity = this.getKusamaIdentity(candidate.pub_key_stash);
         }
+        candidate.favorite = this.isFavorite(candidate.pub_key_stash);
         return candidate;
       });
     },
@@ -358,12 +359,17 @@ export default {
     handleNumFields(num) {
       this.perPage = parseInt(num);
     },
+    setFavorites() {
+      console.log(this.candidates);
+    },
     toggleFavorite(accountId) {
       if (this.favorites.indexOf(accountId) !== -1) {
         this.favorites.splice(this.favorites.indexOf(accountId), 1);
       } else {
         this.favorites.push(accountId);
       }
+      this.$store.dispatch("phragmen/toogleFavorite", accountId);
+
       return true;
     },
     isFavorite(accountId) {

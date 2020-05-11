@@ -392,6 +392,12 @@ export default {
       } else {
         this.favorites.push(accountId);
       }
+      this.intentions = this.intentions.map(intention => {
+        if (intention.accountId === accountId) {
+          intention.favorite = !intention.favorite;
+        }
+        return intention;
+      });
       return true;
     },
     isFavorite(accountId) {
