@@ -25,8 +25,8 @@
             <LastExtrinsics />
           </div>
           <div class="col-md-6 mb-4">
-            <!-- <h2>Top 10 rich accounts</h2>
-            <Top10Rich /> -->
+            <h2>Top 10 rich accounts</h2>
+            <Top10Rich />
           </div>
         </div>
       </b-container>
@@ -38,14 +38,14 @@ import Chain from "../components/Chain.vue";
 import LastBlocks from "../components/LastBlocks.vue";
 import LastEvents from "../components/LastEvents.vue";
 import LastExtrinsics from "../components/LastExtrinsics.vue";
-// import Top10Rich from "../components/Top10Rich.vue";
+import Top10Rich from "../components/Top10Rich.vue";
 export default {
   components: {
     Chain,
     LastBlocks,
     LastEvents,
-    LastExtrinsics
-    // Top10Rich
+    LastExtrinsics,
+    Top10Rich
   },
   head() {
     return {

@@ -9,44 +9,16 @@ export const state = () => ({
 
 export const mutations = {
   update(state, accounts) {
-    state.list = accounts
-      .map(account => {
-        return {
-          accountId: account.account_id,
-          identity: account.identity !== "" ? JSON.parse(account.identity) : "",
-          availableBalance: JSON.parse(account.balances).availableBalance,
-          freeBalance: JSON.parse(account.balances).freeBalance,
-          lockedBalance: JSON.parse(account.balances).lockedBalance,
-          balances: JSON.parse(account.balances)
-        };
-      })
-      .sort(function compare(a, b) {
-        let BNA, BNB;
-        if (isHex(a.freeBalance)) {
-          BNA = new BN(a.freeBalance.substring(2, a.freeBalance.length), 16);
-        } else {
-          BNA = new BN(a.freeBalance, 10);
-        }
-        if (isHex(b.freeBalance)) {
-          BNB = new BN(b.freeBalance.substring(2, b.freeBalance.length), 16);
-        } else {
-          BNB = new BN(b.freeBalance, 10);
-        }
-
-        if (BNA.lt(BNB)) {
-          return 1;
-        }
-        if (BNA.gt(BNB)) {
-          return -1;
-        }
-        return 0;
-      })
-      .map((account, index) => {
-        return {
-          ...account,
-          rank: index + 1
-        };
-      });
+    state.list = accounts.map((account, index) => {
+      return {
+        rank: index + 1,
+        accountId: account.account_id,
+        identity: account.identity_display,
+        availableBalance: account.available_balance,
+        freeBalance: account.free_balance,
+        lockedBalance: account.locked_balance
+      };
+    });
     state.dataLoaded = true;
   },
   getters: function() {
@@ -59,11 +31,12 @@ export const actions = {
     const client = this.app.apolloProvider.defaultClient;
     const query = gql`
       query account {
-        account {
+        account(order_by: { free_balance: desc }, where: {}) {
           account_id
-          balances
-          block_height
-          identity
+          identity_display
+          available_balance
+          free_balance
+          locked_balance
         }
       }
     `;
