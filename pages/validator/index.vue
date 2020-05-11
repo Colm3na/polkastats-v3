@@ -1778,17 +1778,17 @@ export default {
       let newData = [];
       let sumPB = 0;
 
-      const getDays = producedBlocksInDB.map(pb =>
-        moment.unix(pb.timestamp / 1000).format("YYYY-MM-DD")
-      );
-
-      const producedBlocksPerDays = R.countBy(R.toString)(getDays);
-
-      R.forEachObjIndexed((producedBlocks, day) => {
-        newCategories.push(day);
-        newData.push(producedBlocks);
-        sumPB = sumPB + producedBlocks;
-      }, producedBlocksPerDays);
+      if (producedBlocksInDB.length !== 0) {
+        producedBlocksInDB.forEach(pb => {
+          newCategories.push(
+            moment
+              .unix(pb.timestamp, "YYYY-MM-DD HH:mm:ss.SSSSSS Z")
+              .format("YYYY-MM-DD HH:mm:ss")
+          );
+          newData.push(pb.produced_blocks);
+          sumPB = sumPB + pb.produced_blocks;
+        });
+      }
 
       newCategories.reverse();
       newData.reverse();
@@ -1798,7 +1798,7 @@ export default {
       return { newCategories, newData };
     },
     getProducedBlocksDailyGraphData() {
-      const timestamp = this.getTimestamp("day") * 1000;
+      const timestamp = this.getTimestamp("day");
       const query = createQueryProducedBlocks(timestamp, this.accountId);
       const GET_PRODUCED_BLOCKS = gql`
         ${query}
@@ -1808,11 +1808,14 @@ export default {
         .query({ query: GET_PRODUCED_BLOCKS })
         .then(response => {
           // Update chart data
-          const { block } = response.data;
+          const { validator_produced_blocks } = response.data;
           const {
             newCategories,
             newData
-          } = this.createProducedBlocksChartOptions(block, "day");
+          } = this.createProducedBlocksChartOptions(
+            validator_produced_blocks,
+            "day"
+          );
           // Make sure to update the whole options config and not just a single property to allow the Vue watch catch the change.
           this.ProducedBlocksDailyChartOptions = R.mergeDeepRight(
             this.ProducedBlocksDailyChartOptions,
@@ -1836,7 +1839,7 @@ export default {
         });
     },
     getProducedBlocksWeeklyGraphData() {
-      const timestamp = this.getTimestamp("week") * 1000;
+      const timestamp = this.getTimestamp("week");
 
       const query = createQueryProducedBlocks(timestamp, this.accountId);
       const GET_PRODUCED_BLOCKS = gql`
@@ -1847,12 +1850,15 @@ export default {
         .query({ query: GET_PRODUCED_BLOCKS })
         .then(response => {
           // Update chart data
-          const { block } = response.data;
+          const { validator_produced_blocks } = response.data;
 
           const {
             newCategories,
             newData
-          } = this.createProducedBlocksChartOptions(block, "week");
+          } = this.createProducedBlocksChartOptions(
+            validator_produced_blocks,
+            "week"
+          );
 
           // Make sure to update the whole options config and not just a single property to allow the Vue watch catch the change.
           this.ProducedBlocksWeeklyChartOptions = R.mergeDeepRight(
@@ -1879,7 +1885,7 @@ export default {
         });
     },
     getProducedBlocksMonthlyGraphData() {
-      const timestamp = this.getTimestamp("month") * 1000;
+      const timestamp = this.getTimestamp("month");
 
       const query = createQueryProducedBlocks(timestamp, this.accountId);
       const GET_PRODUCED_BLOCKS = gql`
@@ -1890,12 +1896,15 @@ export default {
         .query({ query: GET_PRODUCED_BLOCKS })
         .then(response => {
           // Update chart data
-          const { block } = response.data;
+          const { validator_produced_blocks } = response.data;
 
           const {
             newCategories,
             newData
-          } = this.createProducedBlocksChartOptions(block, "month");
+          } = this.createProducedBlocksChartOptions(
+            validator_produced_blocks,
+            "month"
+          );
 
           // Make sure to update the whole options config and not just a single property to allow the Vue watch catch the change.
           this.ProducedBlocksMonthlyChartOptions = R.mergeDeepRight(
