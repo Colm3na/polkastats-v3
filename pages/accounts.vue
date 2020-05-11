@@ -298,21 +298,12 @@ export default {
   },
   computed: {
     accounts() {
-      let accounts = [];
-      if (this.$store.state.accounts.dataLoaded) {
-        for (let i = 0; i < this.$store.state.accounts.list.length; i++) {
-          let account = this.$store.state.accounts.list[i];
-          const accountIndex = account.accountIndex;
-
-          accounts.push({
-            ...account,
-            accountIndex,
-            favorite: this.isFavorite(account.accountId)
-          });
-        }
-        this.setDataLoaded();
-      }
-      return accounts;
+      return this.$store.state.accounts.list.map(account => {
+        return {
+          ...account,
+          favorite: this.isFavorite(account.accountId)
+        };
+      });
     },
     sortOptions() {
       // Create an options list from our fields
