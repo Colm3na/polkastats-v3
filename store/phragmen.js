@@ -40,6 +40,15 @@ export const mutations = {
   },
   getters: function() {
     state => state.info;
+  },
+  toogleFavorite: function(state, id) {
+    console.log("ID: ", id);
+    state.info.candidates.map(candidate => {
+      if (candidate.pub_key_stash === id) {
+        candidate.favorite = !candidate.favorite;
+      }
+      return candidate;
+    });
   }
 };
 
@@ -67,5 +76,8 @@ export const actions = {
       .catch(error => {
         console.log("Error fetching Phragmen table: ", error);
       });
+  },
+  toogleFavorite(context, id) {
+    context.commit("toogleFavorite", id);
   }
 };

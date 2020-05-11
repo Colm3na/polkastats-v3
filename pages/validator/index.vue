@@ -269,24 +269,23 @@
                         }}</strong>
                       </div>
                       <div id="session-id-info" class="col-md-9 mb-2">
-                        <a
-                          class=""
-                          data-toggle="collapse"
-                          :href="'#sessionIdHex'"
-                          role="button"
-                          aria-expanded="false"
-                          :aria-controls="'sessionIdHex'"
+                        <b-button
+                          v-b-toggle="
+                            `accordion-${index}-sessionIdHex-validator`
+                          "
+                          variant="link"
+                          style="text-decoration: none; font-size: 1rem; padding: 0; border: 0; color: #670d35"
                         >
-                          <i class="fas" />
+                          >
                           {{ shortSessionId(validator.sessionIdHex) }}
-                        </a>
-                        <div
-                          :id="'sessionIdHex'"
+                        </b-button>
+                        <b-collapse
+                          :id="`accordion-${index}-sessionIdHex-validator`"
                           class="collapse pt-2 pb-3"
                           :data-parent="'#session-id-info'"
                         >
                           {{ validator.sessionIdHex }}
-                        </div>
+                        </b-collapse>
                       </div>
                     </div>
                     <div v-if="validator.nextSessionIdHex" class="row">
@@ -296,24 +295,23 @@
                         }}</strong>
                       </div>
                       <div id="next-session-id-info" class="col-md-9 mb-2">
-                        <a
-                          class=""
-                          data-toggle="collapse"
-                          :href="'#nextSessionIdHex'"
-                          role="button"
-                          aria-expanded="false"
-                          :aria-controls="'nextSessionIdHex'"
+                        <b-button
+                          v-b-toggle="
+                            `accordion-${index}-nextSessionIdHex-validator`
+                          "
+                          variant="link"
+                          style="text-decoration: none; font-size: 1rem; padding: 0; border: 0; color: #670d35"
                         >
-                          <i class="fas" />
+                          >
                           {{ shortSessionId(validator.nextSessionIdHex) }}
-                        </a>
-                        <div
-                          :id="'nextSessionIdHex'"
+                        </b-button>
+                        <b-collapse
+                          :id="`accordion-${index}-nextSessionIdHex-validator`"
                           class="collapse pt-2 pb-3"
                           :data-parent="'#next-session-id-info'"
                         >
                           {{ validator.nextSessionIdHex }}
-                        </div>
+                        </b-collapse>
                       </div>
                     </div>
                     <div v-if="validator.validatorPrefs.commission" class="row">

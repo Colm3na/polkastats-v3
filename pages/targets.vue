@@ -428,21 +428,15 @@ export default {
     toggleFavorite(accountId) {
       if (this.favorites.indexOf(accountId) !== -1) {
         this.favorites.splice(this.favorites.indexOf(accountId), 1);
-        this.rewards = this.rewards.map(reward => {
-          if (reward.stash_id === accountId) {
-            reward.favorite = false;
-          }
-          return reward;
-        });
       } else {
         this.favorites.push(accountId);
-        this.rewards = this.rewards.map(reward => {
-          if (reward.stash_id === accountId) {
-            reward.favorite = true;
-          }
-          return reward;
-        });
       }
+      this.rewards = this.rewards.map(reward => {
+        if (reward.stash_id === accountId) {
+          reward.favorite = !reward.favorite;
+        }
+        return reward;
+      });
       return true;
     },
     getSmallNumber(amount) {
