@@ -5,17 +5,6 @@
         <h1 class="text-center mb-4">
           {{ $t("pages.phragmen.predicted_candidates_by_TEXT") }}
         </h1>
-
-        <b-alert
-          show
-          dismissible
-          variant="primary"
-          class="text-center"
-          data-testid="serverAlert"
-        >
-          <strong>{{ $t("pages.phragmen.offline_phragmen_is_TEXT") }}</strong>
-        </b-alert>
-
         <template v-if="enabled">
           <!-- Filter -->
           <b-row>
@@ -24,7 +13,7 @@
                 id="filterInput"
                 v-model="filter"
                 type="search"
-                :placeholder="$t('pages.phragmen.offline_phragmen_is_TEXT')"
+                :placeholder="$t('pages.phragmen.search_placeholder')"
               />
             </b-col>
           </b-row>
@@ -112,36 +101,18 @@
                       :theme="'polkadot'"
                     />
                   </div>
-                  <nuxt-link
-                    :to="{
-                      name: 'phragmen-candidate',
-                      query: { accountId: data.item.pub_key_stash }
-                    }"
-                    title="$t('pages.phragmen.candidate_details')"
+                  <h4
+                    v-if="hasIdentity(data.item.pub_key_stash)"
+                    class="mt-2 mb-2"
                   >
-                    <h4
-                      v-if="hasIdentity(data.item.pub_key_stash)"
-                      class="mt-2 mb-2"
-                    >
-                      {{ getIdentity(data.item.pub_key_stash).full_name }}
-                    </h4>
-                    <h4
-                      v-else-if="hasKusamaIdentity(data.item.pub_key_stash)"
-                      class="mt-2 mb-2"
-                    >
-                      {{ hasKusamaIdentity(data.item.pub_key_stash).display }}
-                    </h4>
-                    <!-- <h4 v-else class="mt-2 mb-2">
-                      <span
-                        class="d-inline d-sm-inline d-md-inline d-lg-inline d-xl-none"
-                        >{{ indexes[data.item.pub_key_stash] }}</span
-                      >
-                      <span
-                        class="d-none d-sm-none d-md-none d-lg-none d-xl-inline"
-                        >{{ indexes[data.item.pub_key_stash] }}</span
-                      >
-                    </h4> -->
-                  </nuxt-link>
+                    {{ getIdentity(data.item.pub_key_stash).full_name }}
+                  </h4>
+                  <h4
+                    v-else-if="hasKusamaIdentity(data.item.pub_key_stash)"
+                    class="mt-2 mb-2"
+                  >
+                    {{ hasKusamaIdentity(data.item.pub_key_stash).display }}
+                  </h4>
                   <p class="mt-2 mb-2 rank">rank #{{ data.item.rank }}</p>
                   <p
                     v-b-tooltip.hover
@@ -149,20 +120,6 @@
                     title="$t('pages.phragmen.total_stake')"
                   >
                     {{ formatAmount(data.item.stake_total) }}
-                  </p>
-                  <p class="mb-0">
-                    <small>
-                      <span
-                        v-b-tooltip.hover
-                        title="$t('pages.phragmen.self_bonded')"
-                        >{{ formatAmount(data.item.stake_validator) }}</span
-                      >
-                      <span
-                        v-b-tooltip.hover
-                        title="$t('pages.phragmen.bonded_by_nominators')"
-                        >(+{{ formatAmount(data.item.other_stake_sum) }})</span
-                      >
-                    </small>
                   </p>
                 </div>
                 <div class="d-none d-sm-none d-md-block d-lg-block d-xl-block">
@@ -188,47 +145,27 @@
                       :theme="'polkadot'"
                     />
                   </div>
-                  <nuxt-link
-                    :to="{
-                      name: 'phragmen-candidate',
-                      query: { accountId: data.item.pub_key_stash }
-                    }"
-                    title="$t('pages.phragmen.candidate_details')"
-                  >
-                    <span v-if="hasIdentity(data.item.pub_key_stash)">
-                      {{ getIdentity(data.item.pub_key_stash).full_name }}
-                    </span>
+                  <span v-if="hasIdentity(data.item.pub_key_stash)">
+                    {{ getIdentity(data.item.pub_key_stash).full_name }}
+                  </span>
+                  <span v-else-if="hasKusamaIdentity(data.item.pub_key_stash)">
+                    {{ getKusamaIdentity(data.item.pub_key_stash).display }}
+                  </span>
+                  <span v-else>
                     <span
-                      v-else-if="hasKusamaIdentity(data.item.pub_key_stash)"
+                      class="d-inline d-sm-inline d-md-inline d-lg-inline d-xl-none"
+                      >{{ shortAddress(data.item.pub_key_stash) }}</span
                     >
-                      {{ getKusamaIdentity(data.item.pub_key_stash).display }}
-                    </span>
-                    <!-- <span v-else>
-                      <span
-                        class="d-inline d-sm-inline d-md-inline d-lg-inline d-xl-none"
-                        >{{ indexes[data.item.pub_key_stash] }}</span
-                      >
-                      <span
-                        class="d-none d-sm-none d-md-none d-lg-none d-xl-inline"
-                        >{{ indexes[data.item.pub_key_stash] }}</span
-                      >
-                    </span> -->
-                  </nuxt-link>
+                    <span
+                      class="d-none d-sm-none d-md-none d-lg-none d-xl-inline"
+                      >{{ shortAddress(data.item.pub_key_stash) }}</span
+                    >
+                  </span>
                 </div>
               </template>
               <template slot="other_stake_count" slot-scope="data">
                 <p class="text-right mb-0">
                   {{ data.item.other_stake_count }}
-                </p>
-              </template>
-              <template slot="stake_validator" slot-scope="data">
-                <p class="text-right mb-0">
-                  {{ formatAmount(data.item.stake_validator) }}
-                </p>
-              </template>
-              <template slot="other_stake_sum" slot-scope="data">
-                <p class="text-right mb-0">
-                  {{ formatAmount(data.item.other_stake_sum) }}
                 </p>
               </template>
               <template slot="stake_total" slot-scope="data">
@@ -240,21 +177,21 @@
                 <p class="text-center mb-0">
                   <a
                     class="favorite"
-                    @click="toggleFavorite(data.item.accountIndex)"
+                    @click="toggleFavorite(data.item.pub_key_stash)"
                   >
                     <i
                       v-if="data.item.favorite"
                       v-b-tooltip.hover
                       class="fas fa-star"
                       style="color: #f1bd23"
-                      title="$t('pages.phragmen.remove_from_favorites')"
+                      :title="$t('pages.phragmen.remove_from_favorites')"
                     />
                     <i
                       v-else
                       v-b-tooltip.hover
                       class="fas fa-star"
                       style="color: #e6dfdf;"
-                      title="$t('pages.phragmen.add_to_favorites')"
+                      :title="$t('pages.phragmen.add_to_favorites')"
                     />
                   </a>
                 </p>
@@ -300,14 +237,14 @@ export default {
   mixins: [commonMixin],
   data: function() {
     return {
-      enabled: false,
+      enabled: true,
       tableOptions: numItemsTableOptions,
       perPage: localStorage.numItemsTableSelected
         ? parseInt(localStorage.numItemsTableSelected)
         : 10,
       currentPage: 1,
-      sortBy: `rank`,
-      sortDesc: false,
+      sortBy: `favorite`,
+      sortDesc: true,
       filter: null,
       filterOn: [],
       totalRows: 1,
@@ -320,31 +257,19 @@ export default {
         },
         {
           key: "pub_key_stash",
-          label: "$t('pages.phragmen.candidate')",
+          label: this.$i18n.t("pages.phragmen.candidate"),
           sortable: true,
           filterByFormatted: true
         },
         {
           key: "other_stake_count",
-          label: "$t('pages.phragmen.voters')",
-          sortable: true,
-          class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
-        },
-        {
-          key: "stake_validator",
-          label: "$t('pages.phragmen.self_stake')",
-          sortable: true,
-          class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
-        },
-        {
-          key: "other_stake_sum",
-          label: "$t('pages.phragmen.voters_stake')",
+          label: this.$i18n.t("pages.phragmen.voters"),
           sortable: true,
           class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
         },
         {
           key: "stake_total",
-          label: "$t('pages.phragmen.total_stake')",
+          label: this.$i18n.t("pages.phragmen.total_stake"),
           sortable: true,
           class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
         },
@@ -365,37 +290,13 @@ export default {
       return this.$store.state.network.info;
     },
     candidates() {
-      let candidates = [];
-      for (
-        let i = 0;
-        i < this.$store.state.phragmen.info.candidates.length;
-        i++
-      ) {
-        let candidate = this.$store.state.phragmen.info.candidates[i];
-        let identity = "";
-        if (this.hasIdentity(candidate.pub_key_stash)) {
-          identity = this.getIdentity(candidate.pub_key_stash);
-        }
-        let kusamaIdentity = "";
+      return this.$store.state.phragmen.info.candidates.map(candidate => {
         if (this.hasKusamaIdentity(candidate.pub_key_stash)) {
-          kusamaIdentity = this.getKusamaIdentity(candidate.pub_key_stash);
+          candidate.identity = this.getKusamaIdentity(candidate.pub_key_stash);
         }
-        candidates.push({
-          ...candidate,
-          identity,
-          kusamaIdentity
-        });
-      }
-      return candidates;
-    },
-    validator_count() {
-      return this.$store.state.phragmen.info.validator_count;
-    },
-    nominator_count() {
-      return this.$store.state.phragmen.info.nominator_count;
-    },
-    total_issuance() {
-      return this.$store.state.phragmen.info.total_issuance;
+        candidate.favorite = this.isFavorite(candidate.pub_key_stash);
+        return candidate;
+      });
     },
     identities() {
       return this.$store.state.identities.list;
@@ -425,9 +326,6 @@ export default {
       this.favorites = this.$cookies.get("favorites");
     }
 
-    // Force update of network info
-    vm.$store.dispatch("network/update");
-
     // Force update of phragmen candidates list if empty
     if (this.$store.state.phragmen.info.candidates.length == 0) {
       vm.$store.dispatch("phragmen/update");
@@ -444,7 +342,7 @@ export default {
       vm.$store.dispatch("stakingIdentities/update");
     }
 
-    // Update data every 10 seconds
+    // Update data every 60 seconds
     this.polling = setInterval(() => {
       vm.$store.dispatch("network/update");
       vm.$store.dispatch("phragmen/update");
@@ -452,7 +350,7 @@ export default {
       vm.$store.dispatch("stakingIdentities/update");
       if (!this.filter)
         this.totalRows = this.$store.state.phragmen.info.candidates.length;
-    }, 10000);
+    }, 60000);
   },
   beforeDestroy: function() {
     clearInterval(this.polling);
@@ -461,12 +359,17 @@ export default {
     handleNumFields(num) {
       this.perPage = parseInt(num);
     },
+    setFavorites() {
+      console.log(this.candidates);
+    },
     toggleFavorite(accountId) {
       if (this.favorites.indexOf(accountId) !== -1) {
         this.favorites.splice(this.favorites.indexOf(accountId), 1);
       } else {
         this.favorites.push(accountId);
       }
+      this.$store.dispatch("phragmen/toogleFavorite", accountId);
+
       return true;
     },
     isFavorite(accountId) {

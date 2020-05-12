@@ -8,11 +8,24 @@
     },
     "network": {
       "last_block": "Último bloque",
+      "last_block_finalized": "Último finalizado",
       "validator_count": "Núm Validadores",
       "current_session": "Sesión actual",
       "epoch": "Época",
       "current_era": "Era actual",
       "era": "Era"
+    },
+    "chain": {
+      "last_block": "Last block",
+      "last_block_finalized": "Last finalized block",
+      "validator_count": "Validadores",
+      "current_session": "Sesión",
+      "epoch": "Epoch",
+      "current_era": "Era",
+      "era": "Era",
+      "total_issuance": "Emisión total",
+      "staked": "Participación",
+      "waiting_validators": "En cola"
     }
   },
   "layout": {
@@ -21,6 +34,7 @@
       "validators": "Validadores",
       "intentions": "Intenciones",
       "favorites": "Favoritos",
+      "targets": "Targets",
       "phragmen": "Phragmen",
       "nominators": "Nominadores",
       "account": "Cuentas",
@@ -34,7 +48,8 @@
       "by": "por",
       "in": "en",
       "built_with": "Hecho con",
-      "view_source_code_on_github": "Ver código fuente en GitHub"
+      "view_source_code_on_github": "Ver código fuente en GitHub",
+      "dashboard": "Dashboard"
     },
     "error": {
       "page_not_found": "¡Página no encontrada!",
@@ -202,10 +217,36 @@
       "head_title": "PolkaStats - Polkadot Kusama nominators",
       "head_content": "Polkadot Kusama nominators"
     },
+    "targets": {
+      "targets": "Targets",
+      "search_placeholder": "Buscar validador por identidad",
+      "loading_data": "Cargando datos, puede tardar tiempo. Sea paciente, por favor",
+      "remove_from_favorites": "Eliminar de Favoritos",
+      "add_to_favorites": "Añadir a Favoritos",
+      "validator": "Validador",
+      "commission": "Comisión",
+      "total_stake": "Participación total",
+      "own_stake": "Participación propia",
+      "other_stake": "Participación ajena",
+      "estimated_payout": "Pago estimado/era 100 KSM",
+      "estimated_annualized_payout_percentage": "Ganancia estimada anual",
+      "accordion-info": {
+        "delegator_rewards": "Recompensas de delegadores. ¿Cómo funciona?",
+        "there_are_225_TEXT": "Actualmente hay 225 slots, así como 225 validadores.",
+        "an_slot_is_TEXT": "Un slot es un grupo de cuentas que incluye al validador y sus cuentas delegadas.",
+        "validators_acummulate_TEXT": "Los validadores acumulan puntos por su actividad. Tienen que firmar declaraciones de validez y producir bloques para ganar puntos.",
+        "at_the_end_TEXT": "Al final de una era (6 épocas de 600 bloques cada una) la recompensa total es dividida entre los 225 slots basandose en sus puntos acumulados.",
+        "once_each_slots_TEXT": "Una vez que cada slot obtiene su recompensa, la comisión del validador es restada de estas ganancias.",
+        "the_rest_of_TEXT": "El resto de la recompoensa del slot es distribuidad entra los delegadores basandose en el porcentaje de su depósito en el slot.",
+        "risks": "Riesgos",
+        "risks_TEXT": "De acuerdo con las reglas del juego, se podría pensar que el validador más rentable sería el correspondiente al slot con menor depósito. En parte es verdad, pero mejor considerar los siguientes riesgos. El último slot de la lista (actuálmente el número 225) tiene muchas posibilidades de quedar fuera de la lista en la siguiente época. Cuando un validador queda fuera de la lista, el validador y sus nominadores dejan de recibir recompensas y su slot es ocupado por un nuevo validador. Slashing es otro tipo de riesgo que deberías considerar. Cuando un validador se comporta mal sufre un evento slashing, el cual es un castigo por no seguir el protocolo. La penalización es aplicada al validador y a todos los delegadores del slot. Los tiempor de inactividad y las equivoceciones (malas firmas) son las razones más comunes que desencadenan un evento de slashing. La única manera de protegerte del slashing es eligiendo cuidadosamente el valiador que vas a nominar. Estudiar su historia, configuración y reputación puede ayudarte a seleccionar el validador en cual confiar (tu stake)"
+      },
+      "sort": "Ordenar"
+    },
     "phragmen": {
       "predicted_candidates_by_TEXT": "Predicción de candidatos por algoritmo de elección phragmen",
       "offline_phragmen_is_TEXT": "offline-phragmen no está operativo por lo que está deshabilitado temporalmente",
-      "search_placeholder": "Buscar candidatos por cuenta, índice de cuenta, nombre mostrado como identidad o nombre en keybase",
+      "search_placeholder": "Buscar candidatos por cuenta, nombre mostrado como identidad o nombre en keybase",
       "sort": "Ordenar",
       "candidate_details": "Detalles del candidato",
       "self_bonded": "Depósito propio",
@@ -257,6 +298,15 @@
       "era_points": "Puntos era",
       "head_title": "PolkaStats - Estadísticas de la red Polkadot Kusama",
       "head_content": "Polkadot Kusama estadísticas de la red"
+    },
+    "dashboard": {
+      "title": "Dashboard",
+      "head_title": "PolkaStats - Cuadro de mando Polkadot Kusama",
+      "head_content": "Cuadro de mando de la red Polkadot Kusama",
+      "recent_blocks": "Últimos bloques",
+      "top_rich": "Top 10 cuentas",
+      "recent_extrinsics": "Últimos extrinsics",
+      "recent_events": "Últimos eventos"
     }
   },
   "details": {
@@ -293,11 +343,14 @@
       "era_length": "Longitud era",
       "era_progress": "Progreso Era",
       "system_events": "Eventos de sistema",
+      "extrinsics": "Extrinsics",
       "section": "Sección",
       "method": "Método",
       "phase": "Fase",
       "data": "Datos",
-      "account_details": "Detalles de la cuenta"
+      "signer": "Firmante",
+      "hash": "Hash",
+      "args": "Argumentos"
     },
     "intention": {
       "previous_intention": "Intención previa",

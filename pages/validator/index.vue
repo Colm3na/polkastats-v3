@@ -269,24 +269,23 @@
                         }}</strong>
                       </div>
                       <div id="session-id-info" class="col-md-9 mb-2">
-                        <a
-                          class=""
-                          data-toggle="collapse"
-                          :href="'#sessionIdHex'"
-                          role="button"
-                          aria-expanded="false"
-                          :aria-controls="'sessionIdHex'"
+                        <b-button
+                          v-b-toggle="
+                            `accordion-${index}-sessionIdHex-validator`
+                          "
+                          variant="link"
+                          style="text-decoration: none; font-size: 1rem; padding: 0; border: 0; color: #670d35"
                         >
-                          <i class="fas" />
+                          >
                           {{ shortSessionId(validator.sessionIdHex) }}
-                        </a>
-                        <div
-                          :id="'sessionIdHex'"
+                        </b-button>
+                        <b-collapse
+                          :id="`accordion-${index}-sessionIdHex-validator`"
                           class="collapse pt-2 pb-3"
                           :data-parent="'#session-id-info'"
                         >
                           {{ validator.sessionIdHex }}
-                        </div>
+                        </b-collapse>
                       </div>
                     </div>
                     <div v-if="validator.nextSessionIdHex" class="row">
@@ -296,24 +295,23 @@
                         }}</strong>
                       </div>
                       <div id="next-session-id-info" class="col-md-9 mb-2">
-                        <a
-                          class=""
-                          data-toggle="collapse"
-                          :href="'#nextSessionIdHex'"
-                          role="button"
-                          aria-expanded="false"
-                          :aria-controls="'nextSessionIdHex'"
+                        <b-button
+                          v-b-toggle="
+                            `accordion-${index}-nextSessionIdHex-validator`
+                          "
+                          variant="link"
+                          style="text-decoration: none; font-size: 1rem; padding: 0; border: 0; color: #670d35"
                         >
-                          <i class="fas" />
+                          >
                           {{ shortSessionId(validator.nextSessionIdHex) }}
-                        </a>
-                        <div
-                          :id="'nextSessionIdHex'"
+                        </b-button>
+                        <b-collapse
+                          :id="`accordion-${index}-nextSessionIdHex-validator`"
                           class="collapse pt-2 pb-3"
                           :data-parent="'#next-session-id-info'"
                         >
                           {{ validator.nextSessionIdHex }}
-                        </div>
+                        </b-collapse>
                       </div>
                     </div>
                     <div v-if="validator.validatorPrefs.commission" class="row">
@@ -673,10 +671,9 @@
                                 class="text-center charts"
                               >
                                 <chartHeader
-                                  :first="
-                                    parseInt(ProducedBlocks.monthly.first)
-                                  "
-                                  :last="parseInt(ProducedBlocks.monthly.last)"
+                                  :first="0"
+                                  :last="parseInt(producedBlocks.month)"
+                                  :formated="false"
                                 />
                                 <chart
                                   :options="ProducedBlocksMonthlyChartOptions"
@@ -690,8 +687,9 @@
                                 class="text-center charts"
                               >
                                 <chartHeader
-                                  :first="parseInt(ProducedBlocks.weekly.first)"
-                                  :last="parseInt(ProducedBlocks.weekly.last)"
+                                  :first="0"
+                                  :last="parseInt(producedBlocks.week)"
+                                  :formated="false"
                                 />
                                 <chart
                                   :options="ProducedBlocksWeeklyChartOptions"
@@ -705,8 +703,9 @@
                                 class="text-center charts"
                               >
                                 <chartHeader
-                                  :first="parseInt(ProducedBlocks.daily.first)"
-                                  :last="parseInt(ProducedBlocks.daily.last)"
+                                  :first="0"
+                                  :last="parseInt(producedBlocks.day)"
+                                  :formated="false"
                                 />
                                 <chart
                                   :options="ProducedBlocksDailyChartOptions"
@@ -905,7 +904,7 @@
 import { mapMutations } from "vuex";
 import gql from "graphql-tag";
 import moment from "moment";
-import mergeDeepRight from "ramda/src/mergeDeepRight";
+import * as R from "ramda";
 import chart from "../../components/chart";
 import Identicon from "../../components/identicon.vue";
 import chartHeader from "../../components/chart-header.vue";
@@ -1090,19 +1089,10 @@ export default {
       ),
       //
       // Pruduced Blocks
-      ProducedBlocks: {
-        daily: {
-          last: 0,
-          first: 0
-        },
-        weekly: {
-          last: 0,
-          first: 0
-        },
-        monthly: {
-          last: 0,
-          first: 0
-        }
+      producedBlocks: {
+        day: 0,
+        week: 0,
+        month: 0
       },
       ProducedBlocksEvolutionDailySeries: [
         {
@@ -1420,7 +1410,7 @@ export default {
           } = this.createValidatorsCategoriesAndData(validator_bonded, "day");
 
           // Make sure to update the whole options config and not just a single property to allow the Vue watch catch the change.
-          this.StakeEvolutionDailyChartOptions = mergeDeepRight(
+          this.StakeEvolutionDailyChartOptions = R.mergeDeepRight(
             this.StakeEvolutionDailyChartOptions,
             {
               markers: { size: 6 },
@@ -1455,7 +1445,7 @@ export default {
             newData
           } = this.createValidatorsCategoriesAndData(validator_bonded, "week");
 
-          this.StakeEvolutionWeeklyChartOptions = mergeDeepRight(
+          this.StakeEvolutionWeeklyChartOptions = R.mergeDeepRight(
             this.StakeEvolutionWeeklyChartOptions,
             {
               markers: { size: 4 },
@@ -1490,7 +1480,7 @@ export default {
           } = this.createValidatorsCategoriesAndData(validator_bonded, "month");
 
           // Make sure to update the whole options config and not just a single property to allow the Vue watch catch the change.
-          this.StakeEvolutionMonthlyChartOptions = mergeDeepRight(
+          this.StakeEvolutionMonthlyChartOptions = R.mergeDeepRight(
             this.StakeEvolutionMonthlyChartOptions,
             {
               markers: { size: 2 },
@@ -1555,7 +1545,7 @@ export default {
           } = this.createRewardsCategoriesAndData(r, "month");
 
           // Make sure to update the whole options config and not just a single property to allow the Vue watch catch the change.
-          this.RewardsMonthlyChartOptions = mergeDeepRight(
+          this.RewardsMonthlyChartOptions = R.mergeDeepRight(
             this.RewardsMonthlyChartOptions,
             {
               markers: { size: 2 },
@@ -1593,7 +1583,7 @@ export default {
           } = this.createRewardsCategoriesAndData(r, "week");
 
           // Make sure to update the whole options config and not just a single property to allow the Vue watch catch the change.
-          this.RewardsWeeklyChartOptions = mergeDeepRight(
+          this.RewardsWeeklyChartOptions = R.mergeDeepRight(
             this.RewardsWeeklyChartOptions,
             {
               markers: { size: 4 },
@@ -1631,7 +1621,7 @@ export default {
           } = this.createRewardsCategoriesAndData(r, "day");
 
           // Make sure to update the whole options config and not just a single property to allow the Vue watch catch the change.
-          this.RewardsDailyChartOptions = mergeDeepRight(
+          this.RewardsDailyChartOptions = R.mergeDeepRight(
             this.RewardsDailyChartOptions,
             {
               xaxis: {
@@ -1694,7 +1684,7 @@ export default {
             "day"
           );
           // Make sure to update the whole options config and not just a single property to allow the Vue watch catch the change.
-          this.SlashesDailyChartOptions = mergeDeepRight(
+          this.SlashesDailyChartOptions = R.mergeDeepRight(
             this.SlashesDailyChartOptions,
             {
               xaxis: {
@@ -1729,7 +1719,7 @@ export default {
             "week"
           );
           // Make sure to update the whole options config and not just a single property to allow the Vue watch catch the change.
-          this.SlashesWeeklyChartOptions = mergeDeepRight(
+          this.SlashesWeeklyChartOptions = R.mergeDeepRight(
             this.SlashesWeeklyChartOptions,
             {
               markers: { size: 4 },
@@ -1764,7 +1754,7 @@ export default {
             "month"
           );
           // Make sure to update the whole options config and not just a single property to allow the Vue watch catch the change.
-          this.SlashesMonthlyChartOptions = mergeDeepRight(
+          this.SlashesMonthlyChartOptions = R.mergeDeepRight(
             this.SlashesMonthlyChartOptions,
             {
               markers: { size: 2 },
@@ -1781,27 +1771,32 @@ export default {
           ];
         });
     },
-    createProducedBlocksChartOptions(producedBlocks, time) {
+    createProducedBlocksChartOptions(producedBlocksInDB, time) {
       let newCategories = [];
       let newData = [];
+      let sumPB = 0;
 
-      for (var i = 0; i < producedBlocks.length; i++) {
-        const timestamp = producedBlocks[i].timestamp / 1000;
-        newCategories.push(
-          moment
-            .unix(timestamp, "YYYY-MM-DD HH:mm:ss.SSSSSS Z")
-            .format("YYYY-MM-DD HH:mm:ss")
-        );
-        newData.push(producedBlocks[i].block_number);
+      if (producedBlocksInDB.length !== 0) {
+        producedBlocksInDB.forEach(pb => {
+          newCategories.push(
+            moment
+              .unix(pb.timestamp, "YYYY-MM-DD HH:mm:ss.SSSSSS Z")
+              .format("YYYY-MM-DD HH:mm:ss")
+          );
+          newData.push(pb.produced_blocks);
+          sumPB = sumPB + pb.produced_blocks;
+        });
       }
 
       newCategories.reverse();
       newData.reverse();
 
+      this.producedBlocks[time] = sumPB;
+
       return { newCategories, newData };
     },
     getProducedBlocksDailyGraphData() {
-      const timestamp = this.getTimestamp("day") * 1000;
+      const timestamp = this.getTimestamp("day");
       const query = createQueryProducedBlocks(timestamp, this.accountId);
       const GET_PRODUCED_BLOCKS = gql`
         ${query}
@@ -1811,17 +1806,25 @@ export default {
         .query({ query: GET_PRODUCED_BLOCKS })
         .then(response => {
           // Update chart data
-          const { block } = response.data;
+          const { validator_produced_blocks } = response.data;
           const {
             newCategories,
             newData
-          } = this.createProducedBlocksChartOptions(block, "day");
+          } = this.createProducedBlocksChartOptions(
+            validator_produced_blocks,
+            "day"
+          );
           // Make sure to update the whole options config and not just a single property to allow the Vue watch catch the change.
-          this.ProducedBlocksDailyChartOptions = mergeDeepRight(
+          this.ProducedBlocksDailyChartOptions = R.mergeDeepRight(
             this.ProducedBlocksDailyChartOptions,
             {
               xaxis: {
                 categories: newCategories
+              },
+              yaxis: {
+                labels: {
+                  formatter: val => val
+                }
               }
             }
           );
@@ -1834,7 +1837,7 @@ export default {
         });
     },
     getProducedBlocksWeeklyGraphData() {
-      const timestamp = this.getTimestamp("week") * 1000;
+      const timestamp = this.getTimestamp("week");
 
       const query = createQueryProducedBlocks(timestamp, this.accountId);
       const GET_PRODUCED_BLOCKS = gql`
@@ -1845,20 +1848,28 @@ export default {
         .query({ query: GET_PRODUCED_BLOCKS })
         .then(response => {
           // Update chart data
-          const { block } = response.data;
+          const { validator_produced_blocks } = response.data;
 
           const {
             newCategories,
             newData
-          } = this.createProducedBlocksChartOptions(block, "week");
+          } = this.createProducedBlocksChartOptions(
+            validator_produced_blocks,
+            "week"
+          );
 
           // Make sure to update the whole options config and not just a single property to allow the Vue watch catch the change.
-          this.ProducedBlocksWeeklyChartOptions = mergeDeepRight(
+          this.ProducedBlocksWeeklyChartOptions = R.mergeDeepRight(
             this.ProducedBlocksWeeklyChartOptions,
             {
               markers: { size: 4 },
               xaxis: {
                 categories: newCategories
+              },
+              yaxis: {
+                labels: {
+                  formatter: val => val
+                }
               }
             }
           );
@@ -1872,7 +1883,7 @@ export default {
         });
     },
     getProducedBlocksMonthlyGraphData() {
-      const timestamp = this.getTimestamp("month") * 1000;
+      const timestamp = this.getTimestamp("month");
 
       const query = createQueryProducedBlocks(timestamp, this.accountId);
       const GET_PRODUCED_BLOCKS = gql`
@@ -1883,20 +1894,28 @@ export default {
         .query({ query: GET_PRODUCED_BLOCKS })
         .then(response => {
           // Update chart data
-          const { block } = response.data;
+          const { validator_produced_blocks } = response.data;
 
           const {
             newCategories,
             newData
-          } = this.createProducedBlocksChartOptions(block, "month");
+          } = this.createProducedBlocksChartOptions(
+            validator_produced_blocks,
+            "month"
+          );
 
           // Make sure to update the whole options config and not just a single property to allow the Vue watch catch the change.
-          this.ProducedBlocksMonthlyChartOptions = mergeDeepRight(
+          this.ProducedBlocksMonthlyChartOptions = R.mergeDeepRight(
             this.ProducedBlocksMonthlyChartOptions,
             {
               markers: { size: 2 },
               xaxis: {
                 categories: newCategories
+              },
+              yaxis: {
+                labels: {
+                  formatter: val => val
+                }
               }
             }
           );

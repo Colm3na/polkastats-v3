@@ -337,27 +337,24 @@
                   <div class="voters mt-2">
                     <template v-if="candidate.voters">
                       <template v-if="candidate.voters.length > 0">
-                        <a
-                          class=""
-                          data-toggle="collapse"
-                          :href="'#candidate-voters-' + index"
-                          role="button"
-                          aria-expanded="false"
-                          :aria-controls="'candidate-voters-' + index"
+                        <b-button
+                          v-b-toggle="`accordion-${index}-candidate-voters`"
+                          variant="link"
+                          style="text-decoration: none; font-size: 1rem; padding: 0; border: 0; color: #670d35"
                         >
                           <h6 class="h6 candidates d-inline mr-4">
-                            <i class="fas"></i>
+                            >
                             {{ $t("details.phragmen-candidate.voters") }} ({{
                               candidate.voters.length
                             }})
                           </h6>
-                        </a>
+                        </b-button>
                       </template>
                     </template>
                     <template v-if="candidate.voters">
                       <template v-if="candidate.voters.length > 0">
-                        <div
-                          :id="'candidate-voters-' + index"
+                        <b-collapse
+                          :id="`accordion-${index}-candidate-voters`"
                           class="voters collapse pt-2 pb-3"
                           :data-parent="'#candidate-voters-' + index"
                         >
@@ -396,7 +393,7 @@
                               {{ formatAmount(voter.stake_nominator) }}
                             </div>
                           </div>
-                        </div>
+                        </b-collapse>
                       </template>
                     </template>
                   </div>

@@ -65,6 +65,16 @@
                 </b-nav-item>
                 <b-nav-item>
                   <nuxt-link
+                    to="/targets"
+                    active-class="nuxt-link-exact-active"
+                    class="nav-link"
+                    data-testid="menu-targets"
+                  >
+                    {{ $t("layout.default.targets") }}
+                  </nuxt-link>
+                </b-nav-item>
+                <b-nav-item>
+                  <nuxt-link
                     to="/phragmen"
                     active-class="nuxt-link-exact-active"
                     class="nav-link"

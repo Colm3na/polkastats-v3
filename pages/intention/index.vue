@@ -183,24 +183,21 @@
                         }}</strong>
                       </div>
                       <div id="session-id-info" class="col-md-9 mb-2">
-                        <a
-                          class=""
-                          data-toggle="collapse"
-                          :href="'#sessionIdHex'"
-                          role="button"
-                          aria-expanded="false"
-                          :aria-controls="'sessionIdHex'"
+                        <b-button
+                          v-b-toggle="`accordion-${index}-sessionIdHex`"
+                          variant="link"
+                          style="text-decoration: none; font-size: 1rem; padding: 0; border: 0; color: #670d35"
                         >
-                          <i class="fas" />
+                          />
                           {{ shortSessionId(validator.sessionIdHex) }}
-                        </a>
-                        <div
-                          :id="'sessionIdHex'"
+                        </b-button>
+                        <b-collapse
+                          :id="`accordion-${index}-sessionIdHex`"
                           class="collapse pt-2 pb-3"
                           :data-parent="'#session-id-info'"
                         >
                           {{ validator.sessionIdHex }}
-                        </div>
+                        </b-collapse>
                       </div>
                     </div>
                     <div v-if="validator.nextSessionIdHex" class="row">
@@ -210,24 +207,21 @@
                         }}</strong>
                       </div>
                       <div id="next-session-id-info" class="col-md-9 mb-2">
-                        <a
-                          class=""
-                          data-toggle="collapse"
-                          :href="'#nextSessionIdHex'"
-                          role="button"
-                          aria-expanded="false"
-                          :aria-controls="'nextSessionIdHex'"
+                        <b-button
+                          v-b-toggle="`accordion-${index}-nextSessionIdHex`"
+                          variant="link"
+                          style="text-decoration: none; font-size: 1rem; padding: 0; border: 0; color: #670d35"
                         >
-                          <i class="fas" />
+                          >
                           {{ shortSessionId(validator.nextSessionIdHex) }}
-                        </a>
-                        <div
-                          :id="'nextSessionIdHex'"
+                        </b-button>
+                        <b-collapse
+                          :id="`accordion-${index}-nextSessionIdHex`"
                           class="collapse pt-2 pb-3"
                           :data-parent="'#next-session-id-info'"
                         >
                           {{ validator.nextSessionIdHex }}
-                        </div>
+                        </b-collapse>
                       </div>
                     </div>
                     <div
@@ -396,58 +390,53 @@
                     <!-- identity end -->
                     <div :id="'validator-info-' + index" class="mt-2">
                       <template v-if="validator.exposure.others.length > 0">
-                        <a
-                          class=""
-                          data-toggle="collapse"
-                          :href="'#staker' + index"
-                          role="button"
-                          aria-expanded="false"
-                          :aria-controls="'staker' + index"
+                        <b-button
+                          v-b-toggle="`accordion-${index}-staker-intention`"
+                          variant="link"
+                          style="text-decoration: none"
                         >
                           <h6 class="h6 nominators d-inline mr-4">
-                            <i class="fas" />
+                            >
                             {{ $t("details.intention.stakers") }} ({{
                               validator.exposure.others.length
                             }})
                           </h6>
-                        </a>
+                        </b-button>
                       </template>
                       <template v-if="validator.sessionIds.length > 0">
-                        <a
-                          class=""
-                          data-toggle="collapse"
-                          :href="'#current-session-id-' + index"
-                          role="button"
-                          aria-expanded="false"
-                          :aria-controls="'current-session-id-' + index"
+                        <b-button
+                          v-b-toggle="
+                            `accordion-${index}-current-session-id-intention`
+                          "
+                          variant="link"
+                          style="text-decoration: none"
                         >
                           <h6 class="h6 nominators d-inline mr-4">
-                            <i class="fas" />
+                            >
                             {{ $t("details.intention.current_session_ids") }}
                             ({{ validator.sessionIds.length }})
                           </h6>
-                        </a>
+                        </b-button>
                       </template>
                       <template v-if="validator.nextSessionIds.length > 0">
-                        <a
-                          class=""
-                          data-toggle="collapse"
-                          :href="'#session-id-' + index"
-                          role="button"
-                          aria-expanded="false"
-                          :aria-controls="'session-id-' + index"
+                        <b-button
+                          v-b-toggle="`accordion-${index}-session-id-intention`"
+                          variant="link"
+                          style="text-decoration: none"
                         >
                           <h6 class="h6 nominators d-inline mr-4">
-                            <i class="fas" />
+                            >
                             {{ $t("details.intention.next_session_ids") }} ({{
                               validator.nextSessionIds.length
                             }})
                           </h6>
-                        </a>
+                        </b-button>
                       </template>
                       <template v-if="validator.sessionIds.length > 0">
-                        <div
-                          :id="'current-session-id-' + index"
+                        <b-collapse
+                          :id="
+                            `accordion-${index}-current-session-id-intention`
+                          "
                           class="nominator collapse pt-2 pb-3"
                           :data-parent="'#validator-info-' + index"
                         >
@@ -481,11 +470,11 @@
                               </a>
                             </div>
                           </div>
-                        </div>
+                        </b-collapse>
                       </template>
                       <template v-if="validator.nextSessionIds.length > 0">
-                        <div
-                          :id="'session-id-' + index"
+                        <b-collapse
+                          :id="`accordion-${index}-session-id-intention`"
                           class="nominator collapse pt-2 pb-3"
                           :data-parent="'#validator-info-' + index"
                         >
@@ -520,11 +509,11 @@
                               </a>
                             </div>
                           </div>
-                        </div>
+                        </b-collapse>
                       </template>
                       <template v-if="validator.exposure.others.length > 0">
                         <div
-                          :id="'staker' + index"
+                          :id="`accordion-${index}-staker-intention`"
                           class="nominator collapse pt-2 pb-3"
                           :data-parent="'#validator-info-' + index"
                         >
