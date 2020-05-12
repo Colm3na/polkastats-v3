@@ -509,7 +509,7 @@ export default {
       sortBy: `favorite`,
       sortDesc: true,
       filter: null,
-      filterOn: [],
+      filterOn: ["Stakers"],
       filterField: null,
       filterOperator: null,
       filterText: null,
@@ -758,7 +758,7 @@ export default {
       this.filterField = null;
       this.filterOperator = null;
       this.filterText = null;
-      this.filterOn.length = 0;
+      this.filterOn = ["Stakers"];
     },
     handleNumFields(num) {
       localStorage.numItemsTableSelected = num;
