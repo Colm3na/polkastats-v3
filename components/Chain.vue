@@ -1,5 +1,5 @@
 <template>
-  <div v-if="lastBlock">
+  <div v-if="lastBlock && chain">
     <div class="row">
       <div class="col-md-3 mb-4">
         <div class="card">
@@ -89,6 +89,57 @@
         </div>
       </div>
     </div>
+
+    <div class="row">
+      <div class="col-md-3 mb-4">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="mb-3">{{ $t("components.chain.validator_count") }}</h4>
+            <h5 class="d-inline-block">
+              {{ formatNumber(lastBlock.validator_count) }}
+            </h5>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 mb-4">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="mb-3">
+              {{ $t("components.chain.waiting_validators") }}
+            </h4>
+            <h5 class="d-inline-block">
+              {{ formatNumber(waitingCount) }}
+            </h5>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 mb-4">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="mb-3">
+              {{ $t("components.chain.total_issuance") }}
+            </h4>
+            <h5 class="d-inline-block">
+              {{ formatAmount(chain.total_issuance) }}
+            </h5>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 mb-4">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="mb-3">
+              {{ $t("components.chain.staked") }}
+            </h4>
+            <h5 class="d-inline-block">
+              {{ formatAmount(totalStakeBonded) }} ({{
+                bondedStakePercentage
+              }}%)
+            </h5>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -96,6 +147,7 @@
 import commonMixin from "../mixins/commonMixin.js";
 import Identicon from "../components/identicon.vue";
 import gql from "graphql-tag";
+import BN from "bn.js";
 
 export default {
   components: {
@@ -104,8 +156,38 @@ export default {
   mixins: [commonMixin],
   data: function() {
     return {
-      lastBlock: undefined
+      lastBlock: undefined,
+      chain: undefined
     };
+  },
+  computed: {
+    waitingCount() {
+      return this.$store.state.intentions.list.length;
+    },
+    totalStakeBonded() {
+      return this.$store.state.validators.totalStakeBonded;
+    },
+    bondedStakePercentage() {
+      if (this.totalStakeBonded !== 0 && this.chain.total_issuance !== 0) {
+        console.log(`total_issuance:`, this.chain.total_issuance);
+        console.log(`total_stake_bonded:`, this.totalStakeBonded);
+
+        const totalIssuance = new BN(this.chain.total_issuance.toString(), 10);
+        const totalStakeBonded = new BN(this.totalStakeBonded, 10).mul(
+          new BN("100", 10)
+        );
+        return totalStakeBonded.div(totalIssuance).toString(10);
+      }
+      return 0;
+    }
+  },
+  created: function() {
+    if (!this.waitingCount) {
+      this.$store.dispatch("intentions/update");
+    }
+    if (!this.totalStakeBonded) {
+      this.$store.dispatch("validators/update");
+    }
   },
   apollo: {
     $subscribe: {
@@ -141,6 +223,19 @@ export default {
         `,
         result({ data }) {
           this.lastBlock = data.block[0];
+        }
+      },
+      chain: {
+        query: gql`
+          subscription chain {
+            chain(order_by: { block_height: desc }, where: {}, limit: 1) {
+              active_accounts
+              total_issuance
+            }
+          }
+        `,
+        result({ data }) {
+          this.chain = data.chain[0];
         }
       }
     }

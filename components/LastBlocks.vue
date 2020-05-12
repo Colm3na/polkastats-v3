@@ -31,7 +31,12 @@
               :to="`/validator?accountId=${data.item.block_author}`"
               title="Check validator information"
             >
-              {{ shortAddress(data.item.block_author) }}
+              <span v-if="data.item.block_author_name">
+                {{ data.item.block_author_name }}
+              </span>
+              <span v-else>
+                {{ shortAddress(data.item.block_author) }}
+              </span>
             </nuxt-link>
           </p>
         </template>

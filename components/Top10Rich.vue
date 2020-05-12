@@ -15,7 +15,12 @@
               :to="`/account?accountId=${data.item.account_id}`"
               title="Check account information"
             >
-              {{ shortAddress(data.item.account_id) }}
+              <span v-if="data.item.identity_display">
+                {{ data.item.identity_display }}
+              </span>
+              <span v-else>
+                {{ shortAddress(data.item.account_id) }}
+              </span>
             </nuxt-link>
           </p>
         </template>
@@ -61,7 +66,7 @@ export default {
           subscription accounts {
             account(order_by: { free_balance: desc }, where: {}, limit: 10) {
               account_id
-              identity
+              identity_display
               free_balance
             }
           }
