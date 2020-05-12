@@ -98,7 +98,7 @@
       "identity": "Identity",
       "head_title": "PolkaStats - Polkadot Kusama active accounts",
       "head_content": "Polkadot Kusama active accounts",
-      "loading_data": "Loading data, it can tale a long time. Be patient, please"
+      "loading_data": "Loading data, it can take a long time. Be patient, please"
     },
     "events": {
       "latest_5000_kusama_events": "Latest 5,000 Kusama events",
@@ -219,7 +219,7 @@
     "targets": {
       "targets": "Targets",
       "search_placeholder": "Search validator by identity",
-      "loading_data": "Loading data, it can tale a long time. Be patient, please",
+      "loading_data": "Loading data, it can take a long time. Be patient, please",
       "remove_from_favorites": "Remove from Favorites",
       "add_to_favorites": "Add to Favorites",
       "validator": "Validator",
