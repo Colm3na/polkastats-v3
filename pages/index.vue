@@ -10,23 +10,22 @@
 
         <div class="row">
           <div class="col-md-6 mb-4">
-            <h2>Recent blocks</h2>
+            <h3>{{ $t("pages.dashboard.recent_blocks") }}</h3>
             <LastBlocks />
           </div>
           <div class="col-md-6 mb-4">
-            <h2>Recent events</h2>
-            <LastEvents />
+            <h3>{{ $t("pages.dashboard.top_rich") }}</h3>
+            <Top10Rich />
           </div>
         </div>
-
         <div class="row">
           <div class="col-md-6 mb-4">
-            <h2>Recent extrinsics</h2>
+            <h3>{{ $t("pages.dashboard.recent_extrinsics") }}</h3>
             <LastExtrinsics />
           </div>
           <div class="col-md-6 mb-4">
-            <h2>Top 10 rich accounts</h2>
-            <Top10Rich />
+            <h3>{{ $t("pages.dashboard.recent_events") }}</h3>
+            <LastEvents />
           </div>
         </div>
       </b-container>

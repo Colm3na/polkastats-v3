@@ -18,11 +18,14 @@
     "chain": {
       "last_block": "Last block",
       "last_block_finalized": "Last finalized",
-      "validator_count": "Validator count",
+      "validator_count": "Validator slots",
       "current_session": "Session",
       "epoch": "Epoch",
       "current_era": "Era",
-      "era": "Era"
+      "era": "Era",
+      "total_issuance": "Total issuance",
+      "staked": "Staked",
+      "waiting_validators": "Waiting"
     }
   },
   "layout": {
@@ -298,7 +301,11 @@
     "dashboard": {
       "title": "Dashboard",
       "head_title": "PolkaStats - Polkadot Kusama network statistics",
-      "head_content": "Polkadot Kusama dashboard"
+      "head_content": "Polkadot Kusama dashboard",
+      "recent_blocks": "Recent blocks",
+      "top_rich": "Top 10 rich accounts",
+      "recent_extrinsics": "Recent extrinsics",
+      "recent_events": "Recent events"
     }
   },
   "details": {
