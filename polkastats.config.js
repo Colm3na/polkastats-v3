@@ -2,7 +2,7 @@
 export const unit = `KSM`;
 export const decimals = 12;
 export const backendBaseURL = `https://polkastats.io/api/v2`;
-export const nodeURL = "ws://v3dev1.polkastats.io:9944";
+export const nodeURL = "wss://kusama-rpc.polkadot.io/";
 export const blockExplorer = {
   block: `https://polkascan.io/pre/kusama-cc3/block/`,
   account: `https://polkascan.io/pre/kusama-cc3/account/`
