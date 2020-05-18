@@ -200,7 +200,14 @@
           class="small pt-4 text-center text-white"
           data-testid="footer-bottom"
         >
-          {{ $t("layout.default.made_by") }}
+          <nuxt-link
+            to="/team"
+            active-class="nuxt-link-exact-active"
+            class="nav-link"
+            data-testid="polkastatsTeam"
+          >
+            {{ $t("layout.default.made_by") }}
+          </nuxt-link>
           <span class="mx-2">|</span> {{ $t("layout.default.built_with") }}
           <a
             href="https://basicattentiontoken.org/"
