@@ -75,62 +75,77 @@
             </template>
             <template slot="accountId" slot-scope="data">
               <div
-                class="d-block d-sm-block d-md-none d-lg-none d-xl-none text-center"
+                class="d-block d-sm-block d-md-none d-lg-none d-xl-none text-center w-100"
               >
                 <template>
-                  <b-container>
-                    <b-row class="nominator-row">
-                      <b-col cols="6" class="column">
+                  <b-container class="nominators w-100 pr-0;">
+                    <b-row class="nominator-row w-100">
+                      <div class="rank w-100">
+                        <span class="rank-number">{{ data.item.rank }}</span>
+                      </div>
+                      <div style="flex: 8" class="w-100">
+                        <Identicon
+                          :key="data.item.accountId"
+                          :value="data.item.accountId"
+                          :size="24"
+                          :theme="'polkadot'"
+                        />
+                        <nuxt-link
+                          :to="{
+                            name: 'nominator',
+                            query: { accountId: data.item.accountId }
+                          }"
+                          :title="$t('pages.nominators.nominator_details')"
+                        >
+                          <span v-if="data.item.identity">
+                            {{
+                              data.item.identity.display ||
+                                data.item.identity.display
+                            }}
+                          </span>
+                          <span v-else>
+                            <span
+                              class="d-inline d-sm-inline d-md-inline d-lg-inline d-xl-none"
+                              >{{ shortAddress(data.item.accountId) }}</span
+                            >
+                            <span
+                              class="d-none d-sm-none d-md-none d-lg-none d-xl-inline"
+                              >{{ shortAddress(data.item.accountId) }}</span
+                            >
+                          </span>
+                        </nuxt-link>
                         <div>
-                          <Identicon
-                            :key="data.item.accountId"
-                            :value="data.item.accountId"
-                            :size="48"
-                            :theme="'polkadot'"
-                          />
-                        </div>
-                        <div>
-                          <nuxt-link
-                            :to="{
-                              name: 'nominator',
-                              query: { accountId: data.item.accountId }
-                            }"
-                            :title="$t('pages.nominators.nominator_details')"
-                          >
-                            <span v-if="data.item.identity">
-                              {{
-                                data.item.identity.display ||
-                                  data.item.identity.display
-                              }}
-                            </span>
-                            <span v-else>
-                              <span
-                                class="d-inline d-sm-inline d-md-inline d-lg-inline d-xl-none"
-                                >{{ shortAddress(data.item.accountId) }}</span
-                              >
-                              <span
-                                class="d-none d-sm-none d-md-none d-lg-none d-xl-inline"
-                                >{{ shortAddress(data.item.accountId) }}</span
-                              >
-                            </span>
-                          </nuxt-link>
-                        </div>
-                      </b-col>
-                      <b-col cols="6" class="column">
-                        <div>
-                          <p class="mt-2 mb-2">rank #{{ data.item.rank }}</p>
-                        </div>
-                        <div>
-                          <p class="mb-0">
+                          <span class="mb-0">
                             {{ $t("pages.nominators.total_stake") }}:
-                          </p>
-                        </div>
-                        <div>
-                          <p class="mb-0">
                             {{ formatAmount(data.item.totalStake) }}
-                          </p>
+                          </span>
                         </div>
-                      </b-col>
+                      </div>
+                      <div class="favorites w-100">
+                        <p class="text-center mb-0">
+                          <a
+                            class="favorite"
+                            @click="toggleFavorite(data.item.accountId)"
+                          >
+                            <i
+                              v-if="data.item.favorite"
+                              v-b-tooltip.hover
+                              class="fas fa-star"
+                              style="color: #f1bd23"
+                              :title="
+                                $t('pages.validators.remove_from_favorites')
+                              "
+                            />
+                            <i
+                              v-else
+                              v-b-tooltip.hover
+                              class="fas fa-star"
+                              style="color: #e6dfdf;"
+                              :title="$t('pages.validators.add_to_favorites')"
+                            />
+                          </a>
+                        </p>
+                      </div>
                     </b-row>
                   </b-container>
                 </template>
@@ -539,9 +554,24 @@ export default {
 .btn-secondary {
   font-size: 0.8rem;
 }
+
 @media (max-width: 765px) {
+  /* .container {
+    padding-right: 0;
+  } */
   #nominators-table {
     background-color: transparent;
+    margin-right: 0;
+  }
+  table.b-table.b-table-stacked-md > tbody > tr > [data-label] {
+    display: block;
+    grid-template-columns: inherit !important;
+  }
+  .table th,
+  .table td {
+    border-top: 0;
+    padding-top: 0;
+    padding-bottom: 0;
   }
   .nominator-row {
     border: 1px solid #bbb;
@@ -552,11 +582,30 @@ export default {
     background-color: white;
     display: flex;
     flex: 1;
+    grid-template-columns: none;
   }
   .column {
     flex: 1;
     flex-direction: column;
     justify-content: center;
+  }
+  .rank,
+  .favorites {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .rank-number {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: #ef1073;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
   }
 }
 </style>
