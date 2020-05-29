@@ -1,31 +1,8 @@
 <template>
   <b-container class="pt-4">
-    <b-row class="center">
-      <b-card no-body class="overflow-hidden" style="max-width: 540px;">
-        <b-row no-gutters>
-          <b-col md="6">
-            <b-card-img
-              src="https://picsum.photos/400/400/?image=20"
-              alt="Image"
-              class="rounded-0"
-            ></b-card-img>
-          </b-col>
-          <b-col md="6">
-            <b-card-body title="Colmena Labs">
-              <b-card-text>
-                Lorem fistrum pecador no te digo trigo por no llamarte Rodrigor
-                de la pradera a wan se calle ustée a wan sexuarl ese hombree
-                mamaar jarl. Amatomaa mamaar la caidita sexuarl apetecan ese
-                pedazo de.
-              </b-card-text>
-            </b-card-body>
-          </b-col>
-        </b-row>
-      </b-card>
-    </b-row>
     <b-row class="center pt-4">
-      <b-card title="Background del equipo"
-        >Lorem fistrum de la pradera de la pradera me cago en tus muelas ese
+      <b-card title="PolkaStats Team">
+        Lorem fistrum de la pradera de la pradera me cago en tus muelas ese
         hombree pupita benemeritaar. Papaar papaar amatomaa qué dise usteer
         apetecan por la gloria de mi madre ese que llega. A peich llevame al
         sircoo quietooor se calle ustée no te digo trigo por no llamarte
@@ -44,8 +21,8 @@
         benemeritaar ahorarr ese pedazo de no te digo trigo por no llamarte
         Rodrigor. Hasta luego Lucas apetecan qué dise usteer a peich tiene musho
         peligro diodeno la caidita. Al ataquerl se calle ustée de la pradera se
-        calle ustée pecador. Qué dise usteer apetecan pupita torpedo.</b-card
-      >
+        calle ustée pecador. Qué dise usteer apetecan pupita torpedo.
+      </b-card>
     </b-row>
     <b-row class="pt-4">
       <b-card-group deck>
@@ -55,7 +32,7 @@
           sm="12"
           md="6"
           lg="3"
-          class="member"
+          class="member mb-3 pb-3"
         >
           <b-card
             :title="member.name"
@@ -63,9 +40,7 @@
             img-alt="Image"
             img-top
           >
-            <b-card-text>
-              {{ member.description }}
-            </b-card-text>
+            {{ member.description }}
           </b-card>
         </b-col>
       </b-card-group>
@@ -79,26 +54,38 @@ export default {
     return {
       members: [
         {
-          name: "member1",
+          name: "Mario",
+          picture: "https://dragonstake.io/img/dragonstake/team/Mario.jpg",
+          description:
+            "Lorem fistrum no te digo trigo por no llamarte Rodrigor diodenoo te voy a borrar el cerito llevame al sircoo está la cosa muy malar. Va usté muy cargadoo al ataquerl pecador pupita sexuarl ese hombree no puedor diodeno fistro."
+        },
+        {
+          name: "Fredy",
+          picture: "https://dragonstake.io/img/dragonstake/team/Fredy.jpg",
+          description:
+            "Lorem fistrum no te digo trigo por no llamarte Rodrigor diodenoo te voy a borrar el cerito llevame al sircoo está la cosa muy malar. Va usté muy cargadoo al ataquerl pecador pupita sexuarl ese hombree no puedor diodeno fistro."
+        },
+        {
+          name: "Javi",
           picture: "https://picsum.photos/300/300/?image=41",
           description:
             "Lorem fistrum no te digo trigo por no llamarte Rodrigor diodenoo te voy a borrar el cerito llevame al sircoo está la cosa muy malar. Va usté muy cargadoo al ataquerl pecador pupita sexuarl ese hombree no puedor diodeno fistro."
         },
         {
-          name: "member2",
+          name: "Diego",
           picture: "https://picsum.photos/300/300/?image=41",
           description:
             "Lorem fistrum no te digo trigo por no llamarte Rodrigor diodenoo te voy a borrar el cerito llevame al sircoo está la cosa muy malar. Va usté muy cargadoo al ataquerl pecador pupita sexuarl ese hombree no puedor diodeno fistro."
         },
         {
-          name: "member3",
-          picture: "https://picsum.photos/300/300/?image=41",
+          name: "Wimel",
+          picture: "https://dragonstake.io/img/dragonstake/team/Wimel.png",
           description:
             "Lorem fistrum no te digo trigo por no llamarte Rodrigor diodenoo te voy a borrar el cerito llevame al sircoo está la cosa muy malar. Va usté muy cargadoo al ataquerl pecador pupita sexuarl ese hombree no puedor diodeno fistro."
         },
         {
-          name: "member4",
-          picture: "https://picsum.photos/300/300/?image=41",
+          name: "Ana",
+          picture: "https://dragonstake.io/img/dragonstake/team/Ana.jpg",
           description:
             "Lorem fistrum no te digo trigo por no llamarte Rodrigor diodenoo te voy a borrar el cerito llevame al sircoo está la cosa muy malar. Va usté muy cargadoo al ataquerl pecador pupita sexuarl ese hombree no puedor diodeno fistro."
         }
