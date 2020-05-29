@@ -8,7 +8,7 @@
               <span class="network" data-testid="network">
                 <i class="fas fa-project-diagram" /> {{ system.chain }}
                 {{ $t("layout.default.system_message")
-                }}{{ system.client_version }}
+                }}{{ system.client_version.split(`-`)[0] }}
               </span>
             </div>
             <div>
