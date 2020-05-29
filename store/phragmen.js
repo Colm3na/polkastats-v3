@@ -42,7 +42,6 @@ export const mutations = {
     state => state.info;
   },
   toogleFavorite: function(state, id) {
-    console.log("ID: ", id);
     state.info.candidates.map(candidate => {
       if (candidate.pub_key_stash === id) {
         candidate.favorite = !candidate.favorite;
@@ -70,7 +69,6 @@ export const actions = {
         query: GET_PHRAGMEN
       })
       .then(({ data }) => {
-        // console.log(JSON.stringify(data.phragmen[0].phragmen_json, null, 2));
         commit("update", JSON.parse(data.phragmen[0].phragmen_json));
       })
       .catch(error => {

@@ -165,7 +165,12 @@
               </div>
             </template>
             <template slot="identity" slot-scope="data">
-              {{ data.item.identity.display }}
+              <span v-if="data.item.parentIdentity && data.item.identity">
+                {{ data.item.parentIdentity }} / {{ data.item.identity }}
+              </span>
+              <span v-else>
+                {{ data.item.identity }}
+              </span>
             </template>
             <template slot="freeBalance" slot-scope="data">
               <p class="text-right mb-0">

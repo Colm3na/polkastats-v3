@@ -8,7 +8,7 @@
               <span class="network" data-testid="network">
                 <i class="fas fa-project-diagram" /> {{ system.chain }}
                 {{ $t("layout.default.system_message")
-                }}{{ system.client_version }}
+                }}{{ system.client_version.split(`-`)[0] }}
               </span>
             </div>
             <div>
@@ -188,12 +188,13 @@
               {{ $t("layout.default.built_with") }}
             </h3>
             <hr />
-
-            <img
-              src="/img/grant_badge.png"
-              class="grant-badge"
-              alt="Web3 foundation grants program"
-            />
+            <a href="https://web3.foundation/grants/" target="_blank">
+              <img
+                src="/img/grant_badge.png"
+                class="grant-badge"
+                alt="Web3 foundation grants program"
+              />
+            </a>
           </div>
         </div>
         <p
@@ -218,7 +219,7 @@
           /></a>
           <span class="mx-2">|</span>
           <a
-            href="https://github.com/Colm3na/polkastats-v2"
+            href="https://github.com/Colm3na/polkastats-v3"
             aria-label="View source on GitHub"
             title="View source code on GitHub"
             target="_blank"
@@ -230,7 +231,7 @@
       </div>
     </section>
     <a
-      href="https://github.com/Colm3na/polkastats-v2"
+      href="https://github.com/Colm3na/polkastats-v3"
       class="github-corner"
       aria-label="View source on GitHub"
       title="View source code on GitHub"

@@ -60,7 +60,18 @@
                   <tr v-if="parsedAccount.identity.display">
                     <td>Identity::display</td>
                     <td class="text-right">
-                      {{ parsedAccount.identity.display }}
+                      <span
+                        v-if="
+                          parsedAccount.identity.display &&
+                            parsedAccount.identity.displayParent
+                        "
+                      >
+                        {{ parsedAccount.identity.displayParent }} /
+                        {{ parsedAccount.identity.display }}
+                      </span>
+                      <span v-else>
+                        {{ parsedAccount.identity.display }}
+                      </span>
                     </td>
                   </tr>
                   <tr v-if="parsedAccount.identity.email">
