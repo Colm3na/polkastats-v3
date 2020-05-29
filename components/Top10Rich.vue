@@ -59,7 +59,6 @@ export default {
           label: "Balance",
           sortable: true
         },
-        ,
         {
           key: "nonce",
           label: "Transactions",

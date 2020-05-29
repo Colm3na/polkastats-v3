@@ -58,7 +58,7 @@ export default {
     clientConfigs: {
       default: {
         httpEndpoint: "https://polkastats.io/api/v3/v1/graphql",
-        wsEndpoint: "wss://polkastats.io/api/v3/v1/graphql",
+        wsEndpoint: "wss://v3dev2.polkastats.io/api/v3",
         websocketsOnly: true
       }
     }
