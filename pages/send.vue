@@ -26,7 +26,7 @@
                       : 'font-size: 0.8rem; color: red'
                   "
                 >
-                  Balance: {{ tranferableBalance }}
+                  Transferable balance: {{ formatAmount(tranferableBalance) }}
                 </p>
               </div>
             </b-form-group>
@@ -113,6 +113,38 @@
         </b-row>
         <b-row>
           <b-col md="12" lg="6">
+            <b-alert variant="warning" class="my-2" :show="selectedAddress">
+              <p class="my-2 text-center">
+                <span v-if="selectedAddress">
+                  Send
+                  <span v-if="getAmount() > 0">
+                    {{ formatAmount(getAmount()) }}
+                  </span>
+                  from
+                  <Identicon
+                    :key="selectedAddress"
+                    :value="selectedAddress"
+                    :size="20"
+                    :theme="'polkadot'"
+                  />
+                  {{ shortAddress(selectedAddress) }}
+                </span>
+                <span v-if="targetAddress">
+                  to
+                  <Identicon
+                    :key="targetAddress"
+                    :value="targetAddress"
+                    :size="20"
+                    :theme="'polkadot'"
+                  />
+                  {{ shortAddress(targetAddress) }}
+                </span>
+              </p>
+            </b-alert>
+          </b-col>
+        </b-row>
+        <b-row>
+          <b-col md="12" lg="6">
             <b-form-group
               id="input-group-3"
               label=" "
@@ -126,40 +158,16 @@
           </b-col>
         </b-row>
       </b-form>
-      <b-card class="mt-3 w-100" header="Send">
-        <div v-if="error">
-          <p>ERROR: {{ error }}</p>
-        </div>
-        <div v-else-if="extrinsicHash">
-          <h3>Transaction successfully broadcasted!</h3>
-          <h4>Extrinsic hash is {{ extrinsicHash }}</h4>
-        </div>
-        <div v-else-if="selectedAddress">
-          <p>
-            Send {{ formatAmount(getAmount()) }} from
-            <Identicon
-              :key="selectedAddress"
-              :value="selectedAddress"
-              :size="20"
-              :theme="'polkadot'"
-            />
-            {{ selectedAddress }}
-            <span v-if="targetAddress">
-              to
-              <Identicon
-                :key="targetAddress"
-                :value="targetAddress"
-                :size="20"
-                :theme="'polkadot'"
-              />
-              {{ targetAddress }}
-            </span>
-          </p>
-        </div>
-        <div v-else>
-          <p>No address found!</p>
-        </div>
-      </b-card>
+      <b-alert variant="success" :show="extrinsicHash">
+        <h3>Transaction successfully broadcasted!</h3>
+        <h4>Extrinsic hash is {{ extrinsicHash }}</h4>
+      </b-alert>
+      <b-alert variant="alert" :show="error">
+        <p>ERROR: {{ error }}</p>
+      </b-alert>
+      <b-alert variant="alert" :show="extensionAccounts.length === 0">
+        <p>No address found!</p>
+      </b-alert>
     </div>
   </b-container>
 </template>
@@ -282,10 +290,10 @@ export default {
       }
     },
     async getBalance() {
-      const {
-        data: { free }
-      } = await this.api.query.system.account(this.selectedAddress);
-      return free;
+      const { availableBalance } = await this.api.derive.balances.all(
+        this.selectedAddress
+      );
+      return availableBalance;
     },
     async send() {
       this.state = "Started";
