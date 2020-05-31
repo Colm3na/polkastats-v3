@@ -49,31 +49,31 @@
                 </b-col>
                 <b-col cols="2" class="pl-0">
                   <b-dropdown id="unities" :text="unitSelected" class="mb-0">
-                    <b-dropdown-item @click="setUnity('pico')"
+                    <b-dropdown-item @click="setUnit('pico')"
                       >Pico</b-dropdown-item
                     >
-                    <b-dropdown-item @click="setUnity('nano')"
+                    <b-dropdown-item @click="setUnit('nano')"
                       >Nano</b-dropdown-item
                     >
-                    <b-dropdown-item @click="setUnity('micro')"
+                    <b-dropdown-item @click="setUnit('micro')"
                       >Micro</b-dropdown-item
                     >
-                    <b-dropdown-item @click="setUnity('mili')"
+                    <b-dropdown-item @click="setUnit('mili')"
                       >Mili</b-dropdown-item
                     >
-                    <b-dropdown-item @click="setUnity('KSM')"
+                    <b-dropdown-item @click="setUnit('KSM')"
                       >KSM</b-dropdown-item
                     >
-                    <b-dropdown-item @click="setUnity('Kilo')"
+                    <b-dropdown-item @click="setUnit('Kilo')"
                       >Kilo</b-dropdown-item
                     >
-                    <b-dropdown-item @click="setUnity('Mega')"
+                    <b-dropdown-item @click="setUnit('Mega')"
                       >Mega</b-dropdown-item
                     >
-                    <b-dropdown-item @click="setUnity('Giga')"
+                    <b-dropdown-item @click="setUnit('Giga')"
                       >Giga</b-dropdown-item
                     >
-                    <b-dropdown-item @click="setUnity('Tera')"
+                    <b-dropdown-item @click="setUnit('Tera')"
                       >Tera</b-dropdown-item
                     >
                   </b-dropdown>
@@ -327,7 +327,7 @@ export default {
       this.validator = null;
       this.rewards = null;
     },
-    setUnity(unit) {
+    setUnit(unit) {
       this.unitSelected = unit;
     },
     getValue() {

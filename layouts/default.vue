@@ -45,11 +45,11 @@
                 </b-nav-item>
                 <b-nav-item>
                   <nuxt-link
-                    to="/transferir"
+                    to="/send"
                     class="nav-link"
-                    data-testid="menu-transferir"
+                    data-testid="menu-send"
                   >
-                    Transferir
+                    Send
                   </nuxt-link>
                 </b-nav-item>
                 <b-nav-item>
