@@ -8,7 +8,7 @@
               <span class="network" data-testid="network">
                 <i class="fas fa-project-diagram" /> {{ system.chain }}
                 {{ $t("layout.default.system_message")
-                }}{{ system.client_version }}
+                }}{{ system.client_version.split(`-`)[0] }}
               </span>
             </div>
             <div>
@@ -194,34 +194,14 @@
             data-testid="footer-builtFor"
           >
             <h3 class="mb-3">
-              {{ $t("layout.default.built_for") }}
+              {{ $t("layout.default.built_with") }}
             </h3>
             <hr />
-            <a
-              href="https://kusama.network"
-              target="_blank"
-              title="Built for KUSAMA"
-              data-testid="kusama"
-            >
+            <a href="https://web3.foundation/grants/" target="_blank">
               <img
-                src="/img/KUSAMA_logo_7.png"
-                class="kusama-logo"
-                alt="Built for KUSAMA"
-              />
-            </a>
-            <p class="mt-4" data-testid="">
-              <small>{{ $t("layout.default.the_wild_cousin_of") }}</small>
-            </p>
-            <a
-              href="https://polkadot.network"
-              target="_blank"
-              title="Built for POLKADOT"
-              data-testid="polkadot"
-            >
-              <img
-                class="polkadot-logo"
-                src="/img/Polkadot_Logotype_white.png"
-                alt="Built for POLKADOT"
+                src="/img/grant_badge.png"
+                class="grant-badge"
+                alt="Web3 foundation grants program"
               />
             </a>
           </div>
@@ -230,23 +210,14 @@
           class="small pt-4 text-center text-white"
           data-testid="footer-bottom"
         >
-          {{ $t("layout.default.made_with") }}
-          <i class="far fa-heart" />
-          {{ $t("layout.default.by") }}
-          <a
-            href="https://mariopino.es"
-            title="Mario Pino"
-            data-testid="marioLink"
-            >Mario Pino</a
+          <nuxt-link
+            to="/team"
+            active-class="nuxt-link-exact-active"
+            class="nav-link"
+            data-testid="polkastatsTeam"
           >
-          {{ $t("layout.default.in") }}
-          <a
-            target="_blank"
-            href="https://colmenalabs.org"
-            title="La Colmena"
-            data-testid="laColmena"
-            >La Colmena</a
-          >
+            {{ $t("layout.default.made_by") }}
+          </nuxt-link>
           <span class="mx-2">|</span> {{ $t("layout.default.built_with") }}
           <a
             href="https://basicattentiontoken.org/"
@@ -257,7 +228,7 @@
           /></a>
           <span class="mx-2">|</span>
           <a
-            href="https://github.com/Colm3na/polkastats-v2"
+            href="https://github.com/Colm3na/polkastats-v3"
             aria-label="View source on GitHub"
             title="View source code on GitHub"
             target="_blank"
@@ -269,7 +240,7 @@
       </div>
     </section>
     <a
-      href="https://github.com/Colm3na/polkastats-v2"
+      href="https://github.com/Colm3na/polkastats-v3"
       class="github-corner"
       aria-label="View source on GitHub"
       title="View source code on GitHub"
@@ -668,6 +639,16 @@ section .section-title {
 
 .table {
   background-color: white;
+}
+
+.badget-container {
+  justify-content: center;
+  margin: 0;
+}
+
+.grant-badge {
+  width: 75%;
+  max-width: 200px;
 }
 
 /*----------------------- Media queries --------------------------*/

@@ -57,8 +57,8 @@ export default {
   apollo: {
     clientConfigs: {
       default: {
-        httpEndpoint: "http://v3dev1.polkastats.io:8082/v1/graphql",
-        wsEndpoint: "ws://v3dev1.polkastats.io:8082/v1/graphql",
+        httpEndpoint: "https://polkastats.io/api/v3/v1/graphql",
+        wsEndpoint: "wss://v3dev2.polkastats.io/api/v3",
         websocketsOnly: true
       }
     }

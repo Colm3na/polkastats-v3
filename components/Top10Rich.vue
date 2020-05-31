@@ -27,6 +27,9 @@
         <template slot="free_balance" slot-scope="data">
           <p class="mb-0">{{ formatAmount(data.item.free_balance) }}</p>
         </template>
+        <template slot="nonce" slot-scope="data">
+          <p class="mb-0">{{ data.item.nonce }}</p>
+        </template>
       </b-table>
     </div>
   </div>
@@ -55,6 +58,11 @@ export default {
           key: "free_balance",
           label: "Balance",
           sortable: true
+        },
+        {
+          key: "nonce",
+          label: "Transactions",
+          sortable: true
         }
       ]
     };
@@ -68,6 +76,7 @@ export default {
               account_id
               identity_display
               free_balance
+              nonce
             }
           }
         `,

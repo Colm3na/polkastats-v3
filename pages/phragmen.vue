@@ -359,9 +359,6 @@ export default {
     handleNumFields(num) {
       this.perPage = parseInt(num);
     },
-    setFavorites() {
-      console.log(this.candidates);
-    },
     toggleFavorite(accountId) {
       if (this.favorites.indexOf(accountId) !== -1) {
         this.favorites.splice(this.favorites.indexOf(accountId), 1);
