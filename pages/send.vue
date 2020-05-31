@@ -34,7 +34,7 @@
           <b-col md="12" lg="6">
             <b-form-group
               id="input-group-3"
-              label="Cantidad a enviar"
+              label="Amount:"
               label-for="input-3"
               class="w-100"
             >
@@ -94,7 +94,7 @@
                 <b-tab title="Transfer" active @click="isSendTx = true">
                   <b-form-group
                     id="input-group-2"
-                    label="Hacia la dirección:"
+                    label="To:"
                     label-for="input-2"
                     class="w-100"
                   >
@@ -110,7 +110,7 @@
                 <b-tab title="Staking" @click="isSendTx = false">
                   <b-form-group
                     id="search-group"
-                    label="En Validador:"
+                    label="Validator:"
                     label-for="input-2"
                     class="w-100"
                   >
@@ -118,7 +118,7 @@
                       id="search"
                       v-model="searchQuery"
                       type="search"
-                      placeholder="Buscar Validador por address"
+                      placeholder="Search validator by address"
                     />
                   </b-form-group>
                   <div v-if="validator">
@@ -182,7 +182,7 @@
             <li class="mt-0">
               {{ isSendTx ? "Send" : "Stake" }} {{ getAmount() }}
             </li>
-            <li class="mt-0">from {{ selectedAccount.meta.name }}</li>
+            <li class="mt-0">from {{ selectedAccount }}</li>
             <li v-if="isSendTx" class="mt-0">to: {{ targetAccount }}</li>
             <li v-else class="mt-0">
               to stake in:
@@ -290,9 +290,10 @@ export default {
               this.api = api;
               if (accounts.length > 0) {
                 accounts.forEach(account =>
-                  this.accounts.push(account.address)
+                  this.accounts.push(account.meta.name)
                 );
                 this.selectedAccount = this.accounts[0];
+                console.log(`selectedAccount:`, this.selectedAccount);
               }
             });
           })
@@ -397,7 +398,7 @@ export default {
       this.validator = validator[0];
     },
     async stake() {
-      console.log("From: ", this.selectedAccount.meta.name);
+      console.log("From: ", this.selectedAccount);
       console.log("To: ", this.validator);
       console.log("Amount: ", this.getAmount());
       console.log("Reward destination: ", this.rewards);
