@@ -183,12 +183,9 @@
               {{ isSendTx ? "Send" : "Stake" }} {{ getAmount() }}
             </li>
             <li class="mt-0">from {{ selectedAccount.meta.name }}</li>
-
-            <li v-if="isSendTx" class="mt-0">
-              to: {{ targetAccount }}
-            </li>
+            <li v-if="isSendTx" class="mt-0">to: {{ targetAccount }}</li>
             <li v-else class="mt-0">
-              para Staking en el validador:
+              to stake in:
               {{
                 validator && validator.identity
                   ? validator.identity.display
@@ -198,13 +195,13 @@
               }}
             </li>
             <br />
-            <li class="mt-0">Estado de la operación: {{ state }}</li>
+            <li class="mt-0">State: {{ state }}</li>
             <li v-if="transactionHash">Hash: {{ transactionHash }}</li>
           </ul>
-          <p v-if="error">Ha habido un Error</p>
+          <p v-if="error">Error</p>
         </div>
         <div v-else>
-          <p>No se ha detectado ninguna address de Polkadot</p>
+          <p>No address found!</p>
         </div>
       </b-card>
     </div>
@@ -237,7 +234,7 @@ export default {
       enoughBalance: true,
       enableWeb3: false,
       error: null,
-      state: "NO iniciada",
+      state: "Not started yet",
       value: 0,
       units: [
         "pico",
