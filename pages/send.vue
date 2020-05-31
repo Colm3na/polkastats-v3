@@ -1,7 +1,7 @@
 <template>
   <b-container>
     <div class="pt-4">
-      <b-form class="mt-2" @submit="onSubmit" @reset="onReset">
+      <b-form class="mt-2" @submit="onSubmit">
         <b-row>
           <b-col md="12" lg="6">
             <b-form-group
@@ -12,8 +12,8 @@
             >
               <b-form-select
                 id="input-1"
-                v-model="selectedAccount"
-                :options="accounts"
+                v-model="selectedAddress"
+                :options="extensionAddresses"
                 required
                 class="w-100"
               ></b-form-select>
@@ -26,11 +26,13 @@
                       : 'font-size: 0.8rem; color: red'
                   "
                 >
-                  Balance: {{ selectedAccountBalance }}
+                  Balance: {{ tranferableBalance }}
                 </p>
               </div>
             </b-form-group>
           </b-col>
+        </b-row>
+        <b-row>
           <b-col md="12" lg="6">
             <b-form-group
               id="input-group-3"
@@ -42,163 +44,117 @@
                 <b-col cols="8" class="pr-1">
                   <b-form-input
                     id="input-3"
-                    v-model="value"
+                    v-model="amount"
                     required
-                    placeholder="Cantidad"
+                    placeholder="Amount"
                   ></b-form-input>
                 </b-col>
-                <b-col cols="2" class="pl-0">
-                  <b-dropdown id="unities" :text="selectedUnit" class="mb-0">
+                <b-col cols="4">
+                  <b-dropdown
+                    id="units"
+                    :text="selectedUnit"
+                    class="mb-0 btn-block"
+                  >
                     <b-dropdown-item @click="setUnit('pico')"
-                      >Pico</b-dropdown-item
+                      >pico</b-dropdown-item
                     >
                     <b-dropdown-item @click="setUnit('nano')"
-                      >Nano</b-dropdown-item
+                      >nano</b-dropdown-item
                     >
                     <b-dropdown-item @click="setUnit('micro')"
-                      >Micro</b-dropdown-item
+                      >micro</b-dropdown-item
                     >
                     <b-dropdown-item @click="setUnit('mili')"
-                      >Mili</b-dropdown-item
+                      >mili</b-dropdown-item
                     >
                     <b-dropdown-item @click="setUnit('KSM')"
                       >KSM</b-dropdown-item
                     >
-                    <b-dropdown-item @click="setUnit('Kilo')"
-                      >Kilo</b-dropdown-item
+                    <b-dropdown-item @click="setUnit('kilo')"
+                      >kilo</b-dropdown-item
                     >
-                    <b-dropdown-item @click="setUnit('Mega')"
-                      >Mega</b-dropdown-item
+                    <b-dropdown-item @click="setUnit('mega')"
+                      >mega</b-dropdown-item
                     >
-                    <b-dropdown-item @click="setUnit('Giga')"
-                      >Giga</b-dropdown-item
+                    <b-dropdown-item @click="setUnit('giga')"
+                      >giga</b-dropdown-item
                     >
-                    <b-dropdown-item @click="setUnit('Tera')"
-                      >Tera</b-dropdown-item
+                    <b-dropdown-item @click="setUnit('tera')"
+                      >tera</b-dropdown-item
                     >
                   </b-dropdown>
                 </b-col>
               </b-row>
               <div>
                 <p class="ml-2 mb-0 mt-1" style="font-size: 0.8rem">
-                  Amount: {{ getAmount() }}
+                  Amount: {{ formatAmount(getAmount()) }}
                 </p>
               </div>
             </b-form-group>
           </b-col>
         </b-row>
         <b-row>
-          <div class="w-100">
-            <b-card no-body>
-              <b-tabs card>
-                <b-tab title="Transfer" active @click="isSendTx = true">
-                  <b-form-group
-                    id="input-group-2"
-                    label="To:"
-                    label-for="input-2"
-                    class="w-100"
-                  >
-                    <b-form-input
-                      id="input-2"
-                      v-model="targetAccount"
-                      required
-                      placeholder="Address"
-                      class="w-100"
-                    ></b-form-input>
-                  </b-form-group>
-                </b-tab>
-                <b-tab title="Staking" @click="isSendTx = false">
-                  <b-form-group
-                    id="search-group"
-                    label="Validator:"
-                    label-for="input-2"
-                    class="w-100"
-                  >
-                    <b-form-input
-                      id="search"
-                      v-model="searchQuery"
-                      type="search"
-                      placeholder="Search validator by address"
-                    />
-                  </b-form-group>
-                  <div v-if="validator">
-                    <table>
-                      <tr>
-                        <th>Current Elected</th>
-                        <th>Stakers</th>
-                        <th>Commission</th>
-                      </tr>
-                      <tr>
-                        <td>{{ validator.currentElected ? "YES" : "NO" }}</td>
-                        <td>{{ validator.stakers.others.length }}</td>
-                        <td>{{ validator.commission }}%</td>
-                      </tr>
-                    </table>
-
-                    <div
-                      v-if="validator.identity && validator.identity.display"
-                      class="mt-2"
-                      style="display: flex"
-                    >
-                      <Identicon
-                        :key="validator.accountId"
-                        :value="validator.accountId"
-                        :size="20"
-                        :theme="'polkadot'"
-                      />
-                      <span class="ml-2">{{ validator.identity.display }}</span>
-                    </div>
-                    <b-row class="mt-4">
-                      <b-container>
-                        <b-form-group label="Rewards destination">
-                          <b-form-radio-group
-                            id="radio-slots"
-                            v-model="rewards"
-                            :options="rewardsDestinations"
-                            name="radio-rewards-destinations"
-                          />
-                        </b-form-group>
-                      </b-container>
-                    </b-row>
-                  </div>
-                  <div v-else>No se encuentra</div>
-                </b-tab>
-              </b-tabs>
-            </b-card>
-          </div>
+          <b-col md="12" lg="6">
+            <b-form-group
+              id="input-group-2"
+              label="To:"
+              label-for="input-2"
+              class="w-100"
+            >
+              <b-form-input
+                id="input-2"
+                v-model="targetAddress"
+                required
+                placeholder="Address"
+                class="w-100"
+              ></b-form-input>
+            </b-form-group>
+          </b-col>
         </b-row>
         <b-row>
-          <div class="w-100 mt-3" style="text-align: right">
-            <b-button type="submit" variant="primary" style="margin-right: 2rem"
-              >Send</b-button
+          <b-col md="12" lg="6">
+            <b-form-group
+              id="input-group-3"
+              label=" "
+              label-for="input-3"
+              class="w-100"
             >
-            <b-button type="reset" variant="danger">Reset</b-button>
-          </div>
+              <b-button type="submit" variant="primary" class="btn-block"
+                >Send</b-button
+              >
+            </b-form-group>
+          </b-col>
         </b-row>
       </b-form>
-      <b-card class="mt-3 w-100" :header="isSendTx ? 'Transfer' : 'Stake'">
-        <div v-if="accounts.length !== 0">
-          <ul>
-            <li class="mt-0">
-              {{ isSendTx ? "Send" : "Stake" }} {{ getAmount() }}
-            </li>
-            <li class="mt-0">from {{ selectedAccount }}</li>
-            <li v-if="isSendTx" class="mt-0">to: {{ targetAccount }}</li>
-            <li v-else class="mt-0">
-              to stake in:
-              {{
-                validator && validator.identity
-                  ? validator.identity.display
-                  : validator && validator.accountId
-                  ? validator.accountId
-                  : ""
-              }}
-            </li>
-            <br />
-            <li class="mt-0">State: {{ state }}</li>
-            <li v-if="transactionHash">Hash: {{ transactionHash }}</li>
-          </ul>
-          <p v-if="error">Error</p>
+      <b-card class="mt-3 w-100" header="Send">
+        <div v-if="error">
+          <p>ERROR: {{ error }}</p>
+        </div>
+        <div v-else-if="extrinsicHash">
+          <h3>Transaction successfully broadcasted!</h3>
+          <h4>Extrinsic hash is {{ extrinsicHash }}</h4>
+        </div>
+        <div v-else-if="selectedAddress">
+          <p>
+            Send {{ formatAmount(getAmount()) }} from
+            <Identicon
+              :key="selectedAddress"
+              :value="selectedAddress"
+              :size="20"
+              :theme="'polkadot'"
+            />
+            {{ selectedAddress }}
+            <span v-if="targetAddress">
+              to
+              <Identicon
+                :key="targetAddress"
+                :value="targetAddress"
+                :size="20"
+                :theme="'polkadot'"
+              />
+              {{ targetAddress }}
+            </span>
+          </p>
         </div>
         <div v-else>
           <p>No address found!</p>
@@ -218,24 +174,26 @@ import {
 } from "@polkadot/extension-dapp";
 import { ApiPromise, WsProvider } from "@polkadot/api";
 import { nodeURL } from "../polkastats.config";
-import gql from "graphql-tag";
-import * as R from "ramda";
 import Identicon from "../components/identicon.vue";
+import commonMixin from "../mixins/commonMixin.js";
 
 export default {
   components: { Identicon },
+  mixins: [commonMixin],
   data() {
     return {
-      accounts: [],
-      selectedAccount: "",
-      selectedAccountBalance: 0,
-      targetAccount: null,
+      extensionAccounts: [],
+      extensionAddresses: [],
+      selectedAccount: null,
+      selectedAddress: null,
+      tranferableBalance: 0,
+      targetAddress: null,
       api: null,
       enoughBalance: true,
       enableWeb3: false,
       error: null,
       state: "Not started yet",
-      value: 0,
+      amount: 0,
       units: [
         "pico",
         "nano",
@@ -248,32 +206,18 @@ export default {
         "Tera"
       ],
       selectedUnit: "KSM",
-      transactionHash: null,
-      isSendTx: true,
-      validators: [],
-      searchQuery: "",
-      validator: null,
-      rewardsDestinations: ["Staked", "Stash", "Controller"],
-      rewards: null
+      extrinsicHash: null
     };
-  },
-  computed: {
-    identitiesLoaded() {
-      return this.$store.state.identities.dataLoaded;
-    },
-    kusamaIdentitiesLoaded() {
-      return this.$store.state.stakingIdentities.dataLoaded;
-    }
   },
   watch: {
     selectedAccount: async function() {
-      this.selectedAccountBalance = await this.getBalance();
+      this.tranferableBalance = await this.getBalance();
     },
     searchQuery: function() {
       this.searchValidators();
     },
-    value: function() {
-      this.enoughBalance = this.selectedAccountBalance >= this.getAmount();
+    amount: function() {
+      this.enoughBalance = this.tranferableBalance >= this.getAmount();
     }
   },
   created: async function() {
@@ -283,17 +227,19 @@ export default {
       .then(() => {
         web3Accounts()
           .then(accounts => {
-            console.log(`accounts:`, accounts);
             const wsProvider = new WsProvider(nodeURL);
-
             ApiPromise.create({ provider: wsProvider }).then(api => {
               this.api = api;
               if (accounts.length > 0) {
+                this.extensionAccounts = accounts;
                 accounts.forEach(account =>
-                  this.accounts.push(account.meta.name)
+                  this.extensionAddresses.push(account.meta.name)
                 );
-                this.selectedAccount = this.accounts[0];
+                this.selectedAccount = this.extensionAccounts[0];
+                this.selectedAddress = this.extensionAddresses[0];
+                console.log(`extensionAccounts:`, this.extensionAccounts);
                 console.log(`selectedAccount:`, this.selectedAccount);
+                console.log(`selectedAddress:`, this.selectedAddress);
               }
             });
           })
@@ -308,22 +254,7 @@ export default {
   methods: {
     onSubmit(evt) {
       evt.preventDefault();
-      this.isSendTx ? this.send() : this.stake();
-    },
-    onReset(evt) {
-      evt.preventDefault();
-
-      this.selectedAccount = null;
-      this.selectedAccountBalance = 0;
-      this.targetAccount = null;
-      this.enableWeb3 = false;
-      this.enoughBalance = true;
-      this.error = null;
-      this.state = "Not loaded yet";
-      this.value = 0;
-      this.transactionHash = null;
-      this.validator = null;
-      this.rewards = null;
+      this.send();
     },
     setUnit(unit) {
       this.selectedUnit = unit;
@@ -331,152 +262,55 @@ export default {
     getAmount() {
       switch (this.selectedUnit) {
         case "pico":
-          return this.value * 1;
+          return this.amount;
         case "nano":
-          return this.value * 1000;
+          return this.amount * 1000;
         case "micro":
-          return this.value * 1000000;
+          return this.amount * 1000000;
         case "mili":
-          return this.value * 1000000000;
+          return this.amount * 1000000000;
         case "KSM":
-          return this.value * 1000000000000;
-        case "Kilo":
-          return this.value * 1000000000000000;
-        case "Mega":
-          return this.value * 1000000000000000000;
-        case "Giga":
-          return this.value * 1000000000000000000000;
-        case "Tera":
-          return this.value * 1000000000000000000000000;
+          return this.amount * 1000000000000;
+        case "kilo":
+          return this.amount * 1000000000000000;
+        case "mega":
+          return this.amount * 1000000000000000000;
+        case "giga":
+          return this.amount * 1000000000000000000000;
+        case "tera":
+          return this.amount * 1000000000000000000000000;
       }
-    },
-    getIdentity(stashId) {
-      let filteredArray = this.$store.state.identities.list.filter(obj => {
-        return obj.accountId === stashId;
-      });
-      return filteredArray[0];
-    },
-    hasKusamaIdentity(stashId) {
-      return this.$store.state.stakingIdentities.list.some(obj => {
-        return obj.accountId === stashId;
-      });
-    },
-    getKusamaIdentity(stashId) {
-      let filteredArray = this.$store.state.stakingIdentities.list.filter(
-        obj => {
-          return obj.accountId === stashId;
-        }
-      );
-      return filteredArray[0] ? filteredArray[0].identity : null;
     },
     async getBalance() {
       const {
         data: { free }
-      } = await this.api.query.system.account(this.selectedAccount);
+      } = await this.api.query.system.account(this.selectedAddress);
       return free;
     },
     async send() {
       this.state = "Started";
 
-      web3FromAddress(this.selectedAccount).then(async injector => {
+      web3FromAddress(this.selectedAccount.address).then(async injector => {
         this.api.setSigner(injector.signer);
-        const value = this.getAmount();
+        const amount = this.getAmount();
 
-        const txHash = await this.api.tx.balances.transfer(
-          this.targetAccount,
-          value
+        const extrinsic = await this.api.tx.balances.transfer(
+          this.targetAddress,
+          amount
         );
-
-        this.transactionHash = await txHash.signAndSend(this.selectedAccount);
+        console.log(`extrinsic:`, extrinsic);
+        this.extrinsicHash = await extrinsic.signAndSend(
+          this.selectedAccount.address
+        );
         this.state = "Finished";
       });
-    },
-    searchValidators: function() {
-      const validator = this.validators.filter(
-        validator => validator.accountId === this.searchQuery
-      );
-      this.validator = validator[0];
-    },
-    async stake() {
-      console.log("From: ", this.selectedAccount);
-      console.log("To: ", this.validator);
-      console.log("Amount: ", this.getAmount());
-      console.log("Reward destination: ", this.rewards);
-    }
-  },
-  apollo: {
-    $subscribe: {
-      validators: {
-        query: gql`
-          subscription validator_staking {
-            validator_staking(limit: 1, order_by: { timestamp: desc }) {
-              json
-            }
-          }
-        `,
-        result({ data }) {
-          const { validator_staking } = data;
-          const validators = JSON.parse(validator_staking[0].json);
-
-          const transformations = validator => {
-            let stake = 0;
-
-            let commission = 0;
-            if (validator.validatorPrefs) {
-              commission = validator.validatorPrefs.commission;
-            }
-            validator.commission = (commission / 10000000).toFixed(2);
-
-            let identity = this.getIdentity(validator.accountId);
-            if (identity !== [] && typeof identity !== "undefined") {
-              validator.identity = identity.identity;
-            } else {
-              let kusamaIdentity = this.getKusamaIdentity(validator.accountId);
-              if (kusamaIdentity) {
-                validator.identity = kusamaIdentity;
-              } else {
-                validator.identity = null;
-              }
-            }
-            validator.stakers = validator.exposure;
-            validator.numStakers = validator.exposure.others.length;
-          };
-          R.mapObjIndexed(transformations, validators);
-
-          this.validators = validators;
-        },
-        skip() {
-          if (!this.identitiesLoaded) {
-            this.$store.dispatch("identities/update");
-            return true;
-          }
-          if (!this.kusamaIdentitiesLoaded) {
-            this.$store.dispatch("stakingIdentities/update");
-            return true;
-          }
-          return false;
-        }
-      }
     }
   }
 };
 </script>
 
-<style scoped>
-table {
-  font-family: arial, sans-serif;
-  border-collapse: collapse;
-  width: 100%;
-}
-
-td,
-th {
-  border: 1px solid #dddddd;
-  text-align: left;
-  padding: 8px;
-}
-
-tr:nth-child(even) {
-  background-color: #dddddd;
+<style>
+.identicon {
+  display: inline-block;
 }
 </style>
