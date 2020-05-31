@@ -44,10 +44,16 @@
                 <b-col cols="8" class="pr-1">
                   <b-form-input
                     id="input-3"
-                    v-model="amount"
-                    required
+                    v-model="$v.amount.$model"
+                    type="number"
+                    :state="validateState('amount')"
+                    aria-describedby="amount-feedback"
                     placeholder="Amount"
                   ></b-form-input>
+                  <b-form-invalid-feedback id="amount-feedback"
+                    >Please enter a positive amount, less or equal to
+                    {{ formatAmount(tranferableBalance) }}
+                  </b-form-invalid-feedback>
                 </b-col>
                 <b-col cols="4">
                   <b-dropdown
@@ -55,33 +61,13 @@
                     :text="selectedUnit"
                     class="mb-0 btn-block"
                   >
-                    <b-dropdown-item @click="setUnit('pico')"
-                      >pico</b-dropdown-item
+                    <b-dropdown-item
+                      v-for="unit in units"
+                      :key="unit"
+                      @click="setUnit(unit)"
                     >
-                    <b-dropdown-item @click="setUnit('nano')"
-                      >nano</b-dropdown-item
-                    >
-                    <b-dropdown-item @click="setUnit('micro')"
-                      >micro</b-dropdown-item
-                    >
-                    <b-dropdown-item @click="setUnit('mili')"
-                      >mili</b-dropdown-item
-                    >
-                    <b-dropdown-item @click="setUnit('KSM')"
-                      >KSM</b-dropdown-item
-                    >
-                    <b-dropdown-item @click="setUnit('kilo')"
-                      >kilo</b-dropdown-item
-                    >
-                    <b-dropdown-item @click="setUnit('mega')"
-                      >mega</b-dropdown-item
-                    >
-                    <b-dropdown-item @click="setUnit('giga')"
-                      >giga</b-dropdown-item
-                    >
-                    <b-dropdown-item @click="setUnit('tera')"
-                      >tera</b-dropdown-item
-                    >
+                      {{ unit }}
+                    </b-dropdown-item>
                   </b-dropdown>
                 </b-col>
               </b-row>
@@ -103,17 +89,27 @@
             >
               <b-form-input
                 id="input-2"
-                v-model="targetAddress"
-                required
+                v-model="$v.targetAddress.$model"
+                :state="validateState('targetAddress')"
+                aria-describedby="targetAddress-feedback"
                 placeholder="Address"
                 class="w-100"
               ></b-form-input>
+              <b-form-invalid-feedback id="targetAddress-feedback"
+                >Please enter the destination address
+              </b-form-invalid-feedback>
             </b-form-group>
           </b-col>
         </b-row>
         <b-row>
           <b-col md="12" lg="6">
-            <b-alert variant="warning" class="my-2" :show="selectedAddress">
+            <b-alert
+              v-if="!this.$v.$invalid && !extrinsicHash"
+              variant="success"
+              class="my-2"
+              fade
+              show
+            >
               <p class="my-2 text-center">
                 <span v-if="selectedAddress">
                   Send
@@ -141,33 +137,30 @@
                 </span>
               </p>
             </b-alert>
+            <b-alert
+              v-if="extrinsicHash"
+              variant="success"
+              class="text-center"
+              fade
+              show
+            >
+              <h4>Transaction sent!</h4>
+              <p>Extrinsic hash is {{ extrinsicHash }}</p>
+            </b-alert>
           </b-col>
         </b-row>
         <b-row>
           <b-col md="12" lg="6">
-            <b-form-group
-              id="input-group-3"
-              label=" "
-              label-for="input-3"
-              class="w-100"
+            <b-button
+              type="submit"
+              variant="primary"
+              class="btn-send btn-block mt-3"
             >
-              <b-button type="submit" variant="primary" class="btn-block"
-                >Send</b-button
-              >
-            </b-form-group>
+              <i class="fas fa-paper-plane"></i> Send
+            </b-button>
           </b-col>
         </b-row>
       </b-form>
-      <b-alert variant="success" :show="extrinsicHash">
-        <h3>Transaction successfully broadcasted!</h3>
-        <h4>Extrinsic hash is {{ extrinsicHash }}</h4>
-      </b-alert>
-      <b-alert variant="alert" :show="error">
-        <p>ERROR: {{ error }}</p>
-      </b-alert>
-      <b-alert variant="alert" :show="extensionAccounts.length === 0">
-        <p>No address found!</p>
-      </b-alert>
     </div>
   </b-container>
 </template>
@@ -184,10 +177,19 @@ import { ApiPromise, WsProvider } from "@polkadot/api";
 import { nodeURL } from "../polkastats.config";
 import Identicon from "../components/identicon.vue";
 import commonMixin from "../mixins/commonMixin.js";
+import { validationMixin } from "vuelidate";
+import { required, integer, minValue } from "vuelidate/lib/validators";
+
+const isValidAddress = address => {
+  return address.length === 47;
+};
+
+const isValidAmount = (amount, vm) =>
+  amount > 0 && vm.getAmount() <= parseInt(vm.tranferableBalance.toString());
 
 export default {
   components: { Identicon },
-  mixins: [commonMixin],
+  mixins: [commonMixin, validationMixin],
   data() {
     return {
       extensionAccounts: [],
@@ -195,12 +197,11 @@ export default {
       selectedAccount: null,
       selectedAddress: null,
       tranferableBalance: 0,
-      targetAddress: null,
+      targetAddress: "",
       api: null,
       enoughBalance: true,
       enableWeb3: false,
       error: null,
-      state: "Not started yet",
       amount: 0,
       units: [
         "pico",
@@ -216,6 +217,18 @@ export default {
       selectedUnit: "KSM",
       extrinsicHash: null
     };
+  },
+  validations: {
+    amount: {
+      required,
+      integer,
+      minValue: 1,
+      isValidAmount
+    },
+    targetAddress: {
+      required,
+      isValidAddress
+    }
   },
   watch: {
     selectedAccount: async function() {
@@ -245,9 +258,6 @@ export default {
                 );
                 this.selectedAccount = this.extensionAccounts[0];
                 this.selectedAddress = this.extensionAddresses[0];
-                console.log(`extensionAccounts:`, this.extensionAccounts);
-                console.log(`selectedAccount:`, this.selectedAccount);
-                console.log(`selectedAddress:`, this.selectedAddress);
               }
             });
           })
@@ -260,8 +270,16 @@ export default {
       });
   },
   methods: {
+    validateState(name) {
+      const { $dirty, $error } = this.$v[name];
+      return $dirty ? !$error : null;
+    },
     onSubmit(evt) {
       evt.preventDefault();
+      this.$v.$touch();
+      if (this.$v.$invalid) {
+        return;
+      }
       this.send();
     },
     setUnit(unit) {
@@ -296,21 +314,16 @@ export default {
       return availableBalance;
     },
     async send() {
-      this.state = "Started";
-
       web3FromAddress(this.selectedAccount.address).then(async injector => {
         this.api.setSigner(injector.signer);
         const amount = this.getAmount();
-
         const extrinsic = await this.api.tx.balances.transfer(
           this.targetAddress,
           amount
         );
-        console.log(`extrinsic:`, extrinsic);
         this.extrinsicHash = await extrinsic.signAndSend(
           this.selectedAccount.address
         );
-        this.state = "Finished";
       });
     }
   }
@@ -320,5 +333,17 @@ export default {
 <style>
 .identicon {
   display: inline-block;
+}
+.btn-send {
+  background-color: #c51062 !important;
+  border-color: #c51062 !important;
+  box-shadow: none !important;
+}
+.btn-send:hover,
+.btn-send:active,
+.btn-send:visited {
+  background-color: #ef1073 !important;
+  border-color: #ef1073 !important;
+  box-shadow: 0 0 0 0.2rem rgba(239, 16, 115, 0.5) !important;
 }
 </style>
