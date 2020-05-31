@@ -6,13 +6,13 @@
           <b-col md="12" lg="6">
             <b-form-group
               id="input-group-1"
-              label="Hacer transferencia desde la dirección"
+              label="From:"
               label-for="input-1"
               class="w-100"
             >
               <b-form-select
                 id="input-1"
-                v-model="accountSelected"
+                v-model="selectedAccount"
                 :options="accounts"
                 required
                 class="w-100"
@@ -21,12 +21,12 @@
                 <p
                   class="ml-2 mb-0 mt-1"
                   :style="
-                    balanceEnough
+                    enoughBalance
                       ? 'font-size: 0.8rem;'
                       : 'font-size: 0.8rem; color: red'
                   "
                 >
-                  Balance: {{ accountSelectedBalance }}
+                  Balance: {{ selectedAccountBalance }}
                 </p>
               </div>
             </b-form-group>
@@ -48,7 +48,7 @@
                   ></b-form-input>
                 </b-col>
                 <b-col cols="2" class="pl-0">
-                  <b-dropdown id="unities" :text="unitSelected" class="mb-0">
+                  <b-dropdown id="unities" :text="selectedUnit" class="mb-0">
                     <b-dropdown-item @click="setUnit('pico')"
                       >Pico</b-dropdown-item
                     >
@@ -81,7 +81,7 @@
               </b-row>
               <div>
                 <p class="ml-2 mb-0 mt-1" style="font-size: 0.8rem">
-                  Cantidad: {{ getValue() }}
+                  Amount: {{ getAmount() }}
                 </p>
               </div>
             </b-form-group>
@@ -91,7 +91,7 @@
           <div class="w-100">
             <b-card no-body>
               <b-tabs card>
-                <b-tab title="Transfer" active @click="isTransfer = true">
+                <b-tab title="Transfer" active @click="isSendTx = true">
                   <b-form-group
                     id="input-group-2"
                     label="Hacia la dirección:"
@@ -100,14 +100,14 @@
                   >
                     <b-form-input
                       id="input-2"
-                      v-model="accountDestiny"
+                      v-model="targetAccount"
                       required
                       placeholder="Address"
                       class="w-100"
                     ></b-form-input>
                   </b-form-group>
                 </b-tab>
-                <b-tab title="Staking" @click="isTransfer = false">
+                <b-tab title="Staking" @click="isSendTx = false">
                   <b-form-group
                     id="search-group"
                     label="En Validador:"
@@ -176,17 +176,16 @@
           </div>
         </b-row>
       </b-form>
-      <b-card class="mt-3 w-100" :header="isTransfer ? 'Transfer' : 'Stake'">
+      <b-card class="mt-3 w-100" :header="isSendTx ? 'Transfer' : 'Stake'">
         <div v-if="accounts.length !== 0">
           <ul>
             <li class="mt-0">
-              Se van a {{ isTransfer ? "transferir" : "depositar" }} :
-              {{ getValue() }}
+              {{ isSendTx ? "Send" : "Stake" }} {{ getAmount() }}
             </li>
-            <li class="mt-0">desde la cuenta: {{ accountSelected }}</li>
+            <li class="mt-0">from {{ selectedAccount.meta.name }}</li>
 
-            <li v-if="isTransfer" class="mt-0">
-              hacia la dirección: {{ accountDestiny }}
+            <li v-if="isSendTx" class="mt-0">
+              to: {{ targetAccount }}
             </li>
             <li v-else class="mt-0">
               para Staking en el validador:
@@ -231,11 +230,11 @@ export default {
   data() {
     return {
       accounts: [],
-      accountSelected: "",
-      accountSelectedBalance: 0,
-      accountDestiny: null,
+      selectedAccount: "",
+      selectedAccountBalance: 0,
+      targetAccount: null,
       api: null,
-      balanceEnough: true,
+      enoughBalance: true,
       enableWeb3: false,
       error: null,
       state: "NO iniciada",
@@ -251,9 +250,9 @@ export default {
         "Giga",
         "Tera"
       ],
-      unitSelected: "KSM",
+      selectedUnit: "KSM",
       transactionHash: null,
-      isTransfer: true,
+      isSendTx: true,
       validators: [],
       searchQuery: "",
       validator: null,
@@ -270,14 +269,14 @@ export default {
     }
   },
   watch: {
-    accountSelected: async function() {
-      this.accountSelectedBalance = await this.getBalance();
+    selectedAccount: async function() {
+      this.selectedAccountBalance = await this.getBalance();
     },
     searchQuery: function() {
       this.searchValidators();
     },
     value: function() {
-      this.balanceEnough = this.accountSelectedBalance >= this.getValue();
+      this.enoughBalance = this.selectedAccountBalance >= this.getAmount();
     }
   },
   created: async function() {
@@ -287,6 +286,7 @@ export default {
       .then(() => {
         web3Accounts()
           .then(accounts => {
+            console.log(`accounts:`, accounts);
             const wsProvider = new WsProvider(nodeURL);
 
             ApiPromise.create({ provider: wsProvider }).then(api => {
@@ -295,7 +295,7 @@ export default {
                 accounts.forEach(account =>
                   this.accounts.push(account.address)
                 );
-                this.accountSelected = this.accounts[0];
+                this.selectedAccount = this.accounts[0];
               }
             });
           })
@@ -310,28 +310,28 @@ export default {
   methods: {
     onSubmit(evt) {
       evt.preventDefault();
-      this.isTransfer ? this.makeTransfer() : this.makeStaking();
+      this.isSendTx ? this.send() : this.stake();
     },
     onReset(evt) {
       evt.preventDefault();
 
-      this.accountSelected = null;
-      this.accountSelectedBalance = 0;
-      this.accountDestiny = null;
+      this.selectedAccount = null;
+      this.selectedAccountBalance = 0;
+      this.targetAccount = null;
       this.enableWeb3 = false;
-      this.balanceEnough = true;
+      this.enoughBalance = true;
       this.error = null;
-      this.state = "NO iniciada";
+      this.state = "Not loaded yet";
       this.value = 0;
       this.transactionHash = null;
       this.validator = null;
       this.rewards = null;
     },
     setUnit(unit) {
-      this.unitSelected = unit;
+      this.selectedUnit = unit;
     },
-    getValue() {
-      switch (this.unitSelected) {
+    getAmount() {
+      switch (this.selectedUnit) {
         case "pico":
           return this.value * 1;
         case "nano":
@@ -374,24 +374,23 @@ export default {
     async getBalance() {
       const {
         data: { free }
-      } = await this.api.query.system.account(this.accountSelected);
+      } = await this.api.query.system.account(this.selectedAccount);
       return free;
     },
-    async makeTransfer() {
-      this.state = "Iniciada";
+    async send() {
+      this.state = "Started";
 
-      web3FromAddress(this.accountSelected).then(async injector => {
+      web3FromAddress(this.selectedAccount).then(async injector => {
         this.api.setSigner(injector.signer);
-        // const value = 10000000000;
-        const value = this.getValue();
+        const value = this.getAmount();
 
         const txHash = await this.api.tx.balances.transfer(
-          this.accountDestiny,
+          this.targetAccount,
           value
         );
 
-        this.transactionHash = await txHash.signAndSend(this.accountSelected);
-        this.state = "Finalizada";
+        this.transactionHash = await txHash.signAndSend(this.selectedAccount);
+        this.state = "Finished";
       });
     },
     searchValidators: function() {
@@ -400,11 +399,11 @@ export default {
       );
       this.validator = validator[0];
     },
-    async makeStaking() {
-      console.log("Desde Address: ", this.accountSelected);
-      console.log("Al validador: ", this.validator);
-      console.log("Cantidad: ", this.getValue());
-      console.log("Destino recompensa: ", this.rewards);
+    async stake() {
+      console.log("From: ", this.selectedAccount.meta.name);
+      console.log("To: ", this.validator);
+      console.log("Amount: ", this.getAmount());
+      console.log("Reward destination: ", this.rewards);
     }
   },
   apollo: {
