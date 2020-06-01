@@ -1,167 +1,173 @@
 <template>
-  <b-container>
-    <div class="pt-4">
-      <b-form class="mt-2" @submit="onSubmit">
-        <b-row>
-          <b-col md="12" lg="6">
-            <b-form-group
-              id="input-group-1"
-              label="From:"
-              label-for="input-1"
+  <b-container class="py-4">
+    <b-row>
+      <b-col md="12">
+        <h1 class="mb-4">Send KSM using Polkadot JS extension</h1>
+      </b-col>
+    </b-row>
+    <b-row>
+      <b-col md="6 mb-4">
+        <b-form class="mt-2" @submit="onSubmit">
+          <b-form-group
+            id="input-group-1"
+            label="From:"
+            label-for="input-1"
+            class="w-100"
+          >
+            <b-form-select
+              id="input-1"
+              v-model="selectedAddress"
+              :options="extensionAddresses"
+              required
               class="w-100"
-            >
-              <b-form-select
-                id="input-1"
-                v-model="selectedAddress"
-                :options="extensionAddresses"
-                required
-                class="w-100"
-              ></b-form-select>
-              <div>
-                <p
-                  class="ml-2 mb-0 mt-1"
-                  :style="
-                    enoughBalance
-                      ? 'font-size: 0.8rem;'
-                      : 'font-size: 0.8rem; color: red'
-                  "
-                >
-                  Transferable balance: {{ formatAmount(tranferableBalance) }}
-                </p>
-              </div>
-            </b-form-group>
-          </b-col>
-        </b-row>
-        <b-row>
-          <b-col md="12" lg="6">
-            <b-form-group
-              id="input-group-3"
-              label="Amount:"
-              label-for="input-3"
-              class="w-100"
-            >
-              <b-row>
-                <b-col cols="8" class="pr-1">
-                  <b-form-input
-                    id="input-3"
-                    v-model="$v.amount.$model"
-                    type="number"
-                    :state="validateState('amount')"
-                    aria-describedby="amount-feedback"
-                    placeholder="Amount"
-                  ></b-form-input>
-                  <b-form-invalid-feedback id="amount-feedback"
-                    >Please enter a positive amount, less or equal to
-                    {{ formatAmount(tranferableBalance) }}
-                  </b-form-invalid-feedback>
-                </b-col>
-                <b-col cols="4">
-                  <b-dropdown
-                    id="units"
-                    :text="selectedUnit"
-                    class="mb-0 btn-block"
-                  >
-                    <b-dropdown-item
-                      v-for="unit in units"
-                      :key="unit"
-                      @click="setUnit(unit)"
-                    >
-                      {{ unit }}
-                    </b-dropdown-item>
-                  </b-dropdown>
-                </b-col>
-              </b-row>
-              <div>
-                <p class="ml-2 mb-0 mt-1" style="font-size: 0.8rem">
-                  Amount: {{ formatAmount(getAmount()) }}
-                </p>
-              </div>
-            </b-form-group>
-          </b-col>
-        </b-row>
-        <b-row>
-          <b-col md="12" lg="6">
-            <b-form-group
-              id="input-group-2"
-              label="To:"
-              label-for="input-2"
-              class="w-100"
-            >
-              <b-form-input
-                id="input-2"
-                v-model="$v.targetAddress.$model"
-                :state="validateState('targetAddress')"
-                aria-describedby="targetAddress-feedback"
-                placeholder="Address"
-                class="w-100"
-              ></b-form-input>
-              <b-form-invalid-feedback id="targetAddress-feedback"
-                >Please enter the destination address
-              </b-form-invalid-feedback>
-            </b-form-group>
-          </b-col>
-        </b-row>
-        <b-row>
-          <b-col md="12" lg="6">
-            <b-alert
-              v-if="!this.$v.$invalid && !extrinsicHash"
-              variant="success"
-              class="my-2"
-              fade
-              show
-            >
-              <p class="my-2 text-center">
-                <span v-if="selectedAddress">
-                  Send
-                  <span v-if="getAmount() > 0">
-                    {{ formatAmount(getAmount()) }}
-                  </span>
-                  from
-                  <Identicon
-                    :key="selectedAddress"
-                    :value="selectedAddress"
-                    :size="20"
-                    :theme="'polkadot'"
-                  />
-                  {{ shortAddress(selectedAddress) }}
-                </span>
-                <span v-if="targetAddress">
-                  to
-                  <Identicon
-                    :key="targetAddress"
-                    :value="targetAddress"
-                    :size="20"
-                    :theme="'polkadot'"
-                  />
-                  {{ shortAddress(targetAddress) }}
-                </span>
+            ></b-form-select>
+            <div>
+              <p class="ml-2 mb-0 mt-1">
+                Transferable balance: {{ formatAmount(tranferableBalance) }}
               </p>
-            </b-alert>
-            <b-alert
-              v-if="extrinsicHash"
-              variant="success"
-              class="text-center"
-              fade
-              show
+            </div>
+          </b-form-group>
+          <b-form-group
+            id="input-group-3"
+            label="Amount:"
+            label-for="input-3"
+            class="w-100"
+          >
+            <b-row>
+              <b-col cols="8" class="pr-1">
+                <b-form-input
+                  id="input-3"
+                  v-model="$v.amount.$model"
+                  type="number"
+                  :state="validateState('amount')"
+                  aria-describedby="amount-feedback"
+                  placeholder="Amount"
+                ></b-form-input>
+                <b-form-invalid-feedback id="amount-feedback"
+                  >Please enter a positive amount, less or equal to
+                  {{ formatAmount(tranferableBalance) }}
+                </b-form-invalid-feedback>
+              </b-col>
+              <b-col cols="4">
+                <b-dropdown
+                  id="units"
+                  :text="selectedUnit"
+                  class="mb-0 btn-block"
+                >
+                  <b-dropdown-item
+                    v-for="unit in units"
+                    :key="unit"
+                    @click="setUnit(unit)"
+                  >
+                    {{ unit }}
+                  </b-dropdown-item>
+                </b-dropdown>
+              </b-col>
+            </b-row>
+            <div>
+              <p class="ml-2 mb-0 mt-1" style="font-size: 0.8rem">
+                Amount: {{ formatAmount(getAmount()) }}
+              </p>
+            </div>
+          </b-form-group>
+          <b-form-group
+            id="input-group-2"
+            label="To:"
+            label-for="input-2"
+            class="w-100"
+          >
+            <b-form-input
+              id="input-2"
+              v-model="$v.targetAddress.$model"
+              :state="validateState('targetAddress')"
+              aria-describedby="targetAddress-feedback"
+              placeholder="Address"
+              class="w-100"
+            ></b-form-input>
+            <b-form-invalid-feedback id="targetAddress-feedback"
+              >Please enter the destination address
+            </b-form-invalid-feedback>
+          </b-form-group>
+          <b-alert
+            v-if="!this.$v.$invalid && !extrinsicHash"
+            variant="success"
+            class="my-2"
+            fade
+            show
+          >
+            <p class="my-2 text-center">
+              <span v-if="selectedAddress">
+                Send
+                <span v-if="getAmount() > 0">
+                  {{ formatAmount(getAmount()) }}
+                </span>
+                from
+                <Identicon
+                  :key="selectedAddress"
+                  :value="selectedAddress"
+                  :size="20"
+                  :theme="'polkadot'"
+                />
+                {{ shortAddress(selectedAddress) }}
+              </span>
+              <span v-if="targetAddress">
+                to
+                <Identicon
+                  :key="targetAddress"
+                  :value="targetAddress"
+                  :size="20"
+                  :theme="'polkadot'"
+                />
+                {{ shortAddress(targetAddress) }}
+              </span>
+            </p>
+          </b-alert>
+          <b-alert
+            v-if="extrinsicHash"
+            variant="success"
+            class="text-center"
+            fade
+            show
+          >
+            <h4>Transaction sent!</h4>
+            <p>Extrinsic hash is {{ extrinsicHash }}</p>
+          </b-alert>
+          <b-button
+            type="submit"
+            variant="primary"
+            class="btn-send btn-block mt-3"
+          >
+            <i class="fas fa-paper-plane mr-2"></i> Send
+          </b-button>
+        </b-form>
+      </b-col>
+      <b-col md="1"></b-col>
+      <b-col md="5">
+        <b-card>
+          <h2>How to send KSM</h2>
+          <p>
+            Now you can transfer KSM tokens using PolkaStats &
+            <a href="https://github.com/polkadot-js/extension" target="_blank"
+              >Polkadot JS extension</a
             >
-              <h4>Transaction sent!</h4>
-              <p>Extrinsic hash is {{ extrinsicHash }}</p>
-            </b-alert>
-          </b-col>
-        </b-row>
-        <b-row>
-          <b-col md="12" lg="6">
-            <b-button
-              type="submit"
-              variant="primary"
-              class="btn-send btn-block mt-3"
-            >
-              <i class="fas fa-paper-plane"></i> Send
-            </b-button>
-          </b-col>
-        </b-row>
-      </b-form>
-    </div>
+            in a safe way.
+          </p>
+          <ul>
+            <li>
+              Install Polkadot JS extension from
+              <a
+                href="https://chrome.google.com/webstore/detail/polkadot%7Bjs%7D-extension/mopnmbcafieddcagagdcbnhejhlodfdd?hl=es"
+                target="_blank"
+                >chrome web store</a
+              >.
+            </li>
+            <li>Import your existings account/s or create a new one.</li>
+            <li>Refresh this page and allow to to access the extension.</li>
+            <li>Fill the form and sign the transaction in the extension!</li>
+          </ul>
+        </b-card>
+      </b-col>
+    </b-row>
   </b-container>
 </template>
 
@@ -199,7 +205,6 @@ export default {
       tranferableBalance: 0,
       targetAddress: "",
       api: null,
-      enoughBalance: true,
       enableWeb3: false,
       error: null,
       amount: 0,
@@ -233,17 +238,10 @@ export default {
   watch: {
     selectedAccount: async function() {
       this.tranferableBalance = await this.getBalance();
-    },
-    searchQuery: function() {
-      this.searchValidators();
-    },
-    amount: function() {
-      this.enoughBalance = this.tranferableBalance >= this.getAmount();
     }
   },
   created: async function() {
     this.enableWeb3 = await web3Enable("PolkaStats");
-
     web3Enable("PolkaStats")
       .then(() => {
         web3Accounts()
