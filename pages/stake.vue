@@ -514,10 +514,8 @@ export default {
       this.currentPage = 1;
     },
     onRowSelected(items) {
-      console.log(items);
       this.targetValidator = items[0] ? items[0].accountId : "";
       this.targetValidatorName = items[0] ? items[0].name : "";
-      console.log(this.targetValidator);
       this.selected = items;
     },
     handleNumFields(num) {
