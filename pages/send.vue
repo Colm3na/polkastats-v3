@@ -9,14 +9,14 @@
       <b-col md="6 mb-4">
         <b-form class="mt-2" @submit="onSubmit">
           <b-form-group
-            id="input-group-1"
+            id="input-group-from"
             label="From:"
-            label-for="input-1"
+            label-for="input-from"
             class="w-100"
           >
             <b-form-select
-              id="input-1"
-              v-model="selectedAddress"
+              id="input-from"
+              v-model="$v.selectedAddress.$model"
               :options="extensionAddresses"
               required
               class="w-100"
@@ -28,15 +28,15 @@
             </div>
           </b-form-group>
           <b-form-group
-            id="input-group-3"
+            id="input-group-amount"
             label="Amount:"
-            label-for="input-3"
+            label-for="input-amount"
             class="w-100"
           >
             <b-row>
               <b-col cols="8" class="pr-1">
                 <b-form-input
-                  id="input-3"
+                  id="input-amount"
                   v-model="$v.amount.$model"
                   type="number"
                   :state="validateState('amount')"
@@ -71,13 +71,13 @@
             </div>
           </b-form-group>
           <b-form-group
-            id="input-group-2"
+            id="input-group-targetAddress"
             label="To:"
-            label-for="input-2"
+            label-for="input-targetAddress"
             class="w-100"
           >
             <b-form-input
-              id="input-2"
+              id="input-targetAddress"
               v-model="$v.targetAddress.$model"
               :state="validateState('targetAddress')"
               aria-describedby="targetAddress-feedback"
