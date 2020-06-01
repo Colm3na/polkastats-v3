@@ -144,12 +144,12 @@
             :filter-included-fields="filterOn"
             @filtered="onFiltered"
           >
-            <template slot="rank" slot-scope="data">
+            <template v-slot:cell(rank)="data">
               <p class="text-center mb-0">
                 {{ data.item.rank }}
               </p>
             </template>
-            <template slot="imOnline" slot-scope="data">
+            <template v-slot:cell(imOnline)="data">
               <p class="text-center mb-0">
                 <i
                   v-if="data.item.imOnline"
@@ -165,7 +165,7 @@
                 />
               </p>
             </template>
-            <template slot="accountId" slot-scope="data">
+            <template v-slot:cell(accountId)="data">
               <div class="d-block d-sm-block d-md-none d-lg-none d-xl-none">
                 <b-container>
                   <b-row class="flags">
@@ -401,17 +401,17 @@
                 </nuxt-link>
               </div>
             </template>
-            <template slot="numStakers" slot-scope="data">
+            <template v-slot:cell(numStakers)="data">
               <p class="text-center mb-0">
                 {{ data.item.numStakers }}
               </p>
             </template>
-            <template slot="stakeIndex" slot-scope="data">
+            <template v-slot:cell(stakeIndex)="data">
               <p v-if="data.item.stake > 0" class="text-center mb-0">
                 {{ formatAmount(data.item.stake) }}
               </p>
             </template>
-            <template slot="percent" slot-scope="data">
+            <template v-slot:cell(percent)="data">
               <p class="text-center mb-0">
                 <!-- {{ formatNumber(data.item.percent) }}% -->
                 {{
@@ -421,7 +421,7 @@
                 }}%
               </p>
             </template>
-            <template slot="commission" slot-scope="data">
+            <template v-slot:cell(commission)="data">
               <p
                 v-if="typeof data.item.commission == 'number'"
                 class="text-center mb-0"
@@ -429,12 +429,12 @@
                 {{ (data.item.commission / 10000000).toFixed(2) }}%
               </p>
             </template>
-            <template slot="eraPoints" slot-scope="data">
+            <template v-slot:cell(eraPoints)="data">
               <p class="text-center mb-0">
                 {{ data.item.eraPoints }}
               </p>
             </template>
-            <template slot="favorite" slot-scope="data">
+            <template v-slot:cell(favorite)="data">
               <p class="text-center mb-0">
                 <a
                   class="favorite"
@@ -720,14 +720,6 @@ export default {
     // Force update of network info
     vm.$store.dispatch("network/update");
 
-    // Get the numbers of Rows
-    this.totalRows = this.$store.state.validators.list.length;
-
-    // Force update of intentions list if empty
-    if (this.$store.state.intentions.list.length == 0) {
-      vm.$store.dispatch("intentions/update");
-    }
-
     // Force update of indentity list if empty
     if (this.$store.state.identities.list.length === 0) {
       vm.$store.dispatch("identities/update");
@@ -738,14 +730,13 @@ export default {
       vm.$store.dispatch("stakingIdentities/update");
     }
 
-    // Update network info validators and intentions every 10 seconds
+    // Update network info validators and intentions every 60 seconds
     this.polling = setInterval(() => {
       vm.$store.dispatch("network/update");
-      vm.$store.dispatch("intentions/update");
       vm.$store.dispatch("stakingIdentities/update");
       if (!this.filter)
         this.totalRows = this.$store.state.validators.list.length;
-    }, 10000);
+    }, 60000);
   },
   beforeDestroy: function() {
     clearInterval(this.polling);

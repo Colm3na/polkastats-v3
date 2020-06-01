@@ -2,11 +2,11 @@
   <b-container class="py-4">
     <b-row>
       <b-col md="12">
-        <h1 class="mb-4">Send KSM using Polkadot JS extension</h1>
+        <h1 class="mb-4">Stake KSM using Polkadot JS extension</h1>
       </b-col>
     </b-row>
     <b-row>
-      <b-col md="6 mb-4">
+      <b-col md="7 mb-4">
         <b-form class="mt-2" @submit="onSubmit">
           <b-form-group
             id="input-group-from"
@@ -74,24 +74,103 @@
               </p>
             </div>
           </b-form-group>
+
           <b-form-group
-            id="input-group-targetAddress"
-            label="To:"
-            label-for="input-targetAddress"
+            id="input-group-targetValidator"
+            label="Select your validator:"
+            label-for="input-targetValidator"
             class="w-100"
           >
             <b-form-input
-              id="input-targetAddress"
-              v-model="$v.targetAddress.$model"
-              :state="validateState('targetAddress')"
-              aria-describedby="targetAddress-feedback"
-              placeholder="Address"
-              class="w-100"
+              id="input-targetValidator"
+              v-model="$v.targetValidator.$model"
+              class="d-none"
+              :state="validateState('targetValidator')"
+              aria-describedby="targetValidator-feedback"
+              placeholder="Target validator"
             ></b-form-input>
-            <b-form-invalid-feedback id="targetAddress-feedback"
-              >Please enter the destination address
+            <b-form-invalid-feedback id="targetValidator-feedback"
+              >Please select a validator
             </b-form-invalid-feedback>
           </b-form-group>
+
+          <!-- Filter -->
+          <b-form-input
+            id="filterInput"
+            v-model="filter"
+            type="search"
+            placeholder="Search validator..."
+            class="mb-3"
+          />
+          <!-- Table with sorting and pagination-->
+          <div class="table-responsive">
+            <b-table
+              ref="selectableTable"
+              selectable
+              stacked="md"
+              head-variant="dark"
+              :fields="fields"
+              :items="filteredValidators"
+              :per-page="perPage"
+              :current-page="currentPage"
+              :sort-by.sync="sortBy"
+              :sort-desc.sync="sortDesc"
+              :select-mode="selectMode"
+              selected-variant="success"
+              :filter="filter"
+              :filter-included-fields="filterOn"
+              @filtered="onFiltered"
+              @row-selected="onRowSelected"
+            >
+              <template v-slot:cell(selected)="{ rowSelected }">
+                <template v-if="rowSelected">
+                  <span aria-hidden="true">&check;</span>
+                  <span class="sr-only">Selected</span>
+                </template>
+                <template v-else>
+                  <span aria-hidden="true">&nbsp;</span>
+                  <span class="sr-only">Not selected</span>
+                </template>
+              </template>
+              <template v-slot:cell(accountId)="data">
+                <p class="mb-0">
+                  <Identicon
+                    :key="data.item.accountId"
+                    :value="data.item.accountId"
+                    :size="20"
+                    :theme="'polkadot'"
+                  />
+                  <span v-if="data.item.name">
+                    {{ data.item.name }}
+                  </span>
+                  <span v-else>
+                    {{ shortAddress(data.item.accountId) }}
+                  </span>
+                </p>
+              </template>
+              <template v-slot:cell(commission)="data">
+                <p class="text-right mb-0">{{ data.item.commission }}%</p>
+              </template>
+            </b-table>
+          </div>
+          <!-- Pagination -->
+          <div style="display: flex">
+            <b-pagination
+              v-model="currentPage"
+              :total-rows="totalRows"
+              :per-page="perPage"
+              aria-controls="validators-table"
+            />
+            <b-button-group class="mx-4">
+              <b-button
+                v-for="(item, index) in tableOptions"
+                :key="index"
+                @click="handleNumFields(item)"
+              >
+                {{ item }}
+              </b-button>
+            </b-button-group>
+          </div>
           <b-alert
             v-if="!this.$v.$invalid && !extrinsicHash"
             variant="success"
@@ -101,28 +180,23 @@
           >
             <p class="my-2 text-center">
               <span v-if="selectedAddress">
-                Send
+                Stake
                 <span v-if="getAmount() > 0">
                   {{ formatAmount(getAmount()) }}
                 </span>
-                from
-                <Identicon
-                  :key="selectedAddress"
-                  :value="selectedAddress"
-                  :size="20"
-                  :theme="'polkadot'"
-                />
-                {{ shortAddress(selectedAddress) }}
               </span>
-              <span v-if="targetAddress">
-                to
+              <span v-if="targetValidator">
+                in
+                <span v-if="targetValidatorName">
+                  {{ targetValidatorName }}
+                </span>
                 <Identicon
-                  :key="targetAddress"
-                  :value="targetAddress"
+                  :key="targetValidator"
+                  :value="targetValidator"
                   :size="20"
                   :theme="'polkadot'"
                 />
-                {{ shortAddress(targetAddress) }}
+                {{ shortAddress(targetValidator) }}
               </span>
             </p>
           </b-alert>
@@ -141,16 +215,23 @@
             variant="primary"
             class="btn-send btn-block mt-3"
           >
-            <i class="fas fa-paper-plane mr-2"></i> Send
+            <i class="fas fa-paper-plane mr-2"></i> Stake
           </b-button>
         </b-form>
       </b-col>
-      <b-col md="1"></b-col>
       <b-col md="5">
-        <b-card>
-          <h2>How to send KSM</h2>
+        <b-alert variant="warning" class="mb-3" show>
+          <h2>Warning, experimental!</h2>
           <p>
-            Now you can transfer KSM tokens using PolkaStats &
+            By now staking it's only possible for addresses without any bond
+            (i.e. accounts that didn't issue any staking action yet). The same
+            address will be used as stash and controller.
+          </p>
+        </b-alert>
+        <b-card>
+          <h2>How to stake KSM</h2>
+          <p>
+            Now you can stake KSM tokens using PolkaStats &
             <a href="https://github.com/polkadot-js/extension" target="_blank"
               >Polkadot JS extension</a
             >
@@ -193,6 +274,7 @@ import Identicon from "../components/identicon.vue";
 import commonMixin from "../mixins/commonMixin.js";
 import { validationMixin } from "vuelidate";
 import { required, integer, minValue } from "vuelidate/lib/validators";
+import { numItemsTableOptions } from "../polkastats.config.js";
 
 const isValidAddress = address => {
   return address.length === 47;
@@ -211,7 +293,8 @@ export default {
       selectedAccount: null,
       selectedAddress: null,
       tranferableBalance: 0,
-      targetAddress: "",
+      targetValidator: "",
+      targetValidatorName: "",
       api: null,
       enableWeb3: false,
       error: null,
@@ -228,7 +311,38 @@ export default {
         "Tera"
       ],
       selectedUnit: "KSM",
-      extrinsicHash: null
+      extrinsicHash: null,
+
+      tableOptions: numItemsTableOptions,
+      perPage: localStorage.numItemsTableSelected
+        ? parseInt(localStorage.numItemsTableSelected)
+        : 10,
+      currentPage: 1,
+      sortBy: `favorite`,
+      sortDesc: true,
+      filter: null,
+      filterOn: [],
+      totalRows: 1,
+      fields: [
+        {
+          key: "selected",
+          label: ""
+        },
+        {
+          key: "accountId",
+          label: "Validator",
+          sortable: true,
+          filterByFormatted: true
+        },
+        {
+          key: "commission",
+          label: "Commission",
+          sortable: true,
+          class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
+        }
+      ],
+      selected: [],
+      selectMode: `single`
     };
   },
   validations: {
@@ -242,9 +356,47 @@ export default {
       minValue: 1,
       isValidAmount
     },
-    targetAddress: {
+    targetValidator: {
       required,
       isValidAddress
+    }
+  },
+  computed: {
+    filteredValidators() {
+      return this.$store.state.validators.list.map(validator => {
+        const { identity } = this.getIdentity(validator.accountId);
+        let name = "";
+        if (identity) {
+          if (
+            identity.displayParent &&
+            identity.displayParent !== `` &&
+            identity.display &&
+            identity.display !== ``
+          ) {
+            name = `${identity.displayParent} / ${identity.display}`;
+          } else {
+            name = identity.display || ``;
+          }
+        }
+        return {
+          name,
+          accountId: validator.accountId,
+          commission: (validator.validatorPrefs.commission / 10000000).toFixed(
+            2
+          )
+        };
+      });
+    },
+    validators() {
+      return this.$store.state.validators.list;
+    },
+    sortOptions() {
+      // Create an options list from our fields
+      return this.fields
+        .filter(f => f.sortable)
+        .map(f => {
+          return { text: f.label, value: f.key };
+        });
     }
   },
   watch: {
@@ -253,6 +405,17 @@ export default {
     }
   },
   created: async function() {
+    // Load validators from store if empty
+    if (this.$store.state.validators.list.length == 0) {
+      await this.$store.dispatch("validators/update");
+    }
+    this.totalRows = this.$store.state.validators.list.length;
+
+    // Load identities from store if empty
+    if (this.$store.state.identities.list.length == 0) {
+      await this.$store.dispatch("identities/update");
+    }
+
     this.enableWeb3 = await web3Enable("PolkaStats");
     web3Enable("PolkaStats")
       .then(() => {
@@ -290,7 +453,7 @@ export default {
       if (this.$v.$invalid) {
         return;
       }
-      this.send();
+      this.stake();
     },
     setUnit(unit) {
       this.selectedUnit = unit;
@@ -323,18 +486,50 @@ export default {
       );
       return availableBalance;
     },
-    async send() {
+    async stake() {
       web3FromAddress(this.selectedAccount.address).then(async injector => {
         this.api.setSigner(injector.signer);
         const amount = this.getAmount();
-        const extrinsic = await this.api.tx.balances.transfer(
-          this.targetAddress,
-          amount
+        const rewardDestination = 0;
+        let transactions = [];
+        transactions.push(
+          await this.api.tx.staking.bond(
+            this.selectedAccount.address,
+            amount,
+            rewardDestination
+          )
         );
+        transactions.push(
+          await this.api.tx.staking.nominate([this.targetValidator])
+        );
+        const extrinsic = await this.api.tx.utility.batch(transactions);
         this.extrinsicHash = await extrinsic.signAndSend(
           this.selectedAccount.address
         );
       });
+    },
+    onFiltered(filteredItems) {
+      // Trigger pagination to update the number of buttons/pages due to filtering
+      this.totalRows = filteredItems.length;
+      this.currentPage = 1;
+    },
+    onRowSelected(items) {
+      console.log(items);
+      this.targetValidator = items[0] ? items[0].accountId : "";
+      this.targetValidatorName = items[0] ? items[0].name : "";
+      console.log(this.targetValidator);
+      this.selected = items;
+    },
+    handleNumFields(num) {
+      localStorage.numItemsTableSelected = num;
+      this.perPage = parseInt(num);
+    },
+    getIdentity(stashId) {
+      return (
+        this.$store.state.identities.list.find(
+          identity => identity.accountId === stashId
+        ) || {}
+      );
     }
   }
 };

@@ -45,15 +45,6 @@
                 </b-nav-item>
                 <b-nav-item>
                   <nuxt-link
-                    to="/send"
-                    class="nav-link"
-                    data-testid="menu-send"
-                  >
-                    Send
-                  </nuxt-link>
-                </b-nav-item>
-                <b-nav-item>
-                  <nuxt-link
                     to="/intentions"
                     active-class="nuxt-link-exact-active"
                     class="nav-link"
@@ -112,6 +103,14 @@
                     {{ $t("layout.default.account") }}
                   </nuxt-link>
                 </b-nav-item>
+                <b-nav-item-dropdown text="Wallet" class="py-1">
+                  <b-dropdown-item to="/send" data-testid="menu-send"
+                    >Send</b-dropdown-item
+                  >
+                  <b-dropdown-item to="/stake" data-testid="menu-stake"
+                    >Stake</b-dropdown-item
+                  >
+                </b-nav-item-dropdown>
               </b-navbar-nav>
             </b-collapse>
           </b-navbar>
