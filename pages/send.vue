@@ -18,7 +18,8 @@
               id="input-from"
               v-model="$v.selectedAddress.$model"
               :options="extensionAddresses"
-              required
+              :state="validateState('selectedAddress')"
+              aria-describedby="selectedAddress-feedback"
               class="w-100"
             ></b-form-select>
             <div>
@@ -26,6 +27,9 @@
                 Transferable balance: {{ formatAmount(tranferableBalance) }}
               </p>
             </div>
+            <b-form-invalid-feedback id="selectedAddress-feedback"
+              >Please install extension, import an account and allow access
+            </b-form-invalid-feedback>
           </b-form-group>
           <b-form-group
             id="input-group-amount"
@@ -224,6 +228,10 @@ export default {
     };
   },
   validations: {
+    selectedAddress: {
+      required,
+      isValidAddress
+    },
     amount: {
       required,
       integer,
