@@ -275,6 +275,7 @@ import commonMixin from "../mixins/commonMixin.js";
 import { validationMixin } from "vuelidate";
 import { required, integer, minValue } from "vuelidate/lib/validators";
 import { numItemsTableOptions } from "../polkastats.config.js";
+import { encodeAddress } from "@polkadot/keyring";
 
 const isValidAddress = address => {
   return address.length === 47;
@@ -427,7 +428,9 @@ export default {
               if (accounts.length > 0) {
                 this.extensionAccounts = accounts;
                 accounts.forEach(account =>
-                  this.extensionAddresses.push(account.meta.name)
+                  this.extensionAddresses.push(
+                    encodeAddress(account.address, 2)
+                  )
                 );
                 this.selectedAccount = this.extensionAccounts[0];
                 this.selectedAddress = this.extensionAddresses[0];

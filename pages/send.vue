@@ -193,6 +193,7 @@ import Identicon from "../components/identicon.vue";
 import commonMixin from "../mixins/commonMixin.js";
 import { validationMixin } from "vuelidate";
 import { required, integer, minValue } from "vuelidate/lib/validators";
+import { encodeAddress } from "@polkadot/keyring";
 
 const isValidAddress = address => {
   return address.length === 47;
@@ -262,9 +263,12 @@ export default {
             ApiPromise.create({ provider: wsProvider }).then(api => {
               this.api = api;
               if (accounts.length > 0) {
+                console.log(accounts);
                 this.extensionAccounts = accounts;
                 accounts.forEach(account =>
-                  this.extensionAddresses.push(account.meta.name)
+                  this.extensionAddresses.push(
+                    encodeAddress(account.address, 2)
+                  )
                 );
                 this.selectedAccount = this.extensionAccounts[0];
                 this.selectedAddress = this.extensionAddresses[0];
