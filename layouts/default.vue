@@ -20,7 +20,7 @@
               <nuxt-link
                 to="/"
                 class="navbar-brand"
-                title="PolkaStats | Polkadot Kusama CC3 network statistics"
+                title="PolkaStats | Polkadot block explorer"
                 data-testid="logo"
               >
                 <img class="logo" src="/img/PolkaStats_logo_red-white.png" />

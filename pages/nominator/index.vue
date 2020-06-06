@@ -277,7 +277,6 @@ import BN from "bn.js";
 import {
   decimals,
   unit,
-  backendBaseURL,
   blockExplorer
 } from "../../polkastats.config.js";
 import commonMixin from "../../mixins/commonMixin.js";

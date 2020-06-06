@@ -11,7 +11,7 @@ export default {
       {
         hid: "description",
         name: "description",
-        content: "Polkadot network statistics"
+        content: "Polkadot block explorer"
       }
     ],
     link: [{ rel: "icon", type: "image/png", href: "/img/favicon.png" }]
@@ -57,8 +57,7 @@ export default {
   apollo: {
     clientConfigs: {
       default: {
-        httpEndpoint: "https://polkastats.io/api/v3/v1/graphql",
-        wsEndpoint: "wss://v3dev2.polkastats.io/api/v3",
+        wsEndpoint: "wss://polkadot.polkastats.io/api/v3",
         websocketsOnly: true
       }
     }

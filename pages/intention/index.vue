@@ -637,7 +637,7 @@ import { commonChartOptions } from "../commons/chartOptions";
 import Identicon from "../../components/identicon.vue";
 import { isHex } from "@polkadot/util";
 import BN from "bn.js";
-import { backendBaseURL, blockExplorer } from "../../polkastats.config.js";
+import { blockExplorer } from "../../polkastats.config.js";
 import commonMixin from "../../mixins/commonMixin.js";
 
 export default {
@@ -650,7 +650,6 @@ export default {
     return {
       accountId: this.$route.query.accountId,
       blockExplorer,
-      backendBaseURL,
       polling: null,
       graphPolling: null,
       favorites: [],
