@@ -66,6 +66,9 @@ export default {
       return message;
     },
     getStakePercent(amount, totalStakeBonded) {
+      if (amount === 0 || totalStakeBonded === 0) {
+        return `0`;
+      }
       let amountBN;
       if (isHex(amount)) {
         amountBN = new BN(amount.substring(2, amount.length), 16);
