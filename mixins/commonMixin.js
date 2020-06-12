@@ -66,7 +66,7 @@ export default {
       return message;
     },
     getStakePercent(amount, totalStakeBonded) {
-      if (amount === 0 || totalStakeBonded === 0) {
+      if (amount === 0 || totalStakeBonded.isEqualTo(new BN("0", 10))) {
         return `0`;
       }
       let amountBN;
