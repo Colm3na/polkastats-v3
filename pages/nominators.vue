@@ -70,10 +70,10 @@
             :filter-included-fields="filterOn"
             @filtered="onFiltered"
           >
-            <template slot="rank" slot-scope="data">
+            <template v-slot:cell(rank)="data">
               {{ data.item.rank }}
             </template>
-            <template slot="accountId" slot-scope="data">
+            <template v-slot:cell(accountId)="data">
               <div
                 class="d-block d-sm-block d-md-none d-lg-none d-xl-none text-center"
               >
@@ -167,17 +167,17 @@
                 </nuxt-link>
               </div>
             </template>
-            <template slot="nominations" slot-scope="data">
+            <template v-slot:cell(nominations)="data">
               <p class="text-right mb-0">
                 {{ data.item.nominations }}
               </p>
             </template>
-            <template slot="totalStake" slot-scope="data">
+            <template v-slot:cell(totalStake)="data">
               <p class="text-right mb-0">
                 {{ formatAmount(data.item.totalStake) }}
               </p>
             </template>
-            <template slot="favorite" slot-scope="data">
+            <template v-slot:cell(favorite)="data">
               <p class="text-center mb-0">
                 <a
                   class="favorite"
