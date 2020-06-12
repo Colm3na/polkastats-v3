@@ -314,7 +314,7 @@
                         </b-collapse>
                       </div>
                     </div>
-                    <div v-if="validator.validatorPrefs.commission" class="row">
+                    <div v-if="validator.validatorPrefs" class="row">
                       <div class="col-md-3 mb-2">
                         <strong>{{
                           $t("details.validator.commission")
