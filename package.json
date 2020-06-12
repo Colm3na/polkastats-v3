@@ -1,6 +1,6 @@
 {
   "name": "polkastats-v3",
-  "version": "3.0.0-milestone2.2",
+  "version": "3.0.0-milestone3",
   "description": "PolkaStats, Polkadot Kusama network statistics",
   "author": "Mario Pino Uceda",
   "private": true,
