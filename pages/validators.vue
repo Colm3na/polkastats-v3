@@ -919,8 +919,8 @@ export default {
             validator.rank = rank + 1;
             validator.imOnline = validator.imOnline.isOnline;
             validator.imOnlineMessage = this.getImOnlineMessage(validator);
-            validator.stakers = validator.exposure;
-            validator.numStakers = validator.exposure.others.length;
+            validator.stakers = validator.exposure || [];
+            validator.numStakers = validator.exposure ? validator.exposure.others.length : 0;
             validator.eraPoints = validator.currentEraPointsEarned;
             validator.favorite = this.isFavorite(validator.accountId);
             rank++;
