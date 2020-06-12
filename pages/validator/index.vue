@@ -1170,7 +1170,9 @@ export default {
         }
         stakeOthers = stakeTotal.sub(stakeOwn);
 
-        let stakers = validator.exposure.others.slice();
+        let stakers = validator.exposure
+          ? validator.exposure.others.slice()
+          : [];
 
         stakers.sort((a, b) => {
           if (a.value && b.value) {
