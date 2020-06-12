@@ -1144,6 +1144,10 @@ export default {
           validator => validator.accountId === this.accountId
         );
 
+        if (!validator.exposure) {
+          return []
+        }
+
         // Calculate others stake total amount
         let stakeTotal, stakeOwn, stakeOthers;
 
