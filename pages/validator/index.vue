@@ -328,7 +328,7 @@
                         }}%
                       </div>
                     </div>
-                    <div class="row mb-2">
+                    <div v-if="validator.rewardDestination" class="row mb-2">
                       <div class="col-md-3 mb-2">
                         <strong>{{
                           $t("details.validator.reward_destination")
