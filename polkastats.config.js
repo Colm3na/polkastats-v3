@@ -2,8 +2,8 @@
 export const unit = `DOT`;
 export const decimals = 12;
 export const blockExplorer = {
-  block: `https://polkascan.io/pre/kusama-cc3/block/`,
-  account: `https://polkascan.io/pre/kusama-cc3/account/`
+  block: `https://polkascan.io/polkadot-cc1/block/`,
+  account: `https://polkascan.io/polkadot-cc1/account/`
 };
 
 export const numItemsTableValidatorOptions = [10, 20, 50, 100];
