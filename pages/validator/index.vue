@@ -1133,7 +1133,7 @@ export default {
           validator => validator.accountId === this.accountId
         );
         // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-        this.totalRows = validator.exposure.others.length;
+        this.totalRows = this.$store.state.validators.list.length;
       }
       return this.$store.state.validators.list;
     },
