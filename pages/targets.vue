@@ -76,7 +76,7 @@
             :filter-included-fields="filterOn"
             @filtered="onFiltered"
           >
-            <template slot="stash_id" slot-scope="data">
+            <template v-slot:cell(stash_id)="data">
               <div class="d-none d-sm-none d-md-block d-lg-block d-xl-block">
                 <template>
                   <div
@@ -192,7 +192,7 @@
                 </template>
               </div>
             </template>
-            <template slot="favorite" slot-scope="data">
+            <template v-slot:cell(favorite)="data">
               <p class="text-center mb-0">
                 <a class="favorite" @click="toggleFavorite(data.item.stash_id)">
                   <i

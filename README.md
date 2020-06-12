@@ -1,6 +1,8 @@
-# PolkaStats v2
+# PolkaStats v3
 
 > Polkadot Kusama CC2 network statistics
+
+<img src="./static/img/grant_badge.png" width="200" alt="Web3 foundation grants program">
 
 ## Build frontend
 

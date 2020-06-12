@@ -74,12 +74,12 @@
               :filter-included-fields="filterOn"
               @filtered="onFiltered"
             >
-              <template slot="rank" slot-scope="data">
+              <template v-slot:cell(rank)="data">
                 <p class="text-right mb-0">
                   {{ data.item.rank }}
                 </p>
               </template>
-              <template slot="pub_key_stash" slot-scope="data">
+              <template v-slot:cell(pub_key_stash)="data">
                 <div
                   class="d-block d-sm-block d-md-none d-lg-none d-xl-none text-center"
                 >
@@ -163,17 +163,17 @@
                   </span>
                 </div>
               </template>
-              <template slot="other_stake_count" slot-scope="data">
+              <template v-slot:cell(other_stake_count)="data">
                 <p class="text-right mb-0">
                   {{ data.item.other_stake_count }}
                 </p>
               </template>
-              <template slot="stake_total" slot-scope="data">
+              <template v-slot:cell(stake_total)="data">
                 <p v-if="data.item.stake_total > 0" class="text-right mb-0">
                   {{ formatAmount(data.item.stake_total) }}
                 </p>
               </template>
-              <template slot="favorite" slot-scope="data">
+              <template v-slot:cell(favorite)="data">
                 <p class="text-center mb-0">
                   <a
                     class="favorite"
@@ -358,9 +358,6 @@ export default {
   methods: {
     handleNumFields(num) {
       this.perPage = parseInt(num);
-    },
-    setFavorites() {
-      console.log(this.candidates);
     },
     toggleFavorite(accountId) {
       if (this.favorites.indexOf(accountId) !== -1) {

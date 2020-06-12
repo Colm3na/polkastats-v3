@@ -169,9 +169,6 @@ export default {
     },
     bondedStakePercentage() {
       if (this.totalStakeBonded !== 0 && this.chain.total_issuance !== 0) {
-        console.log(`total_issuance:`, this.chain.total_issuance);
-        console.log(`total_stake_bonded:`, this.totalStakeBonded);
-
         const totalIssuance = new BN(this.chain.total_issuance.toString(), 10);
         const totalStakeBonded = new BN(this.totalStakeBonded, 10).mul(
           new BN("100", 10)

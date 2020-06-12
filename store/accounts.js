@@ -14,6 +14,7 @@ export const mutations = {
         rank: index + 1,
         accountId: account.account_id,
         identity: account.identity_display,
+        parentIdentity: account.identity_display_parent,
         availableBalance: account.available_balance,
         freeBalance: account.free_balance,
         lockedBalance: account.locked_balance
@@ -34,6 +35,7 @@ export const actions = {
         account(order_by: { free_balance: desc }, where: {}) {
           account_id
           identity_display
+          identity_display_parent
           available_balance
           free_balance
           locked_balance

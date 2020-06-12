@@ -2,7 +2,7 @@
   <div class="last-blocks">
     <div class="table-responsive">
       <b-table striped hover :fields="fields" :items="blocks">
-        <template slot="block_number" slot-scope="data">
+        <template v-slot:cell(block_number)="data">
           <p class="mb-0">
             <nuxt-link
               v-b-tooltip.hover
@@ -13,12 +13,12 @@
             </nuxt-link>
           </p>
         </template>
-        <template slot="block_hash" slot-scope="data">
+        <template v-slot:cell(block_hash)="data">
           <p class="mb-0">
             {{ shortHash(data.item.block_hash) }}
           </p>
         </template>
-        <template slot="block_author" slot-scope="data">
+        <template v-slot:cell(block_author)="data">
           <p class="mb-0 d-inline-block">
             <Identicon
               :key="data.item.block_author"

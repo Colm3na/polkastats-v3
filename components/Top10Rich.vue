@@ -2,7 +2,7 @@
   <div class="top-10-rich">
     <div class="table-responsive">
       <b-table striped hover :fields="fields" :items="richList">
-        <template slot="account_id" slot-scope="data">
+        <template v-slot:cell(account_id)="data">
           <p class="mb-0 d-inline-block">
             <Identicon
               :key="data.item.account_id"
@@ -24,8 +24,11 @@
             </nuxt-link>
           </p>
         </template>
-        <template slot="free_balance" slot-scope="data">
+        <template v-slot:cell(free_balance)="data">
           <p class="mb-0">{{ formatAmount(data.item.free_balance) }}</p>
+        </template>
+        <template v-slot:cell(nonce)="data">
+          <p class="mb-0">{{ data.item.nonce }}</p>
         </template>
       </b-table>
     </div>
@@ -55,6 +58,11 @@ export default {
           key: "free_balance",
           label: "Balance",
           sortable: true
+        },
+        {
+          key: "nonce",
+          label: "Transactions",
+          sortable: true
         }
       ]
     };
@@ -68,6 +76,7 @@ export default {
               account_id
               identity_display
               free_balance
+              nonce
             }
           }
         `,

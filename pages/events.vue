@@ -74,32 +74,32 @@
             :filter-included-fields="filterOn"
             @filtered="onFiltered"
           >
-            <template slot="block_number" slot-scope="data">
+            <template v-slot:cell(block_number)="data">
               <p class="text-right mb-0">
                 {{ formatNumber(data.item.block_number) }}
               </p>
             </template>
-            <template slot="event_index" slot-scope="data">
+            <template v-slot:cell(event_index)="data">
               <p class="text-right mb-0">
                 {{ data.item.event_index }}
               </p>
             </template>
-            <template slot="section" slot-scope="data">
+            <template v-slot:cell(section)="data">
               <p class="mb-0">
                 {{ data.item.section }}
               </p>
             </template>
-            <template slot="method" slot-scope="data">
+            <template v-slot:cell(method)="data">
               <p class="mb-0">
                 {{ data.item.method }}
               </p>
             </template>
-            <template slot="phase" slot-scope="data">
+            <template v-slot:cell(phase)="data">
               <p class="mb-0">
                 {{ data.item.phase }}
               </p>
             </template>
-            <template slot="data" slot-scope="data">
+            <template v-slot:cell(data)="data">
               <p class="mb-0">
                 {{ data.item.data }}
               </p>

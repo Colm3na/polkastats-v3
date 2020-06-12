@@ -85,10 +85,10 @@
             :busy="busy"
             @filtered="onFiltered"
           >
-            <template slot="rank" slot-scope="data">
+            <template v-slot:cell(rank)="data">
               <p class="text-right mb-0">#{{ data.item.rank }}</p>
             </template>
-            <template slot="accountId" slot-scope="data">
+            <template v-slot:cell(accountId)="data">
               <div
                 class="d-block d-sm-block d-md-none d-lg-none d-xl-none text-center"
               >
@@ -164,25 +164,30 @@
                 </nuxt-link>
               </div>
             </template>
-            <template slot="identity" slot-scope="data">
-              {{ data.item.identity.display }}
+            <template v-slot:cell(identity)="data">
+              <span v-if="data.item.parentIdentity && data.item.identity">
+                {{ data.item.parentIdentity }} / {{ data.item.identity }}
+              </span>
+              <span v-else>
+                {{ data.item.identity }}
+              </span>
             </template>
-            <template slot="freeBalance" slot-scope="data">
+            <template v-slot:cell(freeBalance)="data">
               <p class="text-right mb-0">
                 {{ formatAmount(data.item.freeBalance) }}
               </p>
             </template>
-            <template slot="lockedBalance" slot-scope="data">
+            <template v-slot:cell(lockedBalance)="data">
               <p class="text-right mb-0">
                 {{ formatAmount(data.item.lockedBalance) }}
               </p>
             </template>
-            <template slot="availableBalance" slot-scope="data">
+            <template v-slot:cell(availableBalance)="data">
               <p class="text-right mb-0">
                 {{ formatAmount(data.item.availableBalance) }}
               </p>
             </template>
-            <template slot="favorite" slot-scope="data">
+            <template v-slot:cell(favorite)="data">
               <p class="text-center mb-0">
                 <a
                   class="favorite"
