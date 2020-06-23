@@ -127,7 +127,7 @@
             </p>
           </b-alert>
           <b-alert
-            v-if="extrinsicHash"
+            v-if="extrinsicHash && !success"
             variant="success"
             class="text-center"
             fade
@@ -135,6 +135,44 @@
           >
             <h4>Transaction sent!</h4>
             <p>Extrinsic hash is {{ extrinsicHash }}</p>
+          </b-alert>
+          <b-alert
+            v-if="extrinsic && success"
+            variant="success"
+            class="text-center"
+            fade
+            show
+          >
+            <h4><i class="fa fa-check"></i> Succesful transaction!</h4>
+            <p>
+              Extrinsic with hash {{ extrinsicHash }} was included in block
+              <nuxt-link
+                v-b-tooltip.hover
+                :to="`/block?blockNumber=${extrinsic.block_number}`"
+                title="Check block information"
+              >
+                #{{ formatNumber(extrinsic.block_number) }}
+              </nuxt-link>
+            </p>
+          </b-alert>
+          <b-alert
+            v-if="extrinsic && !success"
+            variant="danger"
+            class="text-center"
+            fade
+            show
+          >
+            <h4><i class="fa fa-frown-o"></i> Failed transaction!</h4>
+            <p>
+              Extrinsic with hash {{ extrinsicHash }} was included in block
+              <nuxt-link
+                v-b-tooltip.hover
+                :to="`/block?blockNumber=${extrinsic.block_number}`"
+                title="Check block information"
+              >
+                #{{ formatNumber(extrinsic.block_number) }}
+              </nuxt-link>
+            </p>
           </b-alert>
           <b-button
             type="submit"
@@ -194,6 +232,7 @@ import commonMixin from "../mixins/commonMixin.js";
 import { validationMixin } from "vuelidate";
 import { required, integer, minValue } from "vuelidate/lib/validators";
 import { encodeAddress } from "@polkadot/keyring";
+import gql from "graphql-tag";
 
 const isValidAddress = address => {
   return address.length === 47;
@@ -229,7 +268,9 @@ export default {
         "Tera"
       ],
       selectedUnit: "KSM",
-      extrinsicHash: null
+      extrinsicHash: null,
+      extrinsic: null,
+      success: null
     };
   },
   validations: {
@@ -339,6 +380,45 @@ export default {
           this.selectedAccount.address
         );
       });
+    }
+  },
+  apollo: {
+    $subscribe: {
+      extrinsic: {
+        query: gql`
+          subscription extrinsics($hash: String!) {
+            extrinsic(
+              order_by: { block_number: desc }
+              where: { hash: { _eq: $hash } }
+              limit: 1
+            ) {
+              block_number
+              hash
+              success
+            }
+          }
+        `,
+        variables() {
+          return {
+            hash: this.extrinsicHash
+          };
+        },
+        skip() {
+          return !this.extrinsicHash;
+        },
+        result({ data }) {
+          if (data.extrinsic[0]) {
+            if (data.extrinsic[0].success) {
+              console.log(`Sucessful tx!`);
+              this.success = true;
+            } else {
+              console.log(`Failed tx!`);
+              this.success = false;
+            }
+            this.extrinsic = data.extrinsic[0];
+          }
+        }
+      }
     }
   }
 };
