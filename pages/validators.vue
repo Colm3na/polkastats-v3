@@ -428,11 +428,11 @@
                 {{ (data.item.commission / 10000000).toFixed(2) }}%
               </p>
             </template>
-            <template v-slot:cell(eraPoints)="data">
+            <!-- <template v-slot:cell(eraPoints)="data">
               <p class="text-center mb-0">
                 {{ data.item.eraPoints }}
               </p>
-            </template>
+            </template> -->
             <template v-slot:cell(favorite)="data">
               <p class="text-center mb-0">
                 <a
@@ -559,12 +559,12 @@ export default {
           sortable: true,
           class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
         },
-        {
-          key: "eraPoints",
-          label: this.$t("pages.validators.era_points"),
-          sortable: true,
-          class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
-        },
+        // {
+        //   key: "eraPoints",
+        //   label: this.$t("pages.validators.era_points"),
+        //   sortable: true,
+        //   class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
+        // },
         {
           key: "favorite",
           label: "⭐",
@@ -1041,6 +1041,9 @@ body {
 .identity-small {
   max-width: 25px;
   margin-right: 0.2rem;
+}
+#validators-table {
+  margin-bottom: 1rem;
 }
 #validators-table th {
   text-align: center;

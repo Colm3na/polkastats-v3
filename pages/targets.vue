@@ -625,6 +625,9 @@ export default {
   flex-direction: column;
   justify-content: space-around;
 }
+#rewards-table {
+  margin-bottom: 1rem;
+}
 
 @media (max-width: 765px) {
   #rewards-table {

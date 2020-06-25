@@ -587,9 +587,9 @@ body {
   font-size: 0.9rem;
   margin-left: 0.1rem;
 }
-/* .identity {
-  max-width: 80px;
-} */
+#intentions-table {
+  margin-bottom: 1rem;
+}
 #intentions-table th {
   text-align: center;
 }
