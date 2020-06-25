@@ -140,26 +140,6 @@
       "head_title": "PolkaStats - Polkadot favorite validators and intentions",
       "head_content": "Polkadot favorite validators and intentions"
     },
-    "for-validators": {
-      "want_to_have_your_validator_TEXT_1": "Want to have your validator name, logo, website url",
-      "want_to_have_your_validator_TEXT_2": "and social links included in PolkaStats?",
-      "how_to_include_TEXT": "How to include your validator information in PolkaStats",
-      "you_will_need_both": "You will need both,",
-      "and": "and",
-      "accounts_in_order_to_continue": "accounts in order to continue",
-      "make_sure_TEXT": "Make sure you have properly filled your full name, website, social links and have uploaded a profile picture in your Keybase profile",
-      "login_with_your_github_TEXT": "Login with your GitHub user and make a Fork of PolkaStats v2 repo",
-      "create_a_new_folder_TEXT": "Create a new folder named 'stash_address_of_your_validator' inside",
-      "identities_folder": "identities folder",
-      "in_that_folder_TEXT": "In that folder place 3 new files with exactly this names, keybase_username with your",
-      "username_on_it": "username on it",
-      "a_logo_TEXT": "A logo.png (512x512 max) and",
-      "following_this_schema": "following this schema",
-      "make_a_pull_rquest_TEXT": "Make a Pull Request to the master branch of the original repo",
-      "need_help_TEXT": "Need help? Send me a message at",
-      "head_title": "PolkaStats - For Polkadot validators",
-      "head_content": "Include your Polkadot validator info in PolkaStats"
-    },
     "index": {
       "we_have_a_new_TEXT": "We have a new awesome dedicated server graciously sponsored by",
       "thanks": "Thanks!",
@@ -266,9 +246,8 @@
       "feedback": "FeedBack!",
       "we_love_feedback_TEXT": "We love getting feedback from the community, if you find a bug, want to comment some behaviour or want a feature being added please place an Issue in our",
       "github_repository": "GitHub repository",
-      "stake_in_our_validator": "Stake in our validators",
-      "this_is_an_TEXT": "This is an easy way you can support me and the Polkadot folks at",
-      "blockchain_colective": "blockchain colective",
+      "stake_in_our_validator": "Stake in our validator",
+      "this_is_an_TEXT": "This is the easiest way you can support PolkaStats.",
       "follow_polkastats_on_twitter": "Follow @PolkaStats on Twitter",
       "are_you_a_TEXT": "Are you a happy PolkaStats user? Make sure you follow",
       "on_twitter_to_get_TEXT": "on Twitter to get the last platform updates",
@@ -303,7 +282,9 @@
       "recent_blocks": "Recent blocks",
       "top_rich": "Top 10 rich accounts",
       "recent_extrinsics": "Recent extrinsics",
-      "recent_events": "Recent events"
+      "recent_events": "Recent events",
+      "polkastats_validator": "Do you like PolkaStats? ❤️",
+      "polkastats_validator_subtitle": "Now you can support our work staking in our Polkadot validator!"
     }
   },
   "details": {

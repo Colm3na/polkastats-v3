@@ -7,6 +7,10 @@
     </b-row>
     <b-row>
       <b-col md="6 mb-4">
+        <b-alert v-if="noAccountsFound" variant="danger" show>
+          <i class="fa fa-frown-o"></i> No Polkadot mainnet accounts found in
+          extension.
+        </b-alert>
         <b-form class="mt-2" @submit="onSubmit">
           <b-form-group
             id="input-group-from"
@@ -178,6 +182,7 @@
             type="submit"
             variant="primary"
             class="btn-send btn-block mt-3"
+            :disabled="noAccountsFound"
           >
             <i class="fas fa-paper-plane mr-2"></i> Send
           </b-button>
@@ -226,7 +231,8 @@ import {
   web3UseRpcProvider
 } from "@polkadot/extension-dapp";
 import { ApiPromise, WsProvider } from "@polkadot/api";
-import { nodeURL } from "../polkastats.config";
+import { checkAddress } from "@polkadot/util-crypto";
+import { nodeURL, addressPrefix } from "../polkastats.config";
 import Identicon from "../components/identicon.vue";
 import commonMixin from "../mixins/commonMixin.js";
 import { validationMixin } from "vuelidate";
@@ -234,8 +240,13 @@ import { required, integer, minValue } from "vuelidate/lib/validators";
 import { encodeAddress } from "@polkadot/keyring";
 import gql from "graphql-tag";
 
+const isValidPolkadotAddress = (address, addressPrefix) => {
+  return checkAddress(address, addressPrefix)[0];
+};
+
 const isValidAddress = address => {
-  return address.length === 47;
+  const polkadotRegexp = /^(([0-9a-zA-Z]{47})|([0-9a-zA-Z]{48}))$/;
+  return polkadotRegexp.test(address);
 };
 
 const isValidAmount = (amount, vm) =>
@@ -270,13 +281,15 @@ export default {
       selectedUnit: "DOT",
       extrinsicHash: null,
       extrinsic: null,
-      success: null
+      success: null,
+      noAccountsFound: false
     };
   },
   validations: {
     selectedAddress: {
       required,
-      isValidAddress
+      isValidAddress,
+      isValidPolkadotAddress
     },
     amount: {
       required,
@@ -304,15 +317,25 @@ export default {
             ApiPromise.create({ provider: wsProvider }).then(api => {
               this.api = api;
               if (accounts.length > 0) {
-                console.log(accounts);
                 this.extensionAccounts = accounts;
-                accounts.forEach(account =>
-                  this.extensionAddresses.push(
-                    encodeAddress(account.address, 2)
+                accounts
+                  .filter(account =>
+                    isValidPolkadotAddress(account.address, addressPrefix)
                   )
-                );
-                this.selectedAccount = this.extensionAccounts[0];
-                this.selectedAddress = this.extensionAddresses[0];
+                  .forEach(account =>
+                    this.extensionAddresses.push(
+                      encodeAddress(account.address, addressPrefix)
+                    )
+                  );
+                if (
+                  this.extensionAccounts.length > 0 &&
+                  this.extensionAddresses.length > 0
+                ) {
+                  this.selectedAccount = this.extensionAccounts[0];
+                  this.selectedAddress = this.extensionAddresses[0];
+                } else {
+                  this.noAccountsFound = true;
+                }
               }
             });
           })

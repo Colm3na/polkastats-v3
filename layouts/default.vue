@@ -179,14 +179,6 @@
             >
               {{ $t("layout.default.support_polkastats") }}
             </nuxt-link>
-            <nuxt-link
-              to="/for-validators"
-              active-class="nuxt-link-exact-active"
-              class="nav-link"
-              data-testid="howToIncludeValidators"
-            >
-              {{ $t("layout.default.how_to") }}
-            </nuxt-link>
           </div>
           <div
             class="col-xs-12 col-sm-12 col-md-4 mt-2 mb-4 pb-4 mt-sm-2 text-center text-white"

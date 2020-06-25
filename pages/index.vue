@@ -13,7 +13,37 @@
           class="text-center"
           data-testid="serverAlert"
         >
-          <div>{{ $t("pages.dashboard.polkastats_validator") }}</div>
+          <div>
+            <h3>{{ $t("pages.dashboard.polkastats_validator") }}</h3>
+            <h5>{{ $t("pages.dashboard.polkastats_validator_subtitle") }}</h5>
+          </div>
+          <img
+            v-b-tooltip.hover
+            src="img/PolkaStats_Logo_Circle.png"
+            class="img-fluid my-3"
+            style="max-width: 60px;"
+            title="PolkaStats"
+          />
+          <Identicon
+            value="GTzRQPzkcuynHgkEHhsPBFpKdh4sAacVRsnd8vYfPpTMeEY"
+            size="20"
+            theme="polkadot"
+          />
+          <nuxt-link
+            to="/intention?accountId=15psTaipmWG86U5vNkF7Guv9TRPMRLKHkGS8cXT74v3RCC5t"
+          >
+            <span
+              v-b-tooltip.hover
+              class="d-inline d-sm-none d-md-none d-lg-none d-xl-none"
+              title="GTzRQPzkcuynHgkEHhsPBFpKdh4sAacVRsnd8vYfPpTMeEY"
+              >{{
+                shortAddress(`15psTaipmWG86U5vNkF7Guv9TRPMRLKHkGS8cXT74v3RCC5t`)
+              }}</span
+            >
+            <span class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline"
+              >15psTaipmWG86U5vNkF7Guv9TRPMRLKHkGS8cXT74v3RCC5t</span
+            >
+          </nuxt-link>
         </b-alert>
 
         <Chain />
@@ -48,6 +78,8 @@ import LastBlocks from "../components/LastBlocks.vue";
 import LastEvents from "../components/LastEvents.vue";
 import LastExtrinsics from "../components/LastExtrinsics.vue";
 import Top10Rich from "../components/Top10Rich.vue";
+import commonMixin from "../mixins/commonMixin.js";
+
 export default {
   components: {
     Chain,
@@ -56,6 +88,7 @@ export default {
     LastExtrinsics,
     Top10Rich
   },
+  mixins: [commonMixin],
   head() {
     return {
       title: this.$t("pages.dashboard.head_title"),
