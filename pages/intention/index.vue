@@ -667,19 +667,19 @@ export default {
       },
       StakeEvolutionDailySeries: [
         {
-          name: "Total bonded (KSM)",
+          name: "Total bonded (DOT)",
           data: []
         }
       ],
       StakeEvolutionWeeklySeries: [
         {
-          name: "Total bonded (KSM)",
+          name: "Total bonded (DOT)",
           data: []
         }
       ],
       StakeEvolutionMonthlySeries: [
         {
-          name: "Total bonded (KSM)",
+          name: "Total bonded (DOT)",
           data: []
         }
       ],
@@ -852,7 +852,7 @@ export default {
               },
               yaxis: {
                 title: {
-                  text: "Total bonded (KSM)"
+                  text: "Total bonded (DOT)"
                 },
                 labels: {
                   formatter: function(val) {
@@ -937,7 +937,7 @@ export default {
               },
               yaxis: {
                 title: {
-                  text: "Total bonded (KSM)"
+                  text: "Total bonded (DOT)"
                 },
                 labels: {
                   formatter: function(val) {
@@ -1022,7 +1022,7 @@ export default {
               },
               yaxis: {
                 title: {
-                  text: "Total bonded (KSM)"
+                  text: "Total bonded (DOT)"
                 },
                 labels: {
                   formatter: function(val) {

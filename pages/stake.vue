@@ -2,7 +2,7 @@
   <b-container class="py-4">
     <b-row>
       <b-col md="12">
-        <h1 class="mb-4">Stake KSM using Polkadot JS extension</h1>
+        <h1 class="mb-4">Stake DOTs using Polkadot JS extension</h1>
       </b-col>
     </b-row>
     <b-row>
@@ -267,9 +267,9 @@
           </p>
         </b-alert>
         <b-card>
-          <h2>How to stake KSM</h2>
+          <h2>How to stake DOTs</h2>
           <p>
-            Now you can stake KSM tokens using PolkaStats &
+            Now you can stake DOTs using PolkaStats &
             <a href="https://github.com/polkadot-js/extension" target="_blank"
               >Polkadot JS extension</a
             >
@@ -344,13 +344,13 @@ export default {
         "nano",
         "micro",
         "mili",
-        "KSM",
+        "DOT",
         "Kilo",
         "Mega",
         "Giga",
         "Tera"
       ],
-      selectedUnit: "KSM",
+      selectedUnit: "DOT",
       extrinsicHash: null,
       extrinsic: null,
       success: null,
@@ -511,7 +511,7 @@ export default {
           return this.amount * 1000000;
         case "mili":
           return this.amount * 1000000000;
-        case "KSM":
+        case "DOT":
           return this.amount * 1000000000000;
         case "kilo":
           return this.amount * 1000000000000000;

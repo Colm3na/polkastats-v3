@@ -100,7 +100,7 @@
       "loading_data": "Cargando datos, puede tardar tiempo. Sea paciente, por favor"
     },
     "events": {
-      "latest_5000_kusama_events": "ültimos 5,000 eventos en Kusama",
+      "latest_5000_system_events": "ültimos 5,000 eventos en Kusama",
       "search_placeholder": "Buscar cuenta por dirección, índice o identidad",
       "sort": "Ordenar",
       "block": "Bloque",
@@ -226,7 +226,7 @@
       "total_stake": "Participación total",
       "own_stake": "Participación propia",
       "other_stake": "Participación ajena",
-      "estimated_payout": "Pago estimado/era 100 KSM",
+      "estimated_payout": "Pago estimado/era 100 DOT",
       "estimated_annualized_payout_percentage": "Ganancia estimada anual",
       "accordion-info": {
         "delegator_rewards": "Recompensas de delegadores. ¿Cómo funciona?",

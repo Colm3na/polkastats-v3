@@ -94,12 +94,12 @@
       "remove_from_favorites": "Remove from Favorites",
       "add_to_favorites": "Add to Favorites",
       "identity": "Identity",
-      "head_title": "PolkaStats - Polkadot Kusama active accounts",
-      "head_content": "Polkadot Kusama active accounts",
+      "head_title": "PolkaStats - Polkadot active accounts",
+      "head_content": "Polkadot active accounts",
       "loading_data": "Loading data, it can take a long time. Be patient, please"
     },
     "events": {
-      "latest_5000_kusama_events": "Latest 5,000 Kusama events",
+      "latest_5000_system_events": "Latest 5,000 Polkadot events",
       "search_placeholder": "Search account by address, index or identity",
       "sort": "Sort",
       "block": "Block",
@@ -108,8 +108,8 @@
       "method": "Method",
       "phase": "Phase",
       "data": "Data",
-      "head_title": "PolkaStats - Polkadot Kusama chain events",
-      "head_content": "Polkadot Kusama chain events"
+      "head_title": "PolkaStats - Polkadot chain events",
+      "head_content": "Polkadot chain events"
     },
     "favorites": {
       "hi_there": "Hi there!",
@@ -137,8 +137,8 @@
       "reward_destination": "Reward destination",
       "nominators": "nominators",
       "intention": "Intention",
-      "head_title": "PolkaStats - Polkadot Kusama favorite validators and intentions",
-      "head_content": "Polkadot Kusama favorite validators and intentions"
+      "head_title": "PolkaStats - Polkadot favorite validators and intentions",
+      "head_content": "Polkadot favorite validators and intentions"
     },
     "for-validators": {
       "want_to_have_your_validator_TEXT_1": "Want to have your validator name, logo, website url",
@@ -157,8 +157,8 @@
       "following_this_schema": "following this schema",
       "make_a_pull_rquest_TEXT": "Make a Pull Request to the master branch of the original repo",
       "need_help_TEXT": "Need help? Send me a message at",
-      "head_title": "PolkaStats - For Polkadot Kusama validators",
-      "head_content": "Include your Kusama validator info in PolkaStats"
+      "head_title": "PolkaStats - For Polkadot validators",
+      "head_content": "Include your Polkadot validator info in PolkaStats"
     },
     "index": {
       "we_have_a_new_TEXT": "We have a new awesome dedicated server graciously sponsored by",
@@ -198,8 +198,8 @@
       "add_to_favorites": "Add to Favorites",
       "total_stake": "Total Stake",
       "commission": "Commission",
-      "head_title": "PolkaStats -  Polkadot Kusama intention validators",
-      "head_content": "Polkadot Kusama intention validators"
+      "head_title": "PolkaStats -  Polkadot intention validators",
+      "head_content": "Polkadot intention validators"
     },
     "nominators": {
       "search_placeholder": "Search nominator by account, account index or identity display name",
@@ -211,8 +211,8 @@
       "nominator": "Nominator",
       "nominations": "Nominations",
       "total_stake": "Total Stake",
-      "head_title": "PolkaStats - Polkadot Kusama nominators",
-      "head_content": "Polkadot Kusama nominators"
+      "head_title": "PolkaStats - Polkadot nominators",
+      "head_content": "Polkadot nominators"
     },
     "targets": {
       "targets": "Targets",
@@ -225,7 +225,7 @@
       "total_stake": "Total stake",
       "own_stake": "Own stake",
       "other_stake": "Other stake",
-      "estimated_payout": "Estimated payout/era 100 KSM",
+      "estimated_payout": "Estimated payout/era 100 DOT",
       "estimated_annualized_payout_percentage": "Estimated annualized rewards",
       "accordion-info": {
         "delegator_rewards": "Delegators rewards. How does it work",
@@ -255,8 +255,8 @@
       "voters": "Voters",
       "self_stake": "Self stake",
       "voters_stake": "Voters stake",
-      "head_title": "PolkaStats - Polkadot Kusama phragmen candidates",
-      "head_content": "Polkadot Kusama phragmen candidates"
+      "head_title": "PolkaStats - Polkadot phragmen candidates",
+      "head_content": "Polkadot phragmen candidates"
     },
     "support-us": {
       "support_polkastats": "SUPPORT POLKASTATS",
@@ -293,13 +293,13 @@
       "stake": "Stake",
       "commission": "Commission",
       "era_points": "Era points",
-      "head_title": "PolkaStats - Polkadot Kusama network statistics",
-      "head_content": "Polkadot Kusama network statistics"
+      "head_title": "PolkaStats - Polkadot network statistics",
+      "head_content": "Polkadot network statistics"
     },
     "dashboard": {
       "title": "Dashboard",
-      "head_title": "PolkaStats - Polkadot Kusama network statistics",
-      "head_content": "Polkadot Kusama dashboard",
+      "head_title": "PolkaStats - Polkadot network statistics",
+      "head_content": "Polkadot dashboard",
       "recent_blocks": "Recent blocks",
       "top_rich": "Top 10 rich accounts",
       "recent_extrinsics": "Recent extrinsics",

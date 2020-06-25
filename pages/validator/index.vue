@@ -983,30 +983,30 @@ export default {
       },
       StakeEvolutionDailySeries: [
         {
-          name: "Total bonded (KSM)",
+          name: "Total bonded (DOT)",
           data: []
         }
       ],
       StakeEvolutionWeeklySeries: [
         {
-          name: "Total bonded (KSM)",
+          name: "Total bonded (DOT)",
           data: []
         }
       ],
       StakeEvolutionMonthlySeries: [
         {
-          name: "Total bonded (KSM)",
+          name: "Total bonded (DOT)",
           data: []
         }
       ],
       StakeEvolutionDailyChartOptions: this.createChartOptions(
-        this.$t("details.validator.total_bonded") + " (KSM)"
+        this.$t("details.validator.total_bonded") + " (DOT)"
       ),
       StakeEvolutionWeeklyChartOptions: this.createChartOptions(
-        this.$t("details.validator.total_bonded") + " (KSM)"
+        this.$t("details.validator.total_bonded") + " (DOT)"
       ),
       StakeEvolutionMonthlyChartOptions: this.createChartOptions(
-        this.$t("details.validator.total_bonded") + " (KSM)"
+        this.$t("details.validator.total_bonded") + " (DOT)"
       ),
       rewards: {
         day: 0,
@@ -1015,30 +1015,30 @@ export default {
       },
       RewardsEvolutionDailySeries: [
         {
-          name: "Era rewards (KSM)",
+          name: "Era rewards (DOT)",
           data: []
         }
       ],
       RewardsEvolutionWeeklySeries: [
         {
-          name: "Era rewards (KSM)",
+          name: "Era rewards (DOT)",
           data: []
         }
       ],
       RewardsEvolutionMonthlySeries: [
         {
-          name: "Era rewards (KSM)",
+          name: "Era rewards (DOT)",
           data: []
         }
       ],
       RewardsDailyChartOptions: this.createChartOptions(
-        this.$t("details.validator.reward") + " (KSM)"
+        this.$t("details.validator.reward") + " (DOT)"
       ),
       RewardsWeeklyChartOptions: this.createChartOptions(
-        this.$t("details.validator.reward") + " (KSM)"
+        this.$t("details.validator.reward") + " (DOT)"
       ),
       RewardsMonthlyChartOptions: this.createChartOptions(
-        this.$t("details.validator.reward") + " (KSM)"
+        this.$t("details.validator.reward") + " (DOT)"
       ),
       // Slashes
       Slashes: {

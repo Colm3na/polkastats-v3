@@ -23,7 +23,7 @@ export const commonChartOptions = {
   },
   yaxis: {
     title: {
-      text: "Total bonded (KSM)"
+      text: "Total bonded (DOT)"
     },
     labels: {
       formatter: function(val) {

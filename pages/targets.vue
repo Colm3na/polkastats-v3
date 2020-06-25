@@ -512,7 +512,7 @@ export default {
               value.estimated_annualized_payout_percentage = this.getAnnualizedRewards(
                 value.estimated_payout
               );
-              // Payout per era per 100 KSM
+              // Payout per era per 100 DOT
               value.estimated_payout = this.formatAmount(
                 value.estimated_payout
               );

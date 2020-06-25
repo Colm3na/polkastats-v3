@@ -52,7 +52,7 @@ context("Header", () => {
         .and(
           "have.attr",
           "title",
-          "PolkaStats | Polkadot Kusama CC3 network statistics"
+          "PolkaStats | Polkadot CC1 network statistics"
         );
 
       cy.get("@logo")

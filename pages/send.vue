@@ -2,7 +2,7 @@
   <b-container class="py-4">
     <b-row>
       <b-col md="12">
-        <h1 class="mb-4">Send KSM using Polkadot JS extension</h1>
+        <h1 class="mb-4">Send DOTs using Polkadot JS extension</h1>
       </b-col>
     </b-row>
     <b-row>
@@ -186,9 +186,9 @@
       <b-col md="1"></b-col>
       <b-col md="5">
         <b-card>
-          <h2>How to send KSM</h2>
+          <h2>How to send DOTs</h2>
           <p>
-            Now you can transfer KSM tokens using PolkaStats &
+            Now you can transfer DOTs using PolkaStats &
             <a href="https://github.com/polkadot-js/extension" target="_blank"
               >Polkadot JS extension</a
             >
@@ -196,7 +196,7 @@
           </p>
           <ul>
             <li>
-              First of all you need a <strong>Kusama account</strong> with some
+              First of all you need a <strong>Polkadot account</strong> with some
               <strong>free balance</strong>.
             </li>
             <li>
@@ -261,13 +261,13 @@ export default {
         "nano",
         "micro",
         "mili",
-        "KSM",
+        "DOT",
         "Kilo",
         "Mega",
         "Giga",
         "Tera"
       ],
-      selectedUnit: "KSM",
+      selectedUnit: "DOT",
       extrinsicHash: null,
       extrinsic: null,
       success: null
@@ -350,7 +350,7 @@ export default {
           return this.amount * 1000000;
         case "mili":
           return this.amount * 1000000000;
-        case "KSM":
+        case "DOT":
           return this.amount * 1000000000000;
         case "kilo":
           return this.amount * 1000000000000000;

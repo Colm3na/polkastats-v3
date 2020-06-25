@@ -3,7 +3,7 @@
     <section>
       <b-container class="page-events main pt-4">
         <h1 class="text-center mb-4">
-          {{ $t("pages.events.latest_5000_kusama_events") }}
+          {{ $t("pages.events.latest_5000_system_events") }}
         </h1>
 
         <!-- Filter -->
