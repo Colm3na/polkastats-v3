@@ -1,33 +1,21 @@
 <template>
   <div>
     <section>
-      <b-container class="main pt-4 pb-5">
+      <b-container class="main pt-4 pb-5 dashboard">
         <h1 class="mb-4">
           {{ $t("pages.dashboard.title") }}
         </h1>
 
-        <b-alert
-          show
-          dismissible
-          variant="primary"
-          class="text-center"
-          data-testid="serverAlert"
-        >
+        <b-alert show dismissible variant="primary" class="text-center">
           <div>
             <h3>{{ $t("pages.dashboard.polkastats_validator") }}</h3>
             <h5>{{ $t("pages.dashboard.polkastats_validator_subtitle") }}</h5>
           </div>
-          <img
-            v-b-tooltip.hover
-            src="img/PolkaStats_Logo_Circle.png"
-            class="img-fluid my-3"
-            style="max-width: 60px;"
-            title="PolkaStats"
-          />
           <Identicon
-            value="GTzRQPzkcuynHgkEHhsPBFpKdh4sAacVRsnd8vYfPpTMeEY"
-            size="20"
+            value="15psTaipmWG86U5vNkF7Guv9TRPMRLKHkGS8cXT74v3RCC5t"
+            size="30"
             theme="polkadot"
+            class="my-3"
           />
           <nuxt-link
             to="/intention?accountId=15psTaipmWG86U5vNkF7Guv9TRPMRLKHkGS8cXT74v3RCC5t"
@@ -35,7 +23,7 @@
             <span
               v-b-tooltip.hover
               class="d-inline d-sm-none d-md-none d-lg-none d-xl-none"
-              title="GTzRQPzkcuynHgkEHhsPBFpKdh4sAacVRsnd8vYfPpTMeEY"
+              title="15psTaipmWG86U5vNkF7Guv9TRPMRLKHkGS8cXT74v3RCC5t"
               >{{
                 shortAddress(`15psTaipmWG86U5vNkF7Guv9TRPMRLKHkGS8cXT74v3RCC5t`)
               }}</span
@@ -79,6 +67,7 @@ import LastEvents from "../components/LastEvents.vue";
 import LastExtrinsics from "../components/LastExtrinsics.vue";
 import Top10Rich from "../components/Top10Rich.vue";
 import commonMixin from "../mixins/commonMixin.js";
+import Identicon from "../components/identicon.vue";
 
 export default {
   components: {
@@ -86,7 +75,8 @@ export default {
     LastBlocks,
     LastEvents,
     LastExtrinsics,
-    Top10Rich
+    Top10Rich,
+    Identicon
   },
   mixins: [commonMixin],
   head() {
@@ -103,4 +93,12 @@ export default {
   }
 };
 </script>
-<style></style>
+<style>
+.dashboard .clipboard {
+  display: inline-block;
+}
+.dashboard .identicon {
+  margin-right: 0.2rem;
+  cursor: copy;
+}
+</style>
