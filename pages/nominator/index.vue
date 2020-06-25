@@ -274,15 +274,7 @@ import moment from "moment";
 import Identicon from "../../components/identicon.vue";
 import { formatBalance, isHex } from "@polkadot/util";
 import BN from "bn.js";
-<<<<<<< HEAD
-import {
-  decimals,
-  unit,
-  blockExplorer
-} from "../../polkastats.config.js";
-=======
 import { decimals, unit, blockExplorer } from "../../polkastats.config.js";
->>>>>>> develop
 import commonMixin from "../../mixins/commonMixin.js";
 
 formatBalance.setDefaults({ decimals, unit });
