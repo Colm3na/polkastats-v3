@@ -21,11 +21,6 @@
             {{ data.item.method }}
           </p>
         </template>
-        <template v-slot:cell(section)="data">
-          <p class="mb-0 d-inline-block">
-            {{ data.item.data }}
-          </p>
-        </template>
       </b-table>
     </div>
   </div>
@@ -71,6 +66,7 @@ export default {
           }
         `,
         result({ data }) {
+          console.log(data.event);
           this.events = data.event;
         }
       }
