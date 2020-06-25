@@ -103,6 +103,14 @@
                     {{ $t("layout.default.account") }}
                   </nuxt-link>
                 </b-nav-item>
+                <b-nav-item-dropdown text="Wallet" class="py-1">
+                  <b-dropdown-item to="/send" data-testid="menu-send"
+                    >Send</b-dropdown-item
+                  >
+                  <b-dropdown-item to="/stake" data-testid="menu-stake"
+                    >Stake</b-dropdown-item
+                  >
+                </b-nav-item-dropdown>
               </b-navbar-nav>
             </b-collapse>
           </b-navbar>
@@ -288,6 +296,15 @@
 <script>
 import { mapMutations } from "vuex";
 import languages from "../components/languages";
+import { nodeURL } from "../polkastats.config";
+import {
+  web3Accounts,
+  web3Enable,
+  web3FromAddress,
+  web3ListRpcProviders,
+  web3UseRpcProvider
+} from "@polkadot/extension-dapp";
+import { ApiPromise, WsProvider } from "@polkadot/api";
 
 export default {
   components: { languages },
@@ -296,7 +313,7 @@ export default {
       return this.$store.state.system.info;
     }
   },
-  created: function() {
+  created: async function() {
     this.$store.dispatch("system/update");
   }
 };

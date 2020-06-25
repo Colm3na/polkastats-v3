@@ -1,6 +1,7 @@
 /* PolkaStats app configuration params */
 export const unit = `DOT`;
 export const decimals = 12;
+export const nodeURL = "wss://rpc.polkadot.io";
 export const blockExplorer = {
   block: `https://polkascan.io/polkadot-cc1/block/`,
   account: `https://polkascan.io/polkadot-cc1/account/`

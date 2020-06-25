@@ -796,12 +796,12 @@
                         :filter-included-fields="filterOn"
                         @filtered="onFiltered"
                       >
-                        <template slot="rank" slot-scope="data">
+                        <template v-slot:cell(rank)="data">
                           <p class="text-center mb-0">
                             {{ data.item.rank }}
                           </p>
                         </template>
-                        <template slot="who" slot-scope="data">
+                        <template v-slot:cell(who)="data">
                           <div
                             class="d-block d-sm-block d-md-none d-lg-none d-xl-none text-center py-2"
                             style="border: 1px solid #bbb; border-radius: 0.3rem;"
@@ -871,12 +871,12 @@
                             </p>
                           </div>
                         </template>
-                        <template slot="percent" slot-scope="data">
+                        <template v-slot:cell(percent)="data">
                           <p class="text-right mb-0">
                             {{ parseFloat(data.item.percent).toFixed(3) }} %
                           </p>
                         </template>
-                        <template slot="amountOrder" slot-scope="data">
+                        <template v-slot:cell(amountOrder)="data">
                           <p class="text-right mb-0">
                             {{ formatAmount(data.item.value) }}
                           </p>
