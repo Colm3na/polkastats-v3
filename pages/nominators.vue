@@ -524,6 +524,9 @@ export default {
 };
 </script>
 <style>
+#nominators-table {
+  margin-bottom: 1rem;
+}
 #nominators-table .identicon {
   display: inline;
   margin-right: 0.2rem;

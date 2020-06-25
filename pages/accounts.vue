@@ -58,17 +58,6 @@
           </b-col>
         </div>
         <!-- Table with sorting and pagination-->
-        <div v-if="!busy">
-          <b-alert
-            show
-            dismissible
-            variant="primary"
-            class="text-center"
-            data-testid="serverAlert"
-          >
-            <div>{{ $t("pages.accounts.loading_data") }}</div>
-          </b-alert>
-        </div>
         <div>
           <b-table
             id="accounts-table"
@@ -82,7 +71,6 @@
             :sort-desc.sync="sortDesc"
             :filter="filter"
             :filter-included-fields="filterOn"
-            :busy="busy"
             @filtered="onFiltered"
           >
             <template v-slot:cell(rank)="data">
@@ -247,7 +235,6 @@ export default {
   mixins: [commonMixin],
   data: function() {
     return {
-      busy: false,
       tableOptions: numItemsTableOptions,
       perPage: localStorage.numItemsTableSelected
         ? parseInt(localStorage.numItemsTableSelected)
@@ -369,9 +356,6 @@ export default {
       // Trigger pagination to update the number of buttons/pages due to filtering
       this.totalRows = filteredItems.length;
       this.currentPage = 1;
-    },
-    setDataLoaded() {
-      this.busy = true;
     }
   },
   head() {
@@ -405,8 +389,5 @@ export default {
 }
 .btn-secondary {
   font-size: 0.8rem;
-}
-table.b-table[aria-busy="true"] {
-  opacity: 1;
 }
 </style>

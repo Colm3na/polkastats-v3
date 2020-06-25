@@ -6,6 +6,16 @@
           {{ $t("pages.dashboard.title") }}
         </h1>
 
+        <b-alert
+          show
+          dismissible
+          variant="primary"
+          class="text-center"
+          data-testid="serverAlert"
+        >
+          <div>{{ $t("pages.dashboard.polkastats_validator") }}</div>
+        </b-alert>
+
         <Chain />
 
         <div class="row">

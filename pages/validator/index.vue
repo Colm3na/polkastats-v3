@@ -1145,7 +1145,7 @@ export default {
         );
 
         if (!validator.exposure) {
-          return []
+          return [];
         }
 
         // Calculate others stake total amount

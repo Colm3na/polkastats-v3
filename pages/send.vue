@@ -196,8 +196,8 @@
           </p>
           <ul>
             <li>
-              First of all you need a <strong>Polkadot account</strong> with some
-              <strong>free balance</strong>.
+              First of all you need a <strong>Polkadot account</strong> with
+              some <strong>free balance</strong>.
             </li>
             <li>
               Install Polkadot JS extension from
