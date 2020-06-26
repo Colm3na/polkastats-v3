@@ -38,7 +38,15 @@
 
         <div class="row">
           <div class="col-md-6 mb-4">
-            <h3>{{ $t("pages.dashboard.recent_blocks") }}</h3>
+            <h3>
+              <nuxt-link
+                v-b-tooltip.hover
+                :to="`/blocks`"
+                title="Click to see last blocks"
+              >
+                {{ $t("pages.dashboard.recent_blocks") }}
+              </nuxt-link>
+            </h3>
             <LastBlocks />
           </div>
           <div class="col-md-6 mb-4">

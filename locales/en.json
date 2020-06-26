@@ -285,6 +285,9 @@
       "recent_events": "Recent events",
       "polkastats_validator": "Do you like PolkaStats? ❤️",
       "polkastats_validator_subtitle": "Now you can support our work staking in our Polkadot validator!"
+    },
+    "blocks": {
+      "title": "Last blocks"
     }
   },
   "details": {

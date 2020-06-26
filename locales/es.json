@@ -286,6 +286,9 @@
       "recent_events": "Últimos eventos",
       "polkastats_validator": "¿Te gusta PolkaStats? ❤️",
       "polkastats_validator_subtitle": "¡Ahora nos puedes apoyar participando en nuestro validator de Polkadot!"
+    },
+    "blocks": {
+      "title": "Last blocks"
     }
   },
   "details": {
