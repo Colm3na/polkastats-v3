@@ -528,6 +528,7 @@ export default {
             };
 
             R.mapObjIndexed(formatData, rewards);
+            this.totalRows = rewards.length;
             this.rewards = rewards;
           }
         },
