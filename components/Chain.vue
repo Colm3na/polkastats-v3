@@ -96,7 +96,8 @@
           <div class="card-body">
             <h4 class="mb-3">{{ $t("components.chain.validator_count") }}</h4>
             <h5 class="d-inline-block">
-              {{ formatNumber(lastBlock.validator_count) }}
+              {{ formatNumber(lastBlock.validator_count) }} /
+              {{ formatNumber(validatorsCount) }}
             </h5>
           </div>
         </div>
@@ -161,6 +162,9 @@ export default {
     };
   },
   computed: {
+    validatorsCount() {
+      return this.$store.state.validators.list.length;
+    },
     waitingCount() {
       return this.$store.state.intentions.list.length;
     },
