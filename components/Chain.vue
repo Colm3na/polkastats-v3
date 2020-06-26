@@ -1,7 +1,7 @@
 <template>
   <div v-if="lastBlock && chain">
     <div class="row">
-      <div class="col-6 col-md-3 mb-4">
+      <div class="col-6 col-md-6 col-lg-3 mb-4">
         <div class="card">
           <div class="card-body">
             <h4 class="mb-3">{{ $t("components.network.last_block") }}</h4>
@@ -24,7 +24,7 @@
           </div>
         </div>
       </div>
-      <div class="col-6 col-md-3 mb-4">
+      <div class="col-6 col-md-6 col-lg-3 mb-4">
         <div class="card">
           <div class="card-body">
             <h4 class="mb-3">
@@ -42,7 +42,7 @@
           </div>
         </div>
       </div>
-      <div class="col-6 col-md-3 mb-4">
+      <div class="col-6 col-md-6 col-lg-3 mb-4">
         <div class="card">
           <div class="card-body">
             <h4 class="mb-3">
@@ -65,7 +65,7 @@
           </div>
         </div>
       </div>
-      <div class="col-6 col-md-3 mb-4">
+      <div class="col-6 col-md-6 col-lg-3 mb-4">
         <div class="card">
           <div class="card-body">
             <h4 class="mb-3">
@@ -91,7 +91,7 @@
     </div>
 
     <div class="row">
-      <div class="col-6 col-md-3 mb-4">
+      <div class="col-6 col-md-6 col-lg-3 mb-4">
         <div class="card">
           <div class="card-body">
             <h4 class="mb-3">{{ $t("components.chain.validator_count") }}</h4>
@@ -102,7 +102,7 @@
           </div>
         </div>
       </div>
-      <div class="col-6 col-md-3 mb-4">
+      <div class="col-6 col-md-6 col-lg-3 mb-4">
         <div class="card">
           <div class="card-body">
             <h4 class="mb-3">
@@ -114,7 +114,7 @@
           </div>
         </div>
       </div>
-      <div class="col-6 col-md-3 mb-4">
+      <div class="col-6 col-md-6 col-lg-3 mb-4">
         <div class="card">
           <div class="card-body">
             <h4 class="mb-3">
@@ -126,7 +126,7 @@
           </div>
         </div>
       </div>
-      <div class="col-6 col-md-3 mb-4">
+      <div class="col-6 col-md-6 col-lg-3 mb-4">
         <div class="card">
           <div class="card-body">
             <h4 class="mb-3">
