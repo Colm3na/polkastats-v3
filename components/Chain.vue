@@ -96,8 +96,8 @@
           <div class="card-body">
             <h4 class="mb-3">{{ $t("components.chain.validator_count") }}</h4>
             <h5 class="d-inline-block">
-              {{ formatNumber(lastBlock.validator_count) }} /
-              {{ formatNumber(validatorsCount) }}
+              {{ formatNumber(validatorsCount) }} /
+              {{ formatNumber(lastBlock.validator_count) }}
             </h5>
           </div>
         </div>

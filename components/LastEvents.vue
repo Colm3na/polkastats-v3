@@ -58,7 +58,6 @@ export default {
               block_number
               event_index
               data
-              event_index
               method
               phase
               section

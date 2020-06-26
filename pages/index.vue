@@ -50,17 +50,41 @@
             <LastBlocks />
           </div>
           <div class="col-md-6 mb-4">
-            <h3>{{ $t("pages.dashboard.top_rich") }}</h3>
+            <h3>
+              <nuxt-link
+                v-b-tooltip.hover
+                :to="`/accounts`"
+                title="Click to see all active accounts"
+              >
+                {{ $t("pages.dashboard.top_rich") }}
+              </nuxt-link>
+            </h3>
             <Top10Rich />
           </div>
         </div>
         <div class="row">
           <div class="col-md-6 mb-4">
-            <h3>{{ $t("pages.dashboard.recent_extrinsics") }}</h3>
+            <h3>
+              <nuxt-link
+                v-b-tooltip.hover
+                :to="`/extrinsics`"
+                title="Click to see last extrinsics"
+              >
+                {{ $t("pages.dashboard.recent_extrinsics") }}
+              </nuxt-link>
+            </h3>
             <LastExtrinsics />
           </div>
           <div class="col-md-6 mb-4">
-            <h3>{{ $t("pages.dashboard.recent_events") }}</h3>
+            <h3>
+              <nuxt-link
+                v-b-tooltip.hover
+                :to="`/events`"
+                title="Click to see last events"
+              >
+                {{ $t("pages.dashboard.recent_events") }}
+              </nuxt-link>
+            </h3>
             <LastEvents />
           </div>
         </div>

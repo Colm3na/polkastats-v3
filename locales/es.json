@@ -99,19 +99,6 @@
       "head_content": "Cuentas activas en Polkadot Kusama",
       "loading_data": "Cargando datos, puede tardar tiempo. Sea paciente, por favor"
     },
-    "events": {
-      "latest_5000_system_events": "ültimos 5,000 eventos en Kusama",
-      "search_placeholder": "Buscar cuenta por dirección, índice o identidad",
-      "sort": "Ordenar",
-      "block": "Bloque",
-      "index": "Índice",
-      "section": "Sección",
-      "method": "Método",
-      "phase": "Fase",
-      "data": "Datos",
-      "head_title": "PolkaStats - Eventos en la cadena de Polkadot Kusama",
-      "head_content": "Eventos en la cadena Polkadot Kusama"
-    },
     "favorites": {
       "hi_there": "¡Hola!",
       "you_can_click_TEXT": "Puedes hacer click sobre el icono de la estrella",
@@ -288,7 +275,13 @@
       "polkastats_validator_subtitle": "¡Ahora nos puedes apoyar participando en nuestro validator de Polkadot!"
     },
     "blocks": {
-      "title": "Last blocks"
+      "title": "Últimos bloques"
+    },
+    "extrinsics": {
+      "title": "Últimas extrinsics"
+    },
+    "events": {
+      "title": "Últimos eventos de sistema"
     }
   },
   "details": {

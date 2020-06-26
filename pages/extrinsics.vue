@@ -3,11 +3,11 @@
     <section>
       <b-container class="main pt-4 pb-5">
         <h1 class="mb-4">
-          {{ $t("pages.events.title") }}
+          {{ $t("pages.extrinsics.title") }}
         </h1>
-        <div class="last-events">
+        <div class="last-extrinsics">
           <div class="table-responsive">
-            <b-table striped hover :fields="fields" :items="events">
+            <b-table striped hover :fields="fields" :items="extrinsics">
               <template v-slot:cell(block_number)="data">
                 <p class="mb-0">
                   <nuxt-link
@@ -42,7 +42,7 @@ export default {
   mixins: [commonMixin],
   data: function() {
     return {
-      events: [],
+      extrinsics: [],
       fields: [
         {
           key: "block_number",
@@ -50,7 +50,7 @@ export default {
           sortable: true
         },
         {
-          key: "event_index",
+          key: "extrinsic_index",
           label: "Index",
           sortable: true
         },
@@ -60,8 +60,8 @@ export default {
           sortable: true
         },
         {
-          key: "data",
-          label: "Data",
+          key: "args",
+          label: "Args",
           sortable: true
         }
       ]
@@ -69,21 +69,24 @@ export default {
   },
   apollo: {
     $subscribe: {
-      event: {
+      extrinsic: {
         query: gql`
-          subscription events {
-            event(order_by: { block_number: desc }, where: {}, limit: 50) {
+          subscription extrinsics {
+            extrinsic(order_by: { block_number: desc }, where: {}, limit: 50) {
               block_number
-              event_index
-              data
-              method
-              phase
+              extrinsic_index
+              is_signed
+              signer
               section
+              method
+              args
+              hash
+              doc
             }
           }
         `,
         result({ data }) {
-          this.events = data.event;
+          this.extrinsics = data.extrinsic;
         }
       }
     }
@@ -91,4 +94,10 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.last-blocks .identicon {
+  display: inline-block;
+  margin: 0 0.2rem 0 0;
+  cursor: copy;
+}
+</style>

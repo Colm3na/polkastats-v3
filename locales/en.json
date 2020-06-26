@@ -98,19 +98,6 @@
       "head_content": "Polkadot active accounts",
       "loading_data": "Loading data, it can take a long time. Be patient, please"
     },
-    "events": {
-      "latest_5000_system_events": "Latest 5,000 Polkadot events",
-      "search_placeholder": "Search account by address, index or identity",
-      "sort": "Sort",
-      "block": "Block",
-      "index": "Index",
-      "section": "Section",
-      "method": "Method",
-      "phase": "Phase",
-      "data": "Data",
-      "head_title": "PolkaStats - Polkadot chain events",
-      "head_content": "Polkadot chain events"
-    },
     "favorites": {
       "hi_there": "Hi there!",
       "you_can_click_TEXT": "You can click on the star icon",
@@ -288,6 +275,12 @@
     },
     "blocks": {
       "title": "Last blocks"
+    },
+    "extrinsics": {
+      "title": "Last extrinsics"
+    },
+    "events": {
+      "title": "Last system events"
     }
   },
   "details": {
