@@ -41,14 +41,14 @@
           <li>Version 2!</li>
           <li>
             {{ $t("pages.about.new_github_repos") }}:
-            <a href="https://github.com/Colm3na/polkastats-v2" target="_blank"
-              >https://github.com/Colm3na/polkastats-v2</a
+            <a href="https://github.com/Colm3na/polkastats-v3" target="_blank"
+              >https://github.com/Colm3na/polkastats-v3</a
             >
             {{ $t("pages.about.and") }}
             <a
               href="https://github.com/Colm3na/polkastats-backend-v2"
               target="_blank"
-              >https://github.com/Colm3na/polkastats-backend-v2</a
+              >https://github.com/Colm3na/polkastats-backend-v3</a
             >
           </li>
           <li>{{ $t("pages.about.add_kusma_cc2_network_support") }}.</li>
