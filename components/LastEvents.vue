@@ -66,7 +66,6 @@ export default {
           }
         `,
         result({ data }) {
-          console.log(data.event);
           this.events = data.event;
         }
       }
