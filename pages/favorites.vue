@@ -148,9 +148,11 @@
                           :size="20"
                           :theme="'polkadot'"
                         />
-                        <a
-                          :href="blockExplorer.account + validator.stash_id"
-                          target="_blank"
+                        <nuxt-link
+                          :to="{
+                            name: 'account',
+                            query: { accountId: validator.stash_id }
+                          }"
                         >
                           <span
                             v-b-tooltip.hover
@@ -162,7 +164,7 @@
                             class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline"
                             >{{ shortAddress(validator.stash_id) }}</span
                           >
-                        </a>
+                        </nuxt-link>
                       </div>
                     </div>
                     <div v-if="validator.controller_id" class="row">
@@ -176,11 +178,11 @@
                           :size="20"
                           :theme="'polkadot'"
                         />
-                        <a
-                          :href="
-                            blockExplorer.account + validator.controller_id
-                          "
-                          target="_blank"
+                        <nuxt-link
+                          :to="{
+                            name: 'account',
+                            query: { accountId: validator.controller_id }
+                          }"
                         >
                           <span
                             v-b-tooltip.hover
@@ -192,7 +194,7 @@
                             class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline"
                             >{{ shortAddress(validator.controller_id) }}</span
                           >
-                        </a>
+                        </nuxt-link>
                       </div>
                     </div>
                     <div v-if="validator.session_id_hex" class="row">
@@ -312,9 +314,11 @@
                                 :size="20"
                                 :theme="'polkadot'"
                               />
-                              <a
-                                :href="blockExplorer.account + staker.who"
-                                target="_blank"
+                              <nuxt-link
+                                :to="{
+                                  name: 'account',
+                                  query: { accountId: staker.who }
+                                }"
                               >
                                 <span
                                   v-b-tooltip.hover
@@ -326,7 +330,7 @@
                                   class="d-none d-sm-inline-block d-md-inline-block d-lg-inline-block d-xl-inline-block"
                                   >{{ shortAddress(staker.who) }}</span
                                 >
-                              </a>
+                              </nuxt-link>
                             </div>
                             <div class="col-4 text-right value">
                               {{ formatAmount(staker.value) }}
@@ -430,9 +434,11 @@
                           :size="20"
                           :theme="'polkadot'"
                         />
-                        <a
-                          :href="blockExplorer.account + validator.stash_id"
-                          target="_blank"
+                        <nuxt-link
+                          :to="{
+                            name: 'account',
+                            query: { accountId: validator.stash_id }
+                          }"
                         >
                           <span
                             v-b-tooltip.hover
@@ -444,7 +450,7 @@
                             class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline"
                             >{{ shortAddress(validator.stash_id) }}</span
                           >
-                        </a>
+                        </nuxt-link>
                       </div>
                     </div>
                     <div v-if="validator.controller_id" class="row">
@@ -458,11 +464,11 @@
                           :size="20"
                           :theme="'polkadot'"
                         />
-                        <a
-                          :href="
-                            blockExplorer.account + validator.controller_id
-                          "
-                          target="_blank"
+                        <nuxt-link
+                          :to="{
+                            name: 'account',
+                            query: { accountId: validator.controller_id }
+                          }"
                         >
                           <span
                             v-b-tooltip.hover
@@ -474,7 +480,7 @@
                             class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline"
                             >{{ shortAddress(validator.controller_id) }}</span
                           >
-                        </a>
+                        </nuxt-link>
                       </div>
                     </div>
                     <div v-if="validator.session_id_hex" class="row">
@@ -587,9 +593,11 @@
                                 :size="20"
                                 :theme="'polkadot'"
                               />
-                              <a
-                                :href="blockExplorer.account + staker"
-                                target="_blank"
+                              <nuxt-link
+                                :to="{
+                                  name: 'account',
+                                  query: { accountId: staker }
+                                }"
                               >
                                 <span
                                   v-b-tooltip.hover
@@ -601,7 +609,7 @@
                                   class="d-none d-sm-inline-block d-md-inline-block d-lg-inline-block d-xl-inline-block"
                                   >{{ staker }}</span
                                 >
-                              </a>
+                              </nuxt-link>
                             </div>
                           </div>
                         </b-collapse>
@@ -619,14 +627,10 @@
   </div>
 </template>
 <script>
-import { mapMutations } from "vuex";
 import bootstrap from "bootstrap";
 import Identicon from "../components/identicon.vue";
-import { isHex } from "@polkadot/util";
-import BN from "bn.js";
 import commonMixin from "../mixins/commonMixin.js";
 import gql from "graphql-tag";
-import { blockExplorer } from "../polkastats.config.js";
 
 export default {
   components: {
@@ -635,7 +639,6 @@ export default {
   mixins: [commonMixin],
   data: function() {
     return {
-      blockExplorer,
       currentSessionIndex: 0,
       intentions: [],
       validators: [],

@@ -13,9 +13,13 @@
                   <tr>
                     <td>{{ $t("details.block.block_author") }}</td>
                     <td class="text-right">
-                      <a
-                        :href="blockExplorer.account + parsedBlock.block_author"
-                        target="_blank"
+                      <nuxt-link
+                        :to="{
+                          name: 'account',
+                          query: {
+                            accountId: parsedBlock.block_author
+                          }
+                        }"
                         class="d-block"
                       >
                         <Identicon
@@ -33,7 +37,7 @@
                         <span v-if="parsedBlock.block_author_name !== ``"
                           >[ {{ parsedBlock.block_author_name }} ]</span
                         >
-                      </a>
+                      </nuxt-link>
                     </td>
                   </tr>
                   <tr>
@@ -229,9 +233,7 @@
   </div>
 </template>
 <script>
-import { mapMutations } from "vuex";
 import Identicon from "../../components/identicon.vue";
-import { blockExplorer } from "../../polkastats.config.js";
 import commonMixin from "../../mixins/commonMixin.js";
 import gql from "graphql-tag";
 
@@ -243,7 +245,6 @@ export default {
   data: function() {
     return {
       blockNumber: this.$route.query.blockNumber,
-      blockExplorer,
       parsedBlock: undefined,
       parsedEvents: undefined,
       parsedExtrinsics: undefined

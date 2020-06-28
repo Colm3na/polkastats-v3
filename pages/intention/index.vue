@@ -79,9 +79,13 @@
                         :size="20"
                         :theme="'polkadot'"
                       />
-                      <a
-                        :href="blockExplorer.account + intention.stash_id"
-                        target="_blank"
+                      <nuxt-link
+                        :to="{
+                          name: 'account',
+                          query: {
+                            accountId: intention.stash_id
+                          }
+                        }"
                       >
                         <span
                           v-b-tooltip.hover
@@ -93,7 +97,7 @@
                           class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline"
                           >{{ shortAddress(intention.stash_id) }}</span
                         >
-                      </a>
+                      </nuxt-link>
                     </div>
                   </div>
                   <div class="row">
@@ -107,9 +111,13 @@
                         :size="20"
                         :theme="'polkadot'"
                       />
-                      <a
-                        :href="blockExplorer.account + intention.controller_id"
-                        target="_blank"
+                      <nuxt-link
+                        :to="{
+                          name: 'account',
+                          query: {
+                            accountId: intention.controller_id
+                          }
+                        }"
                       >
                         <span
                           v-b-tooltip.hover
@@ -121,7 +129,7 @@
                           class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline"
                           >{{ shortAddress(intention.controller_id) }}</span
                         >
-                      </a>
+                      </nuxt-link>
                     </div>
                   </div>
                   <div v-if="intention.session_id_hex" class="row">
@@ -345,9 +353,13 @@
                               :size="20"
                               :theme="'polkadot'"
                             />
-                            <a
-                              :href="blockExplorer.account + sessionId"
-                              target="_blank"
+                            <nuxt-link
+                              :to="{
+                                name: 'account',
+                                query: {
+                                  accountId: sessionId
+                                }
+                              }"
                             >
                               <span
                                 v-b-tooltip.hover
@@ -359,7 +371,7 @@
                                 class="d-none d-sm-inline-block d-md-inline-block d-lg-inline-block d-xl-inline-block"
                                 >{{ sessionId }}</span
                               >
-                            </a>
+                            </nuxt-link>
                           </div>
                         </div>
                       </b-collapse>
@@ -384,9 +396,13 @@
                               :size="20"
                               :theme="'polkadot'"
                             />
-                            <a
-                              :href="blockExplorer.account + staker"
-                              target="_blank"
+                            <nuxt-link
+                              :to="{
+                                name: 'account',
+                                query: {
+                                  accountId: staker
+                                }
+                              }"
                             >
                               <span
                                 v-b-tooltip.hover
@@ -398,7 +414,7 @@
                                 class="d-none d-sm-inline-block d-md-inline-block d-lg-inline-block d-xl-inline-block"
                                 >{{ shortAddress(staker) }}</span
                               >
-                            </a>
+                            </nuxt-link>
                           </div>
                         </div>
                       </b-collapse>
@@ -480,15 +496,11 @@
   </div>
 </template>
 <script>
-import { mapMutations } from "vuex";
 import gql from "graphql-tag";
 import moment from "moment";
 import chart from "../../components/chart";
 import { commonChartOptions } from "../commons/chartOptions";
 import Identicon from "../../components/identicon.vue";
-import { isHex } from "@polkadot/util";
-import BN from "bn.js";
-import { blockExplorer } from "../../polkastats.config.js";
 import commonMixin from "../../mixins/commonMixin.js";
 
 export default {
@@ -502,7 +514,6 @@ export default {
       currentSessionIndex: 0,
       intention: undefined,
       accountId: this.$route.query.accountId,
-      blockExplorer,
       polling: null,
       graphPolling: null,
       favorites: [],

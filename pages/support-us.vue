@@ -54,16 +54,17 @@
                 PolkaStats validator
               </h3>
               <Identicon
-                value="GTzRQPzkcuynHgkEHhsPBFpKdh4sAacVRsnd8vYfPpTMeEY"
+                value="15psTaipmWG86U5vNkF7Guv9TRPMRLKHkGS8cXT74v3RCC5t"
                 size="20"
                 theme="polkadot"
               />
-              <a
-                :href="
-                  blockExplorer.account +
-                    `GTzRQPzkcuynHgkEHhsPBFpKdh4sAacVRsnd8vYfPpTMeEY`
-                "
-                target="_blank"
+              <nuxt-link
+                :to="{
+                  name: 'account',
+                  query: {
+                    accountId: `15psTaipmWG86U5vNkF7Guv9TRPMRLKHkGS8cXT74v3RCC5t`
+                  }
+                }"
               >
                 <span
                   v-b-tooltip.hover
@@ -79,7 +80,7 @@
                   class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline"
                   >15psTaipmWG86U5vNkF7Guv9TRPMRLKHkGS8cXT74v3RCC5t</span
                 >
-              </a>
+              </nuxt-link>
             </div>
           </div>
         </b-card>
@@ -99,7 +100,6 @@
 </template>
 <script>
 import Identicon from "../components/identicon.vue";
-import { blockExplorer } from "../polkastats.config.js";
 import commonMixin from "../mixins/commonMixin.js";
 
 export default {
@@ -107,11 +107,6 @@ export default {
     Identicon
   },
   mixins: [commonMixin],
-  data: function() {
-    return {
-      blockExplorer
-    };
-  },
   head() {
     return {
       title: this.$t("pages.support-us.head_title"),

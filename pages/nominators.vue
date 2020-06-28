@@ -236,14 +236,9 @@
   </div>
 </template>
 <script>
-import { mapMutations } from "vuex";
 import gql from "graphql-tag";
-import * as R from "ramda";
 import Identicon from "../components/identicon.vue";
-import Network from "../components/network.vue";
-import { isHex } from "@polkadot/util";
-import BN from "bn.js";
-import { blockExplorer, numItemsTableOptions } from "../polkastats.config.js";
+import { numItemsTableOptions } from "../polkastats.config.js";
 import commonMixin from "../mixins/commonMixin.js";
 
 export default {
@@ -255,7 +250,6 @@ export default {
     return {
       currentSessionIndex: 0,
       nominators: [],
-      blockExplorer,
       tableOptions: numItemsTableOptions,
       perPage: localStorage.numItemsTableSelected
         ? parseInt(localStorage.numItemsTableSelected)

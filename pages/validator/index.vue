@@ -131,9 +131,13 @@
                         :size="20"
                         :theme="'polkadot'"
                       />
-                      <a
-                        :href="blockExplorer.account + validator.stash_id"
-                        target="_blank"
+                      <nuxt-link
+                        :to="{
+                          name: 'account',
+                          query: {
+                            accountId: validator.stash_id
+                          }
+                        }"
                       >
                         <span
                           v-b-tooltip.hover
@@ -145,7 +149,7 @@
                           class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline"
                           >{{ shortAddress(validator.stash_id) }}</span
                         >
-                      </a>
+                      </nuxt-link>
                     </div>
                   </div>
                   <div v-if="validator.controller_id" class="row">
@@ -159,9 +163,13 @@
                         :size="20"
                         :theme="'polkadot'"
                       />
-                      <a
-                        :href="blockExplorer.account + validator.controller_id"
-                        target="_blank"
+                      <nuxt-link
+                        :to="{
+                          name: 'account',
+                          query: {
+                            accountId: validator.controller_id
+                          }
+                        }"
                       >
                         <span
                           v-b-tooltip.hover
@@ -772,7 +780,6 @@ import chartHeader from "../../components/chart-header.vue";
 import { isHex } from "@polkadot/util";
 import BN from "bn.js";
 import {
-  blockExplorer,
   mediumBreakpoint,
   mobileBreakpoint
 } from "../../polkastats.config.js";
@@ -797,7 +804,6 @@ export default {
       currentSessionIndex: 0,
       validator: undefined,
       accountId: this.$route.query.accountId,
-      blockExplorer,
       mediumBreakpoint,
       mobileBreakpoint,
       polling: null,

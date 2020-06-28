@@ -163,7 +163,7 @@ import moment from "moment";
 import Identicon from "../../components/identicon.vue";
 import { formatBalance, isHex } from "@polkadot/util";
 import BN from "bn.js";
-import { decimals, unit, blockExplorer } from "../../polkastats.config.js";
+import { decimals, unit } from "../../polkastats.config.js";
 import commonMixin from "../../mixins/commonMixin.js";
 import gql from "graphql-tag";
 
@@ -179,7 +179,6 @@ export default {
       currentSessionIndex: 0,
       nominator: undefined,
       accountId: this.$route.query.accountId,
-      blockExplorer,
       favorites: []
     };
   },
