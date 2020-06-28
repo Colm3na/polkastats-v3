@@ -138,7 +138,7 @@
       "active_validators_of": "active validators of",
       "available_slots_and": "available slots and",
       "waiting": "waiting",
-      "search_placeholder": "Search validator by account, account index, identity display name or keybase name",
+      "search_placeholder": "Search validator by account or identity display name",
       "sort": "Sort",
       "rank": "Rank",
       "elected_for_next_session": "Elected for next session",
@@ -214,7 +214,7 @@
     "phragmen": {
       "predicted_candidates_by_TEXT": "Predicted candidates by phragmen election algorithm",
       "offline_phragmen_is_TEXT": "offline-phragmen is currently broken so this is temporary disabled!",
-      "search_placeholder": "Search candidate by account, identity display name or keybase name",
+      "search_placeholder": "Search candidate by account or identity display name",
       "sort": "Sort",
       "candidate_details": "Candidate details",
       "self_bonded": "Self bonded",

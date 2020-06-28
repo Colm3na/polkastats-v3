@@ -139,7 +139,7 @@
       "active_validators_of": "validadores activos de",
       "available_slots_and": "posibles y",
       "waiting": "esperando",
-      "search_placeholder": "Buscar validador por cuenta, índice de cuenta, nombre mostrado como identidad o nombre de keybase",
+      "search_placeholder": "Buscar validador por cuenta, o nombre mostrado como identidad",
       "sort": "Ordenar",
       "rank": "Rank",
       "elected_for_next_session": "Elegido para la siguiente sesión",
@@ -215,7 +215,7 @@
     "phragmen": {
       "predicted_candidates_by_TEXT": "Predicción de candidatos por algoritmo de elección phragmen",
       "offline_phragmen_is_TEXT": "offline-phragmen no está operativo por lo que está deshabilitado temporalmente",
-      "search_placeholder": "Buscar candidatos por cuenta, nombre mostrado como identidad o nombre en keybase",
+      "search_placeholder": "Buscar candidatos por cuenta o nombre mostrado como identidad",
       "sort": "Ordenar",
       "candidate_details": "Detalles del candidato",
       "self_bonded": "Depósito propio",
