@@ -1978,12 +1978,13 @@ export default {
   head() {
     return {
       title:
-        "PolkaStats - Polkadot Kusama validator " + this.$route.query.accountId,
+        "PolkaStats - Polkadot Polkadot validator " +
+        this.$route.query.accountId,
       meta: [
         {
           hid: "description",
           name: "description",
-          content: "Polkadot Kusama validator " + this.$route.query.accountId
+          content: "Polkadot Polkadot validator " + this.$route.query.accountId
         }
       ]
     };

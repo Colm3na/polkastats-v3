@@ -411,12 +411,12 @@ export default {
   },
   head() {
     return {
-      title: "PolkaStats -  Polkadot Kusama intention validators",
+      title: "PolkaStats -  Polkadot intention validators",
       meta: [
         {
           hid: "description",
           name: "description",
-          content: "Polkadot Kusama intention validators"
+          content: "Polkadot intention validators"
         }
       ]
     };

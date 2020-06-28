@@ -253,12 +253,12 @@ export default {
   },
   head() {
     return {
-      title: "PolkaStats - Kusama account " + this.$route.query.accountId,
+      title: "PolkaStats - Polkadot account " + this.$route.query.accountId,
       meta: [
         {
           hid: "description",
           name: "description",
-          content: "Kusama account " + this.$route.query.accountId
+          content: "Polkadot account " + this.$route.query.accountId
         }
       ]
     };

@@ -348,12 +348,12 @@ export default {
   },
   head() {
     return {
-      title: "PolkaStats - Kusama block " + this.$route.query.blockNumber,
+      title: "PolkaStats - Polkadot block " + this.$route.query.blockNumber,
       meta: [
         {
           hid: "description",
           name: "description",
-          content: "Kusama block " + this.$route.query.blockNumber
+          content: "Polkadot block " + this.$route.query.blockNumber
         }
       ]
     };

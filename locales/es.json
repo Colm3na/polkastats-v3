@@ -95,8 +95,8 @@
       "remove_from_favorites": "Eliminar de Favoritos",
       "add_to_favorites": "Añadir a Favoritos",
       "identity": "Identidad",
-      "head_title": "PolkaStats - Cuentas activas en Polkadot Kusama",
-      "head_content": "Cuentas activas en Polkadot Kusama",
+      "head_title": "PolkaStats - Cuentas activas en Polkadot",
+      "head_content": "Cuentas activas en Polkadot",
       "loading_data": "Cargando datos, puede tardar tiempo. Sea paciente, por favor"
     },
     "favorites": {
@@ -126,8 +126,8 @@
       "reward_destination": "Destino de la recompensa",
       "nominators": "Nominadores",
       "intention": "Intenciones",
-      "head_title": "PolkaStats - Validadores e intenciones favoritas en Polkadot Kusama",
-      "head_content": "Validadores e intenciones favoritas en Polkadot Kusama"
+      "head_title": "PolkaStats - Validadores e intenciones favoritas en Polkadot",
+      "head_content": "Validadores e intenciones favoritas en Polkadot"
     },
     "index": {
       "we_have_a_new_TEXT": "Tenemos un nuevo e increíble servidor dedicado patrocinado por",
@@ -168,8 +168,8 @@
       "total_stake": "Participación total",
       "commission": "Comisión",
       "stakers": "Nominadores",
-      "head_title": "PolkaStats -  Intenciones de Validadores de Polkadot Kusama",
-      "head_content": "Intenciones de Validadores de Polkadot Kusama"
+      "head_title": "PolkaStats -  Intenciones de Validadores de Polkadot",
+      "head_content": "Intenciones de Validadores de Polkadot"
     },
     "nominators": {
       "search_placeholder": "Buscar nominadores por cuenta o nombre mostrado como identidad",
@@ -181,8 +181,8 @@
       "nominator": "Nominador",
       "nominations": "Nominaciones",
       "total_stake": "Participación total",
-      "head_title": "PolkaStats - Polkadot Kusama nominators",
-      "head_content": "Polkadot Kusama nominators"
+      "head_title": "PolkaStats - Polkadot nominators",
+      "head_content": "Polkadot nominators"
     },
     "targets": {
       "targets": "Targets",
@@ -225,8 +225,8 @@
       "voters": "Votantes",
       "self_stake": "Participación propia",
       "voters_stake": "Participación de votantes",
-      "head_title": "PolkaStats - Polkadot Kusama candidatos phragmen",
-      "head_content": "Polkadot Kusama candidatos phragmen"
+      "head_title": "PolkaStats - Polkadot candidatos phragmen",
+      "head_content": "Polkadot candidatos phragmen"
     },
     "support-us": {
       "support_polkastats": "APOYA POLKASTATS",
@@ -263,13 +263,13 @@
       "commission": "Comisión",
       "era_points": "Puntos era",
       "produced_blocks": "Bloques producidos",
-      "head_title": "PolkaStats - Estadísticas de la red Polkadot Kusama",
-      "head_content": "Polkadot Kusama estadísticas de la red"
+      "head_title": "PolkaStats - Estadísticas de la red Polkadot",
+      "head_content": "Polkadot estadísticas de la red"
     },
     "dashboard": {
       "title": "Dashboard",
-      "head_title": "PolkaStats - Cuadro de mando Polkadot Kusama",
-      "head_content": "Cuadro de mando de la red Polkadot Kusama",
+      "head_title": "PolkaStats - Cuadro de mando Polkadot",
+      "head_content": "Cuadro de mando de la red Polkadot",
       "recent_blocks": "Últimos bloques",
       "top_rich": "Top 10 cuentas",
       "recent_extrinsics": "Últimos extrinsics",

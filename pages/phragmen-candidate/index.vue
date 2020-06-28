@@ -497,14 +497,15 @@ export default {
   head() {
     return {
       title:
-        "PolkaStats - Polkadot Kusama phragmen candidate " +
+        "PolkaStats - Polkadot phragmen candidate " +
         this.$route.query.accountId,
       meta: [
         {
           hid: "description",
           name: "description",
           content:
-            "Polkadot Kusama phragmen candidate " + this.$route.query.accountId
+            "Polkadot Polkadot phragmen candidate " +
+            this.$route.query.accountId
         }
       ]
     };

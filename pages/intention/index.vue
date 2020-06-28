@@ -1080,14 +1080,13 @@ export default {
   head() {
     return {
       title:
-        "PolkaStats - Polkadot Kusama intention validator " +
+        "PolkaStats - Polkadot intention validator " +
         this.$route.query.accountId,
       meta: [
         {
           hid: "description",
           name: "description",
-          content:
-            "Polkadot Kusama intention validator " + this.$route.query.accountId
+          content: "Polkadot intention validator " + this.$route.query.accountId
         }
       ]
     };
