@@ -369,7 +369,11 @@
       "riot": "Riot",
       "validator_details": "Validator details",
       "commission": "Commission",
-      "account_details": "Account details"
+      "account_details": "Account details",
+      "total_balance": "Total balance",
+      "daily_chart": "Daily chart",
+      "weekly_chart": "Weekly chart",
+      "monthly_chart": "Monthly chart"
     },
     "phragmen-candidate": {
       "previous_candidate": "Previous candidate: ",

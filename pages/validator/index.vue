@@ -1818,7 +1818,8 @@ export default {
 </script>
 <style>
 .charts {
-  display: table;
+  display: block;
+  width: 100%;
 }
 .fas.fa-copy {
   cursor: pointer;

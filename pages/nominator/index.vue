@@ -152,13 +152,92 @@
               </div>
             </div>
           </div>
+          <!-- Charts -->
+          <div class="row">
+            <div class="col-md-6">
+              <div id="stake-evolution-monthly-chart" class="mt-5 text-center">
+                <h3>
+                  {{ $t("details.nominator.total_balance") }} -
+                  {{ $t("details.nominator.monthly_chart") }}
+                  <small
+                    v-if="monthly.last - monthly.first > 0"
+                    class="change text-success ml-3"
+                    ><i class="far fa-thumbs-up" /> +{{
+                      formatAmount(monthly.last - monthly.first)
+                    }}</small
+                  ><small
+                    v-if="monthly.last - monthly.first < 0"
+                    class="change text-danger ml-3"
+                    ><i class="far fa-thumbs-down" />
+                    {{ formatAmount(monthly.last - monthly.first) }}</small
+                  >
+                </h3>
+                <chart
+                  :options="TotalBalanceEvolutionMonthlyChartOptions"
+                  :series="TotalBalanceEvolutionMonthlySeries"
+                />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div
+                id="stake-evolution-weekly-chart"
+                class="mt-5 mb-5 text-center"
+              >
+                <h3>
+                  {{ $t("details.nominator.total_balance") }} -
+                  {{ $t("details.nominator.weekly_chart") }}
+                  <small
+                    v-if="weekly.last - weekly.first > 0"
+                    class="change text-success ml-3"
+                    ><i class="far fa-thumbs-up" /> +{{
+                      formatAmount(weekly.last - weekly.first)
+                    }}</small
+                  ><small
+                    v-if="weekly.last - weekly.first < 0"
+                    class="change text-danger ml-3"
+                    ><i class="far fa-thumbs-down" />
+                    {{ formatAmount(weekly.last - weekly.first) }}</small
+                  >
+                </h3>
+                <chart
+                  :options="TotalBalanceEvolutionWeeklyChartOptions"
+                  :series="TotalBalanceEvolutionWeeklySeries"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div id="stake-evolution-daily-chart" class="mb-5 text-center">
+                <h3>
+                  {{ $t("details.nominator.total_balance") }} -
+                  {{ $t("details.nominator.daily_chart") }}
+                  <small
+                    v-if="daily.last - daily.first > 0"
+                    class="change text-success ml-3"
+                    ><i class="far fa-thumbs-up" /> +{{
+                      formatAmount(daily.last - daily.first)
+                    }}</small
+                  ><small
+                    v-if="daily.last - daily.first < 0"
+                    class="change text-danger ml-3"
+                    ><i class="far fa-thumbs-down" />
+                    {{ formatAmount(daily.last - daily.first) }}</small
+                  >
+                </h3>
+                <chart
+                  :options="TotalBalanceEvolutionDailyChartOptions"
+                  :series="TotalBalanceEvolutionDailySeries"
+                />
+              </div>
+            </div>
+          </div>
         </template>
       </b-container>
     </section>
   </div>
 </template>
 <script>
-import { mapMutations } from "vuex";
 import moment from "moment";
 import Identicon from "../../components/identicon.vue";
 import { formatBalance, isHex } from "@polkadot/util";
@@ -166,11 +245,14 @@ import BN from "bn.js";
 import { decimals, unit } from "../../polkastats.config.js";
 import commonMixin from "../../mixins/commonMixin.js";
 import gql from "graphql-tag";
+import chart from "../../components/chart";
+import { commonChartOptions } from "../commons/chartOptions";
 
 formatBalance.setDefaults({ decimals, unit });
 
 export default {
   components: {
+    chart,
     Identicon
   },
   mixins: [commonMixin],
@@ -179,14 +261,86 @@ export default {
       currentSessionIndex: 0,
       nominator: undefined,
       accountId: this.$route.query.accountId,
-      favorites: []
+      favorites: [],
+      daily: {
+        last: 0,
+        first: 0
+      },
+      weekly: {
+        last: 0,
+        first: 0
+      },
+      monthly: {
+        last: 0,
+        first: 0
+      },
+      TotalBalanceEvolutionDailySeries: [
+        {
+          name: "Total balance (DOT)",
+          data: []
+        }
+      ],
+      TotalBalanceEvolutionWeeklySeries: [
+        {
+          name: "Total balance (DOT)",
+          data: []
+        }
+      ],
+      TotalBalanceEvolutionMonthlySeries: [
+        {
+          name: "Total balance (DOT)",
+          data: []
+        }
+      ],
+      TotalBalanceEvolutionDailyChartOptions: {
+        ...commonChartOptions
+      },
+      TotalBalanceEvolutionWeeklyChartOptions: {
+        ...commonChartOptions
+      },
+      TotalBalanceEvolutionMonthlyChartOptions: {
+        ...commonChartOptions
+      }
     };
+  },
+  watch: {
+    $route() {
+      this.accountId = this.$route.query.accountId;
+
+      // Update graph data
+      this.getNominatorDailyGraphData();
+      this.getNominatorWeeklyGraphData();
+      this.getNominatorMonthlyGraphData();
+
+      // Restart graph data polling
+      clearInterval(this.graphPolling);
+      this.graphPolling = setInterval(() => {
+        this.getNominatorDailyGraphData();
+        this.getNominatorWeeklyGraphData();
+        this.getNominatorMonthlyGraphData();
+      }, 60000);
+    }
   },
   created: function() {
     // Get favorites from cookie
     if (this.$cookies.get("favorites")) {
       this.favorites = this.$cookies.get("favorites");
     }
+
+    // Load graph data first time
+    this.getNominatorDailyGraphData();
+    this.getNominatorWeeklyGraphData();
+    this.getNominatorMonthlyGraphData();
+
+    // Refresh graph data every minute
+    this.graphPolling = setInterval(() => {
+      this.getNominatorDailyGraphData();
+      this.getNominatorWeeklyGraphData();
+      this.getNominatorMonthlyGraphData();
+    }, 60000);
+  },
+  beforeDestroy: function() {
+    clearInterval(this.graphPolling);
   },
   methods: {
     getTotalStakePercen(totalStake, amount) {
@@ -206,6 +360,272 @@ export default {
     },
     isFavorite(accountId) {
       return this.favorites.includes(accountId);
+    },
+    getTimestamp(time) {
+      switch (time) {
+        case "day":
+          return parseInt(new Date().getTime() / 1000) - 86400;
+        case "week":
+          return parseInt(new Date().getTime() / 1000) - 604800;
+        case "month":
+          return parseInt(new Date().getTime() / 1000) - 2592000;
+        default:
+          return parseInt(new Date().getTime() / 1000) - 2592000;
+      }
+    },
+    getNominatorDailyGraphData: function() {
+      var vm = this;
+
+      const GET_INTENTION_BONDED = gql`
+        query nominator {
+          nominator(
+            where: { account_id: { _eq: "${
+              this.accountId
+            }" }, timestamp: { _gt: ${this.getTimestamp("day")} } }
+            order_by: { timestamp: desc }
+          ) {
+            account_id
+            free_balance
+            block_height
+            session_index
+            timestamp
+          }
+        }
+      `;
+
+      vm.$apolloProvider.defaultClient
+        .query({ query: GET_INTENTION_BONDED })
+        .then(function(response) {
+          // Update chart data
+          var newCategories = [];
+          var newData = [];
+          const { nominator } = response.data;
+
+          for (var i = 0; i < nominator.length; i++) {
+            // Insert firt point, last point and points with different values
+            if (
+              i == 0 ||
+              i == nominator.length - 1 ||
+              (i > 0 &&
+                nominator[i].free_balance !== nominator[i - 1].free_balance)
+            ) {
+              // Save first and last point
+              if (i == 0) vm.daily.last = nominator[i].free_balance;
+              if (i == nominator.length - 1)
+                vm.daily.first = nominator[i].free_balance;
+
+              newCategories.push(
+                moment
+                  .unix(nominator[i].timestamp / 1000)
+                  .format("YYYY-MM-DD HH:mm:ss")
+              );
+              newData.push(nominator[i].free_balance);
+            }
+          }
+
+          newCategories.reverse();
+          newData.reverse();
+
+          // Make sure to update the whole options config and not just a single property to allow the Vue watch catch the change.
+          vm.TotalBalanceEvolutionDailyChartOptions = {
+            ...vm.TotalBalanceEvolutionDailyChartOptions,
+            ...{
+              xaxis: {
+                categories: newCategories,
+                type: "datetime",
+                title: {
+                  text: "Date time (UTC)"
+                },
+                labels: {
+                  formatter: function(val) {
+                    return moment.unix(val / 1000).format("MM/DD/YYYY HH:mm");
+                  }
+                }
+              },
+              yaxis: {
+                title: {
+                  text: "Total balance (DOT)"
+                },
+                labels: {
+                  formatter: function(val) {
+                    return (val / 1000000000000).toFixed(6);
+                  }
+                }
+              }
+            }
+          };
+
+          // In the same way, update the series option
+          vm.TotalBalanceEvolutionDailySeries = [
+            {
+              data: newData
+            }
+          ];
+        });
+    },
+    getNominatorWeeklyGraphData: function() {
+      var vm = this;
+
+      const GET_INTENTION_BONDED = gql`
+        query nominator {
+          nominator(
+            where: { account_id: { _eq: "${
+              this.accountId
+            }" }, timestamp: { _gt: ${this.getTimestamp("week")} } }
+            order_by: { timestamp: desc }
+          ) {
+            account_id
+            free_balance
+            block_height
+            session_index
+            timestamp
+          }
+        }
+      `;
+
+      vm.$apolloProvider.defaultClient
+        .query({ query: GET_INTENTION_BONDED })
+        .then(function(response) {
+          // Update chart data
+          var newCategories = [];
+          var newData = [];
+          const { nominator } = response.data;
+
+          for (var i = 0; i < nominator.length; i++) {
+            // Save first and last point
+            if (i == 0) vm.weekly.last = nominator[i].free_balance;
+            if (i == nominator.length - 1)
+              vm.weekly.first = nominator[i].free_balance;
+
+            newCategories.push(
+              moment
+                .unix(nominator[i].timestamp / 1000)
+                .format("YYYY-MM-DD HH:mm:ss")
+            );
+            newData.push(nominator[i].free_balance);
+          }
+
+          newCategories.reverse();
+          newData.reverse();
+
+          // Make sure to update the whole options config and not just a single property to allow the Vue watch catch the change.
+          vm.TotalBalanceEvolutionWeeklyChartOptions = {
+            ...vm.TotalBalanceEvolutionWeeklyChartOptions,
+            ...{
+              xaxis: {
+                categories: newCategories,
+                type: "datetime",
+                title: {
+                  text: "Date time (UTC)"
+                },
+                labels: {
+                  formatter: function(val) {
+                    return moment.unix(val / 1000).format("MM/DD/YYYY HH:mm");
+                  }
+                }
+              },
+              yaxis: {
+                title: {
+                  text: "Total balance (DOT)"
+                },
+                labels: {
+                  formatter: function(val) {
+                    return (val / 1000000000000).toFixed(6);
+                  }
+                }
+              }
+            }
+          };
+
+          // In the same way, update the series option
+          vm.TotalBalanceEvolutionWeeklySeries = [
+            {
+              data: newData
+            }
+          ];
+        });
+    },
+    getNominatorMonthlyGraphData: function() {
+      var vm = this;
+
+      const GET_INTENTION_BONDED = gql`
+        query nominator {
+          nominator(
+            where: { account_id: { _eq: "${
+              this.accountId
+            }" }, timestamp: { _gt: ${this.getTimestamp("month")} } }
+            order_by: { timestamp: desc }
+          ) {
+            account_id
+            free_balance
+            block_height
+            session_index
+            timestamp
+          }
+        }
+      `;
+
+      vm.$apolloProvider.defaultClient
+        .query({ query: GET_INTENTION_BONDED })
+        .then(function(response) {
+          // Update chart data
+          var newCategories = [];
+          var newData = [];
+          const { nominator } = response.data;
+
+          for (var i = 0; i < nominator.length; i++) {
+            // Save first and last point
+            if (i == 0) vm.monthly.last = nominator[i].free_balance;
+            if (i == nominator.length - 1)
+              vm.monthly.first = nominator[i].free_balance;
+
+            newCategories.push(
+              moment
+                .unix(nominator[i].timestamp / 1000)
+                .format("YYYY-MM-DD HH:mm:ss")
+            );
+            newData.push(nominator[i].free_balance);
+          }
+
+          newCategories.reverse();
+          newData.reverse();
+
+          // Make sure to update the whole options config and not just a single property to allow the Vue watch catch the change.
+          vm.TotalBalanceEvolutionMonthlyChartOptions = {
+            ...vm.TotalBalanceEvolutionMonthlyChartOptions,
+            ...{
+              xaxis: {
+                categories: newCategories,
+                type: "datetime",
+                title: {
+                  text: "Date time (UTC)"
+                },
+                labels: {
+                  formatter: function(val) {
+                    return moment.unix(val / 1000).format("MM/DD/YYYY HH:mm");
+                  }
+                }
+              },
+              yaxis: {
+                title: {
+                  text: "Total balance (DOT)"
+                },
+                labels: {
+                  formatter: function(val) {
+                    return (val / 1000000000000).toFixed(6);
+                  }
+                }
+              }
+            }
+          };
+
+          // In the same way, update the series option
+          vm.TotalBalanceEvolutionMonthlySeries = [
+            {
+              data: newData
+            }
+          ];
+        });
     }
   },
   apollo: {

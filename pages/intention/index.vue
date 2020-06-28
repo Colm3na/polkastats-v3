@@ -425,71 +425,85 @@
             </div>
           </div>
         </template>
-        <div id="stake-evolution-monthly-chart" class="mt-5 text-center">
-          <h3>
-            {{ $t("details.intention.total_bonded") }} -
-            {{ $t("details.intention.monthly_chart") }}
-            <small
-              v-if="monthly.last - monthly.first > 0"
-              class="change text-success ml-3"
-              ><i class="far fa-thumbs-up" /> +{{
-                formatAmount(monthly.last - monthly.first)
-              }}</small
-            ><small
-              v-if="monthly.last - monthly.first < 0"
-              class="change text-danger ml-3"
-              ><i class="far fa-thumbs-down" />
-              {{ formatAmount(monthly.last - monthly.first) }}</small
+        <!-- Charts -->
+        <div class="row">
+          <div class="col-md-6">
+            <div id="stake-evolution-monthly-chart" class="mt-5 text-center">
+              <h3>
+                {{ $t("details.intention.total_bonded") }} -
+                {{ $t("details.intention.monthly_chart") }}
+                <small
+                  v-if="monthly.last - monthly.first > 0"
+                  class="change text-success ml-3"
+                  ><i class="far fa-thumbs-up" /> +{{
+                    formatAmount(monthly.last - monthly.first)
+                  }}</small
+                ><small
+                  v-if="monthly.last - monthly.first < 0"
+                  class="change text-danger ml-3"
+                  ><i class="far fa-thumbs-down" />
+                  {{ formatAmount(monthly.last - monthly.first) }}</small
+                >
+              </h3>
+              <chart
+                :options="StakeEvolutionMonthlyChartOptions"
+                :series="StakeEvolutionMonthlySeries"
+              />
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div
+              id="stake-evolution-weekly-chart"
+              class="mt-5 mb-5 text-center"
             >
-          </h3>
-          <chart
-            :options="StakeEvolutionMonthlyChartOptions"
-            :series="StakeEvolutionMonthlySeries"
-          />
+              <h3>
+                {{ $t("details.intention.total_bonded") }} -
+                {{ $t("details.intention.weekly_chart") }}
+                <small
+                  v-if="weekly.last - weekly.first > 0"
+                  class="change text-success ml-3"
+                  ><i class="far fa-thumbs-up" /> +{{
+                    formatAmount(weekly.last - weekly.first)
+                  }}</small
+                ><small
+                  v-if="weekly.last - weekly.first < 0"
+                  class="change text-danger ml-3"
+                  ><i class="far fa-thumbs-down" />
+                  {{ formatAmount(weekly.last - weekly.first) }}</small
+                >
+              </h3>
+              <chart
+                :options="StakeEvolutionWeeklyChartOptions"
+                :series="StakeEvolutionWeeklySeries"
+              />
+            </div>
+          </div>
         </div>
-        <div id="stake-evolution-weekly-chart" class="mt-5 mb-5 text-center">
-          <h3>
-            {{ $t("details.intention.total_bonded") }} -
-            {{ $t("details.intention.weekly_chart") }}
-            <small
-              v-if="weekly.last - weekly.first > 0"
-              class="change text-success ml-3"
-              ><i class="far fa-thumbs-up" /> +{{
-                formatAmount(weekly.last - weekly.first)
-              }}</small
-            ><small
-              v-if="weekly.last - weekly.first < 0"
-              class="change text-danger ml-3"
-              ><i class="far fa-thumbs-down" />
-              {{ formatAmount(weekly.last - weekly.first) }}</small
-            >
-          </h3>
-          <chart
-            :options="StakeEvolutionWeeklyChartOptions"
-            :series="StakeEvolutionWeeklySeries"
-          />
-        </div>
-        <div id="stake-evolution-daily-chart" class="mb-5 text-center">
-          <h3>
-            {{ $t("details.intention.total_bonded") }} -
-            {{ $t("details.intention.daily_chart") }}
-            <small
-              v-if="daily.last - daily.first > 0"
-              class="change text-success ml-3"
-              ><i class="far fa-thumbs-up" /> +{{
-                formatAmount(daily.last - daily.first)
-              }}</small
-            ><small
-              v-if="daily.last - daily.first < 0"
-              class="change text-danger ml-3"
-              ><i class="far fa-thumbs-down" />
-              {{ formatAmount(daily.last - daily.first) }}</small
-            >
-          </h3>
-          <chart
-            :options="StakeEvolutionDailyChartOptions"
-            :series="StakeEvolutionDailySeries"
-          />
+        <div class="row">
+          <div class="col-md-6">
+            <div id="stake-evolution-daily-chart" class="mb-5 text-center">
+              <h3>
+                {{ $t("details.intention.total_bonded") }} -
+                {{ $t("details.intention.daily_chart") }}
+                <small
+                  v-if="daily.last - daily.first > 0"
+                  class="change text-success ml-3"
+                  ><i class="far fa-thumbs-up" /> +{{
+                    formatAmount(daily.last - daily.first)
+                  }}</small
+                ><small
+                  v-if="daily.last - daily.first < 0"
+                  class="change text-danger ml-3"
+                  ><i class="far fa-thumbs-down" />
+                  {{ formatAmount(daily.last - daily.first) }}</small
+                >
+              </h3>
+              <chart
+                :options="StakeEvolutionDailyChartOptions"
+                :series="StakeEvolutionDailySeries"
+              />
+            </div>
+          </div>
         </div>
       </b-container>
     </section>
@@ -597,7 +611,6 @@ export default {
     }, 60000);
   },
   beforeDestroy: function() {
-    clearInterval(this.polling);
     clearInterval(this.graphPolling);
   },
   methods: {

@@ -371,7 +371,11 @@
       "riot": "Riot",
       "validator_details": "Detalles del validador",
       "commission": "Comisión",
-      "account_details": "Detalles de la cuenta"
+      "account_details": "Detalles de la cuenta",
+      "total_balance": "Balance total",
+      "daily_chart": "Gráfica diaria",
+      "weekly_chart": "Gráfica semanal",
+      "monthly_chart": "Gráfica mensual"
     },
     "phragmen-candidate": {
       "previous_candidate": "Candidato previo: ",
