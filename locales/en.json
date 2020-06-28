@@ -115,6 +115,7 @@
       "percentage_over_total_bonded_stake": "Percentage over total bonded stake",
       "of_total_stake": "of total stake",
       "era_points": "era points",
+      "produced_blocks": "produced blocks",
       "validator_details": "Validator details",
       "stash": "Stash",
       "controller": "Controller",
@@ -156,7 +157,7 @@
       "loading_data": "Loading data"
     },
     "intentions": {
-      "search_placeholder": "Search intention by account, account index, identity display name or keybase name",
+      "search_placeholder": "Search intention by account or identity display name",
       "sort": "Sort",
       "intention_details": "Intention details",
       "active_bonded": "Active bonded",
@@ -165,6 +166,7 @@
       "add_to_favorites": "Add to Favorites",
       "total_stake": "Total Stake",
       "commission": "Commission",
+      "stakers": "Stakers",
       "head_title": "PolkaStats -  Polkadot intention validators",
       "head_content": "Polkadot intention validators"
     },
@@ -242,7 +244,7 @@
       "head_content": "Support us"
     },
     "validators": {
-      "search_placeholder": "Search validator by account, account index, identity display name or keybase name",
+      "search_placeholder": "Search validator by account or identity display name",
       "filter": "Filter",
       "where": "where",
       "than": "than",
@@ -259,6 +261,7 @@
       "stake": "Stake",
       "commission": "Commission",
       "era_points": "Era points",
+      "produced_blocks": "Produced blocks",
       "head_title": "PolkaStats - Polkadot network statistics",
       "head_content": "Polkadot network statistics"
     },

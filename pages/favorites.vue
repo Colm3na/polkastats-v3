@@ -23,35 +23,11 @@
         </div>
         <!-- START FAVORITE VALIDATORS -->
         <template v-for="(validator, index) in validators">
-          <template v-if="isFavorite(validator.accountId)">
-            <div :key="validator.accountId" class="validator card mb-3">
-              <!-- <i
-                v-if="validator.imOnline.isOnline"
-                v-b-tooltip.hover
-                class="imOnline fas fa-check-circle"
-                :title="getImOnlineMessage(validator)"
-              />
-              <i
-                v-else
-                v-b-tooltip.hover
-                class="imOffline fas fa-times-circle"
-                :title="getImOnlineMessage(validator)"
-              <i
-                v-if="validator.currentElected"
-                v-b-tooltip.hover
-                class="elected fas fa-chevron-circle-right"
-                :title="$t('pages.favorites.elected_for_next_session')"
-              />
-              <i
-                v-else
-                v-b-tooltip.hover
-                class="notElected fas fa-times-circle"
-                :title="$t('pages.favorites.not_elected_for_next_session')"
-              />
-              /> -->
-              <a class="favorite" @click="toggleFavorite(validator.accountId)">
+          <template v-if="isFavorite(validator.account_id)">
+            <div :key="validator.account_id" class="validator card mb-3">
+              <a class="favorite" @click="toggleFavorite(validator.account_id)">
                 <i
-                  v-if="isFavorite(validator.accountId)"
+                  v-if="isFavorite(validator.account_id)"
                   v-b-tooltip.hover
                   class="fas fa-star"
                   style="color: #f1bd23"
@@ -68,46 +44,14 @@
               <div class="card-body">
                 <div class="row">
                   <div class="col-md-3 mb-2 text-center">
-                    <div v-if="hasIdentity(validator.accountId)">
-                      <div v-if="getIdentity(validator.accountId).logo !== ''">
-                        <img
-                          :src="getIdentity(validator.accountId).logo"
-                          class="identity mt-2"
-                        />
-                        <h4
-                          v-if="
-                            getIdentity(validator.accountId).full_name !== ''
-                          "
-                          class="mt-2 mb-2"
-                        >
-                          {{ getIdentity(validator.accountId).full_name }}
-                        </h4>
-                      </div>
-                      <div v-else>
-                        <Identicon
-                          :key="validator.accountId"
-                          :value="validator.accountId"
-                          :size="80"
-                          :theme="'polkadot'"
-                        />
-                      </div>
-                    </div>
-                    <div v-else-if="hasKusamaIdentity(validator.accountId)">
+                    <div>
                       <Identicon
-                        :key="validator.accountId"
-                        :value="validator.accountId"
+                        :key="validator.account_id"
+                        :value="validator.account_id"
                         :size="80"
                         :theme="'polkadot'"
                       />
-                      {{ getKusamaIdentity(validator.accountId).display }}
-                    </div>
-                    <div v-else>
-                      <Identicon
-                        :key="validator.accountId"
-                        :value="validator.accountId"
-                        :size="80"
-                        :theme="'polkadot'"
-                      />
+                      {{ shortAddress(validator.account_id) }}
                     </div>
                     <p class="mt-3 mb-0 rank">
                       {{ $t("pages.favorites.rank") }} #{{ index + 1 }}
@@ -118,39 +62,30 @@
                       />
                     </p>
                     <p
-                      v-if="validator.exposure.total > 0"
                       v-b-tooltip.hover
                       class="bonded mb-0"
                       :title="$t('pages.favorites.total_bonded')"
                     >
-                      {{ formatAmount(validator.exposure.total) }}
-                    </p>
-                    <p
-                      v-else
-                      v-b-tooltip.hover
-                      class="bonded mb-0"
-                      :title="$t('pages.favorites.total_bonded')"
-                    >
-                      {{ formatAmount(validator.stakingLedger.total) }}
+                      {{ formatAmount(validator.exposure_total) }}
                     </p>
                     <p class="mb-0">
                       <small>
                         <span
-                          v-if="validator.exposure.own > 0"
+                          v-if="validator.exposure_own > 0"
                           v-b-tooltip.hover
                           :title="$t('pages.favorites.self_bonded')"
-                          >{{ formatAmount(validator.exposure.own) }}</span
+                          >{{ formatAmount(validator.exposure_own) }}</span
                         >
                         <span
                           v-if="
-                            validator.exposure.total - validator.exposure.own >
+                            validator.exposure_total - validator.exposure_own >
                               0
                           "
                           v-b-tooltip.hover
                           :title="$t('pages.favorites.bonded_by_nominators')"
                           >(+{{
                             formatAmount(
-                              validator.exposure.total - validator.exposure.own
+                              validator.exposure_total - validator.exposure_own
                             )
                           }})</span
                         >
@@ -163,16 +98,16 @@
                         $t('pages.favorites.percentage_over_total_bonded_stake')
                       "
                     >
-                      {{
+                      <!-- {{
                         getStakePercent(
-                          validator.exposure.total,
+                          validator.exposure_total,
                           totalStakeBonded
                         )
-                      }}% {{ $t("pages.favorites.of_total_stake") }}
+                      }}% {{ $t("pages.favorites.of_total_stake") }} -->
                     </p>
-                    <p v-if="validator.currentEraPointsEarned" class="mb-0">
-                      {{ validator.currentEraPointsEarned }}
-                      {{ $t("pages.favorites.era_points") }}
+                    <p v-if="validator.produced_blocks" class="mb-0">
+                      {{ validator.produced_blocks }}
+                      {{ $t("pages.favorites.produced_blocks") }}
                     </p>
                   </div>
                   <div class="col-md-9">
@@ -182,80 +117,77 @@
                       <nuxt-link
                         :to="{
                           name: 'validator',
-                          query: { accountId: validator.accountId }
+                          query: { accountId: validator.account_id }
                         }"
                         title="$t('pages.favorites.validator_details')"
                       >
-                        <span v-if="hasIdentity(validator.accountId)">
-                          {{ getIdentity(validator.accountId).full_name }}
-                        </span>
-                        <span
-                          v-else-if="hasKusamaIdentity(validator.accountId)"
-                        >
-                          {{ getKusamaIdentity(validator.accountId).display }}
+                        <span v-if="validator.display_name">
+                          {{ validator.display_name }}
                         </span>
                         <span v-else>
-                          {{ validator.accountId }}
+                          {{ validator.account_id }}
                         </span>
                       </nuxt-link>
                     </h4>
-                    <div v-if="validator.stashId" class="row">
+                    <div v-if="validator.stash_id" class="row">
                       <div class="col-md-3 mb-1">
                         <strong>{{ $t("pages.favorites.stash") }}</strong>
                       </div>
                       <div class="col-md-9 mb-1">
                         <Identicon
-                          :key="validator.stashId"
-                          :value="validator.stashId"
+                          :key="validator.stash_id"
+                          :value="validator.stash_id"
                           :size="20"
                           :theme="'polkadot'"
                         />
                         <a
-                          :href="blockExplorer.account + validator.stashId"
+                          :href="blockExplorer.account + validator.stash_id"
                           target="_blank"
                         >
                           <span
                             v-b-tooltip.hover
                             class="d-inline d-sm-none d-md-none d-lg-none d-xl-none"
-                            :title="validator.stashId"
-                            >{{ shortAddress(validator.stashId) }}</span
+                            :title="validator.stash_id"
+                            >{{ shortAddress(validator.stash_id) }}</span
                           >
                           <span
                             class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline"
-                            >{{ shortAddress(validator.stashId) }}</span
+                            >{{ shortAddress(validator.stash_id) }}</span
                           >
                         </a>
                       </div>
                     </div>
-                    <div v-if="validator.controllerId" class="row">
+                    <div v-if="validator.controller_id" class="row">
                       <div class="col-md-3 mb-1">
                         <strong>{{ $t("pages.favorites.controller") }}</strong>
                       </div>
                       <div class="col-md-9 mb-1">
                         <Identicon
-                          :key="validator.controllerId"
-                          :value="validator.controllerId"
+                          :key="validator.controller_id"
+                          :value="validator.controller_id"
                           :size="20"
                           :theme="'polkadot'"
                         />
                         <a
-                          :href="blockExplorer.account + validator.controllerId"
+                          :href="
+                            blockExplorer.account + validator.controller_id
+                          "
                           target="_blank"
                         >
                           <span
                             v-b-tooltip.hover
                             class="d-inline d-sm-none d-md-none d-lg-none d-xl-none"
-                            :title="validator.controllerId"
-                            >{{ shortAddress(validator.controllerId) }}</span
+                            :title="validator.controller_id"
+                            >{{ shortAddress(validator.controller_id) }}</span
                           >
                           <span
                             class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline"
-                            >{{ shortAddress(validator.controllerId) }}</span
+                            >{{ shortAddress(validator.controller_id) }}</span
                           >
                         </a>
                       </div>
                     </div>
-                    <div v-if="validator.sessionIdHex" class="row">
+                    <div v-if="validator.session_id_hex" class="row">
                       <div class="col-md-3 mb-1">
                         <strong>{{ $t("pages.favorites.session_id") }}</strong>
                       </div>
@@ -269,18 +201,18 @@
                           style="text-decoration: none; font-size: 1rem; padding: 0; border: 0; color: #670d35"
                         >
                           >
-                          {{ shortSessionId(validator.sessionIdHex) }}
+                          {{ shortSessionId(validator.session_id_hex) }}
                         </b-button>
                         <b-collapse
                           :id="`accordion-${index}-val-session`"
                           class="collapse pt-2 pb-3"
                           :data-parent="'#val-session-id-info-' + index"
                         >
-                          {{ validator.sessionIdHex }}
+                          {{ validator.session_id_hex }}
                         </b-collapse>
                       </div>
                     </div>
-                    <div v-if="validator.nextSessionIdHex" class="row">
+                    <div v-if="validator.next_session_id_hex" class="row">
                       <div class="col-md-3 mb-1">
                         <strong>{{
                           $t("pages.favorites.next_session_id")
@@ -296,27 +228,23 @@
                           style="text-decoration: none; font-size: 1rem; padding: 0; border: 0; color: #670d35"
                         >
                           >
-                          {{ shortSessionId(validator.nextSessionIdHex) }}
+                          {{ shortSessionId(validator.next_session_id_hex) }}
                         </b-button>
                         <b-collapse
                           :id="`accordion-${index}-val-next-session`"
                           class="collapse pt-2 pb-3"
                           :data-parent="'#val-next-session-id-info-' + index"
                         >
-                          {{ validator.nextSessionIdHex }}
+                          {{ validator.next_session_id_hex }}
                         </b-collapse>
                       </div>
                     </div>
-                    <div v-if="validator.validatorPrefs.commission" class="row">
+                    <div v-if="validator.commission" class="row">
                       <div class="col-md-3 mb-1">
-                        <strong>{{ $t("pages.favorites.commission") }}n</strong>
+                        <strong>{{ $t("pages.favorites.commission") }}</strong>
                       </div>
                       <div class="col-md-9 mb-1 fee">
-                        {{
-                          (
-                            validator.validatorPrefs.commission / 10000000
-                          ).toFixed(2)
-                        }}%
+                        {{ (validator.commission / 10000000).toFixed(2) }}%
                       </div>
                     </div>
                     <div class="row mb-2">
@@ -326,33 +254,40 @@
                         }}</strong>
                       </div>
                       <div class="col-md-9 mb-1 fee">
-                        {{ formatRewardDest(validator.rewardDestination) }}
+                        {{ formatRewardDest(validator.reward_destination) }}
                       </div>
                     </div>
                     <div :id="'validator-info-' + index">
-                      <template v-if="validator.exposure">
-                        <template v-if="validator.exposure.others.length > 0">
+                      <template v-if="JSON.parse(validator.stakers).length">
+                        <template
+                          v-if="JSON.parse(validator.stakers).length > 0"
+                        >
                           <b-button
                             v-b-toggle="`accordion-${index}-staker`"
                             variant="link"
                             style="text-decoration: none"
                           >
                             <h6 class="h6 nominators d-inline mr-4">
-                              <i class="fas mr-1" />>
-                              {{ validator.exposure.others.length }}
+                              <i
+                                class="fa fa-chevron-right mr-1"
+                                aria-hidden="true"
+                              ></i>
+                              {{ JSON.parse(validator.stakers).length }}
                               {{ $t("pages.favorites.nominators") }}
                             </h6>
                           </b-button>
                         </template>
                       </template>
-                      <template v-if="validator.exposure.others.length > 0">
+                      <template v-if="JSON.parse(validator.stakers).length > 0">
                         <b-collapse
                           :id="`accordion-${index}-staker`"
                           class="nominator collapse pt-2 pb-3"
                           :data-parent="`#validator-info-${index}`"
                         >
                           <div
-                            v-for="(staker, index) in validator.exposure.others"
+                            v-for="(staker, index) in JSON.parse(
+                              validator.stakers
+                            )"
                             :key="index"
                             class="row"
                           >
@@ -395,11 +330,11 @@
         <!-- END FAVORITE VALIDATORS -->
         <!-- START FAVORITE INTENTIONS -->
         <template v-for="(validator, index) in intentions">
-          <template v-if="isFavorite(validator.accountId)">
-            <div :key="validator.accountId" class="validator card mb-3">
-              <a class="favorite" @click="toggleFavorite(validator.accountId)">
+          <template v-if="isFavorite(validator.account_id)">
+            <div :key="validator.account_id" class="validator card mb-3">
+              <a class="favorite" @click="toggleFavorite(validator.account_id)">
                 <i
-                  v-if="isFavorite(validator.accountId)"
+                  v-if="isFavorite(validator.account_id)"
                   v-b-tooltip.hover
                   class="fas fa-star"
                   style="color: #f1bd23"
@@ -416,41 +351,19 @@
               <div class="card-body">
                 <div class="row">
                   <div class="col-md-3 mb-2 text-center">
-                    <div v-if="hasIdentity(validator.stashId)">
-                      <div v-if="getIdentity(validator.stashId).logo !== ''">
-                        <img
-                          :src="getIdentity(validator.stashId).logo"
-                          class="identity mt-2"
-                        />
-                        <h4
-                          v-if="getIdentity(validator.stashId).full_name !== ''"
-                          class="mt-2 mb-2"
-                        >
-                          {{ getIdentity(validator.stashId).full_name }}
-                        </h4>
-                      </div>
-                      <div v-else>
-                        <Identicon
-                          :key="validator.accountId"
-                          :value="validator.accountId"
-                          :size="80"
-                          :theme="'polkadot'"
-                        />
-                      </div>
-                    </div>
-                    <div v-else-if="hasKusamaIdentity(validator.stashId)">
+                    <div v-if="validator.display_name">
                       <Identicon
-                        :key="validator.accountId"
-                        :value="validator.accountId"
+                        :key="validator.account_id"
+                        :value="validator.account_id"
                         :size="80"
                         :theme="'polkadot'"
                       />
-                      {{ getKusamaIdentity(validator.accountId).display }}
+                      {{ validator.display_name }}
                     </div>
                     <div v-else>
                       <Identicon
-                        :key="validator.accountId"
-                        :value="validator.accountId"
+                        :key="validator.account_id"
+                        :value="validator.account_id"
                         :size="80"
                         :theme="'polkadot'"
                       />
@@ -463,20 +376,13 @@
                         :title="$t('pages.favorites.intention')"
                       />
                     </p>
-                    <template v-if="validator.stakingLedger">
+                    <template v-if="validator.staking_ledger_total">
                       <p
                         v-b-tooltip.hover
                         class="bonded mb-0"
                         :title="$t('pages.favorites.active_bonded')"
                       >
-                        {{ formatAmount(validator.stakingLedger.active) }}
-                      </p>
-                      <p class="mb-0">
-                        <small>
-                          <span v-b-tooltip.hover title="Total bonded">
-                            {{ formatAmount(validator.stakingLedger.total) }}
-                          </span>
-                        </small>
+                        {{ formatAmount(validator.staking_ledger_total) }}
                       </p>
                     </template>
                   </div>
@@ -487,80 +393,77 @@
                       <nuxt-link
                         :to="{
                           name: 'intention',
-                          query: { accountId: validator.accountId }
+                          query: { accountId: validator.account_id }
                         }"
                         title="$t('pages.favorites.validator_details')"
                       >
-                        <span v-if="hasIdentity(validator.accountId)">
-                          {{ getIdentity(validator.accountId).full_name }}
-                        </span>
-                        <span
-                          v-else-if="hasKusamaIdentity(validator.accountId)"
-                        >
-                          {{ getKusamaIdentity(validator.accountId).display }}
+                        <span v-if="validator.display_name">
+                          {{ validator.display_name }}
                         </span>
                         <span v-else>
-                          {{ validator.accountId }}
+                          {{ validator.account_id }}
                         </span>
                       </nuxt-link>
                     </h4>
-                    <div v-if="validator.stashId" class="row">
+                    <div v-if="validator.stash_id" class="row">
                       <div class="col-md-3 mb-1">
                         <strong>{{ $t("pages.favorites.stash") }}</strong>
                       </div>
                       <div class="col-md-9 mb-1">
                         <Identicon
-                          :key="validator.stashId"
-                          :value="validator.stashId"
+                          :key="validator.stash_id"
+                          :value="validator.stash_id"
                           :size="20"
                           :theme="'polkadot'"
                         />
                         <a
-                          :href="blockExplorer.account + validator.stashId"
+                          :href="blockExplorer.account + validator.stash_id"
                           target="_blank"
                         >
                           <span
                             v-b-tooltip.hover
                             class="d-inline d-sm-none d-md-none d-lg-none d-xl-none"
-                            :title="validator.stashId"
-                            >{{ shortAddress(validator.stashId) }}</span
+                            :title="validator.stash_id"
+                            >{{ shortAddress(validator.stash_id) }}</span
                           >
                           <span
                             class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline"
-                            >{{ shortAddress(validator.stashId) }}</span
+                            >{{ shortAddress(validator.stash_id) }}</span
                           >
                         </a>
                       </div>
                     </div>
-                    <div v-if="validator.controllerId" class="row">
+                    <div v-if="validator.controller_id" class="row">
                       <div class="col-md-3 mb-1">
                         <strong>{{ $t("pages.favorites.controller") }}</strong>
                       </div>
                       <div class="col-md-9 mb-1">
                         <Identicon
-                          :key="validator.controllerId"
-                          :value="validator.controllerId"
+                          :key="validator.controller_id"
+                          :value="validator.controller_id"
                           :size="20"
                           :theme="'polkadot'"
                         />
                         <a
-                          :href="blockExplorer.account + validator.controllerId"
+                          :href="
+                            blockExplorer.account + validator.controller_id
+                          "
                           target="_blank"
                         >
                           <span
                             v-b-tooltip.hover
                             class="d-inline d-sm-none d-md-none d-lg-none d-xl-none"
-                            :title="validator.controllerId"
-                            >{{ shortAddress(validator.controllerId) }}</span
+                            :title="validator.controller_id"
+                            >{{ shortAddress(validator.controller_id) }}</span
                           >
                           <span
                             class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline"
-                            >{{ shortAddress(validator.controllerId) }}</span
+                            >{{ shortAddress(validator.controller_id) }}</span
                           >
                         </a>
                       </div>
                     </div>
-                    <div v-if="validator.sessionIdHex" class="row">
+                    <div v-if="validator.session_id_hex" class="row">
                       <div class="col-md-3 mb-1">
                         <strong>{{ $t("pages.favorites.session_id") }}</strong>
                       </div>
@@ -574,18 +477,18 @@
                           style="text-decoration: none; font-size: 1rem; padding: 0; border: 0; color: #670d35"
                         >
                           <i class="fas" />
-                          {{ shortSessionId(validator.sessionIdHex) }}
+                          {{ shortSessionId(validator.session_id_hex) }}
                         </b-button>
                         <b-collapse
                           :id="`accordion-${index}-int-session`"
                           class="collapse pt-2 pb-3"
                           :data-parent="'#int-session-id-info-' + index"
                         >
-                          {{ validator.sessionIdHex }}
+                          {{ validator.session_id_hex }}
                         </b-collapse>
                       </div>
                     </div>
-                    <div v-if="validator.nextSessionIdHex" class="row">
+                    <div v-if="validator.next_session_id_hex" class="row">
                       <div class="col-md-3 mb-1">
                         <strong>{{
                           $t("pages.favorites.next_session_id")
@@ -601,27 +504,23 @@
                           style="text-decoration: none; font-size: 1rem; padding: 0; border: 0; color: #670d35"
                         >
                           >
-                          {{ shortSessionId(validator.nextSessionIdHex) }}
+                          {{ shortSessionId(validator.next_session_id_hex) }}
                         </b-button>
                         <b-collapse
                           :id="`accordion-${index}-int-next-session`"
                           class="collapse pt-2 pb-3"
                           :data-parent="'#int-next-session-id-info-' + index"
                         >
-                          {{ validator.nextSessionIdHex }}
+                          {{ validator.next_session_id_hex }}
                         </b-collapse>
                       </div>
                     </div>
-                    <div v-if="validator.validatorPrefs.commission" class="row">
+                    <div v-if="validator.commission" class="row">
                       <div class="col-md-3 mb-1">
                         <strong>{{ $t("pages.favorites.commission") }}</strong>
                       </div>
                       <div class="col-md-9 mb-1 fee">
-                        {{
-                          (
-                            validator.validatorPrefs.commission / 10000000
-                          ).toFixed(2)
-                        }}%
+                        {{ (validator.commission / 10000000).toFixed(2) }}%
                       </div>
                     </div>
                     <div class="row mb-2">
@@ -631,60 +530,61 @@
                         }}</strong>
                       </div>
                       <div class="col-md-9 mb-1 fee">
-                        {{ formatRewardDest(validator.rewardDestination) }}
+                        {{ validator.reward_destination }}
                       </div>
                     </div>
                     <div :id="'validator-info-' + index">
-                      <template v-if="validator.exposure.others.length > 0">
+                      <template v-if="validator.num_stakers > 0">
                         <b-button
                           v-b-toggle="`accordion-${index}-nominators`"
                           variant="link"
-                          style="text-decoration: none; font-size: 1rem; padding: 0; border: 0; color: #670d35"
+                          style="text-decoration: none"
                         >
                           <h6 class="h6 nominators d-inline mr-4">
-                            <i class="fas mr-1" />{{
-                              validator.exposure.others.length
-                            }}
+                            <i
+                              class="fa fa-chevron-right mr-1"
+                              aria-hidden="true"
+                            ></i>
+                            {{ validator.num_stakers }}
                             {{ $t("pages.favorites.nominators") }}
                           </h6>
                         </b-button>
                       </template>
-                      <template v-if="validator.exposure.others.length > 0">
+                      <template v-if="validator.num_stakers > 0">
                         <b-collapse
                           :id="`accordion-${index}-nominators`"
                           class="nominator collapse pt-2 pb-3"
                           :data-parent="'#validator-info-' + index"
                         >
                           <div
-                            v-for="(staker, index) in validator.exposure.others"
+                            v-for="(staker, index) in JSON.parse(
+                              validator.stakers
+                            )"
                             :key="index"
                             class="row"
                           >
-                            <div class="col-8 mb-1 who">
+                            <div class="col-12 mb-1 who">
                               <Identicon
-                                :key="staker.who"
-                                :value="staker.who"
+                                :key="staker"
+                                :value="staker"
                                 :size="20"
                                 :theme="'polkadot'"
                               />
                               <a
-                                :href="blockExplorer.account + staker.who"
+                                :href="blockExplorer.account + staker"
                                 target="_blank"
                               >
                                 <span
                                   v-b-tooltip.hover
                                   class="d-inline-block d-sm-none d-md-none d-lg-none d-xl-none"
                                   :title="staker.who"
-                                  >{{ shortAddress(staker.who) }}</span
+                                  >{{ shortAddress(staker) }}</span
                                 >
                                 <span
                                   class="d-none d-sm-inline-block d-md-inline-block d-lg-inline-block d-xl-inline-block"
-                                  >{{ staker.who }}</span
+                                  >{{ staker }}</span
                                 >
                               </a>
-                            </div>
-                            <div class="col-4 text-right value">
-                              {{ formatAmount(staker.value) }}
                             </div>
                           </div>
                         </b-collapse>
@@ -707,8 +607,9 @@ import bootstrap from "bootstrap";
 import Identicon from "../components/identicon.vue";
 import { isHex } from "@polkadot/util";
 import BN from "bn.js";
-import { blockExplorer } from "../polkastats.config.js";
 import commonMixin from "../mixins/commonMixin.js";
+import gql from "graphql-tag";
+import { blockExplorer } from "../polkastats.config.js";
 
 export default {
   components: {
@@ -718,27 +619,13 @@ export default {
   data: function() {
     return {
       blockExplorer,
+      currentSessionIndex: 0,
+      intentions: [],
+      validators: [],
       favorites: [],
       polling: null,
       intention: this.$t("pages.favorites.intention")
     };
-  },
-  computed: {
-    network() {
-      return this.$store.state.network.info;
-    },
-    validators() {
-      return this.$store.state.validators.list;
-    },
-    totalStakeBonded() {
-      return this.$store.state.validators.totalStakeBonded;
-    },
-    intentions() {
-      return this.$store.state.intentions.list;
-    },
-    identities() {
-      return this.$store.state.identities.list;
-    }
   },
   watch: {
     favorites: function(favorites) {
@@ -749,43 +636,10 @@ export default {
     }
   },
   created: function() {
-    var vm = this;
-
     // Get favorites from cookie
     if (this.$cookies.get("favorites")) {
       this.favorites = this.$cookies.get("favorites");
     }
-
-    // Force update of network info
-    vm.$store.dispatch("network/update");
-
-    // Force update of validators list if empty
-    if (this.$store.state.validators.list.length == 0) {
-      vm.$store.dispatch("validators/update");
-    }
-
-    // Force update of indentity list if empty
-    if (this.$store.state.identities.list.length == 0) {
-      vm.$store.dispatch("identities/update");
-    }
-
-    // Force update of staking identities list if empty
-    if (this.$store.state.stakingIdentities.list.length === 0) {
-      vm.$store.dispatch("stakingIdentities/update");
-    }
-
-    // Force update of intention validators list if empty
-    if (this.$store.state.intentions.list.length == 0) {
-      vm.$store.dispatch("intentions/update");
-    }
-
-    // Update network info, validators and intention validators every 10 seconds
-    this.polling = setInterval(() => {
-      vm.$store.dispatch("network/update");
-      vm.$store.dispatch("validators/update");
-      vm.$store.dispatch("intentions/update");
-      vm.$store.dispatch("stakingIdentities/update");
-    }, 10000);
   },
   beforeDestroy: function() {
     clearInterval(this.polling);
@@ -801,30 +655,102 @@ export default {
     },
     isFavorite(accountId) {
       return this.favorites.includes(accountId);
-    },
-    hasIdentity(stashId) {
-      return this.$store.state.identities.list.some(obj => {
-        return obj.stashId === stashId;
-      });
-    },
-    getIdentity(stashId) {
-      let filteredArray = this.$store.state.identities.list.filter(obj => {
-        return obj.stashId === stashId;
-      });
-      return filteredArray[0];
-    },
-    hasKusamaIdentity(stashId) {
-      return this.$store.state.stakingIdentities.list.some(obj => {
-        return obj.accountId === stashId;
-      });
-    },
-    getKusamaIdentity(stashId) {
-      let filteredArray = this.$store.state.stakingIdentities.list.filter(
-        obj => {
-          return obj.accountId === stashId;
+    }
+  },
+  apollo: {
+    $subscribe: {
+      validators: {
+        query: gql`
+          subscription validator($session_index: Int!) {
+            validator(
+              order_by: { rank: asc }
+              where: { session_index: { _eq: $session_index } }
+            ) {
+              account_id
+              stash_id
+              commission
+              current_elected
+              display_name
+              exposure_others
+              exposure_own
+              exposure_total
+              produced_blocks
+              rank
+              stakers
+              reward_destination
+            }
+          }
+        `,
+        variables() {
+          return {
+            session_index: this.currentSessionIndex
+          };
+        },
+        skip() {
+          return !this.currentSessionIndex;
+        },
+        result({ data }) {
+          this.totalRows = data.validator.length;
+          this.validators = data.validator.map(validator => {
+            return {
+              ...validator,
+              num_stakers: JSON.parse(validator.stakers).length,
+              favorite: this.isFavorite(validator.account_id)
+            };
+          });
         }
-      );
-      return filteredArray[0].identity;
+      },
+      intentions: {
+        query: gql`
+          subscription intention($session_index: Int!) {
+            intention(
+              order_by: { rank: asc }
+              where: { session_index: { _eq: $session_index } }
+            ) {
+              account_id
+              stash_id
+              commission
+              display_name
+              staking_ledger_total
+              rank
+              stakers
+              reward_destination
+            }
+          }
+        `,
+        variables() {
+          return {
+            session_index: this.currentSessionIndex
+          };
+        },
+        skip() {
+          return !this.currentSessionIndex;
+        },
+        result({ data }) {
+          this.totalRows = data.intention.length;
+          this.intentions = data.intention.map(intention => {
+            return {
+              ...intention,
+              num_stakers: JSON.parse(intention.stakers).length,
+              favorite: this.isFavorite(intention.account_id)
+            };
+          });
+        }
+      },
+      block: {
+        query: gql`
+          subscription blocks {
+            block(order_by: { block_number: desc }, where: {}, limit: 1) {
+              current_index
+            }
+          }
+        `,
+        result({ data }) {
+          if (data.block[0].current_index > this.currentSessionIndex) {
+            this.currentSessionIndex = data.block[0].current_index;
+          }
+        }
+      }
     }
   },
   head() {
