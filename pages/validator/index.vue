@@ -78,10 +78,10 @@
                     <p v-if="validator.exposure_own" class="mb-0">
                       <small>
                         <span
-                          v-if="validator.exposure.own > 0"
+                          v-if="validator.exposure_own > 0"
                           v-b-tooltip.hover
                           :title="$t('details.validator.self_bonded')"
-                          >{{ formatAmount(validator.exposure.own) }}</span
+                          >{{ formatAmount(validator.exposure_own) }}</span
                         >
                         <span
                           v-if="
@@ -107,18 +107,14 @@
                         )
                       "
                     >
-                      <!-- {{
+                      {{
                         getStakePercent(
                           validator.exposure_total,
                           totalStakeBonded
                         )
-                      }}% {{ $t("details.validator.of_total_stake") }} -->
+                      }}% {{ $t("details.validator.of_total_stake") }}
                     </p>
                   </template>
-                  <!-- <p v-if="validator.currentEraPointsEarned" class="mb-0">
-                    {{ validator.currentEraPointsEarned }}
-                    {{ $t("details.validator.era_points") }}
-                  </p> -->
                 </div>
 
                 <hr v-if="!overBreakpoint" class="separator w-100" />
@@ -735,10 +731,15 @@
                       </template>
                       <template v-slot:cell(percent)="data">
                         <p class="text-right mb-0">
-                          {{ parseFloat(data.item.percent).toFixed(3) }} %
+                          {{
+                            getStakePercent(
+                              data.item.value,
+                              validator.exposure_total
+                            )
+                          }}%
                         </p>
                       </template>
-                      <template v-slot:cell(amountOrder)="data">
+                      <template v-slot:cell(value)="data">
                         <p class="text-right mb-0">
                           {{ formatAmount(data.item.value) }}
                         </p>
@@ -792,6 +793,7 @@ export default {
   mixins: [commonMixin],
   data: function() {
     return {
+      totalStakeBonded: 0,
       currentSessionIndex: 0,
       validator: undefined,
       accountId: this.$route.query.accountId,
@@ -823,7 +825,7 @@ export default {
           class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
         },
         {
-          key: "amountOrder",
+          key: "value",
           label: this.$t("details.validator.amount"),
           sortable: true,
           class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
@@ -989,19 +991,6 @@ export default {
     };
   },
   computed: {
-    // totalStakeBonded() {
-    //   let totalStakeBonded = new BN(0);
-    //   this.validators.forEach(validator => {
-    //     let totalExposure;
-    //     if (isHex(validator.exposure_total)) {
-    //       totalExposure = new BN(validator.exposure_total.toString(), 16);
-    //     } else {
-    //       totalExposure = new BN(validator.exposure_total.toString(), 10);
-    //     }
-    //     totalStakeBonded = totalStakeBonded.add(totalExposure);
-    //   });
-    //   return totalStakeBonded;
-    // },
     sortOptions() {
       // Create an options list from our fields
       return this.fields
@@ -1240,9 +1229,6 @@ export default {
         .query({ query: GET_VALIDATOR_BONDED })
         .then(response => {
           const { validator } = response.data;
-
-          console.log(validator);
-
           const {
             newCategories,
             newData
@@ -1759,6 +1745,41 @@ export default {
             num_stakers: JSON.parse(data.validator[0].stakers).length,
             favorite: this.isFavorite(data.validator[0].account_id)
           };
+          this.totalRows = this.validator.num_stakers;
+        }
+      },
+      totalStakeBonded: {
+        query: gql`
+          subscription validator($session_index: Int!) {
+            validator(
+              order_by: { rank: asc }
+              where: { session_index: { _eq: $session_index } }
+            ) {
+              account_id
+              exposure_total
+            }
+          }
+        `,
+        variables() {
+          return {
+            session_index: this.currentSessionIndex
+          };
+        },
+        skip() {
+          return !this.currentSessionIndex;
+        },
+        result({ data }) {
+          let totalStakeBonded = new BN(0);
+          data.validator.forEach(validator => {
+            let totalExposure;
+            if (isHex(validator.exposure_total)) {
+              totalExposure = new BN(validator.exposure_total.toString(), 16);
+            } else {
+              totalExposure = new BN(validator.exposure_total.toString(), 10);
+            }
+            totalStakeBonded = totalStakeBonded.add(totalExposure);
+          });
+          this.totalStakeBonded = totalStakeBonded.toString(10);
         }
       },
       sessionIndex: {

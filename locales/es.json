@@ -85,7 +85,7 @@
     },
     "accounts": {
       "active_accounts": "Cuentas activas",
-      "search_placeholder": "Buscar cuenta por dirección, índice o identidad",
+      "search_placeholder": "Buscar cuenta por dirección o identidad",
       "sort": "Ordenar",
       "account_details": "Account details",
       "rank": "Rank",
@@ -408,7 +408,7 @@
       "legal": "Legal",
       "riot": "Riot",
       "nominators": "Nominadores",
-      "search_placeholder": "Buscar Nominadores por cuenta o índice de cuenta",
+      "search_placeholder": "Buscar Nominadores por cuenta",
       "nominator_details": "Detalles del Nominator",
       "monthly": "Mensual",
       "weekly": "Semanal",

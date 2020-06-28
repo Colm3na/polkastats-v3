@@ -85,7 +85,7 @@
     },
     "accounts": {
       "active_accounts": "Active accounts",
-      "search_placeholder": "Search account by address, index or identity",
+      "search_placeholder": "Search account by address or identity",
       "sort": "Sort",
       "rank": "Rank",
       "free_balance": "Free Balance",
@@ -406,7 +406,7 @@
       "legal": "Legal",
       "riot": "Riot",
       "nominators": "Nominators",
-      "search_placeholder": "Search staker by account or account index",
+      "search_placeholder": "Search staker by address",
       "nominator_details": "Nominator details",
       "monthly": "Monthly",
       "weekly": "Weekly",

@@ -66,6 +66,14 @@ export default {
       return message;
     },
     getStakePercent(amount, totalStakeBonded) {
+      if (isHex(amount)) {
+        totalStakeBonded = new BN(
+          totalStakeBonded.substring(2, totalStakeBonded.length),
+          16
+        );
+      } else {
+        totalStakeBonded = new BN(totalStakeBonded.toString(), 10);
+      }
       if (amount === 0 || totalStakeBonded.eq(new BN("0", 10))) {
         return `0`;
       }
