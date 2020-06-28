@@ -245,6 +245,11 @@
             <template v-slot:cell(exposure_total)="data">
               <p class="text-right mb-0">
                 {{ formatAmount(data.item.exposure_total) }}
+                ({{
+                  (getTotalStakePercen(data.item.exposure_total) / 100).toFixed(
+                    2
+                  )
+                }}%)
               </p>
             </template>
             <template v-slot:cell(commission)="data">
@@ -385,6 +390,19 @@ export default {
         .map(f => {
           return { text: f.label, value: f.key };
         });
+    },
+    totalStakeBonded() {
+      let totalStakeBonded = new BN(0);
+      this.validators.forEach(validator => {
+        let totalExposure;
+        if (isHex(validator.exposure_total)) {
+          totalExposure = new BN(validator.exposure_total.toString(), 16);
+        } else {
+          totalExposure = new BN(validator.exposure_total.toString(), 10);
+        }
+        totalStakeBonded = totalStakeBonded.add(totalExposure);
+      });
+      return totalStakeBonded;
     }
   },
   watch: {
@@ -429,6 +447,20 @@ export default {
       // Trigger pagination to update the number of buttons/pages due to filtering
       this.totalRows = filteredItems.length;
       this.currentPage = 1;
+    },
+    getTotalStakePercen(amount) {
+      if (this.totalStakeBonded && amount) {
+        let bn;
+        if (isHex(amount)) {
+          bn = new BN(amount.substring(2, amount.length), 16);
+        } else {
+          bn = new BN(amount.toString(), 10);
+        }
+        bn = bn.mul(new BN("10000", 10));
+        return bn.div(this.totalStakeBonded);
+      } else {
+        return 0;
+      }
     }
   },
   apollo: {
