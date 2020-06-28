@@ -142,6 +142,9 @@
                 </template>
               </div>
               <div class="d-none d-sm-none d-md-block d-lg-block d-xl-block">
+                <span v-if="data.item.next_elected" class="circle blue">
+                  <i class="fa fa-chevron-right mr-1" aria-hidden="true"></i>
+                </span>
                 <div class="d-inline-block">
                   <Identicon
                     :key="data.item.account_id"
@@ -367,6 +370,7 @@ export default {
               account_id
               stash_id
               commission
+              next_elected
               display_name
               staking_ledger_total
               rank
