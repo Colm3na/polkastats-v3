@@ -162,6 +162,23 @@
                 </nuxt-link>
               </div>
             </template>
+            <template v-slot:cell(controller_id)="data">
+              <Identicon
+                :key="data.item.controller_id"
+                :value="data.item.controller_id"
+                :size="20"
+                :theme="'polkadot'"
+              />
+              <nuxt-link
+                :to="{
+                  name: 'account',
+                  query: { accountId: data.item.controller_id }
+                }"
+                :title="$t('pages.nominators.controller_details')"
+              >
+                {{ shortAddress(data.item.controller_id) }}
+              </nuxt-link>
+            </template>
             <template v-slot:cell(num_targets)="data">
               <p class="text-right mb-0">
                 {{ data.item.num_targets }}
@@ -262,6 +279,11 @@ export default {
           sortable: true
         },
         {
+          key: "controller_id",
+          label: this.$t("pages.nominators.controller"),
+          sortable: true
+        },
+        {
           key: "num_targets",
           label: this.$t("pages.nominators.nominations"),
           sortable: true,
@@ -354,7 +376,6 @@ export default {
               locked_balance
               nonce
               rank
-              session_index
               stash_id
               targets
               timestamp
