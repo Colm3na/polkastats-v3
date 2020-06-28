@@ -44,14 +44,22 @@
               <div class="card-body">
                 <div class="row">
                   <div class="col-md-3 mb-2 text-center">
-                    <div>
+                    <div v-if="validator.display_name">
                       <Identicon
                         :key="validator.account_id"
                         :value="validator.account_id"
                         :size="80"
                         :theme="'polkadot'"
                       />
-                      {{ shortAddress(validator.account_id) }}
+                      {{ validator.display_name }}
+                    </div>
+                    <div v-else>
+                      <Identicon
+                        :key="validator.account_id"
+                        :value="validator.account_id"
+                        :size="80"
+                        :theme="'polkadot'"
+                      />
                     </div>
                     <p class="mt-3 mb-0 rank">
                       {{ $t("pages.favorites.rank") }} #{{ index + 1 }}
@@ -198,9 +206,12 @@
                         <b-button
                           v-b-toggle="`accordion-${index}-val-session`"
                           variant="link"
-                          style="text-decoration: none; font-size: 1rem; padding: 0; border: 0; color: #670d35"
+                          style="text-decoration: none; font-size: 0.9rem; padding: 0; border: 0; color: #670d35"
                         >
-                          >
+                          <i
+                            class="fa fa-chevron-right mr-1"
+                            aria-hidden="true"
+                          ></i>
                           {{ shortSessionId(validator.session_id_hex) }}
                         </b-button>
                         <b-collapse
@@ -225,9 +236,12 @@
                         <b-button
                           v-b-toggle="`accordion-${index}-val-next-session`"
                           variant="link"
-                          style="text-decoration: none; font-size: 1rem; padding: 0; border: 0; color: #670d35"
+                          style="text-decoration: none; font-size: 0.9rem; padding: 0; border: 0; color: #670d35"
                         >
-                          >
+                          <i
+                            class="fa fa-chevron-right mr-1"
+                            aria-hidden="true"
+                          ></i>
                           {{ shortSessionId(validator.next_session_id_hex) }}
                         </b-button>
                         <b-collapse
@@ -501,9 +515,12 @@
                         <b-button
                           v-b-toggle="`accordion-${index}-int-next-session`"
                           variant="link"
-                          style="text-decoration: none; font-size: 1rem; padding: 0; border: 0; color: #670d35"
+                          style="text-decoration: none; font-size: 0.9rem; padding: 0; border: 0; color: #670d35"
                         >
-                          >
+                          <i
+                            class="fa fa-chevron-right mr-1"
+                            aria-hidden="true"
+                          ></i>
                           {{ shortSessionId(validator.next_session_id_hex) }}
                         </b-button>
                         <b-collapse
@@ -668,6 +685,7 @@ export default {
             ) {
               account_id
               stash_id
+              controller_id
               commission
               current_elected
               display_name
@@ -678,6 +696,8 @@ export default {
               rank
               stakers
               reward_destination
+              session_id_hex
+              next_session_id_hex
             }
           }
         `,
@@ -709,12 +729,14 @@ export default {
             ) {
               account_id
               stash_id
+              controller_id
               commission
               display_name
               staking_ledger_total
               rank
               stakers
               reward_destination
+              next_session_id_hex
             }
           }
         `,
@@ -877,5 +899,8 @@ body {
   left: 0.2rem;
   font-size: 1.1rem;
   color: red;
+}
+.page-favorites .identicon {
+  margin-bottom: 0.8rem;
 }
 </style>

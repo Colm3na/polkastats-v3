@@ -482,8 +482,8 @@ export default {
     $subscribe: {
       rewards: {
         query: gql`
-          subscription rewards($era: Int) {
-            rewards(
+          subscription reward($era: Int) {
+            reward(
               where: { era_index: { _eq: $era } }
               order_by: { estimated_payout: desc }
             ) {
@@ -496,8 +496,8 @@ export default {
           }
         `,
         result({ data }) {
-          const { rewards } = data;
-          if (rewards.length === 0) {
+          const { reward } = data;
+          if (reward.length === 0) {
             this.era--;
           } else {
             const formatData = (value, key) => {
@@ -527,9 +527,9 @@ export default {
               }
             };
 
-            R.mapObjIndexed(formatData, rewards);
-            this.totalRows = rewards.length;
-            this.rewards = rewards;
+            R.mapObjIndexed(formatData, reward);
+            this.totalRows = reward.length;
+            this.rewards = reward;
           }
         },
         variables() {
