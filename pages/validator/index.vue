@@ -181,7 +181,7 @@
                           class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline"
                           >{{ shortAddress(validator.controller_id) }}</span
                         >
-                      </a>
+                      </nuxt-link>
                     </div>
                   </div>
                   <div v-if="validator.session_id_hex" class="row">
@@ -779,10 +779,7 @@ import Identicon from "../../components/identicon.vue";
 import chartHeader from "../../components/chart-header.vue";
 import { isHex } from "@polkadot/util";
 import BN from "bn.js";
-import {
-  mediumBreakpoint,
-  mobileBreakpoint
-} from "../../polkastats.config.js";
+import { mediumBreakpoint, mobileBreakpoint } from "../../polkastats.config.js";
 import commonMixin from "../../mixins/commonMixin.js";
 import {
   createQueryProducedBlocks,
