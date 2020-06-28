@@ -172,7 +172,7 @@
       "head_content": "Intenciones de Validadores de Polkadot Kusama"
     },
     "nominators": {
-      "search_placeholder": "Buscar nominadores por cuenta, índice de cuenta, nombre mostrado como identidad o nombre en keybase",
+      "search_placeholder": "Buscar nominadores por cuenta o nombre mostrado como identidad",
       "sort": "Ordenar",
       "nominator_details": "Detalles del Nominator",
       "remove_from_favorites": "Eliminar de Favoritos",

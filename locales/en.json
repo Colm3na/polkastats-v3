@@ -171,7 +171,7 @@
       "head_content": "Polkadot intention validators"
     },
     "nominators": {
-      "search_placeholder": "Search nominator by account, account index or identity display name",
+      "search_placeholder": "Search nominator by account or identity display name",
       "sort": "Sort",
       "nominator_details": "Nominator details",
       "remove_from_favorites": "Remove from Favorites",
