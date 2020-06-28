@@ -1,10 +1,10 @@
 <template>
   <div>
     <section>
-      <b-container class="nominator-page main pt-3 pb-5">
+      <b-container class="page-nominator main pt-3 pb-5">
         <template v-if="nominator">
           <div :key="nominator.account_id" class="row">
-            <div class="col-12 text-center">
+            <div class="col-12 mt-4 text-center">
               <h4 class="mb-1">
                 {{ $t("details.nominator.nominator") }}
                 <span v-if="nominator.display_name">{{
@@ -15,40 +15,101 @@
             </div>
           </div>
           <div class="card mt-4 mb-3">
-            <div class="card-body text-center">
-              <Identicon
-                :key="nominator.account_id"
-                :value="nominator.account_id"
-                :size="80"
-                :theme="'polkadot'"
-              />
-              <a
-                :href="blockExplorer.account + nominator.account_id"
-                target="_blank"
-                class="d-block my-2"
-              >
-                {{ $t("details.nominator.nominator") }}
-                <span
-                  v-b-tooltip.hover
-                  :title="$t('details.nominator.see_address_in_polkastats')"
-                  >{{ shortAddress(nominator.account_id) }}</span
-                >
-              </a>
-              <p
-                v-b-tooltip.hover
-                class="amount"
-                :title="$t('details.nominator.total_bonded')"
-              >
-                {{ formatAmount(nominator.total_staked) }}
-              </p>
-              <h5>
-                {{ nominator.num_targets }}
-                {{
-                  nominator.num_targets > 1
-                    ? $t("details.nominator.nominations")
-                    : $t("details.nominator.nomination")
-                }}
-              </h5>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-3 text-center">
+                  <Identicon
+                    :key="nominator.account_id"
+                    :value="nominator.account_id"
+                    :size="80"
+                    :theme="'polkadot'"
+                  />
+                  <nuxt-link
+                    :to="{
+                      name: 'account',
+                      query: { accountId: nominator.account_id }
+                    }"
+                    class="d-block my-2"
+                  >
+                    {{ $t("details.nominator.nominator") }}
+                    <span
+                      v-b-tooltip.hover
+                      :title="$t('details.nominator.account_details')"
+                      >{{ shortAddress(nominator.account_id) }}</span
+                    >
+                  </nuxt-link>
+                  <p class="mb-0 rank">rank #{{ nominator.rank }}</p>
+                  <p
+                    v-b-tooltip.hover
+                    class="amount"
+                    :title="$t('details.nominator.total_bonded')"
+                  >
+                    {{ formatAmount(nominator.total_staked) }}
+                  </p>
+                  <h5>
+                    {{ nominator.num_targets }}
+                    {{
+                      nominator.num_targets > 1
+                        ? $t("details.nominator.nominations")
+                        : $t("details.nominator.nomination")
+                    }}
+                  </h5>
+                </div>
+                <div class="col-md-9">
+                  <div v-if="nominator.stash_id" class="row">
+                    <div class="col-md-2 mb-2">
+                      <strong>Stash</strong>
+                    </div>
+                    <div class="col-md-10 mb-2">
+                      <Identicon
+                        :key="nominator.stash_id"
+                        :value="nominator.stash_id"
+                        :size="20"
+                        :theme="'polkadot'"
+                      />
+                      <nuxt-link
+                        :to="{
+                          name: 'account',
+                          query: { accountId: nominator.stash_id }
+                        }"
+                      >
+                        <span
+                          v-b-tooltip.hover
+                          :title="$t('details.nominator.account_details')"
+                          >{{ shortAddress(nominator.stash_id) }}
+                        </span>
+                      </nuxt-link>
+                    </div>
+                  </div>
+                  <div v-if="nominator.controller_id" class="row">
+                    <div class="col-md-2 mb-2">
+                      <strong>Controller</strong>
+                    </div>
+                    <div class="col-md-10 mb-2">
+                      <Identicon
+                        :key="nominator.controller_id"
+                        :value="nominator.controller_id"
+                        :size="20"
+                        :theme="'polkadot'"
+                      />
+                      <nuxt-link
+                        :to="{
+                          name: 'account',
+                          query: { accountId: nominator.controller_id }
+                        }"
+                        title="Controller account details"
+                      >
+                        <span
+                          v-b-tooltip.hover
+                          :title="$t('details.nominator.account_details')"
+                          >{{ shortAddress(nominator.controller_id) }}
+                        </span>
+                      </nuxt-link>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
               <hr />
               <div class="row">
                 <div
@@ -225,12 +286,17 @@ export default {
 };
 </script>
 <style>
-.amount {
+.page-nominator .amount {
   color: #ef1073;
   font-weight: 700;
   font-size: 1rem;
 }
-.identicon {
+.page-nominator .identicon {
   cursor: pointer;
+  display: inline-block;
+}
+.page-nominator .rank {
+  font-size: 1.4rem;
+  color: #7d7378;
 }
 </style>

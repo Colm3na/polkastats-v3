@@ -368,7 +368,8 @@
       "legal": "Legal",
       "riot": "Riot",
       "validator_details": "Validator details",
-      "commission": "Commission"
+      "commission": "Commission",
+      "account_details": "Account details"
     },
     "phragmen-candidate": {
       "previous_candidate": "Previous candidate: ",
