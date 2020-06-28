@@ -240,6 +240,9 @@
                 <span class="circle green">
                   {{ data.item.produced_blocks }}
                 </span>
+                <span v-if="data.item.next_elected" class="circle blue">
+                  <i class="fa fa-chevron-right mr-1" aria-hidden="true"></i>
+                </span>
               </p>
             </template>
             <template v-slot:cell(exposure_total)="data">
@@ -475,7 +478,7 @@ export default {
               account_id
               stash_id
               commission
-              current_elected
+              next_elected
               display_name
               exposure_others
               exposure_own
@@ -505,17 +508,17 @@ export default {
           });
         }
       },
-      block: {
+      sessionIndex: {
         query: gql`
-          subscription blocks {
-            block(order_by: { block_number: desc }, where: {}, limit: 1) {
-              current_index
+          subscription validator {
+            validator(order_by: { session_index: desc }, where: {}, limit: 1) {
+              session_index
             }
           }
         `,
         result({ data }) {
-          if (data.block[0].current_index > this.currentSessionIndex) {
-            this.currentSessionIndex = data.block[0].current_index;
+          if (data.validator[0].session_index > this.currentSessionIndex) {
+            this.currentSessionIndex = data.validator[0].session_index;
           }
         }
       }
@@ -681,6 +684,7 @@ body {
   float: right;
   display: block;
   padding: 0.1rem;
+  margin-left: 0.5rem;
   width: 1.5rem;
   height: 1.5rem;
   border-radius: 50%;
@@ -690,7 +694,13 @@ body {
 }
 .green {
   color: white;
-  background: green;
+  background: #008000;
+}
+.blue {
+  color: white;
+  background: #4682b4;
+  padding-left: 0.4rem;
+  padding-top: 0.2rem;
 }
 @media (max-width: 767px) {
   table.b-table.b-table-stacked-md > tbody > tr > [data-label] {

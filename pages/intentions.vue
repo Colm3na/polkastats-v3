@@ -393,17 +393,17 @@ export default {
           });
         }
       },
-      block: {
+      sessionIndex: {
         query: gql`
-          subscription blocks {
-            block(order_by: { block_number: desc }, where: {}, limit: 1) {
-              current_index
+          subscription intention {
+            intention(order_by: { session_index: desc }, where: {}, limit: 1) {
+              session_index
             }
           }
         `,
         result({ data }) {
-          if (data.block[0].current_index > this.currentSessionIndex) {
-            this.currentSessionIndex = data.block[0].current_index;
+          if (data.intention[0].session_index > this.currentSessionIndex) {
+            this.currentSessionIndex = data.intention[0].session_index;
           }
         }
       }
