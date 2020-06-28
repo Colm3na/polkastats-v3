@@ -487,12 +487,12 @@ export default {
   },
   head() {
     return {
-      title: "PolkaStats - Kusama nominator " + this.$route.query.accountId,
+      title: "PolkaStats - Polkadot nominator " + this.$route.query.accountId,
       meta: [
         {
           hid: "description",
           name: "description",
-          content: "Kusama nominator " + this.$route.query.accountId
+          content: "Polkadot nominator " + this.$route.query.accountId
         }
       ]
     };
