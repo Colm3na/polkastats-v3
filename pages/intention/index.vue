@@ -912,7 +912,6 @@ export default {
           return !this.currentSessionIndex;
         },
         result({ data }) {
-          console.log(data);
           this.intention = {
             ...data.intention[0],
             num_stakers: JSON.parse(data.intention[0].stakers).length,

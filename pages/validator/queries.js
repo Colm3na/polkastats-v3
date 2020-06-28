@@ -1,21 +1,21 @@
 export const createQueryValidadorBonded = (timestamp, accountId) => `
-    query validator_bonded {
-        validator_bonded(
+    query validator {
+        validator(
         where: { account_id: { _eq: "${accountId}" }, timestamp: { _gt: ${timestamp} } },
         order_by: {timestamp: desc}
         ) {
             account_id
-            amount
+            exposure_total
             timestamp
             session_index
-            block_number
+            block_height
         }
     }
 `;
 
 export const createQueryRewards = (timestamp, accountId) => `
-    query rewards {
-        rewards(
+    query reward {
+        reward(
         where: { stash_id: { _eq: "${accountId}" }, timestamp: { _gt: ${timestamp} } },
         order_by: { timestamp: desc }
         ) {
@@ -46,7 +46,7 @@ export const createQuerySlashes = (timestamp, accountId) => `
 
 export const createQueryProducedBlocks = (timestamp, accountId) => `
     query produced_blocks {
-        validator_produced_blocks(where: {account_id: {_eq: "${accountId}"}, timestamp: {_gt: ${timestamp}}}, order_by: {timestamp: desc}) {
+        validator(where: {account_id: {_eq: "${accountId}"}, timestamp: {_gt: ${timestamp}}}, order_by: {timestamp: desc}) {
             account_id
             produced_blocks
             session_index
