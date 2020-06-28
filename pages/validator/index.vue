@@ -15,21 +15,21 @@
             </div>
           </div>
           <div class="validator-detail card mt-4 mb-3">
+            <div>
+              <i
+                v-if="validator.next_elected"
+                v-b-tooltip.hover
+                class="elected fas fa-chevron-circle-right"
+                :title="$t('details.validator.elected_for_next_session')"
+              />
+              <i
+                v-else
+                v-b-tooltip.hover
+                class="notElected fas fa-times-circle"
+                :title="$t('details.validator.not_elected_for_next_session')"
+              />
+            </div>
             <div class="card-body">
-              <div>
-                <i
-                  v-if="validator.next_elected"
-                  v-b-tooltip.hover
-                  class="elected fas fa-chevron-circle-right"
-                  :title="$t('details.validator.elected_for_next_session')"
-                />
-                <i
-                  v-else
-                  v-b-tooltip.hover
-                  class="notElected fas fa-times-circle"
-                  :title="$t('details.validator.not_elected_for_next_session')"
-                />
-              </div>
               <div>
                 <i
                   v-if="isFavorite(validator.account_id)"
@@ -1713,7 +1713,6 @@ export default {
               exposure_own
               exposure_total
               identity
-              im_online
               next_elected
               next_session_id_hex
               next_session_ids
@@ -1865,7 +1864,7 @@ export default {
 .page-validator .elected {
   position: absolute;
   top: 0.4rem;
-  left: 2rem;
+  left: 0.4rem;
   font-size: 1.1rem;
   color: #2697e2;
 }
