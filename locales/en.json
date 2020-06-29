@@ -293,7 +293,6 @@
       "account": "Account",
       "free_balance": "Free Balance",
       "account_id": "Account ID",
-      "see_address_in_polkastats": "See address in PolkaScan",
       "account_nonce": "Account Nonce",
       "total_balance": "Total Balance",
       "available_balance": "Available Balance",
@@ -307,7 +306,6 @@
     "block": {
       "block": "block",
       "block_author": "Block author",
-      "see_address_in_polkastats": "See address in PolkaScan",
       "block_hash": "Block hash",
       "extrinsic_root": "Extrinsic root",
       "parent_hash": "Parent hash",
@@ -359,7 +357,6 @@
       "previous_nominator": "Previous nominator: ",
       "next_nominator": "Next nominator: ",
       "nominator": "Nominator",
-      "see_address_in_polkastats": "See address in PolkaScan",
       "total_bonded": "Total bonded",
       "nomination": "nomination",
       "nominations": "nominations",

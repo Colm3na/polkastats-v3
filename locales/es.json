@@ -294,7 +294,6 @@
       "account": "Cuenta",
       "free_balance": "Fondo libre",
       "account_id": "Cuenta ID",
-      "see_address_in_polkastats": "Ver dirección en PolkaScan",
       "account_nonce": "Nonce de Cuenta",
       "total_balance": "Fondo Total",
       "available_balance": "Fondo Disponible",
@@ -308,7 +307,6 @@
     "block": {
       "block": "bloque",
       "block_author": "Autor del bloque",
-      "see_address_in_polkastats": "Ver dirección en PolkaScan",
       "account_details": "Detalles de la cuenta",
       "block_hash": "Hash del bloque",
       "extrinsic_root": "Raíz extrínseca",
@@ -362,7 +360,6 @@
       "previous_nominator": "Nominador previo: ",
       "next_nominator": "Nominador siguiente: ",
       "nominator": "Nominador",
-      "see_address_in_polkastats": "Ver dirección en PolkaScan",
       "total_bonded": "Total depositado",
       "nomination": "nominación",
       "nominations": "nominaciones",

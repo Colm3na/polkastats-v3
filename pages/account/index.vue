@@ -36,29 +36,13 @@
                   <tr>
                     <td>{{ $t("details.account.account_id") }}</td>
                     <td class="text-right">
-                      <nuxt-link
-                        :to="{
-                          name: 'account',
-                          query: {
-                            accountId: parsedAccount.accountId
-                          }
-                        }"
-                        class="d-block my-2"
-                      >
-                        <Identicon
-                          :key="parsedAccount.accountId"
-                          :value="parsedAccount.accountId"
-                          :size="20"
-                          :theme="'polkadot'"
-                        />
-                        <span
-                          v-b-tooltip.hover
-                          :title="
-                            $t('details.account.see_address_in_polkastats')
-                          "
-                          >{{ parsedAccount.accountId }}</span
-                        >
-                      </nuxt-link>
+                      <Identicon
+                        :key="parsedAccount.accountId"
+                        :value="parsedAccount.accountId"
+                        :size="20"
+                        :theme="'polkadot'"
+                      />
+                      <span>{{ parsedAccount.accountId }}</span>
                     </td>
                   </tr>
                   <tr v-if="parsedAccount.identity.display">
