@@ -368,9 +368,9 @@
       "commission": "Commission",
       "account_details": "Account details",
       "total_balance": "Total balance",
-      "daily_chart": "Daily chart",
-      "weekly_chart": "Weekly chart",
-      "monthly_chart": "Monthly chart"
+      "daily_chart": "Daily",
+      "weekly_chart": "Weekly",
+      "monthly_chart": "Monthly"
     },
     "phragmen-candidate": {
       "previous_candidate": "Previous candidate: ",

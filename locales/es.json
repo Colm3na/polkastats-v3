@@ -371,9 +371,9 @@
       "commission": "Comisión",
       "account_details": "Detalles de la cuenta",
       "total_balance": "Balance total",
-      "daily_chart": "Gráfica diaria",
-      "weekly_chart": "Gráfica semanal",
-      "monthly_chart": "Gráfica mensual"
+      "daily_chart": "Diaria",
+      "weekly_chart": "Semanal",
+      "monthly_chart": "Mensual"
     },
     "phragmen-candidate": {
       "previous_candidate": "Candidato previo: ",
