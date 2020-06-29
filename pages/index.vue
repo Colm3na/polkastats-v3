@@ -2,10 +2,6 @@
   <div>
     <section>
       <b-container class="main pt-4 pb-5 dashboard">
-        <h1 class="mb-4">
-          {{ $t("pages.dashboard.title") }}
-        </h1>
-
         <b-alert show dismissible variant="primary" class="text-center">
           <div>
             <h3>{{ $t("pages.dashboard.polkastats_validator") }}</h3>
