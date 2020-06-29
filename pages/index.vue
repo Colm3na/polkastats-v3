@@ -62,6 +62,8 @@ import LastBlocks from "../components/LastBlocks.vue";
 import LastEvents from "../components/LastEvents.vue";
 import LastExtrinsics from "../components/LastExtrinsics.vue";
 import Top10Rich from "../components/Top10Rich.vue";
+import commonMixin from "../mixins/commonMixin.js";
+
 export default {
   components: {
     Chain,
@@ -70,6 +72,7 @@ export default {
     LastExtrinsics,
     Top10Rich
   },
+  mixins: [commonMixin],
   head() {
     return {
       title: this.$t("pages.dashboard.head_title"),
