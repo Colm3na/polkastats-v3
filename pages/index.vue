@@ -27,10 +27,9 @@
             <span
               class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline"
             >
-              🤖 POLKASTATS
-              {{
+              🤖 POLKASTATS ({{
                 shortAddress(`GTzRQPzkcuynHgkEHhsPBFpKdh4sAacVRsnd8vYfPpTMeEY`)
-              }}
+              }})
             </span>
           </nuxt-link>
         </b-alert>
