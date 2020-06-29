@@ -303,7 +303,9 @@
       "recent_blocks": "Recent blocks",
       "top_rich": "Top 10 rich accounts",
       "recent_extrinsics": "Recent extrinsics",
-      "recent_events": "Recent events"
+      "recent_events": "Recent events",
+      "polkastats_validator": "Do you like PolkaStats? ❤️",
+      "polkastats_validator_subtitle": "Now you can support our work staking in our Polkadot validator!"
     }
   },
   "details": {
