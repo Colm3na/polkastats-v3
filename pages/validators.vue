@@ -240,7 +240,7 @@
                 <span
                   v-b-tooltip.hover
                   :title="
-                    `${validator.produced_blocks} ${$t(
+                    `${data.item.produced_blocks} ${$t(
                       'details.validator.produced_blocks'
                     )}`
                   "
