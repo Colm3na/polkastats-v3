@@ -1,7 +1,7 @@
 <template>
   <div>
     <section>
-      <b-container class="main pt-4 pb-5">
+      <b-container class="main pt-4 pb-5 page-dashboard">
         <b-alert show dismissible variant="primary" class="text-center">
           <div>
             <h3>{{ $t("pages.dashboard.polkastats_validator") }}</h3>
@@ -63,6 +63,7 @@ import LastEvents from "../components/LastEvents.vue";
 import LastExtrinsics from "../components/LastExtrinsics.vue";
 import Top10Rich from "../components/Top10Rich.vue";
 import commonMixin from "../mixins/commonMixin.js";
+import Identicon from "../components/identicon.vue";
 
 export default {
   components: {
@@ -70,7 +71,8 @@ export default {
     LastBlocks,
     LastEvents,
     LastExtrinsics,
-    Top10Rich
+    Top10Rich,
+    Identicon
   },
   mixins: [commonMixin],
   head() {
@@ -87,4 +89,8 @@ export default {
   }
 };
 </script>
-<style></style>
+<style>
+.page-dashboard .identicon {
+  display: inline-block;
+}
+</style>
