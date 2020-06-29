@@ -43,13 +43,7 @@
                   <tr>
                     <td>{{ $t("details.block.block_hash") }}</td>
                     <td class="text-right">
-                      <p class="mb-0">
-                        <nuxt-link
-                          :to="`/block?blockNumber=${blockNumber - 1}`"
-                        >
-                          {{ parsedBlock.block_hash }}
-                        </nuxt-link>
-                      </p>
+                      <p class="mb-0">{{ parsedBlock.block_hash }}</p>
                     </td>
                   </tr>
                   <tr>
@@ -61,7 +55,9 @@
                   <tr>
                     <td>{{ $t("details.block.parent_hash") }}</td>
                     <td class="text-right">
-                      <p class="mb-0">{{ parsedBlock.parent_hash }}</p>
+                      <nuxt-link :to="`/block?blockNumber=${blockNumber - 1}`">
+                        {{ parsedBlock.parent_hash }}
+                      </nuxt-link>
                     </td>
                   </tr>
                   <tr>
