@@ -131,9 +131,20 @@
                     :title="$t('details.nominator.validator_details')"
                     class="mt-2 mb-0 d-block"
                   >
-                    <span v-b-tooltip.hover :title="nomination.validator">{{
-                      shortAddress(nomination.validator)
-                    }}</span>
+                    <span
+                      v-if="nomination.display_name"
+                      v-b-tooltip.hover
+                      :title="nomination.validator"
+                    >
+                      {{ nomination.display_name }}
+                    </span>
+                    <span
+                      v-else
+                      v-b-tooltip.hover
+                      :title="nomination.validator"
+                    >
+                      {{ shortAddress(nomination.validator) }}
+                    </span>
                   </nuxt-link>
                   <p class="amount">
                     {{ formatAmount(nomination.amount) }}
