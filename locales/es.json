@@ -423,6 +423,7 @@
       "reward": "Recompensa",
       "slashes": "Slashes",
       "produced_block": "Bloques producidos",
+      "produced_blocks": "bloques producidos",
       "status": "Status",
       "date_time": "Día y hora",
       "charts": "Gráficas",

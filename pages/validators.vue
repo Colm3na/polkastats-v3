@@ -237,10 +237,23 @@
             </template>
             <template v-slot:cell(produced_blocks)="data">
               <p class="text-right mb-0">
-                <span class="circle green">
+                <span
+                  v-b-tooltip.hover
+                  :title="
+                    `${validator.produced_blocks} ${$t(
+                      'details.validator.produced_blocks'
+                    )}`
+                  "
+                  class="circle green"
+                >
                   {{ data.item.produced_blocks }}
                 </span>
-                <span v-if="data.item.next_elected" class="circle blue">
+                <span
+                  v-if="data.item.next_elected"
+                  v-b-tooltip.hover
+                  :title="$t('details.validator.elected_for_next_session')"
+                  class="circle blue"
+                >
                   <i class="fa fa-chevron-right mr-1" aria-hidden="true"></i>
                 </span>
               </p>

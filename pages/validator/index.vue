@@ -16,18 +16,25 @@
           </div>
           <div class="validator-detail card mt-4 mb-3">
             <div>
-              <i
+              <span
                 v-if="validator.next_elected"
                 v-b-tooltip.hover
-                class="elected fas fa-chevron-circle-right"
                 :title="$t('details.validator.elected_for_next_session')"
-              />
-              <i
-                v-else
+                class="elected circle blue"
+              >
+                <i class="fa fa-chevron-right mr-1" aria-hidden="true"></i>
+              </span>
+              <span
                 v-b-tooltip.hover
-                class="notElected fas fa-times-circle"
-                :title="$t('details.validator.not_elected_for_next_session')"
-              />
+                :title="
+                  `${validator.produced_blocks} ${$t(
+                    'details.validator.produced_blocks'
+                  )}`
+                "
+                class="blocks circle green"
+              >
+                {{ validator.produced_blocks }}
+              </span>
             </div>
             <div class="card-body">
               <div>
@@ -1862,13 +1869,23 @@ export default {
   font-size: 1.1rem;
   color: red;
 }
+
 .page-validator .elected {
   position: absolute;
   top: 0.4rem;
-  left: 0.4rem;
-  font-size: 1.1rem;
-  color: #2697e2;
+  left: 0;
+  display: block;
+  cursor: pointer;
 }
+
+.page-validator .blocks {
+  position: absolute;
+  top: 0.4rem;
+  left: 2rem;
+  display: block;
+  cursor: pointer;
+}
+
 .page-validator .notElected {
   position: absolute;
   top: 0.4rem;
