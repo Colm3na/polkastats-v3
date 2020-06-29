@@ -115,7 +115,7 @@
                 <div
                   v-for="nomination in JSON.parse(nominator.targets)"
                   :key="nomination.validator"
-                  class="col-6 col-md-4 col-lg-3 col-xl-2"
+                  class="col-6 col-md-4 col-lg-3 col-xl-2 text-center"
                 >
                   <Identicon
                     :key="nomination.validator"
