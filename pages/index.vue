@@ -25,7 +25,11 @@
               }}</span
             >
             <span class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline"
-              >15psTaipmWG86U5vNkF7Guv9TRPMRLKHkGS8cXT74v3RCC5t</span
+              >🤖 POLKASTATS ({{
+                shortAddress(
+                  `15psTaipmWG86U5vNkF7Guv9TRPMRLKHkGS8cXT74v3RCC5t`
+                )
+              }})</span
             >
           </nuxt-link>
         </b-alert>
