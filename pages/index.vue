@@ -14,7 +14,7 @@
             class="my-3"
           />
           <nuxt-link
-            to="/validator?accountId=GTzRQPzkcuynHgkEHhsPBFpKdh4sAacVRsnd8vYfPpTMeEY"
+            to="/account?accountId=GTzRQPzkcuynHgkEHhsPBFpKdh4sAacVRsnd8vYfPpTMeEY"
           >
             <span
               v-b-tooltip.hover
