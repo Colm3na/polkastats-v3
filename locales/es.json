@@ -352,9 +352,9 @@
       "current_session_ids": "Ids sesión actual",
       "next_session_ids": "Ids siguiente sesión",
       "total_bonded": "Total depositado",
-      "monthly_chart": "Gráfico mensual",
-      "weekly_chart": "Gráfico semanal",
-      "daily_chart": "Gráfico diario"
+      "monthly_chart": "Mensual",
+      "weekly_chart": "Semanal",
+      "daily_chart": "Diario"
     },
     "nominator": {
       "previous_nominator": "Nominador previo: ",

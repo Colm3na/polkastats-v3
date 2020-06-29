@@ -349,9 +349,9 @@
       "current_session_ids": "Current session ids",
       "next_session_ids": "Next session ids",
       "total_bonded": "Total bonded",
-      "monthly_chart": "Monthly chart",
-      "weekly_chart": "Weekly chart",
-      "daily_chart": "Daily chart"
+      "monthly_chart": "Monthly",
+      "weekly_chart": "Weekly",
+      "daily_chart": "Daily"
     },
     "nominator": {
       "previous_nominator": "Previous nominator: ",
