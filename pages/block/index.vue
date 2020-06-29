@@ -30,7 +30,7 @@
                         />
                         <span
                           v-b-tooltip.hover
-                          :title="$t('details.block.see_address_in_polkastats')"
+                          :title="$t('details.block.account_details')"
                         >
                           {{ shortAddress(parsedBlock.block_author) }}
                         </span>

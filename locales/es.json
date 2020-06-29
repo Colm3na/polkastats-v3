@@ -309,6 +309,7 @@
       "block": "bloque",
       "block_author": "Autor del bloque",
       "see_address_in_polkastats": "Ver dirección en PolkaScan",
+      "account_details": "Detalles de la cuenta",
       "block_hash": "Hash del bloque",
       "extrinsic_root": "Raíz extrínseca",
       "parent_hash": "Hash padre",
