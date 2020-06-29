@@ -14,7 +14,7 @@
             class="my-3"
           />
           <nuxt-link
-            to="/account?accountId=GTzRQPzkcuynHgkEHhsPBFpKdh4sAacVRsnd8vYfPpTMeEY"
+            to="/intention?accountId=GTzRQPzkcuynHgkEHhsPBFpKdh4sAacVRsnd8vYfPpTMeEY"
           >
             <span
               v-b-tooltip.hover
@@ -24,9 +24,14 @@
                 shortAddress(`GTzRQPzkcuynHgkEHhsPBFpKdh4sAacVRsnd8vYfPpTMeEY`)
               }}</span
             >
-            <span class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline"
-              >GTzRQPzkcuynHgkEHhsPBFpKdh4sAacVRsnd8vYfPpTMeEY</span
+            <span
+              class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline"
             >
+              🤖 POLKASTATS
+              {{
+                shortAddress(`GTzRQPzkcuynHgkEHhsPBFpKdh4sAacVRsnd8vYfPpTMeEY`)
+              }}
+            </span>
           </nuxt-link>
         </b-alert>
 
