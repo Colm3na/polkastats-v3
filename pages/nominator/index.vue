@@ -17,27 +17,13 @@
           <div class="card mt-4 mb-3">
             <div class="card-body">
               <div class="row">
-                <div class="col-md-3 text-center">
+                <div class="col-md-3 rank text-center">
                   <Identicon
                     :key="nominator.account_id"
                     :value="nominator.account_id"
                     :size="80"
                     :theme="'polkadot'"
                   />
-                  <nuxt-link
-                    :to="{
-                      name: 'account',
-                      query: { accountId: nominator.account_id }
-                    }"
-                    class="d-block my-2"
-                  >
-                    {{ $t("details.nominator.nominator") }}
-                    <span
-                      v-b-tooltip.hover
-                      :title="$t('details.nominator.account_details')"
-                      >{{ shortAddress(nominator.account_id) }}</span
-                    >
-                  </nuxt-link>
                   <p class="mb-0 rank">rank #{{ nominator.rank }}</p>
                   <p
                     v-b-tooltip.hover
@@ -46,21 +32,13 @@
                   >
                     {{ formatAmount(nominator.total_staked) }}
                   </p>
-                  <h5>
-                    {{ nominator.num_targets }}
-                    {{
-                      nominator.num_targets > 1
-                        ? $t("details.nominator.nominations")
-                        : $t("details.nominator.nomination")
-                    }}
-                  </h5>
                 </div>
                 <div class="col-md-9">
                   <div v-if="nominator.stash_id" class="row">
-                    <div class="col-md-2 mb-2">
+                    <div class="col-md-3 mb-2">
                       <strong>Stash</strong>
                     </div>
-                    <div class="col-md-10 mb-2">
+                    <div class="col-md-9 mb-2">
                       <Identicon
                         :key="nominator.stash_id"
                         :value="nominator.stash_id"
@@ -82,10 +60,10 @@
                     </div>
                   </div>
                   <div v-if="nominator.controller_id" class="row">
-                    <div class="col-md-2 mb-2">
+                    <div class="col-md-3 mb-2">
                       <strong>Controller</strong>
                     </div>
-                    <div class="col-md-10 mb-2">
+                    <div class="col-md-9 mb-2">
                       <Identicon
                         :key="nominator.controller_id"
                         :value="nominator.controller_id"
@@ -105,6 +83,40 @@
                           >{{ shortAddress(nominator.controller_id) }}
                         </span>
                       </nuxt-link>
+                    </div>
+                  </div>
+                  <div v-if="nominator.total_staked" class="row">
+                    <div class="col-md-3 mb-2">
+                      <strong>Nominations</strong>
+                    </div>
+                    <div class="col-md-9 mb-2">
+                      <span>
+                        {{ nominator.num_targets }}
+                      </span>
+                    </div>
+                  </div>
+                  <div v-if="nominator.available_balance" class="row">
+                    <div class="col-md-3 mb-2">
+                      <strong>Total balance</strong>
+                    </div>
+                    <div class="col-md-9 mb-2">
+                      <span class="small-amount">
+                        {{ formatAmount(nominator.free_balance) }}
+                      </span>
+                    </div>
+                  </div>
+                  <div v-if="nominator.available_balance" class="row">
+                    <div class="col-md-3 mb-2">
+                      <strong>Transferrable balance</strong>
+                    </div>
+                    <div class="col-md-9 mb-2">
+                      <span class="small-amount">
+                        {{
+                          formatAmount(
+                            nominator.free_balance - nominator.locked_balance
+                          )
+                        }}
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -319,16 +331,16 @@ export default {
       this.accountId = this.$route.query.accountId;
 
       // Update graph data
-      this.getNominatorDailyGraphData();
-      this.getNominatorWeeklyGraphData();
-      this.getNominatorMonthlyGraphData();
+      this.getNominatorTotalBalanceDailyGraphData();
+      this.getNominatorTotalBalanceWeeklyGraphData();
+      this.getNominatorTotalBalanceMonthlyGraphData();
 
       // Restart graph data polling
       clearInterval(this.graphPolling);
       this.graphPolling = setInterval(() => {
-        this.getNominatorDailyGraphData();
-        this.getNominatorWeeklyGraphData();
-        this.getNominatorMonthlyGraphData();
+        this.getNominatorTotalBalanceDailyGraphData();
+        this.getNominatorTotalBalanceWeeklyGraphData();
+        this.getNominatorTotalBalanceMonthlyGraphData();
       }, 60000);
     }
   },
@@ -339,15 +351,15 @@ export default {
     }
 
     // Load graph data first time
-    this.getNominatorDailyGraphData();
-    this.getNominatorWeeklyGraphData();
-    this.getNominatorMonthlyGraphData();
+    this.getNominatorTotalBalanceDailyGraphData();
+    this.getNominatorTotalBalanceWeeklyGraphData();
+    this.getNominatorTotalBalanceMonthlyGraphData();
 
     // Refresh graph data every minute
     this.graphPolling = setInterval(() => {
-      this.getNominatorDailyGraphData();
-      this.getNominatorWeeklyGraphData();
-      this.getNominatorMonthlyGraphData();
+      this.getNominatorTotalBalanceDailyGraphData();
+      this.getNominatorTotalBalanceWeeklyGraphData();
+      this.getNominatorTotalBalanceMonthlyGraphData();
     }, 60000);
   },
   beforeDestroy: function() {
@@ -384,10 +396,10 @@ export default {
           return parseInt(new Date().getTime() / 1000) - 2592000;
       }
     },
-    getNominatorDailyGraphData: function() {
+    getNominatorTotalBalanceDailyGraphData: function() {
       var vm = this;
 
-      const GET_INTENTION_BONDED = gql`
+      const GET_NOMINATOR_TOTAL_BALANCE = gql`
         query nominator {
           nominator(
             where: { account_id: { _eq: "${
@@ -405,7 +417,7 @@ export default {
       `;
 
       vm.$apolloProvider.defaultClient
-        .query({ query: GET_INTENTION_BONDED })
+        .query({ query: GET_NOMINATOR_TOTAL_BALANCE })
         .then(function(response) {
           // Update chart data
           var newCategories = [];
@@ -474,10 +486,10 @@ export default {
           ];
         });
     },
-    getNominatorWeeklyGraphData: function() {
+    getNominatorTotalBalanceWeeklyGraphData: function() {
       var vm = this;
 
-      const GET_INTENTION_BONDED = gql`
+      const GET_NOMINATOR_TOTAL_BALANCE = gql`
         query nominator {
           nominator(
             where: { account_id: { _eq: "${
@@ -495,7 +507,7 @@ export default {
       `;
 
       vm.$apolloProvider.defaultClient
-        .query({ query: GET_INTENTION_BONDED })
+        .query({ query: GET_NOMINATOR_TOTAL_BALANCE })
         .then(function(response) {
           // Update chart data
           var newCategories = [];
@@ -556,10 +568,10 @@ export default {
           ];
         });
     },
-    getNominatorMonthlyGraphData: function() {
+    getNominatorTotalBalanceMonthlyGraphData: function() {
       var vm = this;
 
-      const GET_INTENTION_BONDED = gql`
+      const GET_NOMINATOR_TOTAL_BALANCE = gql`
         query nominator {
           nominator(
             where: { account_id: { _eq: "${
@@ -577,7 +589,7 @@ export default {
       `;
 
       vm.$apolloProvider.defaultClient
-        .query({ query: GET_INTENTION_BONDED })
+        .query({ query: GET_NOMINATOR_TOTAL_BALANCE })
         .then(function(response) {
           // Update chart data
           var newCategories = [];
@@ -683,6 +695,7 @@ export default {
             num_targets: JSON.parse(data.nominator[0].targets).length,
             favorite: this.isFavorite(data.nominator[0].account_id)
           };
+          console.log(this.nominator);
         }
       },
       sessionIndex: {
@@ -721,6 +734,11 @@ export default {
   font-weight: 700;
   font-size: 1rem;
 }
+.page-nominator .small-amount {
+  color: #ef1073;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
 .page-nominator .identicon {
   cursor: pointer;
   display: inline-block;
@@ -728,5 +746,8 @@ export default {
 .page-nominator .rank {
   font-size: 1.4rem;
   color: #7d7378;
+}
+.page-nominator .rank .identicon {
+  margin-bottom: 0.2rem;
 }
 </style>
