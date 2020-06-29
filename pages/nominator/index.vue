@@ -132,11 +132,11 @@
                     class="mt-2 mb-0 d-block"
                   >
                     <span
-                      v-if="nomination.display_name"
+                      v-if="nomination.displayName"
                       v-b-tooltip.hover
                       :title="nomination.validator"
                     >
-                      {{ nomination.display_name }}
+                      {{ nomination.displayName }}
                     </span>
                     <span
                       v-else
