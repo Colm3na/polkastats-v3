@@ -1443,9 +1443,9 @@ export default {
         .then(response => {
           // Update chart data
           this.slashes.day = 0;
-          const { validator_slashes_era } = response.data;
+          const { validator_slash_era } = response.data;
           const { newCategories, newData } = this.createSlashesChartOptions(
-            validator_slashes_era,
+            validator_slash_era,
             "day"
           );
           // Make sure to update the whole options config and not just a single property to allow the Vue watch catch the change.
@@ -1478,9 +1478,9 @@ export default {
         .then(response => {
           // Update chart data
           this.slashes.week = 0;
-          const { validator_slashes_era } = response.data;
+          const { validator_slash_era } = response.data;
           const { newCategories, newData } = this.createSlashesChartOptions(
-            validator_slashes_era,
+            validator_slash_era,
             "week"
           );
           // Make sure to update the whole options config and not just a single property to allow the Vue watch catch the change.
@@ -1513,9 +1513,9 @@ export default {
         .then(response => {
           // Update chart data
           this.slashes.month = 0;
-          const { validator_slashes_era } = response.data;
+          const { validator_slash_era } = response.data;
           const { newCategories, newData } = this.createSlashesChartOptions(
-            validator_slashes_era,
+            validator_slash_era,
             "month"
           );
           // Make sure to update the whole options config and not just a single property to allow the Vue watch catch the change.
