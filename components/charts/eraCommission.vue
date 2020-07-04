@@ -87,6 +87,9 @@ export default {
             },
             xaxis: {
               categories: newCategories
+            },
+            yaxis: {
+              max: 100
             }
           };
         }
