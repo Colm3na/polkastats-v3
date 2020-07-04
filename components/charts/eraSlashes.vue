@@ -74,7 +74,7 @@ export default {
               curve: "straight"
             },
             title: {
-              text: "Era slashes (DOT)",
+              text: "Era slashes",
               align: "left"
             },
             grid: {

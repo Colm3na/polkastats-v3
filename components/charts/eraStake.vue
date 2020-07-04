@@ -78,7 +78,7 @@ export default {
               curve: "straight"
             },
             title: {
-              text: "Elected stake (DOT)",
+              text: "Elected stake",
               align: "left"
             },
             grid: {

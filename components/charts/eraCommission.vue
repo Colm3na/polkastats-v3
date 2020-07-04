@@ -76,7 +76,7 @@ export default {
               curve: "straight"
             },
             title: {
-              text: "Era commission (%)",
+              text: "Era commission",
               align: "left"
             },
             grid: {

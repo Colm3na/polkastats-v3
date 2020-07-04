@@ -76,7 +76,7 @@ export default {
               curve: "straight"
             },
             title: {
-              text: "Era rewards (DOT)",
+              text: "Era rewards",
               align: "left"
             },
             grid: {
