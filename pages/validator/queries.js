@@ -34,7 +34,7 @@ export const createQueryRewards = (timestamp, accountId) => `
 
 export const createQuerySlashes = (timestamp, accountId) => `
     query slashes {
-        validator_slash_era(where: {account_id: {_eq: "${accountId}"}, timestamp: {_gt: ${timestamp}}}, order_by: {timestamp: desc}) {
+        validator_era_slash(where: {account_id: {_eq: "${accountId}"}, timestamp: {_gt: ${timestamp}}}, order_by: {timestamp: desc}) {
             account_id
             amount
             block_number

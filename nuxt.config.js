@@ -58,7 +58,7 @@ export default {
     clientConfigs: {
       default: {
         httpEndpoint: "https://polkadot.polkastats.io/api/v3",
-        wsEndpoint: "wss://polkadot.polkastats.io/api/v3",
+        wsEndpoint: "wss://v3dev1.polkastats.io/api/v3",
         websocketsOnly: true
       }
     }
