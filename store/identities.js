@@ -40,7 +40,7 @@ export const actions = {
         commit("update", data.account);
       })
       .catch(error => {
-        console.log("Error fetching Validator table: ", error);
+        console.log("Error fetching identities: ", error);
       });
   }
 };

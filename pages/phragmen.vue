@@ -83,17 +83,7 @@
                 <div
                   class="d-block d-sm-block d-md-none d-lg-none d-xl-none text-center"
                 >
-                  <div v-if="hasIdentity(data.item.pub_key_stash)">
-                    <div
-                      v-if="getIdentity(data.item.pub_key_stash).logo !== ''"
-                    >
-                      <img
-                        :src="getIdentity(data.item.pub_key_stash).logo"
-                        class="identity mt-2"
-                      />
-                    </div>
-                  </div>
-                  <div v-else>
+                  <div>
                     <Identicon
                       :key="data.item.pub_key_stash"
                       :value="data.item.pub_key_stash"
@@ -101,17 +91,11 @@
                       :theme="'polkadot'"
                     />
                   </div>
-                  <h4
-                    v-if="hasIdentity(data.item.pub_key_stash)"
-                    class="mt-2 mb-2"
-                  >
-                    {{ getIdentity(data.item.pub_key_stash).full_name }}
+                  <h4 v-if="data.item.display_name" class="mt-2 mb-2">
+                    {{ data.item.display_name }}
                   </h4>
-                  <h4
-                    v-else-if="hasKusamaIdentity(data.item.pub_key_stash)"
-                    class="mt-2 mb-2"
-                  >
-                    {{ hasKusamaIdentity(data.item.pub_key_stash).display }}
+                  <h4 v-else class="mt-2 mb-2">
+                    {{ shortAddress(data.item.pub_key_stash) }}
                   </h4>
                   <p class="mt-2 mb-2 rank">rank #{{ data.item.rank }}</p>
                   <p
@@ -123,21 +107,7 @@
                   </p>
                 </div>
                 <div class="d-none d-sm-none d-md-block d-lg-block d-xl-block">
-                  <div
-                    v-if="hasIdentity(data.item.pub_key_stash)"
-                    class="d-inline-block"
-                  >
-                    <div
-                      v-if="getIdentity(data.item.pub_key_stash).logo !== ''"
-                      class="d-inline-block"
-                    >
-                      <img
-                        :src="getIdentity(data.item.pub_key_stash).logo"
-                        class="identity-small d-inline-block"
-                      />
-                    </div>
-                  </div>
-                  <div v-else class="d-inline-block">
+                  <div class="d-inline-block">
                     <Identicon
                       :key="data.item.pub_key_stash"
                       :value="data.item.pub_key_stash"
@@ -145,21 +115,11 @@
                       :theme="'polkadot'"
                     />
                   </div>
-                  <span v-if="hasIdentity(data.item.pub_key_stash)">
-                    {{ getIdentity(data.item.pub_key_stash).full_name }}
-                  </span>
-                  <span v-else-if="hasKusamaIdentity(data.item.pub_key_stash)">
-                    {{ getKusamaIdentity(data.item.pub_key_stash).display }}
+                  <span v-if="data.item.display_name">
+                    {{ data.item.display_name }}
                   </span>
                   <span v-else>
-                    <span
-                      class="d-inline d-sm-inline d-md-inline d-lg-inline d-xl-none"
-                      >{{ shortAddress(data.item.pub_key_stash) }}</span
-                    >
-                    <span
-                      class="d-none d-sm-none d-md-none d-lg-none d-xl-inline"
-                      >{{ shortAddress(data.item.pub_key_stash) }}</span
-                    >
+                    {{ shortAddress(data.item.pub_key_stash) }}
                   </span>
                 </div>
               </template>
@@ -287,8 +247,10 @@ export default {
   computed: {
     candidates() {
       return this.$store.state.phragmen.info.candidates.map(candidate => {
-        if (this.hasKusamaIdentity(candidate.pub_key_stash)) {
-          candidate.identity = this.getKusamaIdentity(candidate.pub_key_stash);
+        if (this.getDisplayName(candidate.pub_key_stash)) {
+          candidate.display_name = this.getDisplayName(candidate.pub_key_stash);
+        } else {
+          candidate.display_name = ``;
         }
         candidate.favorite = this.isFavorite(candidate.pub_key_stash);
         return candidate;
@@ -328,21 +290,15 @@ export default {
     }
     this.totalRows = this.$store.state.phragmen.info.candidates.length;
 
-    // Force update of indentity list if empty
-    if (this.$store.state.identities.list.length == 0) {
+    // Force update of identity list if empty
+    if (this.$store.state.identities.list.length === 0) {
       vm.$store.dispatch("identities/update");
-    }
-
-    // Force update of staking identities list if empty
-    if (this.$store.state.stakingIdentities.list.length === 0) {
-      vm.$store.dispatch("stakingIdentities/update");
     }
 
     // Update data every 60 seconds
     this.polling = setInterval(() => {
       vm.$store.dispatch("phragmen/update");
       vm.$store.dispatch("identities/update");
-      vm.$store.dispatch("stakingIdentities/update");
       if (!this.filter)
         this.totalRows = this.$store.state.phragmen.info.candidates.length;
     }, 60000);
@@ -367,29 +323,24 @@ export default {
     isFavorite(accountId) {
       return this.favorites.includes(accountId);
     },
-    hasIdentity(stashId) {
-      return this.$store.state.identities.list.some(obj => {
-        return obj.stashId === stashId;
-      });
-    },
-    getIdentity(stashId) {
-      let filteredArray = this.$store.state.identities.list.filter(obj => {
-        return obj.stashId === stashId;
-      });
-      return filteredArray[0];
-    },
-    hasKusamaIdentity(stashId) {
-      return this.$store.state.stakingIdentities.list.some(obj => {
-        return obj.accountId === stashId;
-      });
-    },
-    getKusamaIdentity(stashId) {
-      let filteredArray = this.$store.state.stakingIdentities.list.filter(
-        obj => {
-          return obj.accountId === stashId;
-        }
+    getDisplayName: function(accountId) {
+      let identity = this.$store.state.identities.list.find(
+        identity => identity.accountId === accountId
       );
-      return filteredArray[0].identity;
+      if (identity) {
+        identity = identity.identity;
+        if (
+          identity.displayParent &&
+          identity.displayParent !== `` &&
+          identity.display &&
+          identity.display !== ``
+        ) {
+          return `${identity.displayParent} / ${identity.display}`;
+        } else {
+          return identity.display;
+        }
+      }
+      return ``;
     },
     onFiltered(filteredItems) {
       // Trigger pagination to update the number of buttons/pages due to filtering

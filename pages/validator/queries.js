@@ -13,13 +13,12 @@ export const createQueryValidadorBonded = (timestamp, accountId) => `
     }
 `;
 
-export const createQueryRewards = (timestamp, accountId) => `
-    query reward {
-        reward(
-        where: { stash_id: { _eq: "${accountId}" }, timestamp: { _gt: ${timestamp} } },
-        order_by: { timestamp: desc }
+export const createQueryRewards = accountId => `
+    query validator_era_staking {
+        validator_era_staking(
+        where: { stash_id: { _eq: "${accountId}" } },
+        order_by: { era_index: asc }
         ) {
-            block_number
             commission
             era_index
             era_points
@@ -27,7 +26,6 @@ export const createQueryRewards = (timestamp, accountId) => `
             estimated_payout
             stake_info
             stash_id
-            timestamp
         }
     }
 `;
@@ -37,7 +35,6 @@ export const createQuerySlashes = (timestamp, accountId) => `
         validator_era_slash(where: {account_id: {_eq: "${accountId}"}, timestamp: {_gt: ${timestamp}}}, order_by: {timestamp: desc}) {
             account_id
             amount
-            block_number
             era_index
             timestamp
         }
