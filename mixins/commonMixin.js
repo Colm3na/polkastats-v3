@@ -66,7 +66,7 @@ export default {
       return message;
     },
     getStakePercent(amount, totalStakeBonded) {
-      if (isHex(amount)) {
+      if (isHex(totalStakeBonded)) {
         totalStakeBonded = new BN(
           totalStakeBonded.substring(2, totalStakeBonded.length),
           16
@@ -83,9 +83,11 @@ export default {
       } else {
         amountBN = new BN(amount.toString(), 10);
       }
-      amountBN = amountBN.mul(new BN("100000", 10));
-      let result = amountBN.div(totalStakeBonded);
-      return this.formatNumber(parseInt(result.toString(10), 10) / 1000);
+      const percent = amountBN
+        .mul(new BN("100000", 10))
+        .div(totalStakeBonded)
+        .toString(10);
+      return this.formatNumber(parseFloat(percent) / (1000).toFixed(3));
     }
   }
 };
