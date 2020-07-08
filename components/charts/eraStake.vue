@@ -88,7 +88,10 @@ export default {
               }
             },
             xaxis: {
-              categories: newCategories
+              categories: newCategories,
+              tooltip: {
+                enabled: false
+              }
             }
           };
         }

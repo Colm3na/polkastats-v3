@@ -45,7 +45,15 @@
       <div class="col-6 col-md-6 col-lg-3 mb-4">
         <div class="card">
           <div class="card-body">
-            <h4 class="mb-3">
+            <h4
+              v-b-tooltip.hover
+              :title="
+                `${$t('components.chain.progress')} ${formatNumber(
+                  lastBlock.session_progress
+                )} / ${formatNumber(lastBlock.session_length)}`
+              "
+              class="mb-3"
+            >
               {{ $t("components.chain.current_session") }} #{{
                 formatNumber(lastBlock.current_index)
               }}
@@ -68,7 +76,15 @@
       <div class="col-6 col-md-6 col-lg-3 mb-4">
         <div class="card">
           <div class="card-body">
-            <h4 class="mb-3">
+            <h4
+              v-b-tooltip.hover
+              :title="
+                `${$t('components.chain.progress')} ${formatNumber(
+                  lastBlock.era_progress
+                )} / ${formatNumber(lastBlock.era_length)}`
+              "
+              class="mb-3"
+            >
               {{ $t("components.chain.current_era") }} #{{
                 formatNumber(lastBlock.current_era)
               }}
@@ -94,10 +110,30 @@
       <div class="col-6 col-md-6 col-lg-3 mb-4">
         <div class="card">
           <div class="card-body">
-            <h4 class="mb-3">{{ $t("components.chain.validator_count") }}</h4>
+            <h4 class="mb-3">{{ $t("components.chain.validators") }}</h4>
             <h5 class="d-inline-block">
-              {{ formatNumber(validatorsCount) }} /
-              {{ formatNumber(lastBlock.validator_count) }}
+              <span
+                v-b-tooltip.hover
+                :title="$t('components.chain.validator_count')"
+              >
+                {{ formatNumber(validatorCount) }}
+              </span>
+              /
+              <span
+                v-b-tooltip.hover
+                :title="$t('components.chain.validator_ideal_number')"
+              >
+                {{ formatNumber(lastBlock.validator_count) }}
+              </span>
+              /
+              <span
+                v-b-tooltip.hover
+                :title="$t('components.chain.waiting_validators')"
+              >
+                <small>
+                  {{ formatNumber(waitingCount) }}
+                </small>
+              </span>
             </h5>
           </div>
         </div>
@@ -106,10 +142,10 @@
         <div class="card">
           <div class="card-body">
             <h4 class="mb-3">
-              {{ $t("components.chain.waiting_validators") }}
+              {{ $t("components.chain.nominators") }}
             </h4>
             <h5 class="d-inline-block">
-              {{ formatNumber(waitingCount) }}
+              {{ formatNumber(nominatorCount) }}
             </h5>
           </div>
         </div>
@@ -163,8 +199,9 @@ export default {
       validators: [],
       intentions: [],
       currentSessionIndex: 0,
-      validatorsCount: 0,
-      waitingCount: 0
+      validatorCount: 0,
+      waitingCount: 0,
+      nominatorCount: 0
     };
   },
   computed: {
@@ -253,7 +290,7 @@ export default {
         },
         result({ data }) {
           this.validators = data.validator;
-          this.validatorsCount = data.validator.length;
+          this.validatorCount = data.validator.length;
         }
       },
       intentions: {
@@ -277,6 +314,27 @@ export default {
         },
         result({ data }) {
           this.waitingCount = data.intention.length;
+        }
+      },
+      nominators: {
+        query: gql`
+          subscription nominator($session_index: Int!) {
+            nominator(where: { session_index: { _eq: $session_index } }) {
+              account_id
+            }
+          }
+        `,
+        variables() {
+          return {
+            session_index: this.currentSessionIndex
+          };
+        },
+        skip() {
+          return !this.currentSessionIndex;
+        },
+        result({ data }) {
+          this.nominators = data.nominator;
+          this.nominatorCount = data.nominator.length;
         }
       },
       chain: {

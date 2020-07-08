@@ -18,14 +18,18 @@
     "chain": {
       "last_block": "Último bloque",
       "last_block_finalized": "Finalizado",
-      "validator_count": "Validadores",
+      "validators": "Validadores",
+      "validator_count": "Validadores activos",
+      "validator_ideal_number": "Número ideal de validadores",
       "current_session": "Sesión",
       "epoch": "Epoch",
       "current_era": "Era",
       "era": "Era",
       "total_issuance": "Emisión total",
       "staked": "Participación",
-      "waiting_validators": "En cola"
+      "waiting_validators": "En cola",
+      "nominators": "Nominadores",
+      "progress": "Progreso"
     }
   },
   "layout": {
