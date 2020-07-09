@@ -11,14 +11,17 @@ export const state = () => ({
 
 export const mutations = {
   update(state, phragmen) {
+    const phragmenOutput = JSON.parse(phragmen.phragmen_json);
     let candidates = [];
-    Object.entries(phragmen.supports).forEach(([pub_key_stash, candidate]) => {
-      candidates.push({
-        pub_key_stash,
-        other_stake_count: candidate.voters.length,
-        stake_total: candidate.total
-      });
-    });
+    Object.entries(phragmenOutput.supports).forEach(
+      ([pub_key_stash, candidate]) => {
+        candidates.push({
+          pub_key_stash,
+          other_stake_count: candidate.voters.length,
+          stake_total: candidate.total
+        });
+      }
+    );
     candidates = candidates.sort((a, b) => {
       return new BN(a.stake_total.toString(), 10).lt(
         new BN(b.stake_total.toString(), 10)
@@ -53,7 +56,7 @@ export const mutations = {
 
 const GET_PHRAGMEN = gql`
   query phragmen {
-    phragmen(limit: 1, order_by: { timestamp: desc }) {
+    phragmen(limit: 1, order_by: { block_height: desc }) {
       timestamp
       phragmen_json
       block_height
@@ -69,7 +72,7 @@ export const actions = {
         query: GET_PHRAGMEN
       })
       .then(({ data }) => {
-        commit("update", JSON.parse(data.phragmen[0].phragmen_json));
+        commit("update", data.phragmen[0]);
       })
       .catch(error => {
         console.log("Error fetching Phragmen table: ", error);

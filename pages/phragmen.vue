@@ -6,6 +6,9 @@
           {{ $t("pages.phragmen.predicted_candidates_by_TEXT") }}
         </h1>
         <template v-if="enabled">
+          <p v-if="blockHeight && timestamp" class="text-center">
+            Last execution at block #{{ blockHeight }} ({{ timestamp }})
+          </p>
           <!-- Filter -->
           <b-row>
             <b-col lg="12" class="mb-4">
@@ -258,6 +261,18 @@ export default {
     },
     identities() {
       return this.$store.state.identities.list;
+    },
+    timestamp() {
+      var newDate = new Date();
+      newDate.setTime(this.$store.state.phragmen.info.timestamp);
+      return this.$store.state.phragmen.info.timestamp
+        ? newDate.toUTCString()
+        : ``;
+    },
+    blockHeight() {
+      return this.$store.state.phragmen.info.block_height
+        ? this.formatNumber(this.$store.state.phragmen.info.block_height)
+        : ``;
     },
     sortOptions() {
       // Create an options list from our fields
