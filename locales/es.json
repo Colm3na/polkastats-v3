@@ -101,7 +101,8 @@
       "identity": "Identidad",
       "head_title": "PolkaStats - Cuentas activas en Polkadot",
       "head_content": "Cuentas activas en Polkadot",
-      "loading_data": "Cargando datos, puede tardar tiempo. Sea paciente, por favor"
+      "loading_data": "Cargando datos, puede tardar tiempo. Sea paciente, por favor",
+      "download_csv": "Descargar en formato CSV"
     },
     "favorites": {
       "hi_there": "¡Hola!",

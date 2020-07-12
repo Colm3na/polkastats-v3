@@ -100,7 +100,8 @@
       "identity": "Identity",
       "head_title": "PolkaStats - Polkadot active accounts",
       "head_content": "Polkadot active accounts",
-      "loading_data": "Loading data, it can take a long time. Be patient, please"
+      "loading_data": "Loading data, it can take a long time. Be patient, please",
+      "download_csv": "Download in CSV format"
     },
     "favorites": {
       "hi_there": "Hi there!",

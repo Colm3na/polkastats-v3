@@ -54,7 +54,14 @@
             </b-form-group>
           </b-col>
         </div>
-
+        <JsonCSV
+          :data="intentionsJSON"
+          class="download-csv mb-2"
+          name="polkastats.io_polkadot_intentions.csv"
+        >
+          <i class="fas fa-file-csv"></i>
+          {{ $t("pages.accounts.download_csv") }}
+        </JsonCSV>
         <!-- Table with sorting and pagination-->
         <div class="table-responsive">
           <b-table
@@ -246,10 +253,12 @@ import gql from "graphql-tag";
 import Identicon from "../components/identicon.vue";
 import { numItemsTableOptions } from "../polkastats.config.js";
 import commonMixin from "../mixins/commonMixin.js";
+import JsonCSV from "vue-json-csv";
 
 export default {
   components: {
-    Identicon
+    Identicon,
+    JsonCSV
   },
   mixins: [commonMixin],
   data: function() {
@@ -310,6 +319,21 @@ export default {
         .map(f => {
           return { text: f.label, value: f.key };
         });
+    },
+    intentionsJSON() {
+      return this.intentions.map(intention => {
+        return {
+          rank: intention.rank,
+          name: intention.display_name,
+          stash_account: intention.account_id,
+          commission_percent: (
+            parseInt(intention.commission) / 10000000
+          ).toFixed(2),
+          self_stake: intention.staking_ledger_total,
+          stakers: intention.stakers,
+          num_stakers: intention.num_stakers
+        };
+      });
     }
   },
   watch: {

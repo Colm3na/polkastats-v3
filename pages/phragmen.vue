@@ -61,6 +61,14 @@
               </b-form-group>
             </b-col>
           </div>
+          <JsonCSV
+            :data="candidatesJSON"
+            class="download-csv mb-2"
+            :name="`polkastats.io_polkadot_phragmen_at_${blockHeight}.csv`"
+          >
+            <i class="fas fa-file-csv"></i>
+            {{ $t("pages.accounts.download_csv") }}
+          </JsonCSV>
           <!-- Table with sorting and pagination-->
           <div>
             <b-table
@@ -192,10 +200,12 @@ import { isHex } from "@polkadot/util";
 import BN from "bn.js";
 import { numItemsTableOptions } from "../polkastats.config.js";
 import commonMixin from "../mixins/commonMixin.js";
+import JsonCSV from "vue-json-csv";
 
 export default {
   components: {
-    Identicon
+    Identicon,
+    JsonCSV
   },
   mixins: [commonMixin],
   data: function() {
@@ -257,6 +267,17 @@ export default {
         }
         candidate.favorite = this.isFavorite(candidate.pub_key_stash);
         return candidate;
+      });
+    },
+    candidatesJSON() {
+      return this.candidates.map(candidate => {
+        return {
+          rank: candidate.rank,
+          name: candidate.display_name,
+          stash_account: candidate.pub_key_stash,
+          total_stake: candidate.stake_total,
+          voters: candidate.other_stake_count
+        };
       });
     },
     identities() {

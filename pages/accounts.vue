@@ -7,7 +7,7 @@
         </h1>
         <!-- Filter -->
         <b-row>
-          <b-col lg="12" class="mb-4">
+          <b-col lg="12" class="mb-3">
             <b-form-input
               id="filterInput"
               v-model="filter"
@@ -57,6 +57,14 @@
             </b-form-group>
           </b-col>
         </div>
+        <JsonCSV
+          :data="accountsJSON"
+          class="download-csv mb-2"
+          name="polkastats.io_polkadot_accounts.csv"
+        >
+          <i class="fas fa-file-csv"></i>
+          {{ $t("pages.accounts.download_csv") }}
+        </JsonCSV>
         <!-- Table with sorting and pagination-->
         <div>
           <b-table
@@ -227,10 +235,12 @@ import bootstrap from "bootstrap";
 import Identicon from "../components/identicon.vue";
 import commonMixin from "../mixins/commonMixin.js";
 import { numItemsTableOptions } from "../polkastats.config.js";
+import JsonCSV from "vue-json-csv";
 
 export default {
   components: {
-    Identicon
+    Identicon,
+    JsonCSV
   },
   mixins: [commonMixin],
   data: function() {
@@ -304,6 +314,20 @@ export default {
         .map(f => {
           return { text: f.label, value: f.key };
         });
+    },
+    accountsJSON() {
+      return this.accounts.map(account => {
+        console.log(account);
+        return {
+          rank: account.rank,
+          account_id: account.accountId,
+          identity_display_parent: account.parentIdentity,
+          identity_display: account.identity,
+          available_balance: account.availableBalance,
+          free_balance: account.freeBalance,
+          locked_balance: account.lockedBalance
+        };
+      });
     }
   },
   watch: {
@@ -389,5 +413,9 @@ export default {
 }
 .btn-secondary {
   font-size: 0.8rem;
+}
+.download-csv {
+  cursor: pointer;
+  text-align: right;
 }
 </style>

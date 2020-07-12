@@ -54,7 +54,14 @@
             </b-form-group>
           </b-col>
         </div>
-
+        <JsonCSV
+          :data="validatorsJSON"
+          class="download-csv mb-2"
+          name="polkastats.io_polkadot_validators.csv"
+        >
+          <i class="fas fa-file-csv"></i>
+          {{ $t("pages.accounts.download_csv") }}
+        </JsonCSV>
         <!-- Table with sorting and pagination-->
         <div class="table-responsive">
           <b-table
@@ -327,10 +334,12 @@ import { isHex } from "@polkadot/util";
 import BN from "bn.js";
 import { numItemsTableValidatorOptions } from "../polkastats.config.js";
 import commonMixin from "../mixins/commonMixin.js";
+import JsonCSV from "vue-json-csv";
 
 export default {
   components: {
-    Identicon
+    Identicon,
+    JsonCSV
   },
   mixins: [commonMixin],
   data: function() {
@@ -415,6 +424,23 @@ export default {
         totalStakeBonded = totalStakeBonded.add(totalExposure);
       });
       return totalStakeBonded;
+    },
+    validatorsJSON() {
+      return this.validators.map(validator => {
+        return {
+          rank: validator.rank,
+          name: validator.display_name,
+          stash_account: validator.account_id,
+          commission_percent: (
+            parseInt(validator.commission) / 10000000
+          ).toFixed(2),
+          self_stake: validator.exposure_own,
+          total_stake: validator.exposure_own,
+          num_stakers: validator.num_stakers,
+          produced_blocks: validator.produced_blocks,
+          next_elected: validator.next_elected
+        };
+      });
     }
   },
   watch: {

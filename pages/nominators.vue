@@ -54,6 +54,14 @@
             </b-form-group>
           </b-col>
         </div>
+        <JsonCSV
+          :data="nominatorsJSON"
+          class="download-csv mb-2"
+          name="polkastats.io_polkadot_nominators.csv"
+        >
+          <i class="fas fa-file-csv"></i>
+          {{ $t("pages.accounts.download_csv") }}
+        </JsonCSV>
         <!-- Table with sorting and pagination-->
         <div class="table-responsive">
           <b-table
@@ -240,10 +248,12 @@ import gql from "graphql-tag";
 import Identicon from "../components/identicon.vue";
 import { numItemsTableOptions } from "../polkastats.config.js";
 import commonMixin from "../mixins/commonMixin.js";
+import JsonCSV from "vue-json-csv";
 
 export default {
   components: {
-    Identicon
+    Identicon,
+    JsonCSV
   },
   mixins: [commonMixin],
   data: function() {
@@ -307,6 +317,23 @@ export default {
         .map(f => {
           return { text: f.label, value: f.key };
         });
+    },
+    nominatorsJSON() {
+      return this.nominators.map(nominator => {
+        return {
+          rank: nominator.rank,
+          name: nominator.display_name,
+          stash_account: nominator.stash_id,
+          controller_account: nominator.controller_id,
+          targets: JSON.parse(nominator.targets).map(
+            target => target.validator
+          ),
+          total_staked: nominator.total_staked,
+          free_balance: nominator.free_balance,
+          locked_balance: nominator.locked_balance,
+          nonce: nominator.nonce
+        };
+      });
     }
   },
   watch: {

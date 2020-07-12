@@ -61,6 +61,14 @@
     </div>
     <div v-else class="pt-2">
       <b-container>
+        <JsonCSV
+          :data="targetsJSON"
+          class="download-csv mb-2"
+          name="polkastats.io_polkadot_targets.csv"
+        >
+          <i class="fas fa-file-csv"></i>
+          {{ $t("pages.accounts.download_csv") }}
+        </JsonCSV>
         <div class="table-responsive">
           <b-table
             id="rewards-table"
@@ -211,9 +219,10 @@ import { isHex } from "@polkadot/util";
 import { numItemsTableValidatorOptions } from "../polkastats.config.js";
 import Identicon from "../components/identicon.vue";
 import TargetInfo from "../components/accordion-info";
+import JsonCSV from "vue-json-csv";
 
 export default {
-  components: { Identicon, TargetInfo },
+  components: { Identicon, TargetInfo, JsonCSV },
   mixins: [commonMixin],
   data: function() {
     return {
@@ -309,6 +318,19 @@ export default {
         .map(f => {
           return { text: f.label, value: f.key };
         });
+    },
+    targetsJSON() {
+      return this.rewards.map(reward => {
+        return {
+          name: reward.display_name,
+          stash_account: reward.stash_id,
+          commission_percent: reward.commission,
+          total_stake: reward.stake_info.total,
+          annualized_reward_percentage:
+            reward.estimated_annualized_payout_percentage,
+          estimated_daily_payout_100_DOT: reward.estimated_payout
+        };
+      });
     }
   },
   watch: {
@@ -412,7 +434,6 @@ export default {
           }
         `,
         result({ data }) {
-          console.log(this.rewards);
           const { validator_era_staking } = data;
           if (validator_era_staking.length === 0) {
             this.era--;
