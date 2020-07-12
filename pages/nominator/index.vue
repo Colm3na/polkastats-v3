@@ -695,7 +695,6 @@ export default {
             num_targets: JSON.parse(data.nominator[0].targets).length,
             favorite: this.isFavorite(data.nominator[0].account_id)
           };
-          console.log(this.nominator);
         }
       },
       sessionIndex: {

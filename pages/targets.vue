@@ -460,7 +460,6 @@ export default {
             R.mapObjIndexed(formatData, validator_era_staking);
             this.totalRows = validator_era_staking.length;
             this.rewards = validator_era_staking;
-            console.log(this.rewards);
           }
         },
         variables() {

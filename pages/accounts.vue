@@ -317,7 +317,6 @@ export default {
     },
     accountsJSON() {
       return this.accounts.map(account => {
-        console.log(account);
         return {
           rank: account.rank,
           account_id: account.accountId,
