@@ -1,5 +1,3 @@
-import BN from "bn.js";
-import { isHex } from "@polkadot/util";
 import gql from "graphql-tag";
 
 export const state = () => ({
