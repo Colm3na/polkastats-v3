@@ -291,15 +291,6 @@
 <script>
 import { mapMutations } from "vuex";
 import languages from "../components/languages";
-import { nodeURL } from "../polkastats.config";
-import {
-  web3Accounts,
-  web3Enable,
-  web3FromAddress,
-  web3ListRpcProviders,
-  web3UseRpcProvider
-} from "@polkadot/extension-dapp";
-import { ApiPromise, WsProvider } from "@polkadot/api";
 
 export default {
   components: { languages },
