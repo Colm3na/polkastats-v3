@@ -220,6 +220,7 @@ import { paginationOptions } from "../polkastats.config.js";
 import Identicon from "../components/identicon.vue";
 import TargetInfo from "../components/accordion-info";
 import JsonCSV from "vue-json-csv";
+import { network } from "../polkastats.config.js";
 
 export default {
   components: { Identicon, TargetInfo, JsonCSV },
@@ -394,7 +395,7 @@ export default {
           parseInt(
             new BN(eraPayout)
               .mul(new BN(100))
-              // .mul(new BN(4)) // only for kusama
+              .mul(new BN(network.erasPerDay))
               .mul(new BN(365))
               .div(new BN(1e12))
               .toString()
