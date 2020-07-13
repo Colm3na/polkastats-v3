@@ -232,7 +232,7 @@ import {
 } from "@polkadot/extension-dapp";
 import { ApiPromise, WsProvider } from "@polkadot/api";
 import { checkAddress } from "@polkadot/util-crypto";
-import { nodeURL, addressPrefix } from "../polkastats.config";
+import { network } from "../polkastats.config";
 import Identicon from "../components/identicon.vue";
 import commonMixin from "../mixins/commonMixin.js";
 import { validationMixin } from "vuelidate";
@@ -272,13 +272,13 @@ export default {
         "nano",
         "micro",
         "mili",
-        "DOT",
+        network.denom,
         "Kilo",
         "Mega",
         "Giga",
         "Tera"
       ],
-      selectedUnit: "DOT",
+      selectedUnit: network.denom,
       extrinsicHash: null,
       extrinsic: null,
       success: null,
@@ -313,18 +313,21 @@ export default {
       .then(() => {
         web3Accounts()
           .then(accounts => {
-            const wsProvider = new WsProvider(nodeURL);
+            const wsProvider = new WsProvider(network.nodeURL);
             ApiPromise.create({ provider: wsProvider }).then(api => {
               this.api = api;
               if (accounts.length > 0) {
                 this.extensionAccounts = accounts;
                 accounts
                   .filter(account =>
-                    isValidPolkadotAddress(account.address, addressPrefix)
+                    isValidPolkadotAddress(
+                      account.address,
+                      network.addressPrefix
+                    )
                   )
                   .forEach(account =>
                     this.extensionAddresses.push(
-                      encodeAddress(account.address, addressPrefix)
+                      encodeAddress(account.address, network.addressPrefix)
                     )
                   );
                 if (

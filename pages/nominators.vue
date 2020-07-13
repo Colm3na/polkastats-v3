@@ -246,7 +246,7 @@
 <script>
 import gql from "graphql-tag";
 import Identicon from "../components/identicon.vue";
-import { numItemsTableOptions } from "../polkastats.config.js";
+import { paginationOptions } from "../polkastats.config.js";
 import commonMixin from "../mixins/commonMixin.js";
 import JsonCSV from "vue-json-csv";
 
@@ -260,7 +260,7 @@ export default {
     return {
       currentSessionIndex: 0,
       nominators: [],
-      tableOptions: numItemsTableOptions,
+      tableOptions: paginationOptions,
       perPage: localStorage.numItemsTableSelected
         ? parseInt(localStorage.numItemsTableSelected)
         : 10,

@@ -332,7 +332,7 @@ import gql from "graphql-tag";
 import Identicon from "../components/identicon.vue";
 import { isHex } from "@polkadot/util";
 import BN from "bn.js";
-import { numItemsTableValidatorOptions } from "../polkastats.config.js";
+import { paginationOptions } from "../polkastats.config.js";
 import commonMixin from "../mixins/commonMixin.js";
 import JsonCSV from "vue-json-csv";
 
@@ -346,7 +346,7 @@ export default {
     return {
       currentSessionIndex: 0,
       validators: [],
-      tableOptions: numItemsTableValidatorOptions,
+      tableOptions: paginationOptions,
       perPage: localStorage.numItemsTableSelected
         ? parseInt(localStorage.numItemsTableSelected)
         : 10,

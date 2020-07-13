@@ -216,7 +216,7 @@ import * as R from "ramda";
 import commonMixin from "../mixins/commonMixin.js";
 import BN from "bn.js";
 import { isHex } from "@polkadot/util";
-import { numItemsTableValidatorOptions } from "../polkastats.config.js";
+import { paginationOptions } from "../polkastats.config.js";
 import Identicon from "../components/identicon.vue";
 import TargetInfo from "../components/accordion-info";
 import JsonCSV from "vue-json-csv";
@@ -228,7 +228,7 @@ export default {
     return {
       era: null,
       rewards: [],
-      tableOptions: numItemsTableValidatorOptions,
+      tableOptions: paginationOptions,
       perPage: localStorage.numItemsTableSelected
         ? parseInt(localStorage.numItemsTableSelected)
         : 20,

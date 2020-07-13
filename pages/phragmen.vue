@@ -198,7 +198,7 @@ import Identicon from "../components/identicon.vue";
 import Network from "../components/network.vue";
 import { isHex } from "@polkadot/util";
 import BN from "bn.js";
-import { numItemsTableOptions } from "../polkastats.config.js";
+import { paginationOptions } from "../polkastats.config.js";
 import commonMixin from "../mixins/commonMixin.js";
 import JsonCSV from "vue-json-csv";
 
@@ -211,7 +211,7 @@ export default {
   data: function() {
     return {
       enabled: true,
-      tableOptions: numItemsTableOptions,
+      tableOptions: paginationOptions,
       perPage: localStorage.numItemsTableSelected
         ? parseInt(localStorage.numItemsTableSelected)
         : 10,

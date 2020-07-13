@@ -313,12 +313,12 @@ import {
 } from "@polkadot/extension-dapp";
 import { ApiPromise, WsProvider } from "@polkadot/api";
 import { checkAddress } from "@polkadot/util-crypto";
-import { nodeURL, addressPrefix } from "../polkastats.config";
+import { network } from "../polkastats.config";
 import Identicon from "../components/identicon.vue";
 import commonMixin from "../mixins/commonMixin.js";
 import { validationMixin } from "vuelidate";
 import { required, integer, minValue } from "vuelidate/lib/validators";
-import { numItemsTableOptions } from "../polkastats.config.js";
+import { paginationOptions } from "../polkastats.config.js";
 import { encodeAddress } from "@polkadot/keyring";
 import gql from "graphql-tag";
 
@@ -355,18 +355,18 @@ export default {
         "nano",
         "micro",
         "mili",
-        "DOT",
+        network.denom,
         "Kilo",
         "Mega",
         "Giga",
         "Tera"
       ],
-      selectedUnit: "DOT",
+      selectedUnit: network.denom,
       extrinsicHash: null,
       extrinsic: null,
       success: null,
       noAccountsFound: false,
-      tableOptions: numItemsTableOptions,
+      tableOptions: paginationOptions,
       perPage: localStorage.numItemsTableSelected
         ? parseInt(localStorage.numItemsTableSelected)
         : 10,
@@ -474,18 +474,21 @@ export default {
       .then(() => {
         web3Accounts()
           .then(accounts => {
-            const wsProvider = new WsProvider(nodeURL);
+            const wsProvider = new WsProvider(network.nodeURL);
             ApiPromise.create({ provider: wsProvider }).then(api => {
               this.api = api;
               if (accounts.length > 0) {
                 this.extensionAccounts = accounts;
                 accounts
                   .filter(account =>
-                    isValidPolkadotAddress(account.address, addressPrefix)
+                    isValidPolkadotAddress(
+                      account.address,
+                      network.addressPrefix
+                    )
                   )
                   .forEach(account =>
                     this.extensionAddresses.push(
-                      encodeAddress(account.address, addressPrefix)
+                      encodeAddress(account.address, network.addressPrefix)
                     )
                   );
                 if (

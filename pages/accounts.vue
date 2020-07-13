@@ -234,7 +234,7 @@ import { mapMutations } from "vuex";
 import bootstrap from "bootstrap";
 import Identicon from "../components/identicon.vue";
 import commonMixin from "../mixins/commonMixin.js";
-import { numItemsTableOptions } from "../polkastats.config.js";
+import { paginationOptions } from "../polkastats.config.js";
 import JsonCSV from "vue-json-csv";
 
 export default {
@@ -245,7 +245,7 @@ export default {
   mixins: [commonMixin],
   data: function() {
     return {
-      tableOptions: numItemsTableOptions,
+      tableOptions: paginationOptions,
       perPage: localStorage.numItemsTableSelected
         ? parseInt(localStorage.numItemsTableSelected)
         : 10,

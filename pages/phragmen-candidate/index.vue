@@ -136,21 +136,6 @@
                         :size="20"
                         :theme="'polkadot'"
                       />
-                      <!-- <a
-                        :href="blockExplorer.account + candidate.pub_key_stash"
-                        target="_blank"
-                      >
-                        <span
-                          v-b-tooltip.hover
-                          class="d-inline d-sm-none d-md-none d-lg-none d-xl-none"
-                          :title="candidate.pub_key_stash"
-                          >{{ indexes[candidate.pub_key_stash] }}</span
-                        >
-                        <span
-                          class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline"
-                          >{{ indexes[candidate.pub_key_stash] }}</span
-                        >
-                      </a> -->
                     </div>
                   </div>
                   <div v-if="candidate.pub_key_controller" class="row">
@@ -164,23 +149,6 @@
                         :size="20"
                         :theme="'polkadot'"
                       />
-                      <!-- <a
-                        :href="
-                          blockExplorer.account + candidate.pub_key_controller
-                        "
-                        target="_blank"
-                      >
-                        <span
-                          v-b-tooltip.hover
-                          class="d-inline d-sm-none d-md-none d-lg-none d-xl-none"
-                          :title="candidate.pub_key_controller"
-                          >{{ indexes[candidate.pub_key_controller] }}</span
-                        >
-                        <span
-                          class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline"
-                          >{{ indexes[candidate.pub_key_controller] }}</span
-                        >
-                      </a> -->
                     </div>
                   </div>
 
@@ -370,24 +338,6 @@
                                 :size="20"
                                 :theme="'polkadot'"
                               />
-                              <!-- <a
-                                :href="
-                                  blockExplorer.account +
-                                    voter.pub_key_nominator
-                                "
-                                target="_blank"
-                              >
-                                <span
-                                  v-b-tooltip.hover
-                                  class="d-inline-block d-sm-none d-md-none d-lg-none d-xl-none"
-                                  :title="voter.pub_key_nominator"
-                                  >{{ indexes[voter.pub_key_nominator] }}</span
-                                >
-                                <span
-                                  class="d-none d-sm-inline-block d-md-inline-block d-lg-inline-block d-xl-inline-block"
-                                  >{{ indexes[voter.pub_key_nominator] }}</span
-                                >
-                              </a> -->
                             </div>
                             <div class="col-4 text-right value">
                               {{ formatAmount(voter.stake_nominator) }}
@@ -412,7 +362,6 @@ import moment from "moment";
 import Identicon from "../../components/identicon.vue";
 import { isHex } from "@polkadot/util";
 import BN from "bn.js";
-import { blockExplorer } from "../../polkastats.config.js";
 import commonMixin from "../../mixins/commonMixin.js";
 
 export default {
@@ -423,7 +372,6 @@ export default {
   data: function() {
     return {
       accountId: this.$route.query.accountId,
-      blockExplorer,
       polling: null
     };
   },
