@@ -1,4 +1,7 @@
-/* Configuration params */
+// Selected network
+const selectedNetwork = `Polkadot`;
+
+// Substrate networks
 export const networks = [
   {
     id: "polkadot-cc1",
@@ -20,8 +23,7 @@ export const networks = [
   }
 ];
 
-// Selected network
-export const network = networks.find(({ name }) => name === `Polkadot`);
+export const network = networks.find(({ name }) => name === selectedNetwork);
 
 // Pagination options
 export const paginationOptions = [10, 20, 50, 100];
