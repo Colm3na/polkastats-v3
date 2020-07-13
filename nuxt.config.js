@@ -1,3 +1,4 @@
+import { network } from "./polkastats.config.js";
 export default {
   mode: "spa",
   /*
@@ -11,7 +12,7 @@ export default {
       {
         hid: "description",
         name: "description",
-        content: "Polkadot block explorer"
+        content: `${network.name} block explorer`
       }
     ],
     link: [{ rel: "icon", type: "image/png", href: "/img/favicon.png" }]
@@ -57,8 +58,8 @@ export default {
   apollo: {
     clientConfigs: {
       default: {
-        httpEndpoint: "https://polkastats.io/api/v3",
-        wsEndpoint: "wss://polkastats.io/api/v3",
+        httpEndpoint: network.backendHttp,
+        wsEndpoint: network.backendWs,
         websocketsOnly: true
       }
     }
