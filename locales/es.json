@@ -174,7 +174,7 @@
       "total_stake": "Participación total",
       "own_stake": "Participación propia",
       "other_stake": "Participación ajena",
-      "estimated_payout": "Pago estimado/era 100 DOT",
+      "estimated_payout": "Pago estimado/era 100 {networkDenom}",
       "estimated_annualized_payout_percentage": "Ganancia estimada anual",
       "accordion-info": {
         "delegator_rewards": "Recompensas de delegadores. ¿Cómo funciona?",

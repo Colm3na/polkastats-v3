@@ -149,7 +149,11 @@
                           {{ data.item.stake_info.total }}
                         </div>
                         <div>
-                          {{ $t("pages.targets.estimated_payout") }}:
+                          {{
+                            $t("pages.targets.estimated_payout", {
+                              networkDenom: network.denom
+                            })
+                          }}:
                           {{ data.item.estimated_payout }}
                         </div>
                         <div>
