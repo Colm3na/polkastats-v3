@@ -265,13 +265,15 @@ import moment from "moment";
 import Identicon from "../../components/identicon.vue";
 import { formatBalance, isHex } from "@polkadot/util";
 import BN from "bn.js";
-import { decimals, unit } from "../../polkastats.config.js";
+import { network } from "../../polkastats.config.js";
 import commonMixin from "../../mixins/commonMixin.js";
 import gql from "graphql-tag";
 import chart from "../../components/chart";
 import { commonChartOptions } from "../commons/chartOptions";
-
-formatBalance.setDefaults({ decimals, unit });
+formatBalance.setDefaults({
+  decimals: network.decimalPlaces,
+  unit: network.denom
+});
 
 export default {
   components: {

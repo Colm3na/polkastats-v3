@@ -5,6 +5,9 @@
         <div class="container">
           <div id="top-bar">
             <div>
+              <span class="fiat" data-testid="fiat">
+                <strong>DOT</strong> ${{ USDConversion }} ({{ USD24hChange }}%)
+              </span>
               <span class="network" data-testid="network">
                 <i class="fas fa-project-diagram" /> {{ system.chain }}
                 {{ $t("layout.default.system_message")
@@ -164,7 +167,7 @@
             </h3>
             <hr />
             <nuxt-link
-              to="/about"
+              to="/team"
               active-class="nuxt-link-exact-active"
               class="nav-link"
               data-testid="aboutUs"
@@ -303,10 +306,23 @@ export default {
   computed: {
     system() {
       return this.$store.state.system.info;
+    },
+    USDConversion: function() {
+      return this.$store.state.fiat.usd;
+    },
+    USD24hChange: function() {
+      return this.$store.state.fiat.usd_24h_change
+        ? parseFloat(this.$store.state.fiat.usd_24h_change).toFixed(2)
+        : 0;
     }
   },
   created: async function() {
     this.$store.dispatch("system/update");
+    // Refresh fiat conversion values every minute
+    this.$store.dispatch("fiat/update");
+    setInterval(() => {
+      this.$store.dispatch("fiat/update");
+    }, 60000);
   }
 };
 </script>
@@ -430,6 +446,12 @@ section#navigation nav {
 
 #top-bar .network {
   color: #ef1073;
+}
+
+#top-bar .fiat {
+  color: white;
+  margin-right: 0.5rem;
+  font-weight: 100;
 }
 
 .btn-group {

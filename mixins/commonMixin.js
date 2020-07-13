@@ -1,6 +1,9 @@
-import { decimals, unit } from "../polkastats.config.js";
+import { network } from "../polkastats.config.js";
 import { formatBalance, isHex } from "@polkadot/util";
-formatBalance.setDefaults({ decimals, unit });
+formatBalance.setDefaults({
+  decimals: network.decimalPlaces,
+  unit: network.denom
+});
 import BN from "bn.js";
 
 export default {

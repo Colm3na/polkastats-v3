@@ -8,13 +8,6 @@ export const blockExplorer = {
   account: `https://polkascan.io/polkadot-cc1/account/`
 };
 
-export const numItemsTableValidatorOptions = [10, 20, 50, 100];
-export const numItemsTableOptions = [10, 20, 50, 100];
-
-// Breakpoints
-export const mobileBreakpoint = 415;
-export const mediumBreakpoint = 765;
-
 export const networks = [
   {
     id: "polkadot-cc1",
@@ -35,3 +28,13 @@ export const networks = [
     backendWs: "wss://kusama.polkastats.io/api/v3"
   }
 ];
+
+// Selected network
+export const network = networks.find(({ name }) => name === `Polkadot`);
+
+export const numItemsTableValidatorOptions = [10, 20, 50, 100];
+export const numItemsTableOptions = [10, 20, 50, 100];
+
+// Breakpoints
+export const mobileBreakpoint = 415;
+export const mediumBreakpoint = 765;

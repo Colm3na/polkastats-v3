@@ -24,12 +24,25 @@
               <h4 class="text-center mb-4">
                 {{ parsedAccount.accountId }}
               </h4>
-              <h4
-                v-b-tooltip.hover
-                class="text-center mb-4 amount"
-                :title="$t('details.account.free_balance')"
-              >
+              <h4 class="text-center mb-4 amount">
                 {{ formatAmount(parsedAccount.balances.freeBalance) }}
+                <span
+                  v-if="USDConversion"
+                  v-b-tooltip.hover
+                  :title="`1 DOT = ${USDConversion} $`"
+                  class="fiat"
+                >
+                  ({{
+                    formatNumber(
+                      (
+                        parsedAccount.balances.freeBalance *
+                        1e-12 *
+                        USDConversion
+                      ).toFixed(3)
+                    )
+                  }}
+                  $)
+                </span>
               </h4>
               <table class="table table-striped">
                 <tbody>
@@ -196,8 +209,14 @@ export default {
   data: function() {
     return {
       accountId: this.$route.query.accountId,
-      parsedAccount: undefined
+      parsedAccount: undefined,
+      polling: undefined
     };
+  },
+  computed: {
+    USDConversion: function() {
+      return this.$store.state.fiat.usd;
+    }
   },
   watch: {
     $route() {
@@ -267,5 +286,10 @@ export default {
 .account-page .amount {
   color: #ef1073;
   font-weight: 700;
+}
+.account-page .fiat {
+  color: #ef1073;
+  font-size: 1rem;
+  font-weight: 200;
 }
 </style>
