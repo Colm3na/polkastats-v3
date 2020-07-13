@@ -397,7 +397,7 @@ export default {
               .mul(new BN(100))
               .mul(new BN(network.erasPerDay))
               .mul(new BN(365))
-              .div(new BN(1e12))
+              .div(new BN(10).pow(new BN(network.decimalPlaces)))
               .toString()
           ) / 100
         ).toFixed(2) + " %"
