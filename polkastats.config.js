@@ -10,7 +10,8 @@ export const networks = [
     decimalPlaces: 12,
     addressPrefix: 0,
     nodeWs: "wss://rpc.polkadot.io",
-    backendWs: "wss://polkastats.io/api/v3"
+    backendWs: "wss://polkastats.io/api/v3",
+    erasPerDay: 1
   },
   {
     id: "kusama-cc3",
@@ -19,7 +20,8 @@ export const networks = [
     decimalPlaces: 12,
     addressPrefix: 2,
     nodeWs: "wss://kusama-rpc.polkadot.io",
-    backendWs: "wss://kusama.polkastats.io/api/v3"
+    backendWs: "wss://kusama.polkastats.io/api/v3",
+    erasPerDay: 4
   }
 ];
 
