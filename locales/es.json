@@ -71,8 +71,8 @@
       "remove_from_favorites": "Eliminar de Favoritos",
       "add_to_favorites": "Añadir a Favoritos",
       "identity": "Identidad",
-      "head_title": "PolkaStats - Cuentas activas en Polkadot",
-      "head_content": "Cuentas activas en Polkadot",
+      "head_title": "PolkaStats - Cuentas activas en {networkName}",
+      "head_content": "Cuentas activas en {networkName}",
       "loading_data": "Cargando datos, puede tardar tiempo. Sea paciente, por favor",
       "download_csv": "Descargar en formato CSV"
     },
@@ -103,8 +103,8 @@
       "reward_destination": "Destino de la recompensa",
       "nominators": "Nominadores",
       "intention": "Intenciones",
-      "head_title": "PolkaStats - Validadores e intenciones favoritas en Polkadot",
-      "head_content": "Validadores e intenciones favoritas en Polkadot"
+      "head_title": "PolkaStats - Validadores e intenciones favoritas en {networkName}",
+      "head_content": "Validadores e intenciones favoritas en {networkName}"
     },
     "index": {
       "we_have_a_new_TEXT": "Tenemos un nuevo e increíble servidor dedicado patrocinado por",
@@ -145,8 +145,8 @@
       "total_stake": "Participación total",
       "commission": "Comisión",
       "stakers": "Nominadores",
-      "head_title": "PolkaStats -  Intenciones de Validadores de Polkadot",
-      "head_content": "Intenciones de Validadores de Polkadot"
+      "head_title": "PolkaStats -  Intenciones de Validadores de {networkName}",
+      "head_content": "Intenciones de Validadores de {networkName}"
     },
     "nominators": {
       "search_placeholder": "Buscar nominadores por cuenta o nombre mostrado como identidad",
@@ -160,8 +160,8 @@
       "controller": "Controlador",
       "nominations": "Nominaciones",
       "total_stake": "Participación total",
-      "head_title": "PolkaStats - Polkadot nominators",
-      "head_content": "Polkadot nominators"
+      "head_title": "PolkaStats - Nominadores de {networkName}",
+      "head_content": "Nominadores de {networkName}"
     },
     "targets": {
       "targets": "Targets",
@@ -204,8 +204,8 @@
       "voters": "Votantes",
       "self_stake": "Participación propia",
       "voters_stake": "Participación de votantes",
-      "head_title": "PolkaStats - Polkadot candidatos phragmen",
-      "head_content": "Polkadot candidatos phragmen"
+      "head_title": "PolkaStats - {networkName} candidatos phragmen",
+      "head_content": "{networkName} candidatos phragmen"
     },
     "support-us": {
       "support_polkastats": "APOYA POLKASTATS",
@@ -242,28 +242,44 @@
       "commission": "Comisión",
       "era_points": "Puntos era",
       "produced_blocks": "Bloques producidos",
-      "head_title": "PolkaStats - Estadísticas de la red Polkadot",
-      "head_content": "Polkadot estadísticas de la red"
+      "head_title": "PolkaStats - Estadísticas de la red {networkName}",
+      "head_content": "{networkName} estadísticas de la red"
     },
     "dashboard": {
       "title": "Dashboard",
-      "head_title": "PolkaStats - Cuadro de mando Polkadot",
-      "head_content": "Cuadro de mando de la red Polkadot",
+      "head_title": "PolkaStats - Cuadro de mando {networkName}",
+      "head_content": "Cuadro de mando de la red {networkName}",
       "recent_blocks": "Últimos bloques",
       "top_rich": "Top 10 cuentas",
       "recent_extrinsics": "Últimos extrinsics",
       "recent_events": "Últimos eventos",
       "polkastats_validator": "¿Te gusta PolkaStats? ❤️",
-      "polkastats_validator_subtitle": "¡Ahora nos puedes apoyar participando en nuestro validator de Polkadot!"
+      "polkastats_validator_subtitle": "¡Ahora nos puedes apoyar participando en nuestro validator de {networkName}!"
     },
     "blocks": {
-      "title": "Últimos bloques"
+      "title": "Últimos bloques",
+      "head_title": "PolkaStats - {networkName} últimos bloques",
+      "head_content": "{networkName} últimos bloques"
     },
     "extrinsics": {
-      "title": "Últimas extrinsics"
+      "title": "Últimas extrinsics",
+      "head_title": "PolkaStats - {networkName} últimos extrinsics",
+      "head_content": "{networkName} últimos extrinsics"
     },
     "events": {
-      "title": "Últimos eventos de sistema"
+      "title": "Últimos eventos de sistema",
+      "head_title": "PolkaStats - {networkName} últimos eventos de sistema",
+      "head_content": "{networkName} últimos eventos de sistema"
+    },
+    "send": {
+      "title": "Enviar {networkDenom}s usando la extensión JS de Polkadot",
+      "head_title": "PolkaStats - Enviar {networkDenom}s usando la extensión JS de Polkadot",
+      "head_content": "Enviar {networkDenom}s usando la extensión JS de Polkadot"
+    },
+    "stake": {
+      "title": "Stake {networkDenom}s usando la extensión JS de Polkadot",
+      "head_title": "PolkaStats - Stake {networkDenom}s usando la extensión JS de Polkadot",
+      "head_content": "Stake {networkDenom}s usando la extensión JS de Polkadot"
     }
   },
   "details": {

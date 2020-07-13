@@ -70,8 +70,8 @@
       "remove_from_favorites": "Remove from Favorites",
       "add_to_favorites": "Add to Favorites",
       "identity": "Identity",
-      "head_title": "PolkaStats - Polkadot active accounts",
-      "head_content": "Polkadot active accounts",
+      "head_title": "PolkaStats - {networkName} active accounts",
+      "head_content": "{networkName} active accounts",
       "loading_data": "Loading data, it can take a long time. Be patient, please",
       "download_csv": "Download in CSV format"
     },
@@ -102,8 +102,8 @@
       "reward_destination": "Reward destination",
       "nominators": "nominators",
       "intention": "Intention",
-      "head_title": "PolkaStats - Polkadot favorite validators and intentions",
-      "head_content": "Polkadot favorite validators and intentions"
+      "head_title": "PolkaStats - {networkName} favorite validators and intentions",
+      "head_content": "{networkName} favorite validators and intentions"
     },
     "index": {
       "we_have_a_new_TEXT": "We have a new awesome dedicated server graciously sponsored by",
@@ -144,8 +144,8 @@
       "total_stake": "Total Stake",
       "commission": "Commission",
       "stakers": "Stakers",
-      "head_title": "PolkaStats -  Polkadot intention validators",
-      "head_content": "Polkadot intention validators"
+      "head_title": "PolkaStats -  {networkName} intention validators",
+      "head_content": "{networkName} intention validators"
     },
     "nominators": {
       "search_placeholder": "Search nominator by account or identity display name",
@@ -159,8 +159,8 @@
       "controller": "Controller",
       "nominations": "Nominations",
       "total_stake": "Total Stake",
-      "head_title": "PolkaStats - Polkadot nominators",
-      "head_content": "Polkadot nominators"
+      "head_title": "PolkaStats - {networkName} nominators",
+      "head_content": "{networkName} nominators"
     },
     "targets": {
       "targets": "Targets",
@@ -203,8 +203,8 @@
       "voters": "Voters",
       "self_stake": "Self stake",
       "voters_stake": "Voters stake",
-      "head_title": "PolkaStats - Polkadot phragmen candidates",
-      "head_content": "Polkadot phragmen candidates"
+      "head_title": "PolkaStats - {networkName} phragmen candidates",
+      "head_content": "{networkName} phragmen candidates"
     },
     "support-us": {
       "support_polkastats": "SUPPORT POLKASTATS",
@@ -241,28 +241,44 @@
       "commission": "Commission",
       "era_points": "Era points",
       "produced_blocks": "Produced blocks",
-      "head_title": "PolkaStats - Polkadot network statistics",
-      "head_content": "Polkadot network statistics"
+      "head_title": "PolkaStats - {networkName} network statistics",
+      "head_content": "{networkName} network statistics"
     },
     "dashboard": {
       "title": "Dashboard",
-      "head_title": "PolkaStats - Polkadot network statistics",
-      "head_content": "Polkadot dashboard",
+      "head_title": "PolkaStats - {networkName} network statistics",
+      "head_content": "{networkName} dashboard",
       "recent_blocks": "Recent blocks",
       "top_rich": "Top 10 rich accounts",
       "recent_extrinsics": "Recent extrinsics",
       "recent_events": "Recent events",
       "polkastats_validator": "Do you like PolkaStats? ❤️",
-      "polkastats_validator_subtitle": "Now you can support our work staking in our Polkadot validator!"
+      "polkastats_validator_subtitle": "Now you can support our work staking in our {networkName} validator!"
     },
     "blocks": {
-      "title": "Last blocks"
+      "title": "Last blocks",
+      "head_title": "PolkaStats - {networkName} last blocks",
+      "head_content": "{networkName} last blocks"
     },
     "extrinsics": {
-      "title": "Last extrinsics"
+      "title": "Last extrinsics",
+      "head_title": "PolkaStats - {networkName} last extrinsics",
+      "head_content": "{networkName} last extrinsics"
     },
     "events": {
-      "title": "Last system events"
+      "title": "Last system events",
+      "head_title": "PolkaStats - {networkName} last system events",
+      "head_content": "{networkName} last system events"
+    },
+    "send": {
+      "title": "Send {networkDenom}s using Polkadot JS extension",
+      "head_title": "PolkaStats - Send {networkDenom}s using Polkadot JS extension",
+      "head_content": "Send {networkDenom}s using Polkadot JS extension"
+    },
+    "stake": {
+      "title": "Stake {networkDenom}s using Polkadot JS extension",
+      "head_title": "PolkaStats - Stake {networkDenom}s using Polkadot JS extension",
+      "head_content": "Stake {networkDenom}s using Polkadot JS extension"
     }
   },
   "details": {

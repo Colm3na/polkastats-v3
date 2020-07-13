@@ -100,6 +100,7 @@ import LastExtrinsics from "../components/LastExtrinsics.vue";
 import Top10Rich from "../components/Top10Rich.vue";
 import commonMixin from "../mixins/commonMixin.js";
 import Identicon from "../components/identicon.vue";
+import { network } from "../polkastats.config.js";
 
 export default {
   components: {
@@ -113,12 +114,16 @@ export default {
   mixins: [commonMixin],
   head() {
     return {
-      title: this.$t("pages.dashboard.head_title"),
+      title: this.$t("pages.dashboard.head_title", {
+        networkName: network.name
+      }),
       meta: [
         {
           hid: "description",
           name: "description",
-          content: this.$t("pages.dashboard.head_content")
+          content: this.$t("pages.dashboard.head_content", {
+            networkName: network.name
+          })
         }
       ]
     };

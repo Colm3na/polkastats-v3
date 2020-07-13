@@ -37,6 +37,7 @@
 import commonMixin from "../mixins/commonMixin.js";
 import Identicon from "../components/identicon.vue";
 import gql from "graphql-tag";
+import { network } from "../polkastats.config.js";
 
 export default {
   mixins: [commonMixin],
@@ -90,6 +91,22 @@ export default {
         }
       }
     }
+  },
+  head() {
+    return {
+      title: this.$t("pages.extrinsics.head_title", {
+        networkName: network.name
+      }),
+      meta: [
+        {
+          hid: "description",
+          name: "description",
+          content: this.$t("pages.extrinsics.head_content", {
+            networkName: network.name
+          })
+        }
+      ]
+    };
   }
 };
 </script>

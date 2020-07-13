@@ -637,6 +637,22 @@ export default {
         }
       }
     }
+  },
+  head() {
+    return {
+      title: this.$t("pages.stake.head_title", {
+        networkDenom: network.denom
+      }),
+      meta: [
+        {
+          hid: "description",
+          name: "description",
+          content: this.$t("pages.stake.head_content", {
+            networkDenom: network.denom
+          })
+        }
+      ]
+    };
   }
 };
 </script>

@@ -631,6 +631,7 @@ import bootstrap from "bootstrap";
 import Identicon from "../components/identicon.vue";
 import commonMixin from "../mixins/commonMixin.js";
 import gql from "graphql-tag";
+import { network } from "../polkastats.config.js";
 
 export default {
   components: {
@@ -781,12 +782,16 @@ export default {
   },
   head() {
     return {
-      title: this.$t("pages.favorites.head_title"),
+      title: this.$t("pages.favorites.head_title", {
+        networkName: network.name
+      }),
       meta: [
         {
           hid: "description",
           name: "description",
-          content: this.$t("pages.favorites.head_content")
+          content: this.$t("pages.favorites.head_content", {
+            networkName: network.name
+          })
         }
       ]
     };

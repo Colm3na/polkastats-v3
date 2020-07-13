@@ -198,7 +198,7 @@ import Identicon from "../components/identicon.vue";
 import Network from "../components/network.vue";
 import { isHex } from "@polkadot/util";
 import BN from "bn.js";
-import { paginationOptions } from "../polkastats.config.js";
+import { paginationOptions, network } from "../polkastats.config.js";
 import commonMixin from "../mixins/commonMixin.js";
 import JsonCSV from "vue-json-csv";
 
@@ -386,12 +386,16 @@ export default {
   },
   head() {
     return {
-      title: this.$t("pages.phragmen.head_title"),
+      title: this.$t("pages.phragmen.head_title", {
+        networkName: network.name
+      }),
       meta: [
         {
           hid: "description",
           name: "description",
-          content: this.$t("pages.phragmen.head_content")
+          content: this.$t("pages.phragmen.head_content", {
+            networkName: network.name
+          })
         }
       ]
     };

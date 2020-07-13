@@ -2,13 +2,15 @@
   <b-container class="py-4">
     <b-row>
       <b-col md="12">
-        <h1 class="mb-4">Send DOTs using Polkadot JS extension</h1>
+        <h1 class="mb-4">
+          Send {{ network.denom }}s using Polkadot JS extension
+        </h1>
       </b-col>
     </b-row>
     <b-row>
       <b-col md="6 mb-4">
         <b-alert v-if="noAccountsFound" variant="danger" show>
-          <i class="fa fa-frown-o"></i> No Polkadot mainnet accounts found in
+          <i class="fa fa-frown-o"></i> No {{ network.name }} accounts found in
           extension.
         </b-alert>
         <b-form class="mt-2" @submit="onSubmit">
@@ -282,7 +284,8 @@ export default {
       extrinsicHash: null,
       extrinsic: null,
       success: null,
-      noAccountsFound: false
+      noAccountsFound: false,
+      network
     };
   },
   validations: {
@@ -446,6 +449,22 @@ export default {
         }
       }
     }
+  },
+  head() {
+    return {
+      title: this.$t("pages.send.head_title", {
+        networkDenom: network.denom
+      }),
+      meta: [
+        {
+          hid: "description",
+          name: "description",
+          content: this.$t("pages.send.head_content", {
+            networkDenom: network.denom
+          })
+        }
+      ]
+    };
   }
 };
 </script>

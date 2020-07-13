@@ -246,7 +246,7 @@
 <script>
 import gql from "graphql-tag";
 import Identicon from "../components/identicon.vue";
-import { paginationOptions } from "../polkastats.config.js";
+import { paginationOptions, network } from "../polkastats.config.js";
 import commonMixin from "../mixins/commonMixin.js";
 import JsonCSV from "vue-json-csv";
 
@@ -441,12 +441,16 @@ export default {
   },
   head() {
     return {
-      title: "PolkaStats - Polkadot CC1 nominators",
+      title: this.$t("pages.nominators.head_title", {
+        networkName: network.name
+      }),
       meta: [
         {
           hid: "description",
           name: "description",
-          content: "Polkadot CC1 nominators"
+          content: this.$t("pages.nominators.head_content", {
+            networkName: network.name
+          })
         }
       ]
     };

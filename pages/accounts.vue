@@ -234,7 +234,7 @@ import { mapMutations } from "vuex";
 import bootstrap from "bootstrap";
 import Identicon from "../components/identicon.vue";
 import commonMixin from "../mixins/commonMixin.js";
-import { paginationOptions } from "../polkastats.config.js";
+import { paginationOptions, network } from "../polkastats.config.js";
 import JsonCSV from "vue-json-csv";
 
 export default {
@@ -383,12 +383,16 @@ export default {
   },
   head() {
     return {
-      title: this.$t("pages.accounts.head_title"),
+      title: this.$t("pages.accounts.head_title", {
+        networkName: network.name
+      }),
       meta: [
         {
           hid: "description",
           name: "description",
-          content: this.$t("pages.accounts.head_content")
+          content: this.$tc("pages.accounts.head_content", {
+            networkName: network.name
+          })
         }
       ]
     };
