@@ -4,6 +4,7 @@
 <script>
 import chart from "../../components/chart";
 import gql from "graphql-tag";
+import { network } from "../../polkastats.config.js";
 
 export default {
   components: {
@@ -15,7 +16,7 @@ export default {
     return {
       chartSeries: [
         {
-          name: "Elected stake (DOT)",
+          name: `Elected stake (${network.denom})`,
           data: []
         }
       ],
@@ -60,7 +61,7 @@ export default {
           this.chartOptions = {
             series: [
               {
-                name: "Elected stake (DOT)",
+                name: `Elected stake (${network.denom})`,
                 data: newData
               }
             ],

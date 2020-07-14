@@ -4,6 +4,7 @@
 <script>
 import chart from "../../components/chart";
 import gql from "graphql-tag";
+import { network } from "../../polkastats.config.js";
 
 export default {
   components: {
@@ -15,7 +16,7 @@ export default {
     return {
       chartSeries: [
         {
-          name: "Era slashes (DOT)",
+          name: `Era slashes (${network.denom})`,
           data: []
         }
       ],
@@ -56,7 +57,7 @@ export default {
           this.chartOptions = {
             series: [
               {
-                name: "Era slashes (DOT)",
+                name: `Era slashes (${network.denom})`,
                 data: newData
               }
             ],

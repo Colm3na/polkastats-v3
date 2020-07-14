@@ -4,6 +4,7 @@
 <script>
 import chart from "../../components/chart";
 import gql from "graphql-tag";
+import { network } from "../../polkastats.config.js";
 
 export default {
   components: {
@@ -15,7 +16,7 @@ export default {
     return {
       chartSeries: [
         {
-          name: "Era rewards (DOT)",
+          name: `Era rewards (${network.denom})`,
           data: []
         }
       ],
@@ -58,7 +59,7 @@ export default {
           this.chartOptions = {
             series: [
               {
-                name: "Era rewards (DOT)",
+                name: `Era rewards (${network.denom})`,
                 data: newData
               }
             ],
