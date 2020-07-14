@@ -570,7 +570,7 @@ import * as R from "ramda";
 import Identicon from "../../components/identicon.vue";
 import { isHex } from "@polkadot/util";
 import BN from "bn.js";
-import { mediumBreakpoint, mobileBreakpoint } from "../../polkastats.config.js";
+import { network } from "../../polkastats.config.js";
 import commonMixin from "../../mixins/commonMixin.js";
 
 import eraRewards from "../../components/charts/eraRewards";
@@ -595,8 +595,6 @@ export default {
       currentSessionIndex: 0,
       validator: undefined,
       accountId: this.$route.query.accountId,
-      mediumBreakpoint,
-      mobileBreakpoint,
       polling: null,
       graphPolling: null,
       favorites: [],
@@ -782,14 +780,18 @@ export default {
   },
   head() {
     return {
-      title:
-        "PolkaStats - Polkadot Polkadot validator " +
-        this.$route.query.accountId,
+      title: this.$t("pages.validator.head_title", {
+        networkName: network.name,
+        address: this.$route.query.accountId
+      }),
       meta: [
         {
           hid: "description",
           name: "description",
-          content: "Polkadot Polkadot validator " + this.$route.query.accountId
+          content: this.$tc("pages.validator.head_content", {
+            networkName: network.name,
+            address: this.$route.query.accountId
+          })
         }
       ]
     };

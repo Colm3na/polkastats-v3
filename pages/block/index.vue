@@ -232,6 +232,7 @@
 import Identicon from "../../components/identicon.vue";
 import commonMixin from "../../mixins/commonMixin.js";
 import gql from "graphql-tag";
+import { network } from "../../polkastats.config.js";
 
 export default {
   components: {
@@ -345,12 +346,18 @@ export default {
   },
   head() {
     return {
-      title: "PolkaStats - Polkadot block " + this.$route.query.blockNumber,
+      title: this.$t("pages.block.head_title", {
+        networkName: network.name,
+        address: this.$route.query.blockNumber
+      }),
       meta: [
         {
           hid: "description",
           name: "description",
-          content: "Polkadot block " + this.$route.query.blockNumber
+          content: this.$tc("pages.block.head_content", {
+            networkName: network.name,
+            address: this.$route.query.blockNumber
+          })
         }
       ]
     };

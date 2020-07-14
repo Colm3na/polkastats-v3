@@ -513,9 +513,9 @@
 import gql from "graphql-tag";
 import moment from "moment";
 import chart from "../../components/chart";
-import { commonChartOptions } from "../commons/chartOptions";
 import Identicon from "../../components/identicon.vue";
 import commonMixin from "../../mixins/commonMixin.js";
+import { network } from "../../polkastats.config.js";
 
 export default {
   components: {
@@ -545,31 +545,57 @@ export default {
       },
       StakeEvolutionDailySeries: [
         {
-          name: "Total bonded (DOT)",
+          name: `Total bonded (${network.denom})`,
           data: []
         }
       ],
       StakeEvolutionWeeklySeries: [
         {
-          name: "Total bonded (DOT)",
+          name: `Total bonded (${network.denom})`,
           data: []
         }
       ],
       StakeEvolutionMonthlySeries: [
         {
-          name: "Total bonded (DOT)",
+          name: `Total bonded (${network.denom})`,
           data: []
         }
       ],
-      StakeEvolutionDailyChartOptions: {
-        ...commonChartOptions
+      commonChartOptions: {
+        chart: {
+          zoom: {
+            enabled: false
+          }
+        },
+        xaxis: {
+          categories: [],
+          type: "datetime",
+          title: {
+            text: "Date / time (UTC)"
+          },
+          labels: {
+            formatter: function(val) {
+              return moment.unix(val).format("MM/DD/YYYY HH:mm");
+            }
+          },
+          tooltip: {
+            enabled: false
+          }
+        },
+        yaxis: {
+          title: {
+            text: `Total bonded (${network.denom})`
+          },
+          labels: {
+            formatter: function(val) {
+              return val;
+            }
+          }
+        }
       },
-      StakeEvolutionWeeklyChartOptions: {
-        ...commonChartOptions
-      },
-      StakeEvolutionMonthlyChartOptions: {
-        ...commonChartOptions
-      }
+      StakeEvolutionDailyChartOptions: {},
+      StakeEvolutionWeeklyChartOptions: {},
+      StakeEvolutionMonthlyChartOptions: {}
     };
   },
   watch: {
@@ -682,7 +708,7 @@ export default {
 
           // Make sure to update the whole options config and not just a single property to allow the Vue watch catch the change.
           vm.StakeEvolutionDailyChartOptions = {
-            ...vm.StakeEvolutionDailyChartOptions,
+            ...vm.commonChartOptions,
             ...{
               xaxis: {
                 categories: newCategories,
@@ -698,7 +724,7 @@ export default {
               },
               yaxis: {
                 title: {
-                  text: "Total bonded (DOT)"
+                  text: `Total bonded (${network.denom})`
                 },
                 labels: {
                   formatter: function(val) {
@@ -764,7 +790,7 @@ export default {
 
           // Make sure to update the whole options config and not just a single property to allow the Vue watch catch the change.
           vm.StakeEvolutionWeeklyChartOptions = {
-            ...vm.StakeEvolutionWeeklyChartOptions,
+            ...vm.commonChartOptions,
             ...{
               xaxis: {
                 categories: newCategories,
@@ -780,7 +806,7 @@ export default {
               },
               yaxis: {
                 title: {
-                  text: "Total bonded (DOT)"
+                  text: `Total bonded (${network.denom})`
                 },
                 labels: {
                   formatter: function(val) {
@@ -846,7 +872,7 @@ export default {
 
           // Make sure to update the whole options config and not just a single property to allow the Vue watch catch the change.
           vm.StakeEvolutionMonthlyChartOptions = {
-            ...vm.StakeEvolutionMonthlyChartOptions,
+            ...vm.commonChartOptions,
             ...{
               xaxis: {
                 categories: newCategories,
@@ -862,7 +888,7 @@ export default {
               },
               yaxis: {
                 title: {
-                  text: "Total bonded (DOT)"
+                  text: `Total bonded (${network.denom})`
                 },
                 labels: {
                   formatter: function(val) {

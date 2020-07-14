@@ -269,7 +269,6 @@ import { network } from "../../polkastats.config.js";
 import commonMixin from "../../mixins/commonMixin.js";
 import gql from "graphql-tag";
 import chart from "../../components/chart";
-import { commonChartOptions } from "../commons/chartOptions";
 formatBalance.setDefaults({
   decimals: network.decimalPlaces,
   unit: network.denom
@@ -301,31 +300,57 @@ export default {
       },
       TotalBalanceEvolutionDailySeries: [
         {
-          name: "Total balance (DOT)",
+          name: `Total balance (${network.denom})`,
           data: []
         }
       ],
       TotalBalanceEvolutionWeeklySeries: [
         {
-          name: "Total balance (DOT)",
+          name: `Total balance (${network.denom})`,
           data: []
         }
       ],
       TotalBalanceEvolutionMonthlySeries: [
         {
-          name: "Total balance (DOT)",
+          name: `Total balance (${network.denom})`,
           data: []
         }
       ],
-      TotalBalanceEvolutionDailyChartOptions: {
-        ...commonChartOptions
+      commonChartOptions: {
+        chart: {
+          zoom: {
+            enabled: false
+          }
+        },
+        xaxis: {
+          categories: [],
+          type: "datetime",
+          title: {
+            text: "Date / time (UTC)"
+          },
+          labels: {
+            formatter: function(val) {
+              return moment.unix(val).format("MM/DD/YYYY HH:mm");
+            }
+          },
+          tooltip: {
+            enabled: false
+          }
+        },
+        yaxis: {
+          title: {
+            text: "Total bonded (DOT)"
+          },
+          labels: {
+            formatter: function(val) {
+              return val;
+            }
+          }
+        }
       },
-      TotalBalanceEvolutionWeeklyChartOptions: {
-        ...commonChartOptions
-      },
-      TotalBalanceEvolutionMonthlyChartOptions: {
-        ...commonChartOptions
-      }
+      TotalBalanceEvolutionDailyChartOptions: {},
+      TotalBalanceEvolutionWeeklyChartOptions: {},
+      TotalBalanceEvolutionMonthlyChartOptions: {}
     };
   },
   watch: {
@@ -453,7 +478,7 @@ export default {
 
           // Make sure to update the whole options config and not just a single property to allow the Vue watch catch the change.
           vm.TotalBalanceEvolutionDailyChartOptions = {
-            ...vm.TotalBalanceEvolutionDailyChartOptions,
+            ...vm.commonChartOptions,
             ...{
               xaxis: {
                 categories: newCategories,
@@ -469,7 +494,7 @@ export default {
               },
               yaxis: {
                 title: {
-                  text: "Total balance (DOT)"
+                  text: `Total balance (${network.denom})`
                 },
                 labels: {
                   formatter: function(val) {
@@ -535,7 +560,7 @@ export default {
 
           // Make sure to update the whole options config and not just a single property to allow the Vue watch catch the change.
           vm.TotalBalanceEvolutionWeeklyChartOptions = {
-            ...vm.TotalBalanceEvolutionWeeklyChartOptions,
+            ...vm.commonChartOptions,
             ...{
               xaxis: {
                 categories: newCategories,
@@ -551,7 +576,7 @@ export default {
               },
               yaxis: {
                 title: {
-                  text: "Total balance (DOT)"
+                  text: `Total balance (${network.denom})`
                 },
                 labels: {
                   formatter: function(val) {
@@ -617,7 +642,7 @@ export default {
 
           // Make sure to update the whole options config and not just a single property to allow the Vue watch catch the change.
           vm.TotalBalanceEvolutionMonthlyChartOptions = {
-            ...vm.TotalBalanceEvolutionMonthlyChartOptions,
+            ...vm.commonChartOptions,
             ...{
               xaxis: {
                 categories: newCategories,
@@ -633,7 +658,7 @@ export default {
               },
               yaxis: {
                 title: {
-                  text: "Total balance (DOT)"
+                  text: `Total balance (${network.denom})`
                 },
                 labels: {
                   formatter: function(val) {
@@ -717,12 +742,18 @@ export default {
   },
   head() {
     return {
-      title: "PolkaStats - Polkadot nominator " + this.$route.query.accountId,
+      title: this.$t("pages.nominator.head_title", {
+        networkName: network.name,
+        address: this.$route.query.accountId
+      }),
       meta: [
         {
           hid: "description",
           name: "description",
-          content: "Polkadot nominator " + this.$route.query.accountId
+          content: this.$tc("pages.nominator.head_content", {
+            networkName: network.name,
+            address: this.$route.query.accountId
+          })
         }
       ]
     };

@@ -75,6 +75,10 @@
       "loading_data": "Loading data, it can take a long time. Be patient, please",
       "download_csv": "Download in CSV format"
     },
+    "account": {
+      "head_title": "PolkaStats - {networkName} account {address}",
+      "head_content": "{networkName} account {address}"
+    },
     "favorites": {
       "hi_there": "Hi there!",
       "you_can_click_TEXT": "You can click on the star icon",
@@ -162,6 +166,10 @@
       "head_title": "PolkaStats - {networkName} nominators",
       "head_content": "{networkName} nominators"
     },
+    "nominator": {
+      "head_title": "PolkaStats - {networkName} nominator {address}",
+      "head_content": "{networkName} nominator {address}"
+    },
     "targets": {
       "targets": "Targets",
       "search_placeholder": "Search validator by identity",
@@ -244,6 +252,10 @@
       "head_title": "PolkaStats - {networkName} network statistics",
       "head_content": "{networkName} network statistics"
     },
+    "validator": {
+      "head_title": "PolkaStats - {networkName} validator {address}",
+      "head_content": "{networkName} validator {address}"
+    },
     "dashboard": {
       "title": "Dashboard",
       "head_title": "PolkaStats - {networkName} network statistics",
@@ -260,15 +272,27 @@
       "head_title": "PolkaStats - {networkName} last blocks",
       "head_content": "{networkName} last blocks"
     },
+    "block": {
+      "head_title": "PolkaStats - {networkName} block {blockNumber}",
+      "head_content": "{networkName} block {blockNumber}"
+    },
     "extrinsics": {
       "title": "Last extrinsics",
       "head_title": "PolkaStats - {networkName} last extrinsics",
       "head_content": "{networkName} last extrinsics"
     },
+    "extrinsic": {
+      "head_title": "PolkaStats - {networkName} extrinsic {extrinsicHash}",
+      "head_content": "{networkName} extrinsic {extrinsicHash}"
+    },
     "events": {
       "title": "Last system events",
       "head_title": "PolkaStats - {networkName} last system events",
       "head_content": "{networkName} last system events"
+    },
+    "event": {
+      "head_title": "PolkaStats - {networkName} event {systemEvent}",
+      "head_content": "{networkName} event {systemEvent}"
     },
     "send": {
       "title": "Send {networkDenom}s using Polkadot JS extension",

@@ -200,6 +200,7 @@
 import Identicon from "../../components/identicon.vue";
 import commonMixin from "../../mixins/commonMixin.js";
 import gql from "graphql-tag";
+import { network } from "../../polkastats.config.js";
 
 export default {
   components: {
@@ -257,12 +258,18 @@ export default {
   },
   head() {
     return {
-      title: "PolkaStats - Polkadot account " + this.$route.query.accountId,
+      title: this.$t("pages.account.head_title", {
+        networkName: network.name,
+        address: this.$route.query.accountId
+      }),
       meta: [
         {
           hid: "description",
           name: "description",
-          content: "Polkadot account " + this.$route.query.accountId
+          content: this.$tc("pages.account.head_content", {
+            networkName: network.name,
+            address: this.$route.query.accountId
+          })
         }
       ]
     };
