@@ -7,6 +7,10 @@
     </b-row>
     <b-row>
       <b-col md="7 mb-4">
+        <b-alert v-if="!detectedExtension" variant="danger" show>
+          <i class="fa fa-frown-o"></i> No Polkadot JS extension found, please
+          install it.
+        </b-alert>
         <b-alert v-if="noAccountsFound" variant="danger" show>
           <i class="fa fa-frown-o"></i> No Polkadot mainnet accounts found in
           extension.
@@ -342,6 +346,7 @@ export default {
       network,
       currentSessionIndex: 0,
       validators: [],
+      detectedExtension: false,
       extensionAccounts: [],
       extensionAddresses: [],
       selectedAccount: null,
@@ -468,6 +473,7 @@ export default {
             ApiPromise.create({ provider: wsProvider }).then(api => {
               this.api = api;
               if (accounts.length > 0) {
+                this.detectedExtension = true;
                 this.extensionAccounts = accounts;
                 accounts
                   .filter(account =>
