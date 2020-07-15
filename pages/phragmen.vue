@@ -6,6 +6,9 @@
           {{ $t("pages.phragmen.predicted_candidates_by_TEXT") }}
         </h1>
         <template v-if="enabled">
+          <p v-if="blockHeight && timestamp" class="text-center">
+            Last execution at block #{{ blockHeight }} ({{ timestamp }})
+          </p>
           <!-- Filter -->
           <b-row>
             <b-col lg="12" class="mb-4">
@@ -58,6 +61,14 @@
               </b-form-group>
             </b-col>
           </div>
+          <JsonCSV
+            :data="candidatesJSON"
+            class="download-csv mb-2"
+            :name="`polkastats.io_polkadot_phragmen_at_${blockHeight}.csv`"
+          >
+            <i class="fas fa-file-csv"></i>
+            {{ $t("pages.accounts.download_csv") }}
+          </JsonCSV>
           <!-- Table with sorting and pagination-->
           <div>
             <b-table
@@ -83,17 +94,7 @@
                 <div
                   class="d-block d-sm-block d-md-none d-lg-none d-xl-none text-center"
                 >
-                  <div v-if="hasIdentity(data.item.pub_key_stash)">
-                    <div
-                      v-if="getIdentity(data.item.pub_key_stash).logo !== ''"
-                    >
-                      <img
-                        :src="getIdentity(data.item.pub_key_stash).logo"
-                        class="identity mt-2"
-                      />
-                    </div>
-                  </div>
-                  <div v-else>
+                  <div>
                     <Identicon
                       :key="data.item.pub_key_stash"
                       :value="data.item.pub_key_stash"
@@ -101,17 +102,11 @@
                       :theme="'polkadot'"
                     />
                   </div>
-                  <h4
-                    v-if="hasIdentity(data.item.pub_key_stash)"
-                    class="mt-2 mb-2"
-                  >
-                    {{ getIdentity(data.item.pub_key_stash).full_name }}
+                  <h4 v-if="data.item.display_name" class="mt-2 mb-2">
+                    {{ data.item.display_name }}
                   </h4>
-                  <h4
-                    v-else-if="hasKusamaIdentity(data.item.pub_key_stash)"
-                    class="mt-2 mb-2"
-                  >
-                    {{ hasKusamaIdentity(data.item.pub_key_stash).display }}
+                  <h4 v-else class="mt-2 mb-2">
+                    {{ shortAddress(data.item.pub_key_stash) }}
                   </h4>
                   <p class="mt-2 mb-2 rank">rank #{{ data.item.rank }}</p>
                   <p
@@ -123,21 +118,7 @@
                   </p>
                 </div>
                 <div class="d-none d-sm-none d-md-block d-lg-block d-xl-block">
-                  <div
-                    v-if="hasIdentity(data.item.pub_key_stash)"
-                    class="d-inline-block"
-                  >
-                    <div
-                      v-if="getIdentity(data.item.pub_key_stash).logo !== ''"
-                      class="d-inline-block"
-                    >
-                      <img
-                        :src="getIdentity(data.item.pub_key_stash).logo"
-                        class="identity-small d-inline-block"
-                      />
-                    </div>
-                  </div>
-                  <div v-else class="d-inline-block">
+                  <div class="d-inline-block">
                     <Identicon
                       :key="data.item.pub_key_stash"
                       :value="data.item.pub_key_stash"
@@ -145,21 +126,11 @@
                       :theme="'polkadot'"
                     />
                   </div>
-                  <span v-if="hasIdentity(data.item.pub_key_stash)">
-                    {{ getIdentity(data.item.pub_key_stash).full_name }}
-                  </span>
-                  <span v-else-if="hasKusamaIdentity(data.item.pub_key_stash)">
-                    {{ getKusamaIdentity(data.item.pub_key_stash).display }}
+                  <span v-if="data.item.display_name">
+                    {{ data.item.display_name }}
                   </span>
                   <span v-else>
-                    <span
-                      class="d-inline d-sm-inline d-md-inline d-lg-inline d-xl-none"
-                      >{{ shortAddress(data.item.pub_key_stash) }}</span
-                    >
-                    <span
-                      class="d-none d-sm-none d-md-none d-lg-none d-xl-inline"
-                      >{{ shortAddress(data.item.pub_key_stash) }}</span
-                    >
+                    {{ shortAddress(data.item.pub_key_stash) }}
                   </span>
                 </div>
               </template>
@@ -227,20 +198,23 @@ import Identicon from "../components/identicon.vue";
 import Network from "../components/network.vue";
 import { isHex } from "@polkadot/util";
 import BN from "bn.js";
-import { blockExplorer, numItemsTableOptions } from "../polkastats.config.js";
+import { paginationOptions, network } from "../polkastats.config.js";
 import commonMixin from "../mixins/commonMixin.js";
+import JsonCSV from "vue-json-csv";
+import gql from "graphql-tag";
 
 export default {
   components: {
-    Identicon
+    Identicon,
+    JsonCSV
   },
   mixins: [commonMixin],
   data: function() {
     return {
       enabled: true,
-      tableOptions: numItemsTableOptions,
-      perPage: localStorage.numItemsTableSelected
-        ? parseInt(localStorage.numItemsTableSelected)
+      tableOptions: paginationOptions,
+      perPage: localStorage.paginationOptions
+        ? parseInt(localStorage.paginationOptions)
         : 10,
       currentPage: 1,
       sortBy: `favorite`,
@@ -280,26 +254,50 @@ export default {
           class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
         }
       ],
-      blockExplorer,
       polling: null,
-      favorites: []
+      favorites: [],
+      phragmen: {
+        timestamp: 0,
+        block_height: 0,
+        candidates: []
+      }
     };
   },
   computed: {
-    network() {
-      return this.$store.state.network.info;
-    },
     candidates() {
-      return this.$store.state.phragmen.info.candidates.map(candidate => {
-        if (this.hasKusamaIdentity(candidate.pub_key_stash)) {
-          candidate.identity = this.getKusamaIdentity(candidate.pub_key_stash);
+      return this.phragmen.candidates.map(candidate => {
+        if (this.getDisplayName(candidate.pub_key_stash)) {
+          candidate.display_name = this.getDisplayName(candidate.pub_key_stash);
+        } else {
+          candidate.display_name = ``;
         }
         candidate.favorite = this.isFavorite(candidate.pub_key_stash);
         return candidate;
       });
     },
+    candidatesJSON() {
+      return this.candidates.map(candidate => {
+        return {
+          rank: candidate.rank,
+          name: candidate.display_name,
+          stash_account: candidate.pub_key_stash,
+          total_stake: candidate.stake_total,
+          voters: candidate.other_stake_count
+        };
+      });
+    },
     identities() {
       return this.$store.state.identities.list;
+    },
+    timestamp() {
+      var newDate = new Date();
+      newDate.setTime(this.phragmen.timestamp);
+      return this.phragmen.timestamp ? newDate.toUTCString() : ``;
+    },
+    blockHeight() {
+      return this.phragmen.block_height
+        ? this.formatNumber(this.phragmen.block_height)
+        : ``;
     },
     sortOptions() {
       // Create an options list from our fields
@@ -326,30 +324,17 @@ export default {
       this.favorites = this.$cookies.get("favorites");
     }
 
-    // Force update of phragmen candidates list if empty
-    if (this.$store.state.phragmen.info.candidates.length == 0) {
-      vm.$store.dispatch("phragmen/update");
-    }
-    this.totalRows = this.$store.state.phragmen.info.candidates.length;
-
-    // Force update of indentity list if empty
-    if (this.$store.state.identities.list.length == 0) {
+    // Force update of identity list if empty
+    if (this.$store.state.identities.list.length === 0) {
       vm.$store.dispatch("identities/update");
-    }
-
-    // Force update of staking identities list if empty
-    if (this.$store.state.stakingIdentities.list.length === 0) {
-      vm.$store.dispatch("stakingIdentities/update");
     }
 
     // Update data every 60 seconds
     this.polling = setInterval(() => {
-      vm.$store.dispatch("network/update");
-      vm.$store.dispatch("phragmen/update");
       vm.$store.dispatch("identities/update");
-      vm.$store.dispatch("stakingIdentities/update");
-      if (!this.filter)
-        this.totalRows = this.$store.state.phragmen.info.candidates.length;
+      if (!this.filter) {
+        this.totalRows = this.phragmen.candidates.length;
+      }
     }, 60000);
   },
   beforeDestroy: function() {
@@ -365,36 +350,29 @@ export default {
       } else {
         this.favorites.push(accountId);
       }
-      this.$store.dispatch("phragmen/toogleFavorite", accountId);
-
       return true;
     },
     isFavorite(accountId) {
       return this.favorites.includes(accountId);
     },
-    hasIdentity(stashId) {
-      return this.$store.state.identities.list.some(obj => {
-        return obj.stashId === stashId;
-      });
-    },
-    getIdentity(stashId) {
-      let filteredArray = this.$store.state.identities.list.filter(obj => {
-        return obj.stashId === stashId;
-      });
-      return filteredArray[0];
-    },
-    hasKusamaIdentity(stashId) {
-      return this.$store.state.stakingIdentities.list.some(obj => {
-        return obj.accountId === stashId;
-      });
-    },
-    getKusamaIdentity(stashId) {
-      let filteredArray = this.$store.state.stakingIdentities.list.filter(
-        obj => {
-          return obj.accountId === stashId;
-        }
+    getDisplayName: function(accountId) {
+      let identity = this.$store.state.identities.list.find(
+        identity => identity.accountId === accountId
       );
-      return filteredArray[0].identity;
+      if (identity) {
+        identity = identity.identity;
+        if (
+          identity.displayParent &&
+          identity.displayParent !== `` &&
+          identity.display &&
+          identity.display !== ``
+        ) {
+          return `${identity.displayParent} / ${identity.display}`;
+        } else {
+          return identity.display;
+        }
+      }
+      return ``;
     },
     onFiltered(filteredItems) {
       // Trigger pagination to update the number of buttons/pages due to filtering
@@ -402,14 +380,67 @@ export default {
       this.currentPage = 1;
     }
   },
+  apollo: {
+    $subscribe: {
+      phragmen: {
+        query: gql`
+          subscription phragmen {
+            phragmen(limit: 1, order_by: { block_height: desc }) {
+              timestamp
+              phragmen_json
+              block_height
+            }
+          }
+        `,
+        result({ data }) {
+          const phragmenOutput = JSON.parse(data.phragmen[0].phragmen_json);
+          let candidates = [];
+          Object.entries(phragmenOutput.supports).forEach(
+            ([pub_key_stash, candidate]) => {
+              candidates.push({
+                pub_key_stash,
+                other_stake_count: candidate.voters.length,
+                stake_total: candidate.total
+              });
+            }
+          );
+          candidates = candidates.sort((a, b) => {
+            return new BN(a.stake_total.toString(), 10).lt(
+              new BN(b.stake_total.toString(), 10)
+            )
+              ? 1
+              : -1;
+          });
+
+          candidates = candidates.map((candidate, rank) => {
+            return {
+              rank: rank + 1,
+              ...candidate
+            };
+          });
+
+          this.phragmen = {
+            timestamp: data.phragmen[0].timestamp,
+            block_height: data.phragmen[0].block_height,
+            candidates
+          };
+          this.totalRows = this.phragmen.candidates.length;
+        }
+      }
+    }
+  },
   head() {
     return {
-      title: this.$t("pages.phragmen.head_title"),
+      title: this.$t("pages.phragmen.head_title", {
+        networkName: network.name
+      }),
       meta: [
         {
           hid: "description",
           name: "description",
-          content: this.$t("pages.phragmen.head_content")
+          content: this.$t("pages.phragmen.head_content", {
+            networkName: network.name
+          })
         }
       ]
     };

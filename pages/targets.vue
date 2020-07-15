@@ -50,7 +50,7 @@
         </b-form-group>
       </b-col>
     </div>
-    <div v-if="rewards === null || era === null" class="pt-4">
+    <div v-if="rewards.length === 0" class="pt-4">
       <b-container class="w-100 loader">
         <div class="lds-ripple center">
           <div></div>
@@ -61,6 +61,14 @@
     </div>
     <div v-else class="pt-2">
       <b-container>
+        <JsonCSV
+          :data="targetsJSON"
+          class="download-csv mb-2"
+          name="polkastats.io_polkadot_targets.csv"
+        >
+          <i class="fas fa-file-csv"></i>
+          {{ $t("pages.accounts.download_csv") }}
+        </JsonCSV>
         <div class="table-responsive">
           <b-table
             id="rewards-table"
@@ -79,16 +87,7 @@
             <template v-slot:cell(stash_id)="data">
               <div class="d-none d-sm-none d-md-block d-lg-block d-xl-block">
                 <template>
-                  <div
-                    v-if="data.item.identity && data.item.identity.logo"
-                    class="d-inline-block"
-                  >
-                    <img
-                      :src="data.item.identity.logo"
-                      class="identity-small d-inline-block"
-                    />
-                  </div>
-                  <div v-else class="d-inline-block">
+                  <div class="d-inline-block">
                     <Identicon
                       :key="data.item.stash_id"
                       :value="data.item.stash_id"
@@ -103,21 +102,11 @@
                     }"
                     :title="$t('pages.validators.validator_details')"
                   >
-                    <span v-if="data.item.identity !== null">
-                      {{
-                        data.item.identity.fullname ||
-                          data.item.identity.display
-                      }}
+                    <span v-if="data.item.display_name">
+                      {{ data.item.display_name }}
                     </span>
                     <span v-else>
-                      <span
-                        class="d-inline d-sm-inline d-md-inline d-lg-inline d-xl-none"
-                        >{{ shortAddress(data.item.stash_id) }}</span
-                      >
-                      <span
-                        class="d-none d-sm-none d-md-none d-lg-none d-xl-inline"
-                        >{{ shortAddress(data.item.stash_id) }}</span
-                      >
+                      {{ shortAddress(data.item.stash_id) }}
                     </span>
                   </nuxt-link>
                 </template>
@@ -127,12 +116,7 @@
                   <b-container>
                     <b-row class="validators-row">
                       <b-col cols="4" class="identity-column">
-                        <div
-                          v-if="data.item.identity && data.item.identity.logo"
-                        >
-                          <img :src="data.item.identity.logo" />
-                        </div>
-                        <div v-else>
+                        <div>
                           <Identicon
                             :key="data.item.stash_id"
                             :value="data.item.stash_id"
@@ -147,21 +131,11 @@
                           }"
                           :title="$t('pages.validators.validator_details')"
                         >
-                          <span v-if="data.item.identity !== null">
-                            {{
-                              data.item.identity.fullname ||
-                                data.item.identity.display
-                            }}
+                          <span v-if="data.item.display_name">
+                            {{ data.item.display_name }}
                           </span>
                           <span v-else>
-                            <span
-                              class="d-inline d-sm-inline d-md-inline d-lg-inline d-xl-none"
-                              >{{ shortAddress(data.item.stash_id) }}</span
-                            >
-                            <span
-                              class="d-none d-sm-none d-md-none d-lg-none d-xl-inline"
-                              >{{ shortAddress(data.item.stash_id) }}</span
-                            >
+                            {{ shortAddress(data.item.stash_id) }}
                           </span>
                         </nuxt-link>
                       </b-col>
@@ -175,7 +149,11 @@
                           {{ data.item.stake_info.total }}
                         </div>
                         <div>
-                          {{ $t("pages.targets.estimated_payout") }}:
+                          {{
+                            $t("pages.targets.estimated_payout", {
+                              networkDenom: network.denom
+                            })
+                          }}:
                           {{ data.item.estimated_payout }}
                         </div>
                         <div>
@@ -242,20 +220,23 @@ import * as R from "ramda";
 import commonMixin from "../mixins/commonMixin.js";
 import BN from "bn.js";
 import { isHex } from "@polkadot/util";
-import { numItemsTableValidatorOptions } from "../polkastats.config.js";
+import { paginationOptions } from "../polkastats.config.js";
 import Identicon from "../components/identicon.vue";
 import TargetInfo from "../components/accordion-info";
+import JsonCSV from "vue-json-csv";
+import { network } from "../polkastats.config.js";
 
 export default {
-  components: { Identicon, TargetInfo },
+  components: { Identicon, TargetInfo, JsonCSV },
   mixins: [commonMixin],
   data: function() {
     return {
+      network,
       era: null,
-      rewards: null,
-      tableOptions: numItemsTableValidatorOptions,
-      perPage: localStorage.numItemsTableSelected
-        ? parseInt(localStorage.numItemsTableSelected)
+      rewards: [],
+      tableOptions: paginationOptions,
+      perPage: localStorage.paginationOptions
+        ? parseInt(localStorage.paginationOptions)
         : 20,
       currentPage: 1,
       sortBy: `favorite`,
@@ -336,12 +317,6 @@ export default {
     };
   },
   computed: {
-    identitiesLoaded() {
-      return this.$store.state.identities.dataLoaded;
-    },
-    kusamaIdentitiesLoaded() {
-      return this.$store.state.stakingIdentities.dataLoaded;
-    },
     sortOptions() {
       // Create an options list from our fields
       return this.fields
@@ -349,6 +324,19 @@ export default {
         .map(f => {
           return { text: f.label, value: f.key };
         });
+    },
+    targetsJSON() {
+      return this.rewards.map(reward => {
+        return {
+          name: reward.display_name,
+          stash_account: reward.stash_id,
+          commission_percent: reward.commission,
+          total_stake: reward.stake_info.total,
+          annualized_reward_percentage:
+            reward.estimated_annualized_payout_percentage,
+          estimated_daily_payout_100_DOT: reward.estimated_payout
+        };
+      });
     }
   },
   watch: {
@@ -368,39 +356,6 @@ export default {
     }
   },
   methods: {
-    hasIdentity(stashId) {
-      return this.$store.state.identities.list.some(obj => {
-        return obj.accountId === stashId;
-      });
-    },
-    getIdentity(stashId) {
-      let filteredArray = this.$store.state.identities.list.filter(obj => {
-        return obj.accountId === stashId;
-      });
-      return filteredArray[0];
-    },
-    hasKusamaIdentity(stashId) {
-      return this.$store.state.stakingIdentities.list.some(obj => {
-        return obj.accountId === stashId;
-      });
-    },
-    getKusamaIdentity(stashId) {
-      let filteredArray = this.$store.state.stakingIdentities.list.filter(
-        obj => {
-          return obj.accountId === stashId;
-        }
-      );
-      return filteredArray[0].identity;
-    },
-    formatId(stashId) {
-      if (this.hasIdentity(stashId)) {
-        return this.getIdentity(stashId);
-      }
-      if (this.hasKusamaIdentity(stashId)) {
-        return this.getKusamaIdentity(stashId);
-      }
-      return this.shortAddress(stashId);
-    },
     getOthersAmount(others) {
       let amount = 0;
       others.forEach(staker => {
@@ -419,7 +374,7 @@ export default {
       this.currentPage = 1;
     },
     handleNumFields(num) {
-      localStorage.numItemsTableSelected = num;
+      localStorage.paginationOptions = num;
       this.perPage = parseInt(num);
     },
     isFavorite(accountId) {
@@ -439,27 +394,15 @@ export default {
       });
       return true;
     },
-    getSmallNumber(amount) {
-      if (amount === 0) return 0;
-      if (isHex(amount)) {
-        const bn = new BN(amount.substring(2, amount.length), 16);
-        const factor = new BN(1000000000);
-        return bn.div(factor);
-      }
-      const bn = new BN(amount);
-      const factor = new BN(1000000000);
-
-      return bn.div(factor);
-    },
     getAnnualizedRewards(eraPayout) {
       return (
         (
           parseInt(
             new BN(eraPayout)
               .mul(new BN(100))
-              .mul(new BN(4))
+              .mul(new BN(network.erasPerDay))
               .mul(new BN(365))
-              .div(new BN(1e12))
+              .div(new BN(10).pow(new BN(network.decimalPlaces)))
               .toString()
           ) / 100
         ).toFixed(2) + " %"
@@ -482,11 +425,12 @@ export default {
     $subscribe: {
       rewards: {
         query: gql`
-          subscription rewards($era: Int) {
-            rewards(
+          subscription validator_era_staking($era: Int) {
+            validator_era_staking(
               where: { era_index: { _eq: $era } }
               order_by: { estimated_payout: desc }
             ) {
+              display_name
               commission
               estimated_payout
               stake_info
@@ -496,8 +440,8 @@ export default {
           }
         `,
         result({ data }) {
-          const { rewards } = data;
-          if (rewards.length === 0) {
+          const { validator_era_staking } = data;
+          if (validator_era_staking.length === 0) {
             this.era--;
           } else {
             const formatData = (value, key) => {
@@ -512,23 +456,16 @@ export default {
               value.estimated_annualized_payout_percentage = this.getAnnualizedRewards(
                 value.estimated_payout
               );
-              // Payout per era per 100 KSM
+              // Payout per era per 100 DOT
               value.estimated_payout = this.formatAmount(
                 value.estimated_payout
               );
               value.favorite = this.isFavorite(value.stash_id);
-              const ident = this.getIdentity(value.stash_id);
-              if (ident !== [] && typeof ident !== "undefined") {
-                value.identity = ident.identity;
-              } else if (this.hasKusamaIdentity(value.stash_id)) {
-                const kusama = this.getKusamaIdentity(value.stash_id);
-              } else {
-                value.identity = null;
-              }
             };
 
-            R.mapObjIndexed(formatData, rewards);
-            this.rewards = rewards;
+            R.mapObjIndexed(formatData, validator_era_staking);
+            this.totalRows = validator_era_staking.length;
+            this.rewards = validator_era_staking;
           }
         },
         variables() {
@@ -537,14 +474,6 @@ export default {
           };
         },
         skip() {
-          if (!this.identitiesLoaded) {
-            this.$store.dispatch("identities/update");
-            return true;
-          }
-          if (!this.kusamaIdentitiesLoaded) {
-            this.$store.dispatch("stakingIdentities/update");
-            return true;
-          }
           return this.era === null;
         }
       }
@@ -624,6 +553,9 @@ export default {
   flex: 1;
   flex-direction: column;
   justify-content: space-around;
+}
+#rewards-table {
+  margin-bottom: 1rem;
 }
 
 @media (max-width: 765px) {

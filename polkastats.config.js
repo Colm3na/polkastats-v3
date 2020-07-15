@@ -1,15 +1,43 @@
-/* PolkaStats app configuration params */
-export const unit = `KSM`;
-export const decimals = 12;
-export const backendBaseURL = `https://polkastats.io/api/v2`;
-export const nodeURL = "wss://kusama-rpc.polkadot.io/";
-export const blockExplorer = {
-  block: `https://polkascan.io/pre/kusama-cc3/block/`,
-  account: `https://polkascan.io/pre/kusama-cc3/account/`
-};
+// Selected network
+const selectedNetwork = `Polkadot`;
+// const selectedNetwork = `Kusama`;
 
-export const numItemsTableValidatorOptions = [10, 20, 90, 180, 225];
-export const numItemsTableOptions = [10, 20, 50, 100];
+// Substrate networks
+export const networks = [
+  {
+    id: "polkadot-cc1",
+    name: "Polkadot",
+    denom: "DOT",
+    coinGeckoDenom: "polkadot-iou",
+    decimalPlaces: 12,
+    addressPrefix: 0,
+    nodeWs: "wss://rpc.polkadot.io",
+    backendWs: "wss://polkastats.io/api/v3",
+    backendHttp: "http://polkastats.io/api/v3",
+    erasPerDay: 1,
+    lockUpPeriod: 28,
+    validator: "15psTaipmWG86U5vNkF7Guv9TRPMRLKHkGS8cXT74v3RCC5t"
+  },
+  {
+    id: "kusama-cc3",
+    name: "Kusama",
+    denom: "KSM",
+    coinGeckoDenom: "kusama",
+    decimalPlaces: 12,
+    addressPrefix: 2,
+    nodeWs: "wss://kusama-rpc.polkadot.io",
+    backendWs: "wss://kusama.polkastats.io/api/v3",
+    backendHttp: "http://kusama.polkastats.io/api/v3",
+    erasPerDay: 4,
+    lockUpPeriod: 7,
+    validator: "GTzRQPzkcuynHgkEHhsPBFpKdh4sAacVRsnd8vYfPpTMeEY"
+  }
+];
+
+export const network = networks.find(({ name }) => name === selectedNetwork);
+
+// Pagination options
+export const paginationOptions = [10, 20, 50, 100];
 
 // Breakpoints
 export const mobileBreakpoint = 415;

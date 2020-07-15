@@ -24,37 +24,38 @@
               <h4 class="text-center mb-4">
                 {{ parsedAccount.accountId }}
               </h4>
-              <h4
-                v-b-tooltip.hover
-                class="text-center mb-4 amount"
-                :title="$t('details.account.free_balance')"
-              >
+              <h4 class="text-center mb-4 amount">
                 {{ formatAmount(parsedAccount.balances.freeBalance) }}
+                <span
+                  v-if="USDConversion"
+                  v-b-tooltip.hover
+                  :title="`1 DOT = ${USDConversion} $`"
+                  class="fiat"
+                >
+                  ({{
+                    formatNumber(
+                      (
+                        parsedAccount.balances.freeBalance *
+                        1e-12 *
+                        USDConversion
+                      ).toFixed(3)
+                    )
+                  }}
+                  $)
+                </span>
               </h4>
               <table class="table table-striped">
                 <tbody>
                   <tr>
                     <td>{{ $t("details.account.account_id") }}</td>
                     <td class="text-right">
-                      <a
-                        :href="blockExplorer.account + parsedAccount.accountId"
-                        target="_blank"
-                        class="d-block my-2"
-                      >
-                        <Identicon
-                          :key="parsedAccount.accountId"
-                          :value="parsedAccount.accountId"
-                          :size="20"
-                          :theme="'polkadot'"
-                        />
-                        <span
-                          v-b-tooltip.hover
-                          :title="
-                            $t('details.account.see_address_in_polkastats')
-                          "
-                          >{{ parsedAccount.accountId }}</span
-                        >
-                      </a>
+                      <Identicon
+                        :key="parsedAccount.accountId"
+                        :value="parsedAccount.accountId"
+                        :size="20"
+                        :theme="'polkadot'"
+                      />
+                      <span>{{ parsedAccount.accountId }}</span>
                     </td>
                   </tr>
                   <tr v-if="parsedAccount.identity.display">
@@ -196,11 +197,10 @@
   </div>
 </template>
 <script>
-import { mapMutations } from "vuex";
 import Identicon from "../../components/identicon.vue";
-import { blockExplorer } from "../../polkastats.config.js";
 import commonMixin from "../../mixins/commonMixin.js";
 import gql from "graphql-tag";
+import { network } from "../../polkastats.config.js";
 
 export default {
   components: {
@@ -210,9 +210,14 @@ export default {
   data: function() {
     return {
       accountId: this.$route.query.accountId,
-      blockExplorer,
-      parsedAccount: undefined
+      parsedAccount: undefined,
+      polling: undefined
     };
+  },
+  computed: {
+    USDConversion: function() {
+      return this.$store.state.fiat.usd;
+    }
   },
   watch: {
     $route() {
@@ -253,12 +258,18 @@ export default {
   },
   head() {
     return {
-      title: "PolkaStats - Kusama account " + this.$route.query.accountId,
+      title: this.$t("pages.account.head_title", {
+        networkName: network.name,
+        address: this.$route.query.accountId
+      }),
       meta: [
         {
           hid: "description",
           name: "description",
-          content: "Kusama account " + this.$route.query.accountId
+          content: this.$tc("pages.account.head_content", {
+            networkName: network.name,
+            address: this.$route.query.accountId
+          })
         }
       ]
     };
@@ -282,5 +293,10 @@ export default {
 .account-page .amount {
   color: #ef1073;
   font-weight: 700;
+}
+.account-page .fiat {
+  color: #ef1073;
+  font-size: 1rem;
+  font-weight: 200;
 }
 </style>

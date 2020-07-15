@@ -13,9 +13,13 @@
                   <tr>
                     <td>{{ $t("details.block.block_author") }}</td>
                     <td class="text-right">
-                      <a
-                        :href="blockExplorer.account + parsedBlock.block_author"
-                        target="_blank"
+                      <nuxt-link
+                        :to="{
+                          name: 'account',
+                          query: {
+                            accountId: parsedBlock.block_author
+                          }
+                        }"
                         class="d-block"
                       >
                         <Identicon
@@ -26,26 +30,20 @@
                         />
                         <span
                           v-b-tooltip.hover
-                          :title="$t('details.block.see_address_in_polkastats')"
+                          :title="$t('details.block.account_details')"
                         >
                           {{ shortAddress(parsedBlock.block_author) }}
                         </span>
                         <span v-if="parsedBlock.block_author_name !== ``"
                           >[ {{ parsedBlock.block_author_name }} ]</span
                         >
-                      </a>
+                      </nuxt-link>
                     </td>
                   </tr>
                   <tr>
                     <td>{{ $t("details.block.block_hash") }}</td>
                     <td class="text-right">
-                      <p class="mb-0">
-                        <nuxt-link
-                          :to="`/block?blockNumber=${blockNumber - 1}`"
-                        >
-                          {{ parsedBlock.block_hash }}
-                        </nuxt-link>
-                      </p>
+                      <p class="mb-0">{{ parsedBlock.block_hash }}</p>
                     </td>
                   </tr>
                   <tr>
@@ -57,7 +55,9 @@
                   <tr>
                     <td>{{ $t("details.block.parent_hash") }}</td>
                     <td class="text-right">
-                      <p class="mb-0">{{ parsedBlock.parent_hash }}</p>
+                      <nuxt-link :to="`/block?blockNumber=${blockNumber - 1}`">
+                        {{ parsedBlock.parent_hash }}
+                      </nuxt-link>
                     </td>
                   </tr>
                   <tr>
@@ -229,11 +229,10 @@
   </div>
 </template>
 <script>
-import { mapMutations } from "vuex";
 import Identicon from "../../components/identicon.vue";
-import { blockExplorer } from "../../polkastats.config.js";
 import commonMixin from "../../mixins/commonMixin.js";
 import gql from "graphql-tag";
+import { network } from "../../polkastats.config.js";
 
 export default {
   components: {
@@ -243,7 +242,6 @@ export default {
   data: function() {
     return {
       blockNumber: this.$route.query.blockNumber,
-      blockExplorer,
       parsedBlock: undefined,
       parsedEvents: undefined,
       parsedExtrinsics: undefined
@@ -348,12 +346,18 @@ export default {
   },
   head() {
     return {
-      title: "PolkaStats - Kusama block " + this.$route.query.blockNumber,
+      title: this.$t("pages.block.head_title", {
+        networkName: network.name,
+        address: this.$route.query.blockNumber
+      }),
       meta: [
         {
           hid: "description",
           name: "description",
-          content: "Kusama block " + this.$route.query.blockNumber
+          content: this.$tc("pages.block.head_content", {
+            networkName: network.name,
+            address: this.$route.query.blockNumber
+          })
         }
       ]
     };

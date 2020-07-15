@@ -4,7 +4,7 @@
       <b-container id="page-index" class="main pt-4">
         <!-- Filter -->
         <b-row style="margin-bottom: 1rem">
-          <b-col cols="10">
+          <b-col cols="12">
             <b-form-input
               id="filterInput"
               v-model="filter"
@@ -12,79 +12,6 @@
               :placeholder="$t('pages.validators.search_placeholder')"
             />
           </b-col>
-          <b-col cols="auto">
-            <b-button
-              v-b-toggle.collapse-filter
-              class="filter-button"
-              @click="handleFilter()"
-            >
-              <font-awesome-icon
-                :icon="['fas', 'filter']"
-                :style="{
-                  color: '#d75ea1',
-                  width: '15px',
-                  height: '15px'
-                }"
-              />
-            </b-button>
-          </b-col>
-        </b-row>
-        <b-row style="margin-bottom: 1rem">
-          <b-container>
-            <b-collapse id="collapse-filter" class="w-100">
-              <b-card>
-                <b-row>
-                  <b-col cols="2" class="filter-label">
-                    <span>{{ $t("pages.validators.filter") }}</span>
-                  </b-col>
-                  <b-col>
-                    <b-form-select
-                      id="filter1"
-                      v-model="filterField"
-                      class="filters"
-                      :options="filterFieldsOptions"
-                    />
-                  </b-col>
-                </b-row>
-                <b-row>
-                  <b-col cols="2" class="filter-label">
-                    <span style="font-size: 1rem">{{
-                      $t("pages.validators.where")
-                    }}</span>
-                  </b-col>
-                  <b-col>
-                    <b-form-select
-                      v-model="filterOperator"
-                      class="filters"
-                      :options="filterOperatorsOptions"
-                    />
-                  </b-col>
-                </b-row>
-                <b-row>
-                  <b-col cols="2" class="filter-label">
-                    <span style="font-size: 1rem">{{
-                      $t("pages.validators.than")
-                    }}</span>
-                  </b-col>
-                  <b-col>
-                    <b-form-input v-model="filterText" class="filters" />
-                  </b-col>
-                </b-row>
-                <div class="filter-trash-button-container">
-                  <b-button class="filter-trash-button" @click="resetFilter()">
-                    <font-awesome-icon
-                      :icon="['fas', 'trash']"
-                      :style="{
-                        color: '#d75ea1',
-                        width: '15px',
-                        height: '15px'
-                      }"
-                    />
-                  </b-button>
-                </div>
-              </b-card>
-            </b-collapse>
-          </b-container>
         </b-row>
         <!-- Mobile sorting -->
         <div class="row d-block d-sm-block d-md-block d-lg-none d-xl-none">
@@ -127,7 +54,14 @@
             </b-form-group>
           </b-col>
         </div>
-
+        <JsonCSV
+          :data="validatorsJSON"
+          class="download-csv mb-2"
+          name="polkastats.io_polkadot_validators.csv"
+        >
+          <i class="fas fa-file-csv"></i>
+          {{ $t("pages.accounts.download_csv") }}
+        </JsonCSV>
         <!-- Table with sorting and pagination-->
         <div class="table-responsive">
           <b-table
@@ -135,7 +69,7 @@
             stacked="md"
             head-variant="dark"
             :fields="fields"
-            :items="filteredValidators"
+            :items="validators"
             :per-page="perPage"
             :current-page="currentPage"
             :sort-by.sync="sortBy"
@@ -147,22 +81,6 @@
             <template v-slot:cell(rank)="data">
               <p class="text-center mb-0">
                 {{ data.item.rank }}
-              </p>
-            </template>
-            <template v-slot:cell(imOnline)="data">
-              <p class="text-center mb-0">
-                <i
-                  v-if="data.item.imOnline"
-                  v-b-tooltip.hover
-                  class="imOnline fas fa-check-circle"
-                  :title="data.item.imOnlineMessage"
-                />
-                <i
-                  v-else
-                  v-b-tooltip.hover
-                  class="imOffline fas fa-times-circle"
-                  :title="data.item.imOnlineMessage"
-                />
               </p>
             </template>
             <template v-slot:cell(accountId)="data">
@@ -177,36 +95,12 @@
                           :title="$t('pages.index.rank')"
                           >#{{ data.item.rank }}</span
                         >
-                        <!-- <i
-                          v-if="data.item.imOnline"
-                          v-b-tooltip.hover
-                          class="imOnline fas fa-check-circle ml-1"
-                          :title="data.item.imOnlineMessage"
-                        />
-                        <i
-                          v-else
-                          v-b-tooltip.hover
-                          class="imOffline fas fa-times-circle ml-1"
-                          :title="data.item.imOnlineMessage"
-                        /> -->
-                        <i
-                          v-if="data.item.currentElected"
-                          v-b-tooltip.hover
-                          class="elected fas fa-chevron-circle-right"
-                          title="$t('pages.index.elected_for_next_session')"
-                        />
-                        <i
-                          v-else
-                          v-b-tooltip.hover
-                          class="notElected fas fa-times-circle"
-                          title="$t('pages.index.not_elected_for_next_session')"
-                        />
                       </p>
                     </div>
                     <div class="favorite-container">
                       <a
                         class="favorite"
-                        @click="toggleFavorite(data.item.accountId)"
+                        @click="toggleFavorite(data.item.account_id)"
                       >
                         <i
                           v-if="data.item.favorite"
@@ -230,22 +124,14 @@
                       <nuxt-link
                         :to="{
                           name: 'validator',
-                          query: { accountId: data.item.accountId }
+                          query: { accountId: data.item.account_id }
                         }"
                         :title="$t('pages.validators.validator_details')"
                       >
-                        <div
-                          v-if="data.item.identity && data.item.identity.logo"
-                        >
-                          <img
-                            :src="data.item.identity.logo"
-                            class="identity mt-2"
-                          />
-                        </div>
-                        <div v-else class="logo">
+                        <div class="logo">
                           <Identicon
-                            :key="data.item.accountId"
-                            :value="data.item.accountId"
+                            :key="data.item.account_id"
+                            :value="data.item.account_id"
                             :size="48"
                             :theme="'polkadot'"
                           />
@@ -257,34 +143,29 @@
                         <nuxt-link
                           :to="{
                             name: 'validator',
-                            query: { accountId: data.item.accountId }
+                            query: { accountId: data.item.account_id }
                           }"
                           :title="$t('pages.validators.validator_details')"
                         >
-                          <h4 v-if="data.item.identity">
-                            {{
-                              data.item.identity.full_name ||
-                                data.item.identity.display
-                            }}
+                          <h4 v-if="data.item.display_name">
+                            {{ data.item.display_name }}
                           </h4>
                           <h4 v-else>
                             <span
                               class="validator-name d-inline d-sm-inline d-md-inline d-lg-inline d-xl-none"
-                              >{{ shortAddress(data.item.accountId) }}</span
+                              >{{ shortAddress(data.item.account_id) }}</span
                             >
                             <span
                               class="d-none d-sm-none d-md-none d-lg-none d-xl-inline"
-                              >{{ shortAddress(data.item.accountId) }}</span
+                              >{{ shortAddress(data.item.account_id) }}</span
                             >
                           </h4>
-                          <div v-if="data.item.stakers">
+                          <div v-if="data.item.exposure_total">
                             <p
-                              v-if="data.item.stake && data.item.stake > 0"
                               v-b-tooltip.hover
                               class="bonded mb-0"
                               :title="$t('pages.validators.total_bonded')"
                             >
-                              <!-- <i class="far fa-handshake"></i> -->
                               <font-awesome-icon
                                 :icon="['fas', 'plug']"
                                 :style="{
@@ -293,42 +174,14 @@
                                   height: '20px'
                                 }"
                               />
-                              {{ formatAmount(data.item.stake) }}
+                              {{ formatAmount(data.item.exposure_total) }}
                             </p>
                             <div style="margin-top: 8px">
-                              <p
-                                v-if="data.item.stakers.total"
-                                v-b-tooltip.hover
-                                :title="
-                                  $t(
-                                    'pages.validators.percentage_over_total_bonded_stake'
-                                  )
-                                "
-                              >
-                                <span>
-                                  <!-- <i class="fas fa-share-alt"></i>-> -->
-                                  <font-awesome-icon
-                                    :icon="['fas', 'chart-line']"
-                                    :style="{
-                                      color: 'black',
-                                      width: '15px',
-                                      height: '15px'
-                                    }"
-                                  />
-                                  {{
-                                    parseFloat(
-                                      getStakePercent(
-                                        data.item.stakers.total,
-                                        totalStakeBonded
-                                      )
-                                    ).toFixed(2)
-                                  }}%
-                                </span>
+                              <p>
                                 <span
-                                  v-if="typeof data.item.commission == 'number'"
+                                  v-if="data.item.commission"
                                   style="position:relative;left:25%"
                                 >
-                                  <!-- <i class="fas fa-percentage"></i> -->
                                   <font-awesome-icon
                                     :icon="['fas', 'project-diagram']"
                                     :style="{
@@ -345,12 +198,6 @@
                                 </span>
                               </p>
                             </div>
-                            <!-- <p class="mb-0 small-text" v-if="data.item.stakers.own !== data.item.stake">
-                    <small>
-                      <span v-b-tooltip.hover title="Self bonded" v-if="data.item.stakers.own > 0">{{ formatAmount(data.item.stakers.own) }}</span>
-                      <span v-b-tooltip.hover title="Bonded by nominators" v-if="(data.item.stakers.total - data.item.stakers.own) > 0">(+{{ formatAmount(data.item.stakers.total - data.item.stakers.own) }})</span>
-                    </small>
-                  </p> -->
                           </div>
                         </nuxt-link>
                       </div>
@@ -359,19 +206,10 @@
                 </b-container>
               </div>
               <div class="d-none d-sm-none d-md-block d-lg-block d-xl-block">
-                <div
-                  v-if="data.item.identity && data.item.identity.logo"
-                  class="d-inline-block"
-                >
-                  <img
-                    :src="data.item.identity.logo"
-                    class="identity-small d-inline-block"
-                  />
-                </div>
-                <div v-else class="d-inline-block">
+                <div class="d-inline-block">
                   <Identicon
-                    :key="data.item.accountId"
-                    :value="data.item.accountId"
+                    :key="data.item.account_id"
+                    :value="data.item.account_id"
                     :size="20"
                     :theme="'polkadot'"
                   />
@@ -379,65 +217,74 @@
                 <nuxt-link
                   :to="{
                     name: 'validator',
-                    query: { accountId: data.item.accountId }
+                    query: { accountId: data.item.account_id }
                   }"
                   :title="$t('pages.validators.validator_details')"
                 >
-                  <span v-if="data.item.identity !== null">
-                    {{
-                      data.item.identity.fullname || data.item.identity.display
-                    }}
+                  <span v-if="data.item.display_name !== ``">
+                    {{ data.item.display_name }}
                   </span>
                   <span v-else>
                     <span
                       class="d-inline d-sm-inline d-md-inline d-lg-inline d-xl-none"
-                      >{{ shortAddress(data.item.accountId) }}</span
+                      >{{ shortAddress(data.item.account_id) }}</span
                     >
                     <span
                       class="d-none d-sm-none d-md-none d-lg-none d-xl-inline"
-                      >{{ shortAddress(data.item.accountId) }}</span
+                      >{{ shortAddress(data.item.account_id) }}</span
                     >
                   </span>
                 </nuxt-link>
               </div>
             </template>
-            <template v-slot:cell(numStakers)="data">
-              <p class="text-center mb-0">
-                {{ data.item.numStakers }}
+            <template v-slot:cell(num_stakers)="data">
+              <p class="text-right mb-0">
+                {{ data.item.num_stakers }}
               </p>
             </template>
-            <template v-slot:cell(stakeIndex)="data">
-              <p v-if="data.item.stake > 0" class="text-center mb-0">
-                {{ formatAmount(data.item.stake) }}
+            <template v-slot:cell(produced_blocks)="data">
+              <p class="text-right mb-0">
+                <span
+                  v-b-tooltip.hover
+                  :title="
+                    `${data.item.produced_blocks} ${$t(
+                      'details.validator.produced_blocks'
+                    )}`
+                  "
+                  class="circle green"
+                >
+                  {{ data.item.produced_blocks }}
+                </span>
+                <span
+                  v-if="data.item.next_elected"
+                  v-b-tooltip.hover
+                  :title="$t('details.validator.elected_for_next_session')"
+                  class="circle blue"
+                >
+                  <i class="fa fa-chevron-right mr-1" aria-hidden="true"></i>
+                </span>
               </p>
             </template>
-            <template v-slot:cell(percent)="data">
-              <p class="text-center mb-0">
-                {{
-                  parseFloat(
-                    getStakePercent(data.item.stakers.total, totalStakeBonded)
-                  ).toFixed(2)
-                }}%
+            <template v-slot:cell(exposure_total)="data">
+              <p class="text-right mb-0">
+                {{ formatAmount(data.item.exposure_total) }}
+                ({{
+                  (getTotalStakePercen(data.item.exposure_total) / 100).toFixed(
+                    2
+                  )
+                }}%)
               </p>
             </template>
             <template v-slot:cell(commission)="data">
-              <p
-                v-if="typeof data.item.commission == 'number'"
-                class="text-center mb-0"
-              >
-                {{ (data.item.commission / 10000000).toFixed(2) }}%
-              </p>
-            </template>
-            <template v-slot:cell(eraPoints)="data">
               <p class="text-center mb-0">
-                {{ data.item.eraPoints }}
+                {{ (parseInt(data.item.commission) / 10000000).toFixed(2) }}%
               </p>
             </template>
             <template v-slot:cell(favorite)="data">
               <p class="text-center mb-0">
                 <a
                   class="favorite"
-                  @click="toggleFavorite(data.item.accountId)"
+                  @click="toggleFavorite(data.item.account_id)"
                 >
                   <i
                     v-if="data.item.favorite"
@@ -482,38 +329,32 @@
 <script>
 import { mapMutations } from "vuex";
 import gql from "graphql-tag";
-import * as R from "ramda";
 import Identicon from "../components/identicon.vue";
 import { isHex } from "@polkadot/util";
 import BN from "bn.js";
-import {
-  blockExplorer,
-  numItemsTableValidatorOptions
-} from "../polkastats.config.js";
+import { paginationOptions } from "../polkastats.config.js";
 import commonMixin from "../mixins/commonMixin.js";
+import JsonCSV from "vue-json-csv";
 
 export default {
   components: {
-    Identicon
+    Identicon,
+    JsonCSV
   },
   mixins: [commonMixin],
   data: function() {
     return {
+      currentSessionIndex: 0,
       validators: [],
-      tableOptions: numItemsTableValidatorOptions,
-      perPage: localStorage.numItemsTableSelected
-        ? parseInt(localStorage.numItemsTableSelected)
+      tableOptions: paginationOptions,
+      perPage: localStorage.paginationOptions
+        ? parseInt(localStorage.paginationOptions)
         : 10,
       currentPage: 1,
       sortBy: `favorite`,
       sortDesc: true,
       filter: null,
-      filterOn: ["Stakers"],
-      filterField: null,
-      filterOperator: null,
-      filterText: null,
-      filterFieldsOptions: ["Stakers", "Total Stake", "% Stake", "Commission"],
-      filterOperatorsOptions: [">", "=", "<"],
+      filterOn: [],
       totalRows: 1,
       fields: [
         {
@@ -522,46 +363,33 @@ export default {
           sortable: true,
           class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
         },
-        // TODO fix validators online
-        // {
-        //   key: "imOnline",
-        //   label: "✔️",
-        //   sortable: true,
-        //   class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
-        // },
         {
           key: "accountId",
-          label: "✅ " + this.$t("pages.validators.validator"),
+          label: this.$t("pages.validators.validator"),
           sortable: true,
           filterByFormatted: true
         },
         {
-          key: "numStakers",
-          label: "👥 " + this.$t("pages.validators.stakers"),
+          key: "produced_blocks",
+          label: this.$t("pages.validators.produced_blocks"),
           sortable: true,
           class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
         },
         {
-          key: "stakeIndex",
-          label: "💰" + this.$t("pages.validators.total_stake"),
+          key: "exposure_total",
+          label: this.$t("pages.validators.total_stake"),
           sortable: true,
           class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
         },
         {
-          key: "percent",
-          label: "% " + this.$t("pages.validators.stake"),
+          key: "num_stakers",
+          label: this.$t("pages.validators.stakers"),
           sortable: true,
           class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
         },
         {
           key: "commission",
-          label: "💸 " + this.$t("pages.validators.commission"),
-          sortable: true,
-          class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
-        },
-        {
-          key: "eraPoints",
-          label: this.$t("pages.validators.era_points"),
+          label: this.$t("pages.validators.commission"),
           sortable: true,
           class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
         },
@@ -572,122 +400,10 @@ export default {
           class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
         }
       ],
-      blockExplorer,
-      favorites: [],
-      polling: null
+      favorites: []
     };
   },
   computed: {
-    network() {
-      return this.$store.state.network.info;
-    },
-    filteredValidators() {
-      const getStake = value => {
-        const stake = commonMixin.methods.formatAmount(value);
-        const float = stake.toString().includes("k")
-          ? parseFloat(stake) * 1000
-          : parseFloat(stake);
-
-        return parseInt(float);
-      };
-
-      // No filters
-      if (
-        this.filterOn.length === 0 ||
-        !this.filterField ||
-        !this.filterOperator ||
-        !this.filterText
-      )
-        return this.validators;
-
-      // Filtering by Number of Stakers
-      if (this.filterField === "Stakers") {
-        const filtering = parseInt(this.filterText);
-
-        if (this.filterOperator === ">")
-          return this.validators.filter(
-            validator => validator["numStakers"] > filtering
-          );
-        else if (this.filterOperator === "=")
-          return this.validators.filter(
-            validator => validator["numStakers"] === filtering
-          );
-        return this.validators.filter(
-          validator => validator["numStakers"] < filtering
-        );
-      }
-
-      // Filtering by Total Stake
-      else if (this.filterField === "Total Stake") {
-        const filtering = this.filterText.toString().includes(".")
-          ? parseFloat(this.filterText) * 1000
-          : parseInt(this.filterText);
-
-        if (this.filterOperator === ">")
-          return this.validators.filter(
-            validator => getStake(validator.stake) > filtering
-          );
-        else if (this.filterOperator === "=")
-          return this.validators.filter(
-            validator => getStake(validator.stake) === filtering
-          );
-        return this.validators.filter(
-          validator => getStake(validator.stake) < filtering
-        );
-      }
-
-      // Filtering by & Stake
-      else if (this.filterField === "% Stake") {
-        const filtering = parseFloat(this.filterText).toFixed(2);
-
-        if (this.filterOperator === ">")
-          return this.validators.filter(
-            validator => parseFloat(validator["percent"]).toFixed(2) > filtering
-          );
-        else if (this.filterOperator === "=")
-          return this.validators.filter(
-            validator =>
-              parseFloat(validator["percent"]).toFixed(2) === filtering
-          );
-        return this.validators.filter(
-          validator => parseFloat(validator["percent"]).toFixed(2) < filtering
-        );
-      }
-
-      // Filtering by Commission
-      else if (this.filterField === "Commission") {
-        const filtering = parseFloat(this.filterText) * 10000000;
-
-        if (this.filterOperator === ">")
-          return this.validators.filter(
-            validator => parseFloat(validator["commission"]) > filtering
-          );
-        else if (this.filterOperator === "=")
-          return this.validators.filter(
-            validator => parseFloat(validator["commission"]) === filtering
-          );
-        return this.validators.filter(
-          validator => parseFloat(validator["commission"]) < filtering
-        );
-      }
-
-      return this.validators;
-    },
-    intentions() {
-      return this.$store.state.intentions.list;
-    },
-    identities() {
-      return this.$store.state.identities.list;
-    },
-    totalStakeBonded() {
-      return this.$store.state.validators.totalStakeBonded;
-    },
-    identitiesLoaded() {
-      return this.$store.state.identities.dataLoaded;
-    },
-    kusamaIdentitiesLoaded() {
-      return this.$store.state.stakingIdentities.dataLoaded;
-    },
     sortOptions() {
       // Create an options list from our fields
       return this.fields
@@ -695,6 +411,36 @@ export default {
         .map(f => {
           return { text: f.label, value: f.key };
         });
+    },
+    totalStakeBonded() {
+      let totalStakeBonded = new BN(0);
+      this.validators.forEach(validator => {
+        let totalExposure;
+        if (isHex(validator.exposure_total)) {
+          totalExposure = new BN(validator.exposure_total.toString(), 16);
+        } else {
+          totalExposure = new BN(validator.exposure_total.toString(), 10);
+        }
+        totalStakeBonded = totalStakeBonded.add(totalExposure);
+      });
+      return totalStakeBonded;
+    },
+    validatorsJSON() {
+      return this.validators.map(validator => {
+        return {
+          rank: validator.rank,
+          name: validator.display_name,
+          stash_account: validator.account_id,
+          commission_percent: (
+            parseInt(validator.commission) / 10000000
+          ).toFixed(2),
+          self_stake: validator.exposure_own,
+          total_stake: validator.exposure_own,
+          num_stakers: validator.num_stakers,
+          produced_blocks: validator.produced_blocks,
+          next_elected: validator.next_elected
+        };
+      });
     }
   },
   watch: {
@@ -709,49 +455,14 @@ export default {
     }
   },
   created: function() {
-    var vm = this;
-
     // Get favorites from cookie
     if (this.$cookies.get("favorites")) {
       this.favorites = this.$cookies.get("favorites");
     }
-
-    // Force update of network info
-    vm.$store.dispatch("network/update");
-
-    // Force update of indentity list if empty
-    if (this.$store.state.identities.list.length === 0) {
-      vm.$store.dispatch("identities/update");
-    }
-
-    // Force update of staking identities list if empty
-    if (this.$store.state.stakingIdentities.list.length === 0) {
-      vm.$store.dispatch("stakingIdentities/update");
-    }
-
-    // Update network info validators and intentions every 60 seconds
-    this.polling = setInterval(() => {
-      vm.$store.dispatch("network/update");
-      vm.$store.dispatch("stakingIdentities/update");
-      if (!this.filter)
-        this.totalRows = this.$store.state.validators.list.length;
-    }, 60000);
-  },
-  beforeDestroy: function() {
-    clearInterval(this.polling);
   },
   methods: {
-    handleFilter() {
-      this.filter = "";
-    },
-    resetFilter() {
-      this.filterField = null;
-      this.filterOperator = null;
-      this.filterText = null;
-      this.filterOn = ["Stakers"];
-    },
     handleNumFields(num) {
-      localStorage.numItemsTableSelected = num;
+      localStorage.paginationOptions = num;
       this.perPage = parseInt(num);
     },
     toggleFavorite(accountId) {
@@ -761,7 +472,7 @@ export default {
         this.favorites.push(accountId);
       }
       this.validators = this.validators.map(validator => {
-        if (validator.accountId === accountId)
+        if (validator.account_id === accountId)
           validator.favorite = !validator.favorite;
         return validator;
       });
@@ -770,167 +481,80 @@ export default {
     isFavorite(accountId) {
       return this.favorites.includes(accountId);
     },
-    getRank(validator) {
-      // Receives validator accountId
-      for (var i = 0; i < this.validators.length; i++) {
-        if (this.validators[i].accountId == validator) {
-          return i + 1;
-        }
-      }
-      return false;
-    },
-    hasIdentity(stashId) {
-      return this.$store.state.identities.list.some(obj => {
-        return obj.stashId === stashId;
-      });
-    },
-    getIdentity(stashId) {
-      let filteredArray = this.$store.state.identities.list.filter(obj => {
-        return obj.accountId === stashId;
-      });
-      return filteredArray[0];
-    },
-    hasKusamaIdentity(stashId) {
-      return this.$store.state.stakingIdentities.list.some(obj => {
-        return obj.accountId === stashId;
-      });
-    },
-    getKusamaIdentity(stashId) {
-      let filteredArray = this.$store.state.stakingIdentities.list.filter(
-        obj => {
-          return obj.accountId === stashId;
-        }
-      );
-      return filteredArray[0] ? filteredArray[0].identity : null;
-    },
     onFiltered(filteredItems) {
       // Trigger pagination to update the number of buttons/pages due to filtering
       this.totalRows = filteredItems.length;
       this.currentPage = 1;
     },
-    setTotalStakeBonded(validators) {
-      let accum = new BN("0", 10);
-      for (let i = 0; i < validators.length; i++) {
-        let validator = validators[i];
+    getTotalStakePercen(amount) {
+      if (this.totalStakeBonded && amount) {
         let bn;
-        if (validator.exposure) {
-          if (isHex(validator.exposure.total)) {
-            bn = new BN(
-              validator.exposure.total.substring(
-                2,
-                validator.exposure.total.length
-              ),
-              16
-            );
-          } else {
-            bn = new BN(validator.exposure.total.toString(), 10);
-          }
-          accum = accum.add(bn);
+        if (isHex(amount)) {
+          bn = new BN(amount.substring(2, amount.length), 16);
+        } else {
+          bn = new BN(amount.toString(), 10);
         }
+        bn = bn.mul(new BN("10000", 10));
+        return bn.div(this.totalStakeBonded);
+      } else {
+        return 0;
       }
-      this.$store.dispatch("validators/setTotalStakeBonded", accum);
     }
   },
   apollo: {
     $subscribe: {
       validators: {
         query: gql`
-          subscription validator_staking {
-            validator_staking(limit: 1, order_by: { timestamp: desc }) {
-              json
+          subscription validator($session_index: Int!) {
+            validator(
+              order_by: { rank: asc }
+              where: { session_index: { _eq: $session_index } }
+            ) {
+              account_id
+              stash_id
+              commission
+              next_elected
+              display_name
+              exposure_others
+              exposure_own
+              exposure_total
+              produced_blocks
+              rank
+              stakers
+            }
+          }
+        `,
+        variables() {
+          return {
+            session_index: this.currentSessionIndex
+          };
+        },
+        skip() {
+          return !this.currentSessionIndex;
+        },
+        result({ data }) {
+          this.totalRows = data.validator.length;
+          this.validators = data.validator.map(validator => {
+            return {
+              ...validator,
+              num_stakers: JSON.parse(validator.stakers).length,
+              favorite: this.isFavorite(validator.account_id)
+            };
+          });
+        }
+      },
+      sessionIndex: {
+        query: gql`
+          subscription validator {
+            validator(order_by: { session_index: desc }, where: {}, limit: 1) {
+              session_index
             }
           }
         `,
         result({ data }) {
-          const { validator_staking } = data;
-          const validators = JSON.parse(validator_staking[0].json);
-          validators.sort((a, b) => {
-            let stakeA = 0;
-            let stakeB = 0;
-
-            if (a.stakers && b.stakers) {
-              if (a.stakers.total > 0) {
-                stakeA = a.stakers.total;
-              } else {
-                stakeA = a.stakingLedger.total;
-              }
-              if (b.stakers.total > 0) {
-                stakeB = b.stakers.total;
-              } else {
-                stakeB = b.stakingLedger.total;
-              }
-              return stakeA < stakeB ? 1 : -1;
-            } else {
-              return 1;
-            }
-          });
-          this.setTotalStakeBonded(validators);
-          let validatorsObject = [];
-          let rank = 0;
-
-          const transformations = validator => {
-            let stake = 0;
-            if (validator.exposure || validator.stakingLedger) {
-              if (validator.exposure.total > 0) {
-                stake = validator.exposure.total;
-              } else {
-                stake = validator.stakingLedger.total;
-              }
-            }
-            validator.stake = stake;
-
-            let stakePercent = 0;
-            if (validator.exposure) {
-              stakePercent = this.getStakePercent(
-                validator.exposure.total,
-                this.totalStakeBonded
-              );
-            }
-            validator.percent = stakePercent;
-
-            let commission = 0;
-            if (validator.validatorPrefs) {
-              commission = validator.validatorPrefs.commission;
-            }
-            validator.commission = commission;
-
-            let identity = this.getIdentity(validator.accountId);
-            if (identity !== [] && typeof identity !== "undefined") {
-              validator.identity = identity.identity;
-            } else {
-              let kusamaIdentity = this.getKusamaIdentity(validator.accountId);
-              if (kusamaIdentity) {
-                validator.identity = kusamaIdentity;
-              } else {
-                validator.identity = null;
-              }
-            }
-
-            validator.rank = rank + 1;
-            validator.imOnline = validator.imOnline.isOnline;
-            validator.imOnlineMessage = this.getImOnlineMessage(validator);
-            validator.stakers = validator.exposure || [];
-            validator.numStakers = validator.exposure
-              ? validator.exposure.others.length
-              : 0;
-            validator.eraPoints = validator.currentEraPointsEarned;
-            validator.favorite = this.isFavorite(validator.accountId);
-            rank++;
-          };
-          R.mapObjIndexed(transformations, validators);
-
-          this.validators = validators;
-        },
-        skip() {
-          if (!this.identitiesLoaded) {
-            this.$store.dispatch("identities/update");
-            return true;
+          if (data.validator[0].session_index > this.currentSessionIndex) {
+            this.currentSessionIndex = data.validator[0].session_index;
           }
-          if (!this.kusamaIdentitiesLoaded) {
-            this.$store.dispatch("stakingIdentities/update");
-            return true;
-          }
-          return false;
         }
       }
     }
@@ -1042,6 +666,9 @@ body {
   max-width: 25px;
   margin-right: 0.2rem;
 }
+#validators-table {
+  margin-bottom: 1rem;
+}
 #validators-table th {
   text-align: center;
 }
@@ -1087,6 +714,28 @@ body {
 }
 .btn-secondary {
   font-size: 0.8rem;
+}
+.circle {
+  float: right;
+  display: block;
+  padding: 0.1rem;
+  margin-left: 0.5rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  text-align: center;
+  font-size: 0.8rem;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 3px 3px;
+}
+.green {
+  color: white;
+  background: #008000;
+}
+.blue {
+  color: white;
+  background: #4682b4;
+  padding-left: 0.4rem;
+  padding-top: 0.2rem;
 }
 @media (max-width: 767px) {
   table.b-table.b-table-stacked-md > tbody > tr > [data-label] {
@@ -1144,9 +793,6 @@ body {
   #validators-table .notElected {
     font-size: 1.1rem;
     color: red;
-  }
-  #validators-table .validator-name {
-    font-size: 1.7em;
   }
   .bonded {
     color: #d75ea1;

@@ -1,56 +1,53 @@
 export const createQueryValidadorBonded = (timestamp, accountId) => `
-    query validator_bonded {
-        validator_bonded(
-        where: { account_id: { _eq: "${accountId}" }, timestamp: { _gt: ${timestamp} } },
-        order_by: {timestamp: desc}
-        ) {
-            account_id
-            amount
-            timestamp
-            session_index
-            block_number
-        }
+  query validator {
+    validator(
+    where: { account_id: { _eq: "${accountId}" }, timestamp: { _gt: ${timestamp} } },
+    order_by: {timestamp: desc}
+    ) {
+      account_id
+      exposure_total
+      timestamp
+      session_index
+      block_height
     }
+  }
 `;
 
-export const createQueryRewards = (timestamp, accountId) => `
-    query rewards {
-        rewards(
-        where: { stash_id: { _eq: "${accountId}" }, timestamp: { _gt: ${timestamp} } },
-        order_by: { timestamp: desc }
-        ) {
-            block_number
-            commission
-            era_index
-            era_points
-            era_rewards
-            estimated_payout
-            stake_info
-            stash_id
-            timestamp
-        }
+export const createQueryRewards = accountId => `
+  query validator_era_staking {
+    validator_era_staking(
+    where: { stash_id: { _eq: "${accountId}" } },
+    order_by: { era_index: asc }
+    ) {
+      commission
+      era_index
+      era_points
+      era_rewards
+      estimated_payout
+      stake_info
+      stash_id
     }
+  }
 `;
 
 export const createQuerySlashes = (timestamp, accountId) => `
-    query slashes {
-        validator_slashes_era(where: {account_id: {_eq: "${accountId}"}, timestamp: {_gt: ${timestamp}}}, order_by: {timestamp: desc}) {
-            account_id
-            amount
-            block_number
-            era_index
-            timestamp
-        }
+  query slashes {
+    validator_era_slash(where: {account_id: {_eq: "${accountId}"}, timestamp: {_gt: ${timestamp}}}, order_by: {timestamp: desc}) {
+      account_id
+      amount
+      era_index
+      timestamp
     }
+  }
 `;
 
 export const createQueryProducedBlocks = (timestamp, accountId) => `
-    query produced_blocks {
-        validator_produced_blocks(where: {account_id: {_eq: "${accountId}"}, timestamp: {_gt: ${timestamp}}}, order_by: {timestamp: desc}) {
-            account_id
-            produced_blocks
-            session_index
-            timestamp
-        }
+  query produced_blocks {
+    validator(where: {account_id: {_eq: "${accountId}"}, timestamp: {_gt: ${timestamp}}}, order_by: {timestamp: desc}) {
+      account_id
+      produced_blocks
+      session_index
+      timestamp
     }
+  }
 `;

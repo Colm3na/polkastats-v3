@@ -62,6 +62,7 @@ export default {
         {
           key: "nonce",
           label: "Transactions",
+          class: "d-none d-sm-none d-md-none d-lg-block d-xl-block",
           sortable: true
         }
       ]

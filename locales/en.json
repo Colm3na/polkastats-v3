@@ -17,15 +17,19 @@
     },
     "chain": {
       "last_block": "Last block",
-      "last_block_finalized": "Last finalized",
-      "validator_count": "Validator slots",
+      "last_block_finalized": "Finalized",
+      "validators": "Validators",
+      "validator_count": "Current active validators",
+      "validator_ideal_number": "Ideal number of validators",
       "current_session": "Session",
       "epoch": "Epoch",
       "current_era": "Era",
       "era": "Era",
       "total_issuance": "Total issuance",
       "staked": "Staked",
-      "waiting_validators": "Waiting"
+      "waiting_validators": "Waiting",
+      "nominators": "Nominators" ,
+      "progress": "Progress"
     }
   },
   "layout": {
@@ -55,37 +59,9 @@
     }
   },
   "pages": {
-    "about": {
-      "about": "ABOUT",
-      "this_is_about": "This is about",
-      "and_now": "and now",
-      "of_course": "of course",
-      "i_code_this_app_TEXT_1": "I code this app to experiment and learn about how to retrieve and represent live",
-      "i_code_this_app_TEXT_2": "and useful for humans",
-      "i_code_this_app_TEXT_3": " information about the Polkadot network",
-      "thanks_to_all_people_from": "Thanks to all the people from",
-      "for_point_me_TEXT": "for point me to the right direction and save me hours of useless coding",
-      "changelog": "CHANGELOG",
-      "new_github_repos": "New GitHub repos",
-      "and": "and",
-      "add_kusma_cc2_network_support": "Added Kusama CC2 network support",
-      "changed_default_network_to_kusama_cc2": "Changed default network to Kusama CC2",
-      "alexander_network_now_is_at": "Alexander network now is at",
-      "improved_mysql_backend": "Improved MySQL backend!",
-      "use_new": "Use new",
-      "vue_identicon_component": "vue-identicon component",
-      "use_formatbalance_function_from": "Use formatBalance function from",
-      "polkadot_identiti_icons_support": "Polkadot identity icons support",
-      "new_weekly_and_monthly_total_bonded_charts": "New weekly and monthly total bonded charts",
-      "show_period_changes_TEXT": "Show period changes in daily, weekly and monthly total bonded charts",
-      "show_last_block_and_sessionera_info": "Show last block and session/era info",
-      "improved_navigation_speed": "Improved navigation speed",
-      "head_title": "PolkaStats - About PolkaStats",
-      "head_content": "About Polkadot"
-    },
     "accounts": {
       "active_accounts": "Active accounts",
-      "search_placeholder": "Search account by address, index or identity",
+      "search_placeholder": "Search account by address or identity",
       "sort": "Sort",
       "rank": "Rank",
       "free_balance": "Free Balance",
@@ -94,22 +70,14 @@
       "remove_from_favorites": "Remove from Favorites",
       "add_to_favorites": "Add to Favorites",
       "identity": "Identity",
-      "head_title": "PolkaStats - Polkadot Kusama active accounts",
-      "head_content": "Polkadot Kusama active accounts",
-      "loading_data": "Loading data, it can take a long time. Be patient, please"
+      "head_title": "PolkaStats - {networkName} active accounts",
+      "head_content": "{networkName} active accounts",
+      "loading_data": "Loading data, it can take a long time. Be patient, please",
+      "download_csv": "Download in CSV format"
     },
-    "events": {
-      "latest_5000_kusama_events": "Latest 5,000 Kusama events",
-      "search_placeholder": "Search account by address, index or identity",
-      "sort": "Sort",
-      "block": "Block",
-      "index": "Index",
-      "section": "Section",
-      "method": "Method",
-      "phase": "Phase",
-      "data": "Data",
-      "head_title": "PolkaStats - Polkadot Kusama chain events",
-      "head_content": "Polkadot Kusama chain events"
+    "account": {
+      "head_title": "PolkaStats - {networkName} account {address}",
+      "head_content": "{networkName} account {address}"
     },
     "favorites": {
       "hi_there": "Hi there!",
@@ -128,6 +96,7 @@
       "percentage_over_total_bonded_stake": "Percentage over total bonded stake",
       "of_total_stake": "of total stake",
       "era_points": "era points",
+      "produced_blocks": "produced blocks",
       "validator_details": "Validator details",
       "stash": "Stash",
       "controller": "Controller",
@@ -137,28 +106,8 @@
       "reward_destination": "Reward destination",
       "nominators": "nominators",
       "intention": "Intention",
-      "head_title": "PolkaStats - Polkadot Kusama favorite validators and intentions",
-      "head_content": "Polkadot Kusama favorite validators and intentions"
-    },
-    "for-validators": {
-      "want_to_have_your_validator_TEXT_1": "Want to have your validator name, logo, website url",
-      "want_to_have_your_validator_TEXT_2": "and social links included in PolkaStats?",
-      "how_to_include_TEXT": "How to include your validator information in PolkaStats",
-      "you_will_need_both": "You will need both,",
-      "and": "and",
-      "accounts_in_order_to_continue": "accounts in order to continue",
-      "make_sure_TEXT": "Make sure you have properly filled your full name, website, social links and have uploaded a profile picture in your Keybase profile",
-      "login_with_your_github_TEXT": "Login with your GitHub user and make a Fork of PolkaStats v2 repo",
-      "create_a_new_folder_TEXT": "Create a new folder named 'stash_address_of_your_validator' inside",
-      "identities_folder": "identities folder",
-      "in_that_folder_TEXT": "In that folder place 3 new files with exactly this names, keybase_username with your",
-      "username_on_it": "username on it",
-      "a_logo_TEXT": "A logo.png (512x512 max) and",
-      "following_this_schema": "following this schema",
-      "make_a_pull_rquest_TEXT": "Make a Pull Request to the master branch of the original repo",
-      "need_help_TEXT": "Need help? Send me a message at",
-      "head_title": "PolkaStats - For Polkadot Kusama validators",
-      "head_content": "Include your Kusama validator info in PolkaStats"
+      "head_title": "PolkaStats - {networkName} favorite validators and intentions",
+      "head_content": "{networkName} favorite validators and intentions"
     },
     "index": {
       "we_have_a_new_TEXT": "We have a new awesome dedicated server graciously sponsored by",
@@ -170,7 +119,7 @@
       "active_validators_of": "active validators of",
       "available_slots_and": "available slots and",
       "waiting": "waiting",
-      "search_placeholder": "Search validator by account, account index, identity display name or keybase name",
+      "search_placeholder": "Search validator by account or identity display name",
       "sort": "Sort",
       "rank": "Rank",
       "elected_for_next_session": "Elected for next session",
@@ -189,7 +138,7 @@
       "loading_data": "Loading data"
     },
     "intentions": {
-      "search_placeholder": "Search intention by account, account index, identity display name or keybase name",
+      "search_placeholder": "Search intention by account or identity display name",
       "sort": "Sort",
       "intention_details": "Intention details",
       "active_bonded": "Active bonded",
@@ -198,21 +147,28 @@
       "add_to_favorites": "Add to Favorites",
       "total_stake": "Total Stake",
       "commission": "Commission",
-      "head_title": "PolkaStats -  Polkadot Kusama intention validators",
-      "head_content": "Polkadot Kusama intention validators"
+      "stakers": "Stakers",
+      "head_title": "PolkaStats -  {networkName} intention validators",
+      "head_content": "{networkName} intention validators"
     },
     "nominators": {
-      "search_placeholder": "Search nominator by account, account index or identity display name",
+      "search_placeholder": "Search nominator by account or identity display name",
       "sort": "Sort",
       "nominator_details": "Nominator details",
+      "controller_details": "Controller details",
       "remove_from_favorites": "Remove from Favorites",
       "add_to_favorites": "Add to Favorites",
       "rank": "Rank",
       "nominator": "Nominator",
+      "controller": "Controller",
       "nominations": "Nominations",
       "total_stake": "Total Stake",
-      "head_title": "PolkaStats - Polkadot Kusama nominators",
-      "head_content": "Polkadot Kusama nominators"
+      "head_title": "PolkaStats - {networkName} nominators",
+      "head_content": "{networkName} nominators"
+    },
+    "nominator": {
+      "head_title": "PolkaStats - {networkName} nominator {address}",
+      "head_content": "{networkName} nominator {address}"
     },
     "targets": {
       "targets": "Targets",
@@ -225,7 +181,7 @@
       "total_stake": "Total stake",
       "own_stake": "Own stake",
       "other_stake": "Other stake",
-      "estimated_payout": "Estimated payout/era 100 KSM",
+      "estimated_payout": "Estimated payout/era 100 {networkDenom}",
       "estimated_annualized_payout_percentage": "Estimated annualized rewards",
       "accordion-info": {
         "delegator_rewards": "Delegators rewards. How does it work",
@@ -243,7 +199,7 @@
     "phragmen": {
       "predicted_candidates_by_TEXT": "Predicted candidates by phragmen election algorithm",
       "offline_phragmen_is_TEXT": "offline-phragmen is currently broken so this is temporary disabled!",
-      "search_placeholder": "Search candidate by account, identity display name or keybase name",
+      "search_placeholder": "Search candidate by account or identity display name",
       "sort": "Sort",
       "candidate_details": "Candidate details",
       "self_bonded": "Self bonded",
@@ -255,8 +211,8 @@
       "voters": "Voters",
       "self_stake": "Self stake",
       "voters_stake": "Voters stake",
-      "head_title": "PolkaStats - Polkadot Kusama phragmen candidates",
-      "head_content": "Polkadot Kusama phragmen candidates"
+      "head_title": "PolkaStats - {networkName} phragmen candidates",
+      "head_content": "{networkName} phragmen candidates"
     },
     "support-us": {
       "support_polkastats": "SUPPORT POLKASTATS",
@@ -266,9 +222,8 @@
       "feedback": "FeedBack!",
       "we_love_feedback_TEXT": "We love getting feedback from the community, if you find a bug, want to comment some behaviour or want a feature being added please place an Issue in our",
       "github_repository": "GitHub repository",
-      "stake_in_our_validator": "Stake in our validators",
-      "this_is_an_TEXT": "This is an easy way you can support me and the Polkadot folks at",
-      "blockchain_colective": "blockchain colective",
+      "stake_in_our_validator": "Stake in our validator",
+      "this_is_an_TEXT": "This is the easiest way you can support PolkaStats.",
       "follow_polkastats_on_twitter": "Follow @PolkaStats on Twitter",
       "are_you_a_TEXT": "Are you a happy PolkaStats user? Make sure you follow",
       "on_twitter_to_get_TEXT": "on Twitter to get the last platform updates",
@@ -276,7 +231,7 @@
       "head_content": "Support us"
     },
     "validators": {
-      "search_placeholder": "Search validator by account, account index, identity display name or keybase name",
+      "search_placeholder": "Search validator by account or identity display name",
       "filter": "Filter",
       "where": "where",
       "than": "than",
@@ -293,19 +248,61 @@
       "stake": "Stake",
       "commission": "Commission",
       "era_points": "Era points",
-      "head_title": "PolkaStats - Polkadot Kusama network statistics",
-      "head_content": "Polkadot Kusama network statistics"
+      "produced_blocks": "Produced blocks",
+      "head_title": "PolkaStats - {networkName} network statistics",
+      "head_content": "{networkName} network statistics"
+    },
+    "validator": {
+      "head_title": "PolkaStats - {networkName} validator {address}",
+      "head_content": "{networkName} validator {address}"
     },
     "dashboard": {
       "title": "Dashboard",
-      "head_title": "PolkaStats - Polkadot Kusama network statistics",
-      "head_content": "Polkadot Kusama dashboard",
+      "head_title": "PolkaStats - {networkName} network statistics",
+      "head_content": "{networkName} dashboard",
       "recent_blocks": "Recent blocks",
       "top_rich": "Top 10 rich accounts",
       "recent_extrinsics": "Recent extrinsics",
       "recent_events": "Recent events",
       "polkastats_validator": "Do you like PolkaStats? ❤️",
-      "polkastats_validator_subtitle": "Now you can support our work staking in our Kusama validator!"
+      "polkastats_validator_subtitle": "Now you can support our work staking in our {networkName} validator!"
+    },
+    "blocks": {
+      "title": "Last blocks",
+      "head_title": "PolkaStats - {networkName} last blocks",
+      "head_content": "{networkName} last blocks"
+    },
+    "block": {
+      "head_title": "PolkaStats - {networkName} block {blockNumber}",
+      "head_content": "{networkName} block {blockNumber}"
+    },
+    "extrinsics": {
+      "title": "Last extrinsics",
+      "head_title": "PolkaStats - {networkName} last extrinsics",
+      "head_content": "{networkName} last extrinsics"
+    },
+    "extrinsic": {
+      "head_title": "PolkaStats - {networkName} extrinsic {extrinsicHash}",
+      "head_content": "{networkName} extrinsic {extrinsicHash}"
+    },
+    "events": {
+      "title": "Last system events",
+      "head_title": "PolkaStats - {networkName} last system events",
+      "head_content": "{networkName} last system events"
+    },
+    "event": {
+      "head_title": "PolkaStats - {networkName} event {systemEvent}",
+      "head_content": "{networkName} event {systemEvent}"
+    },
+    "send": {
+      "title": "Send {networkDenom}s using Polkadot JS extension",
+      "head_title": "PolkaStats - Send {networkDenom}s using Polkadot JS extension",
+      "head_content": "Send {networkDenom}s using Polkadot JS extension"
+    },
+    "stake": {
+      "title": "Stake {networkDenom}s using Polkadot JS extension",
+      "head_title": "PolkaStats - Stake {networkDenom}s using Polkadot JS extension",
+      "head_content": "Stake {networkDenom}s using Polkadot JS extension"
     }
   },
   "details": {
@@ -313,7 +310,6 @@
       "account": "Account",
       "free_balance": "Free Balance",
       "account_id": "Account ID",
-      "see_address_in_polkastats": "See address in PolkaScan",
       "account_nonce": "Account Nonce",
       "total_balance": "Total Balance",
       "available_balance": "Available Balance",
@@ -327,7 +323,6 @@
     "block": {
       "block": "block",
       "block_author": "Block author",
-      "see_address_in_polkastats": "See address in PolkaScan",
       "block_hash": "Block hash",
       "extrinsic_root": "Extrinsic root",
       "parent_hash": "Parent hash",
@@ -371,15 +366,14 @@
       "current_session_ids": "Current session ids",
       "next_session_ids": "Next session ids",
       "total_bonded": "Total bonded",
-      "monthly_chart": "Monthly chart",
-      "weekly_chart": "Weekly chart",
-      "daily_chart": "Daily chart"
+      "monthly_chart": "Monthly",
+      "weekly_chart": "Weekly",
+      "daily_chart": "Daily"
     },
     "nominator": {
       "previous_nominator": "Previous nominator: ",
       "next_nominator": "Next nominator: ",
       "nominator": "Nominator",
-      "see_address_in_polkastats": "See address in PolkaScan",
       "total_bonded": "Total bonded",
       "nomination": "nomination",
       "nominations": "nominations",
@@ -388,7 +382,12 @@
       "legal": "Legal",
       "riot": "Riot",
       "validator_details": "Validator details",
-      "commission": "Commission"
+      "commission": "Commission",
+      "account_details": "Account details",
+      "total_balance": "Total balance",
+      "daily_chart": "Daily",
+      "weekly_chart": "Weekly",
+      "monthly_chart": "Monthly"
     },
     "phragmen-candidate": {
       "previous_candidate": "Previous candidate: ",
@@ -426,7 +425,7 @@
       "legal": "Legal",
       "riot": "Riot",
       "nominators": "Nominators",
-      "search_placeholder": "Search staker by account or account index",
+      "search_placeholder": "Search staker by address",
       "nominator_details": "Nominator details",
       "monthly": "Monthly",
       "weekly": "Weekly",

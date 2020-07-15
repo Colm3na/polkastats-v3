@@ -152,8 +152,16 @@ export default {
 <style>
 .chart {
   background-color: rgba(185, 202, 201, 0.226);
-  border-radius: 1rem;
-  padding: 1rem 1rem 0 0;
+  padding: 1rem;
+  width: 100%;
+}
+.apexcharts-svg,
+.apexcharts-canvas {
+  width: 100% !important;
+}
+
+.chart .options_container.chart_types {
+  display: none;
 }
 
 @media (max-width: 765px) {

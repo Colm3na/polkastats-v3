@@ -2,11 +2,15 @@
   <b-container class="py-4">
     <b-row>
       <b-col md="12">
-        <h1 class="mb-4">Stake KSM using Polkadot JS extension</h1>
+        <h1 class="mb-4">Stake DOTs using Polkadot JS extension</h1>
       </b-col>
     </b-row>
     <b-row>
       <b-col md="7 mb-4">
+        <b-alert v-if="noAccountsFound" variant="danger" show>
+          <i class="fa fa-frown-o"></i> No Polkadot mainnet accounts found in
+          extension.
+        </b-alert>
         <b-form class="mt-2" @submit="onSubmit">
           <b-form-group
             id="input-group-from"
@@ -252,6 +256,7 @@
             type="submit"
             variant="primary"
             class="btn-send btn-block mt-3"
+            :disabled="noAccountsFound"
           >
             <i class="fas fa-paper-plane mr-2"></i> Stake
           </b-button>
@@ -267,9 +272,9 @@
           </p>
         </b-alert>
         <b-card>
-          <h2>How to stake KSM</h2>
+          <h2>How to stake DOTs</h2>
           <p>
-            Now you can stake KSM tokens using PolkaStats &
+            Now you can stake DOTs using PolkaStats &
             <a href="https://github.com/polkadot-js/extension" target="_blank"
               >Polkadot JS extension</a
             >
@@ -277,8 +282,8 @@
           </p>
           <ul>
             <li>
-              First of all you need a <strong>Kusama account</strong> with some
-              <strong>free balance</strong>.
+              First of all you need a <strong>Polkadot account</strong> with
+              some <strong>free balance</strong>.
             </li>
             <li>
               Install Polkadot JS extension from
@@ -307,17 +312,23 @@ import {
   web3UseRpcProvider
 } from "@polkadot/extension-dapp";
 import { ApiPromise, WsProvider } from "@polkadot/api";
-import { nodeURL } from "../polkastats.config";
+import { checkAddress } from "@polkadot/util-crypto";
+import { network } from "../polkastats.config";
 import Identicon from "../components/identicon.vue";
 import commonMixin from "../mixins/commonMixin.js";
 import { validationMixin } from "vuelidate";
 import { required, integer, minValue } from "vuelidate/lib/validators";
-import { numItemsTableOptions } from "../polkastats.config.js";
+import { paginationOptions } from "../polkastats.config.js";
 import { encodeAddress } from "@polkadot/keyring";
 import gql from "graphql-tag";
 
+const isValidPolkadotAddress = (address, addressPrefix) => {
+  return checkAddress(address, addressPrefix)[0];
+};
+
 const isValidAddress = address => {
-  return address.length === 47;
+  const polkadotRegexp = /^(([0-9a-zA-Z]{47})|([0-9a-zA-Z]{48}))$/;
+  return polkadotRegexp.test(address);
 };
 
 const isValidAmount = (amount, vm) =>
@@ -328,6 +339,9 @@ export default {
   mixins: [commonMixin, validationMixin],
   data() {
     return {
+      network,
+      currentSessionIndex: 0,
+      validators: [],
       extensionAccounts: [],
       extensionAddresses: [],
       selectedAccount: null,
@@ -344,19 +358,20 @@ export default {
         "nano",
         "micro",
         "mili",
-        "KSM",
+        network.denom,
         "Kilo",
         "Mega",
         "Giga",
         "Tera"
       ],
-      selectedUnit: "KSM",
+      selectedUnit: network.denom,
       extrinsicHash: null,
       extrinsic: null,
       success: null,
-      tableOptions: numItemsTableOptions,
-      perPage: localStorage.numItemsTableSelected
-        ? parseInt(localStorage.numItemsTableSelected)
+      noAccountsFound: false,
+      tableOptions: paginationOptions,
+      perPage: localStorage.paginationOptions
+        ? parseInt(localStorage.paginationOptions)
         : 10,
       currentPage: 1,
       sortBy: `favorite`,
@@ -368,6 +383,12 @@ export default {
         {
           key: "selected",
           label: ""
+        },
+        {
+          key: "rank",
+          label: "Rank",
+          sortable: true,
+          filterByFormatted: true
         },
         {
           key: "accountId",
@@ -404,32 +425,14 @@ export default {
   },
   computed: {
     filteredValidators() {
-      return this.$store.state.validators.list.map(validator => {
-        const { identity } = this.getIdentity(validator.accountId);
-        let name = "";
-        if (identity) {
-          if (
-            identity.displayParent &&
-            identity.displayParent !== `` &&
-            identity.display &&
-            identity.display !== ``
-          ) {
-            name = `${identity.displayParent} / ${identity.display}`;
-          } else {
-            name = identity.display || ``;
-          }
-        }
+      return this.validators.map(validator => {
         return {
-          name,
-          accountId: validator.accountId,
-          commission: (validator.validatorPrefs.commission / 10000000).toFixed(
-            2
-          )
+          rank: validator.rank,
+          name: validator.display_name,
+          accountId: validator.account_id,
+          commission: (validator.commission / 10000000).toFixed(2)
         };
       });
-    },
-    validators() {
-      return this.$store.state.validators.list;
     },
     sortOptions() {
       // Create an options list from our fields
@@ -446,11 +449,11 @@ export default {
     }
   },
   created: async function() {
-    // Load validators from store if empty
-    if (this.$store.state.validators.list.length == 0) {
-      await this.$store.dispatch("validators/update");
+    console.log(network);
+    // Get favorites from cookie
+    if (this.$cookies.get("favorites")) {
+      this.favorites = this.$cookies.get("favorites");
     }
-    this.totalRows = this.$store.state.validators.list.length;
 
     // Load identities from store if empty
     if (this.$store.state.identities.list.length == 0) {
@@ -462,18 +465,32 @@ export default {
       .then(() => {
         web3Accounts()
           .then(accounts => {
-            const wsProvider = new WsProvider(nodeURL);
+            const wsProvider = new WsProvider(this.network.nodeWs);
             ApiPromise.create({ provider: wsProvider }).then(api => {
               this.api = api;
               if (accounts.length > 0) {
                 this.extensionAccounts = accounts;
-                accounts.forEach(account =>
-                  this.extensionAddresses.push(
-                    encodeAddress(account.address, 2)
+                accounts
+                  .filter(account =>
+                    isValidPolkadotAddress(
+                      account.address,
+                      network.addressPrefix
+                    )
                   )
-                );
-                this.selectedAccount = this.extensionAccounts[0];
-                this.selectedAddress = this.extensionAddresses[0];
+                  .forEach(account =>
+                    this.extensionAddresses.push(
+                      encodeAddress(account.address, network.addressPrefix)
+                    )
+                  );
+                if (
+                  this.extensionAccounts.length > 0 &&
+                  this.extensionAddresses.length > 0
+                ) {
+                  this.selectedAccount = this.extensionAccounts[0];
+                  this.selectedAddress = this.extensionAddresses[0];
+                } else {
+                  this.noAccountsFound = true;
+                }
               }
             });
           })
@@ -511,7 +528,7 @@ export default {
           return this.amount * 1000000;
         case "mili":
           return this.amount * 1000000000;
-        case "KSM":
+        case "DOT":
           return this.amount * 1000000000000;
         case "kilo":
           return this.amount * 1000000000000000;
@@ -562,19 +579,74 @@ export default {
       this.selected = items;
     },
     handleNumFields(num) {
-      localStorage.numItemsTableSelected = num;
+      localStorage.paginationOptions = num;
       this.perPage = parseInt(num);
     },
     getIdentity(stashId) {
       return (
-        this.$store.state.identities.list.find(
-          identity => identity.accountId === stashId
-        ) || {}
+        this.validators.find(identity => identity.accountId === stashId) || {}
       );
+    },
+    isFavorite(accountId) {
+      return this.favorites.includes(accountId);
     }
   },
   apollo: {
     $subscribe: {
+      validators: {
+        query: gql`
+          subscription validator($session_index: Int!) {
+            validator(
+              order_by: { rank: asc }
+              where: { session_index: { _eq: $session_index } }
+            ) {
+              account_id
+              stash_id
+              commission
+              next_elected
+              display_name
+              exposure_others
+              exposure_own
+              exposure_total
+              produced_blocks
+              rank
+              stakers
+            }
+          }
+        `,
+        variables() {
+          return {
+            session_index: this.currentSessionIndex
+          };
+        },
+        skip() {
+          return !this.currentSessionIndex;
+        },
+        result({ data }) {
+          this.validators = data.validator.map(validator => {
+            return {
+              ...validator,
+              num_stakers: JSON.parse(validator.stakers).length,
+              favorite: this.isFavorite(validator.account_id)
+            };
+          });
+          this.totalRows = this.validators.length;
+        }
+      },
+      sessionIndex: {
+        query: gql`
+          subscription validator {
+            validator(order_by: { session_index: desc }, where: {}, limit: 1) {
+              session_index
+            }
+          }
+        `,
+        result({ data }) {
+          if (data.validator[0].session_index > this.currentSessionIndex) {
+            this.currentSessionIndex = data.validator[0].session_index;
+          }
+        }
+      },
       extrinsic: {
         query: gql`
           subscription extrinsics($hash: String!) {
@@ -611,6 +683,22 @@ export default {
         }
       }
     }
+  },
+  head() {
+    return {
+      title: this.$t("pages.stake.head_title", {
+        networkDenom: network.denom
+      }),
+      meta: [
+        {
+          hid: "description",
+          name: "description",
+          content: this.$t("pages.stake.head_content", {
+            networkDenom: network.denom
+          })
+        }
+      ]
+    };
   }
 };
 </script>

@@ -21,11 +21,6 @@
             {{ data.item.method }}
           </p>
         </template>
-        <template v-slot:cell(section)="data">
-          <p class="mb-0 d-inline-block">
-            {{ data.item.data }}
-          </p>
-        </template>
       </b-table>
     </div>
   </div>
@@ -63,7 +58,6 @@ export default {
               block_number
               event_index
               data
-              event_index
               method
               phase
               section

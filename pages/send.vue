@@ -2,11 +2,17 @@
   <b-container class="py-4">
     <b-row>
       <b-col md="12">
-        <h1 class="mb-4">Send KSM using Polkadot JS extension</h1>
+        <h1 class="mb-4">
+          Send {{ network.denom }}s using Polkadot JS extension
+        </h1>
       </b-col>
     </b-row>
     <b-row>
       <b-col md="6 mb-4">
+        <b-alert v-if="noAccountsFound" variant="danger" show>
+          <i class="fa fa-frown-o"></i> No {{ network.name }} accounts found in
+          extension.
+        </b-alert>
         <b-form class="mt-2" @submit="onSubmit">
           <b-form-group
             id="input-group-from"
@@ -178,6 +184,7 @@
             type="submit"
             variant="primary"
             class="btn-send btn-block mt-3"
+            :disabled="noAccountsFound"
           >
             <i class="fas fa-paper-plane mr-2"></i> Send
           </b-button>
@@ -186,9 +193,9 @@
       <b-col md="1"></b-col>
       <b-col md="5">
         <b-card>
-          <h2>How to send KSM</h2>
+          <h2>How to send DOTs</h2>
           <p>
-            Now you can transfer KSM tokens using PolkaStats &
+            Now you can transfer DOTs using PolkaStats &
             <a href="https://github.com/polkadot-js/extension" target="_blank"
               >Polkadot JS extension</a
             >
@@ -196,8 +203,8 @@
           </p>
           <ul>
             <li>
-              First of all you need a <strong>Kusama account</strong> with some
-              <strong>free balance</strong>.
+              First of all you need a <strong>Polkadot account</strong> with
+              some <strong>free balance</strong>.
             </li>
             <li>
               Install Polkadot JS extension from
@@ -226,7 +233,8 @@ import {
   web3UseRpcProvider
 } from "@polkadot/extension-dapp";
 import { ApiPromise, WsProvider } from "@polkadot/api";
-import { nodeURL } from "../polkastats.config";
+import { checkAddress } from "@polkadot/util-crypto";
+import { network } from "../polkastats.config";
 import Identicon from "../components/identicon.vue";
 import commonMixin from "../mixins/commonMixin.js";
 import { validationMixin } from "vuelidate";
@@ -234,8 +242,13 @@ import { required, integer, minValue } from "vuelidate/lib/validators";
 import { encodeAddress } from "@polkadot/keyring";
 import gql from "graphql-tag";
 
+const isValidPolkadotAddress = (address, addressPrefix) => {
+  return checkAddress(address, addressPrefix)[0];
+};
+
 const isValidAddress = address => {
-  return address.length === 47;
+  const polkadotRegexp = /^(([0-9a-zA-Z]{47})|([0-9a-zA-Z]{48}))$/;
+  return polkadotRegexp.test(address);
 };
 
 const isValidAmount = (amount, vm) =>
@@ -246,6 +259,7 @@ export default {
   mixins: [commonMixin, validationMixin],
   data() {
     return {
+      network,
       extensionAccounts: [],
       extensionAddresses: [],
       selectedAccount: null,
@@ -261,22 +275,24 @@ export default {
         "nano",
         "micro",
         "mili",
-        "KSM",
+        network.denom,
         "Kilo",
         "Mega",
         "Giga",
         "Tera"
       ],
-      selectedUnit: "KSM",
+      selectedUnit: network.denom,
       extrinsicHash: null,
       extrinsic: null,
-      success: null
+      success: null,
+      noAccountsFound: false
     };
   },
   validations: {
     selectedAddress: {
       required,
-      isValidAddress
+      isValidAddress,
+      isValidPolkadotAddress
     },
     amount: {
       required,
@@ -300,19 +316,32 @@ export default {
       .then(() => {
         web3Accounts()
           .then(accounts => {
-            const wsProvider = new WsProvider(nodeURL);
+            const wsProvider = new WsProvider(this.network.nodeWs);
             ApiPromise.create({ provider: wsProvider }).then(api => {
               this.api = api;
               if (accounts.length > 0) {
-                console.log(accounts);
                 this.extensionAccounts = accounts;
-                accounts.forEach(account =>
-                  this.extensionAddresses.push(
-                    encodeAddress(account.address, 2)
+                accounts
+                  .filter(account =>
+                    isValidPolkadotAddress(
+                      account.address,
+                      network.addressPrefix
+                    )
                   )
-                );
-                this.selectedAccount = this.extensionAccounts[0];
-                this.selectedAddress = this.extensionAddresses[0];
+                  .forEach(account =>
+                    this.extensionAddresses.push(
+                      encodeAddress(account.address, network.addressPrefix)
+                    )
+                  );
+                if (
+                  this.extensionAccounts.length > 0 &&
+                  this.extensionAddresses.length > 0
+                ) {
+                  this.selectedAccount = this.extensionAccounts[0];
+                  this.selectedAddress = this.extensionAddresses[0];
+                } else {
+                  this.noAccountsFound = true;
+                }
               }
             });
           })
@@ -350,7 +379,7 @@ export default {
           return this.amount * 1000000;
         case "mili":
           return this.amount * 1000000000;
-        case "KSM":
+        case "DOT":
           return this.amount * 1000000000000;
         case "kilo":
           return this.amount * 1000000000000000;
@@ -420,6 +449,22 @@ export default {
         }
       }
     }
+  },
+  head() {
+    return {
+      title: this.$t("pages.send.head_title", {
+        networkDenom: network.denom
+      }),
+      meta: [
+        {
+          hid: "description",
+          name: "description",
+          content: this.$t("pages.send.head_content", {
+            networkDenom: network.denom
+          })
+        }
+      ]
+    };
   }
 };
 </script>

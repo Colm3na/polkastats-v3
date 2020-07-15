@@ -1,6 +1,9 @@
-import { decimals, unit } from "../polkastats.config.js";
+import { network } from "../polkastats.config.js";
 import { formatBalance, isHex } from "@polkadot/util";
-formatBalance.setDefaults({ decimals, unit });
+formatBalance.setDefaults({
+  decimals: network.decimalPlaces,
+  unit: network.denom
+});
 import BN from "bn.js";
 
 export default {
@@ -66,7 +69,15 @@ export default {
       return message;
     },
     getStakePercent(amount, totalStakeBonded) {
-      if (amount === 0 || totalStakeBonded === 0) {
+      if (isHex(totalStakeBonded)) {
+        totalStakeBonded = new BN(
+          totalStakeBonded.substring(2, totalStakeBonded.length),
+          16
+        );
+      } else {
+        totalStakeBonded = new BN(totalStakeBonded.toString(), 10);
+      }
+      if (amount === 0 || totalStakeBonded.eq(new BN("0", 10))) {
         return `0`;
       }
       let amountBN;
@@ -75,9 +86,11 @@ export default {
       } else {
         amountBN = new BN(amount.toString(), 10);
       }
-      amountBN = amountBN.mul(new BN("100000", 10));
-      let result = amountBN.div(totalStakeBonded);
-      return this.formatNumber(parseInt(result.toString(10), 10) / 1000);
+      const percent = amountBN
+        .mul(new BN("100000", 10))
+        .div(totalStakeBonded)
+        .toString(10);
+      return this.formatNumber(parseFloat(percent) / (1000).toFixed(3));
     }
   }
 };

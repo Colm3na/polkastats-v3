@@ -1,477 +1,401 @@
 <template>
   <div>
     <section>
-      <b-container class="nominator-page main pt-3 pb-5">
-        <template v-for="(nominator, index) in nominators">
-          <template v-if="nominator.accountId === accountId">
-            <div :key="nominator.accountId" class="row">
-              <div class="col-2 col-lg-1">
-                <template v-if="index > 0">
-                  <nuxt-link
-                    :to="{
-                      name: 'nominator',
-                      query: { accountId: nominators[index - 1].accountId }
-                    }"
-                    :title="
-                      $t('details.nominator.previous_nominator').concat(
-                        nominators[index - 1].accountId
-                      )
-                    "
-                  >
-                    <i class="fas fa-2x fa-chevron-left" />
-                  </nuxt-link>
-                </template>
-              </div>
-              <div class="col-8 col-lg-10 text-center">
-                <h4 class="mb-1">
-                  {{ $t("details.nominator.nominator") }} {{ accountId }}
-                </h4>
-              </div>
-              <div class="col-2 col-lg-1 text-right">
-                <template v-if="index < nominators.length - 1">
-                  <nuxt-link
-                    :to="{
-                      name: 'nominator',
-                      query: { accountId: nominators[index + 1].accountId }
-                    }"
-                    :title="
-                      $t('details.nominator.next_nominator').concat(
-                        nominators[index + 1].accountId
-                      )
-                    "
-                  >
-                    <i class="fas fa-2x fa-chevron-right" />
-                  </nuxt-link>
-                </template>
-              </div>
+      <b-container class="page-nominator main pt-3 pb-5">
+        <template v-if="nominator">
+          <div :key="nominator.account_id" class="row">
+            <div class="col-12 mt-4 text-center">
+              <h4 class="mb-1">
+                {{ $t("details.nominator.nominator") }}
+                <span v-if="nominator.display_name">{{
+                  nominator.display_name
+                }}</span>
+                <span v-else>{{ accountId }}</span>
+              </h4>
             </div>
-            <div :key="index" class="card mt-4 mb-3">
-              <div class="card-body text-center">
-                <Identicon
-                  :key="nominator.accountId"
-                  :value="nominator.accountId"
-                  :size="80"
-                  :theme="'polkadot'"
-                />
-                <a
-                  :href="blockExplorer.account + nominator.accountId"
-                  target="_blank"
-                  class="d-block my-2"
-                >
-                  {{ $t("details.nominator.nominator") }}
-                  <span
+          </div>
+          <div class="card mt-4 mb-3">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-3 rank text-center">
+                  <Identicon
+                    :key="nominator.account_id"
+                    :value="nominator.account_id"
+                    :size="80"
+                    :theme="'polkadot'"
+                  />
+                  <p class="mb-0 rank">rank #{{ nominator.rank }}</p>
+                  <p
                     v-b-tooltip.hover
-                    :title="$t('details.nominator.see_address_in_polkastats')"
-                    >{{ shortAddress(nominator.accountId) }}</span
+                    class="amount"
+                    :title="$t('details.nominator.total_bonded')"
                   >
-                </a>
-                <p
-                  v-b-tooltip.hover
-                  class="amount"
-                  :title="$t('details.nominator.total_bonded')"
-                >
-                  {{ formatAmount(getTotalStake(nominator.staking)) }}
-                </p>
-                <h5>
-                  {{ nominator.staking.length }}
-                  {{
-                    nominator.staking.length > 1
-                      ? $t("details.nominator.nominations")
-                      : $t("details.nominator.nomination")
-                  }}
-                </h5>
-                <hr />
-                <!-- identity start -->
-                <div v-if="hasIdentity(nominator.accountId)">
-                  <div
-                    v-if="
-                      getIdentity(nominator.accountId).identity.hasOwnProperty(
-                        'display'
-                      )
-                    "
-                    class="row"
-                  >
-                    <div class="col-md-3 mb-1">
-                      <strong>{{ $t("details.nominator.name") }}</strong>
-                    </div>
-                    <div class="col-md-9 mb-1 fee">
-                      {{ getIdentity(nominator.accountId).identity.display }}
-                    </div>
-                  </div>
-                  <div
-                    v-if="
-                      getIdentity(nominator.accountId).identity.hasOwnProperty(
-                        'email'
-                      )
-                    "
-                    class="row"
-                  >
-                    <div class="col-md-3 mb-2">
-                      <strong>{{ $t("details.nominator.email") }}</strong>
-                    </div>
-                    <div class="col-md-9 mb-2 fee">
-                      <a
-                        :href="
-                          `mailto:${
-                            getIdentity(nominator.accountId).identity.email
-                          }`
-                        "
-                        target="_blank"
-                      >
-                        {{ getIdentity(nominator.accountId).identity.email }}
-                      </a>
-                    </div>
-                  </div>
-                  <div
-                    v-if="
-                      getIdentity(nominator.accountId).identity.hasOwnProperty(
-                        'legal'
-                      )
-                    "
-                    class="row"
-                  >
-                    <div class="col-md-3 mb-2">
-                      <strong>{{ $t("details.nominator.legal") }}</strong>
-                    </div>
-                    <div class="col-md-9 mb-2 fee">
-                      {{ getIdentity(nominator.accountId).identity.legal }}
-                    </div>
-                  </div>
-                  <div
-                    v-if="
-                      getIdentity(nominator.accountId).identity.hasOwnProperty(
-                        'riot'
-                      )
-                    "
-                    class="row"
-                  >
-                    <div class="col-md-3 mb-2">
-                      <strong>{{ $t("details.nominator.riot") }}</strong>
-                    </div>
-                    <div class="col-md-9 mb-2 fee">
-                      <a
-                        :href="
-                          `https://riot.im/app/#/user/${
-                            getIdentity(nominator.accountId).identity.riot
-                          }`
-                        "
-                        target="_blank"
-                      >
-                        >
-                        {{ getIdentity(nominator.accountId).identity.riot }}
-                      </a>
-                    </div>
-                  </div>
-                  <div
-                    v-if="
-                      getIdentity(nominator.accountId).identity.hasOwnProperty(
-                        'twitter'
-                      )
-                    "
-                    class="row"
-                  >
-                    <div class="col-md-3 mb-2">
-                      <strong>Twitter</strong>
-                    </div>
-                    <div class="col-md-9 mb-2 fee">
-                      <a
-                        :href="
-                          `https://twitter.com/${
-                            getIdentity(nominator.accountId).identity.twitter
-                          }`
-                        "
-                        target="_blank"
-                      >
-                        >
-                        {{ getIdentity(nominator.accountId).identity.twitter }}
-                      </a>
-                    </div>
-                  </div>
-                  <div
-                    v-if="
-                      getIdentity(nominator.accountId).identity.hasOwnProperty(
-                        'web'
-                      )
-                    "
-                    class="row"
-                  >
-                    <div class="col-md-3 mb-2">
-                      <strong>Web</strong>
-                    </div>
-                    <div class="col-md-9 mb-2 fee">
-                      <a
-                        :href="getIdentity(nominator.accountId).identity.web"
-                        target="_blank"
-                      >
-                        {{ getIdentity(nominator.accountId).identity.web }}
-                      </a>
-                    </div>
-                  </div>
+                    {{ formatAmount(nominator.total_staked) }}
+                  </p>
                 </div>
-                <!-- identity end -->
-                <div class="row">
-                  <div
-                    v-for="nomination in nominator.staking"
-                    :key="nomination.validator"
-                    class="col-6 col-md-4 col-lg-3 col-xl-2"
-                  >
-                    <Identicon
-                      :key="nomination.validator"
-                      :value="nomination.validator"
-                      :size="40"
-                      :theme="'polkadot'"
-                    />
-                    <nuxt-link
-                      :to="{
-                        name: 'validator',
-                        query: { accountId: nomination.validator }
-                      }"
-                      :title="$t('details.nominator.validator_details')"
-                      class="mt-2 mb-0 d-block"
-                    >
-                      <span v-b-tooltip.hover :title="nomination.validator">{{
-                        shortAddress(nomination.validator)
-                      }}</span>
-                    </nuxt-link>
-                    <p class="mt-0 mb-0">
-                      rank #{{ getRank(nomination.validator) }}
-                    </p>
-                    <p class="mt-0 mb-2">
-                      {{ $t("details.nominator.commission") }}
-                      {{
-                        (
-                          validators[getIndex(nomination.validator)]
-                            .validatorPrefs.commission / 10000000
-                        ).toFixed(2)
-                      }}%
-                    </p>
-                    <p class="amount">
-                      {{ formatAmount(nomination.amount) }}
-                      <small
-                        >({{
-                          (
-                            getTotalStakePercen(
-                              nominator.staking,
-                              nomination.amount
-                            ) / 100
-                          ).toFixed(2)
-                        }}%)</small
+                <div class="col-md-9">
+                  <div v-if="nominator.stash_id" class="row">
+                    <div class="col-md-3 mb-2">
+                      <strong>Stash</strong>
+                    </div>
+                    <div class="col-md-9 mb-2">
+                      <Identicon
+                        :key="nominator.stash_id"
+                        :value="nominator.stash_id"
+                        :size="20"
+                        :theme="'polkadot'"
+                      />
+                      <nuxt-link
+                        :to="{
+                          name: 'account',
+                          query: { accountId: nominator.stash_id }
+                        }"
                       >
-                    </p>
+                        <span
+                          v-b-tooltip.hover
+                          :title="$t('details.nominator.account_details')"
+                          >{{ shortAddress(nominator.stash_id) }}
+                        </span>
+                      </nuxt-link>
+                    </div>
+                  </div>
+                  <div v-if="nominator.controller_id" class="row">
+                    <div class="col-md-3 mb-2">
+                      <strong>Controller</strong>
+                    </div>
+                    <div class="col-md-9 mb-2">
+                      <Identicon
+                        :key="nominator.controller_id"
+                        :value="nominator.controller_id"
+                        :size="20"
+                        :theme="'polkadot'"
+                      />
+                      <nuxt-link
+                        :to="{
+                          name: 'account',
+                          query: { accountId: nominator.controller_id }
+                        }"
+                        title="Controller account details"
+                      >
+                        <span
+                          v-b-tooltip.hover
+                          :title="$t('details.nominator.account_details')"
+                          >{{ shortAddress(nominator.controller_id) }}
+                        </span>
+                      </nuxt-link>
+                    </div>
+                  </div>
+                  <div v-if="nominator.total_staked" class="row">
+                    <div class="col-md-3 mb-2">
+                      <strong>Nominations</strong>
+                    </div>
+                    <div class="col-md-9 mb-2">
+                      <span>
+                        {{ nominator.num_targets }}
+                      </span>
+                    </div>
+                  </div>
+                  <div v-if="nominator.available_balance" class="row">
+                    <div class="col-md-3 mb-2">
+                      <strong>Total balance</strong>
+                    </div>
+                    <div class="col-md-9 mb-2">
+                      <span class="small-amount">
+                        {{ formatAmount(nominator.free_balance) }}
+                      </span>
+                    </div>
+                  </div>
+                  <div v-if="nominator.available_balance" class="row">
+                    <div class="col-md-3 mb-2">
+                      <strong>Transferrable balance</strong>
+                    </div>
+                    <div class="col-md-9 mb-2">
+                      <span class="small-amount">
+                        {{
+                          formatAmount(
+                            nominator.free_balance - nominator.locked_balance
+                          )
+                        }}
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>
+
+              <hr />
+              <div class="row">
+                <div
+                  v-for="nomination in JSON.parse(nominator.targets)"
+                  :key="nomination.validator"
+                  class="col-6 col-md-4 col-lg-3 col-xl-2 text-center"
+                >
+                  <Identicon
+                    :key="nomination.validator"
+                    :value="nomination.validator"
+                    :size="40"
+                    :theme="'polkadot'"
+                  />
+                  <nuxt-link
+                    :to="{
+                      name: 'validator',
+                      query: { accountId: nomination.validator }
+                    }"
+                    :title="$t('details.nominator.validator_details')"
+                    class="mt-2 mb-0 d-block"
+                  >
+                    <span
+                      v-if="nomination.displayName"
+                      v-b-tooltip.hover
+                      :title="nomination.validator"
+                    >
+                      {{ nomination.displayName }}
+                    </span>
+                    <span
+                      v-else
+                      v-b-tooltip.hover
+                      :title="nomination.validator"
+                    >
+                      {{ shortAddress(nomination.validator) }}
+                    </span>
+                  </nuxt-link>
+                  <p class="amount">
+                    {{ formatAmount(nomination.amount) }}
+                    <small
+                      >({{
+                        (
+                          getTotalStakePercen(
+                            nominator.total_staked,
+                            nomination.amount
+                          ) / 100
+                        ).toFixed(2)
+                      }}%)</small
+                    >
+                  </p>
+                </div>
+              </div>
             </div>
-          </template>
+          </div>
+          <!-- Charts -->
+          <div class="row">
+            <div class="col-md-6">
+              <div id="stake-evolution-monthly-chart" class="mt-5 text-center">
+                <h3>
+                  {{ $t("details.nominator.total_balance") }} -
+                  {{ $t("details.nominator.monthly_chart") }}
+                  <small
+                    v-if="monthly.last - monthly.first > 0"
+                    class="change text-success ml-3"
+                    ><i class="far fa-thumbs-up" /> +{{
+                      formatAmount(monthly.last - monthly.first)
+                    }}</small
+                  ><small
+                    v-if="monthly.last - monthly.first < 0"
+                    class="change text-danger ml-3"
+                    ><i class="far fa-thumbs-down" />
+                    {{ formatAmount(monthly.last - monthly.first) }}</small
+                  >
+                </h3>
+                <chart
+                  :options="TotalBalanceEvolutionMonthlyChartOptions"
+                  :series="TotalBalanceEvolutionMonthlySeries"
+                />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div
+                id="stake-evolution-weekly-chart"
+                class="mt-5 mb-5 text-center"
+              >
+                <h3>
+                  {{ $t("details.nominator.total_balance") }} -
+                  {{ $t("details.nominator.weekly_chart") }}
+                  <small
+                    v-if="weekly.last - weekly.first > 0"
+                    class="change text-success ml-3"
+                    ><i class="far fa-thumbs-up" /> +{{
+                      formatAmount(weekly.last - weekly.first)
+                    }}</small
+                  ><small
+                    v-if="weekly.last - weekly.first < 0"
+                    class="change text-danger ml-3"
+                    ><i class="far fa-thumbs-down" />
+                    {{ formatAmount(weekly.last - weekly.first) }}</small
+                  >
+                </h3>
+                <chart
+                  :options="TotalBalanceEvolutionWeeklyChartOptions"
+                  :series="TotalBalanceEvolutionWeeklySeries"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div id="stake-evolution-daily-chart" class="mb-5 text-center">
+                <h3>
+                  {{ $t("details.nominator.total_balance") }} -
+                  {{ $t("details.nominator.daily_chart") }}
+                  <small
+                    v-if="daily.last - daily.first > 0"
+                    class="change text-success ml-3"
+                    ><i class="far fa-thumbs-up" /> +{{
+                      formatAmount(daily.last - daily.first)
+                    }}</small
+                  ><small
+                    v-if="daily.last - daily.first < 0"
+                    class="change text-danger ml-3"
+                    ><i class="far fa-thumbs-down" />
+                    {{ formatAmount(daily.last - daily.first) }}</small
+                  >
+                </h3>
+                <chart
+                  :options="TotalBalanceEvolutionDailyChartOptions"
+                  :series="TotalBalanceEvolutionDailySeries"
+                />
+              </div>
+            </div>
+          </div>
         </template>
       </b-container>
     </section>
   </div>
 </template>
 <script>
-import { mapMutations } from "vuex";
 import moment from "moment";
 import Identicon from "../../components/identicon.vue";
 import { formatBalance, isHex } from "@polkadot/util";
 import BN from "bn.js";
-import { decimals, unit, blockExplorer } from "../../polkastats.config.js";
+import { network } from "../../polkastats.config.js";
 import commonMixin from "../../mixins/commonMixin.js";
-
-formatBalance.setDefaults({ decimals, unit });
+import gql from "graphql-tag";
+import chart from "../../components/chart";
+formatBalance.setDefaults({
+  decimals: network.decimalPlaces,
+  unit: network.denom
+});
 
 export default {
   components: {
+    chart,
     Identicon
   },
   mixins: [commonMixin],
   data: function() {
     return {
+      currentSessionIndex: 0,
+      nominator: undefined,
       accountId: this.$route.query.accountId,
-      blockExplorer,
-      polling: null
-    };
-  },
-  computed: {
-    validators() {
-      return this.$store.state.validators.list;
-    },
-    identities() {
-      return this.$store.state.identities.list;
-    },
-    nominators() {
-      let nominatorStaking = [];
-      for (let i = 0; i < this.validators.length; i++) {
-        let validator = this.validators[i];
-        if (validator.exposure.others.length > 0) {
-          for (let j = 0; j < validator.exposure.others.length; j++) {
-            let nominator = validator.exposure.others[j];
-            if (nominatorStaking.find(nom => nom.accountId === nominator.who)) {
-              let nominatorTmp = nominatorStaking.filter(nom => {
-                return nom.accountId === nominator.who;
-              });
-              let bn;
-              if (isHex(nominator.value)) {
-                bn = new BN(
-                  nominator.value.substring(2, nominator.value.length),
-                  16
-                );
-              } else {
-                bn = new BN(nominator.value.toString(), 10);
-              }
-              nominatorTmp[0].totalStake = nominatorTmp[0].totalStake.add(bn);
-              nominatorTmp[0].staking.push({
-                validator: validator.accountId,
-                amount: nominator.value
-              });
-            } else {
-              let bn;
-              if (isHex(nominator.value)) {
-                bn = new BN(
-                  nominator.value.substring(2, nominator.value.length),
-                  16
-                );
-              } else {
-                bn = new BN(nominator.value.toString(), 10);
-              }
-              nominatorStaking.push({
-                accountId: nominator.who,
-                totalStake: bn,
-                staking: [
-                  {
-                    validator: validator.accountId,
-                    amount: nominator.value
-                  }
-                ]
-              });
+      favorites: [],
+      daily: {
+        last: 0,
+        first: 0
+      },
+      weekly: {
+        last: 0,
+        first: 0
+      },
+      monthly: {
+        last: 0,
+        first: 0
+      },
+      TotalBalanceEvolutionDailySeries: [
+        {
+          name: `Total balance (${network.denom})`,
+          data: []
+        }
+      ],
+      TotalBalanceEvolutionWeeklySeries: [
+        {
+          name: `Total balance (${network.denom})`,
+          data: []
+        }
+      ],
+      TotalBalanceEvolutionMonthlySeries: [
+        {
+          name: `Total balance (${network.denom})`,
+          data: []
+        }
+      ],
+      commonChartOptions: {
+        chart: {
+          zoom: {
+            enabled: false
+          }
+        },
+        xaxis: {
+          categories: [],
+          type: "datetime",
+          title: {
+            text: "Date / time (UTC)"
+          },
+          labels: {
+            formatter: function(val) {
+              return moment.unix(val).format("MM/DD/YYYY HH:mm");
+            }
+          },
+          tooltip: {
+            enabled: false
+          }
+        },
+        yaxis: {
+          title: {
+            text: "Total bonded (DOT)"
+          },
+          labels: {
+            formatter: function(val) {
+              return val;
             }
           }
         }
-      }
-      nominatorStaking.sort(function compare(a, b) {
-        if (a.totalStake.lt(b.totalStake)) {
-          return 1;
-        }
-        if (a.totalStake.gt(b.totalStake)) {
-          return -1;
-        }
-        return 0;
-      });
-      nominatorStaking.map((nominator, index) => {
-        nominator.rank = index + 1;
-      });
-      // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-      this.totalRows = nominatorStaking.length;
-      return nominatorStaking;
-    }
+      },
+      TotalBalanceEvolutionDailyChartOptions: {},
+      TotalBalanceEvolutionWeeklyChartOptions: {},
+      TotalBalanceEvolutionMonthlyChartOptions: {}
+    };
   },
   watch: {
     $route() {
       this.accountId = this.$route.query.accountId;
+
+      // Update graph data
+      this.getNominatorTotalBalanceDailyGraphData();
+      this.getNominatorTotalBalanceWeeklyGraphData();
+      this.getNominatorTotalBalanceMonthlyGraphData();
+
+      // Restart graph data polling
+      clearInterval(this.graphPolling);
+      this.graphPolling = setInterval(() => {
+        this.getNominatorTotalBalanceDailyGraphData();
+        this.getNominatorTotalBalanceWeeklyGraphData();
+        this.getNominatorTotalBalanceMonthlyGraphData();
+      }, 60000);
     }
   },
   created: function() {
-    var vm = this;
-
-    // Force update of validators list if empty
-    if (this.$store.state.validators.list.length === 0) {
-      vm.$store.dispatch("validators/update");
+    // Get favorites from cookie
+    if (this.$cookies.get("favorites")) {
+      this.favorites = this.$cookies.get("favorites");
     }
 
-    // Force update of staking_identity list if empty
-    if (this.$store.state.stakingIdentities.list.length == 0) {
-      vm.$store.dispatch("stakingIdentities/update");
-    }
+    // Load graph data first time
+    this.getNominatorTotalBalanceDailyGraphData();
+    this.getNominatorTotalBalanceWeeklyGraphData();
+    this.getNominatorTotalBalanceMonthlyGraphData();
 
-    // Force update of indentities list if empty
-    if (this.$store.state.identities.list.length === 0) {
-      vm.$store.dispatch("identities/update");
-    }
-
-    // Update validators, identities every 10 seconds
-    this.polling = setInterval(() => {
-      vm.$store.dispatch("validators/update");
-      vm.$store.dispatch("identities/update");
-      vm.$store.dispatch("stakingIdentities/update");
-    }, 10000);
+    // Refresh graph data every minute
+    this.graphPolling = setInterval(() => {
+      this.getNominatorTotalBalanceDailyGraphData();
+      this.getNominatorTotalBalanceWeeklyGraphData();
+      this.getNominatorTotalBalanceMonthlyGraphData();
+    }, 60000);
   },
   beforeDestroy: function() {
-    clearInterval(this.polling);
+    clearInterval(this.graphPolling);
   },
   methods: {
-    getIndex(validator) {
-      // Receives validator accountId
-      for (var i = 0; i < this.validators.length; i++) {
-        if (this.validators[i].accountId === validator) {
-          return i;
-        }
-      }
-      return false;
-    },
-    getRank(validator) {
-      // Receives validator accountId
-      for (var i = 0; i < this.validators.length; i++) {
-        if (this.validators[i].accountId == validator) {
-          return i + 1;
-        }
-      }
-      return false;
-    },
-    makeToast(content = "", title = "", variant = null, solid = false) {
-      this.$bvToast.toast(content, {
-        title: title,
-        variant: variant,
-        solid: solid
-      });
-    },
-    getIdentity(stashId) {
-      let filteredArray = this.$store.state.stakingIdentities.list.filter(
-        obj => {
-          return obj.accountId === stashId;
-        }
-      );
-      return filteredArray[0];
-    },
-    hasIdentity(stashId) {
-      return this.$store.state.stakingIdentities.list.some(obj => {
-        return obj.accountId === stashId;
-      });
-    },
-    hasPolkaStatsIdentity(stashId) {
-      return this.$store.state.identities.list.some(obj => {
-        return obj.stashId === stashId;
-      });
-    },
-    getPolkaStatsIdentity(stashId) {
-      let filteredArray = this.$store.state.identities.list.filter(obj => {
-        return obj.stashId === stashId;
-      });
-      return filteredArray[0];
-    },
-    getTotalStake(stake) {
-      let totalStake = new BN("0", 10);
-      if (stake.length > 0) {
-        for (let i = 0; i < stake.length; i++) {
-          let nomination = stake[i];
-          let bn;
-          if (isHex(nomination.amount)) {
-            bn = new BN(
-              nomination.amount.substring(2, nomination.amount.length),
-              16
-            );
-          } else {
-            bn = new BN(nomination.amount.toString(), 10);
-          }
-          totalStake = totalStake.add(bn);
-        }
-        return totalStake;
-      } else {
-        return 0;
-      }
-    },
-    getTotalStakePercen(stake, amount) {
-      let totalStake = this.getTotalStake(stake);
-
+    getTotalStakePercen(totalStake, amount) {
       if (totalStake && amount) {
+        totalStake = new BN(totalStake.toString());
         let bn;
         if (isHex(amount)) {
           bn = new BN(amount.substring(2, amount.length), 16);
@@ -483,16 +407,353 @@ export default {
       } else {
         return 0;
       }
+    },
+    isFavorite(accountId) {
+      return this.favorites.includes(accountId);
+    },
+    getTimestamp(time) {
+      switch (time) {
+        case "day":
+          return parseInt(new Date().getTime() / 1000) - 86400;
+        case "week":
+          return parseInt(new Date().getTime() / 1000) - 604800;
+        case "month":
+          return parseInt(new Date().getTime() / 1000) - 2592000;
+        default:
+          return parseInt(new Date().getTime() / 1000) - 2592000;
+      }
+    },
+    getNominatorTotalBalanceDailyGraphData: function() {
+      var vm = this;
+
+      const GET_NOMINATOR_TOTAL_BALANCE = gql`
+        query nominator {
+          nominator(
+            where: { account_id: { _eq: "${
+              this.accountId
+            }" }, timestamp: { _gt: ${this.getTimestamp("day")} } }
+            order_by: { timestamp: desc }
+          ) {
+            account_id
+            free_balance
+            block_height
+            session_index
+            timestamp
+          }
+        }
+      `;
+
+      vm.$apolloProvider.defaultClient
+        .query({ query: GET_NOMINATOR_TOTAL_BALANCE })
+        .then(function(response) {
+          // Update chart data
+          var newCategories = [];
+          var newData = [];
+          const { nominator } = response.data;
+
+          for (var i = 0; i < nominator.length; i++) {
+            // Insert firt point, last point and points with different values
+            if (
+              i == 0 ||
+              i == nominator.length - 1 ||
+              (i > 0 &&
+                nominator[i].free_balance !== nominator[i - 1].free_balance)
+            ) {
+              // Save first and last point
+              if (i == 0) vm.daily.last = nominator[i].free_balance;
+              if (i == nominator.length - 1)
+                vm.daily.first = nominator[i].free_balance;
+
+              newCategories.push(
+                moment
+                  .unix(nominator[i].timestamp / 1000)
+                  .format("YYYY-MM-DD HH:mm:ss")
+              );
+              newData.push(nominator[i].free_balance);
+            }
+          }
+
+          newCategories.reverse();
+          newData.reverse();
+
+          // Make sure to update the whole options config and not just a single property to allow the Vue watch catch the change.
+          vm.TotalBalanceEvolutionDailyChartOptions = {
+            ...vm.commonChartOptions,
+            ...{
+              xaxis: {
+                categories: newCategories,
+                type: "datetime",
+                title: {
+                  text: "Date time (UTC)"
+                },
+                labels: {
+                  formatter: function(val) {
+                    return moment.unix(val / 1000).format("MM/DD/YYYY HH:mm");
+                  }
+                }
+              },
+              yaxis: {
+                title: {
+                  text: `Total balance (${network.denom})`
+                },
+                labels: {
+                  formatter: function(val) {
+                    return (val / 1000000000000).toFixed(6);
+                  }
+                }
+              }
+            }
+          };
+
+          // In the same way, update the series option
+          vm.TotalBalanceEvolutionDailySeries = [
+            {
+              data: newData
+            }
+          ];
+        });
+    },
+    getNominatorTotalBalanceWeeklyGraphData: function() {
+      var vm = this;
+
+      const GET_NOMINATOR_TOTAL_BALANCE = gql`
+        query nominator {
+          nominator(
+            where: { account_id: { _eq: "${
+              this.accountId
+            }" }, timestamp: { _gt: ${this.getTimestamp("week")} } }
+            order_by: { timestamp: desc }
+          ) {
+            account_id
+            free_balance
+            block_height
+            session_index
+            timestamp
+          }
+        }
+      `;
+
+      vm.$apolloProvider.defaultClient
+        .query({ query: GET_NOMINATOR_TOTAL_BALANCE })
+        .then(function(response) {
+          // Update chart data
+          var newCategories = [];
+          var newData = [];
+          const { nominator } = response.data;
+
+          for (var i = 0; i < nominator.length; i++) {
+            // Save first and last point
+            if (i == 0) vm.weekly.last = nominator[i].free_balance;
+            if (i == nominator.length - 1)
+              vm.weekly.first = nominator[i].free_balance;
+
+            newCategories.push(
+              moment
+                .unix(nominator[i].timestamp / 1000)
+                .format("YYYY-MM-DD HH:mm:ss")
+            );
+            newData.push(nominator[i].free_balance);
+          }
+
+          newCategories.reverse();
+          newData.reverse();
+
+          // Make sure to update the whole options config and not just a single property to allow the Vue watch catch the change.
+          vm.TotalBalanceEvolutionWeeklyChartOptions = {
+            ...vm.commonChartOptions,
+            ...{
+              xaxis: {
+                categories: newCategories,
+                type: "datetime",
+                title: {
+                  text: "Date time (UTC)"
+                },
+                labels: {
+                  formatter: function(val) {
+                    return moment.unix(val / 1000).format("MM/DD/YYYY HH:mm");
+                  }
+                }
+              },
+              yaxis: {
+                title: {
+                  text: `Total balance (${network.denom})`
+                },
+                labels: {
+                  formatter: function(val) {
+                    return (val / 1000000000000).toFixed(6);
+                  }
+                }
+              }
+            }
+          };
+
+          // In the same way, update the series option
+          vm.TotalBalanceEvolutionWeeklySeries = [
+            {
+              data: newData
+            }
+          ];
+        });
+    },
+    getNominatorTotalBalanceMonthlyGraphData: function() {
+      var vm = this;
+
+      const GET_NOMINATOR_TOTAL_BALANCE = gql`
+        query nominator {
+          nominator(
+            where: { account_id: { _eq: "${
+              this.accountId
+            }" }, timestamp: { _gt: ${this.getTimestamp("month")} } }
+            order_by: { timestamp: desc }
+          ) {
+            account_id
+            free_balance
+            block_height
+            session_index
+            timestamp
+          }
+        }
+      `;
+
+      vm.$apolloProvider.defaultClient
+        .query({ query: GET_NOMINATOR_TOTAL_BALANCE })
+        .then(function(response) {
+          // Update chart data
+          var newCategories = [];
+          var newData = [];
+          const { nominator } = response.data;
+
+          for (var i = 0; i < nominator.length; i++) {
+            // Save first and last point
+            if (i == 0) vm.monthly.last = nominator[i].free_balance;
+            if (i == nominator.length - 1)
+              vm.monthly.first = nominator[i].free_balance;
+
+            newCategories.push(
+              moment
+                .unix(nominator[i].timestamp / 1000)
+                .format("YYYY-MM-DD HH:mm:ss")
+            );
+            newData.push(nominator[i].free_balance);
+          }
+
+          newCategories.reverse();
+          newData.reverse();
+
+          // Make sure to update the whole options config and not just a single property to allow the Vue watch catch the change.
+          vm.TotalBalanceEvolutionMonthlyChartOptions = {
+            ...vm.commonChartOptions,
+            ...{
+              xaxis: {
+                categories: newCategories,
+                type: "datetime",
+                title: {
+                  text: "Date time (UTC)"
+                },
+                labels: {
+                  formatter: function(val) {
+                    return moment.unix(val / 1000).format("MM/DD/YYYY HH:mm");
+                  }
+                }
+              },
+              yaxis: {
+                title: {
+                  text: `Total balance (${network.denom})`
+                },
+                labels: {
+                  formatter: function(val) {
+                    return (val / 1000000000000).toFixed(6);
+                  }
+                }
+              }
+            }
+          };
+
+          // In the same way, update the series option
+          vm.TotalBalanceEvolutionMonthlySeries = [
+            {
+              data: newData
+            }
+          ];
+        });
+    }
+  },
+  apollo: {
+    $subscribe: {
+      validators: {
+        query: gql`
+          subscription nominator($session_index: Int!, $account_id: String!) {
+            nominator(
+              where: {
+                session_index: { _eq: $session_index }
+                account_id: { _eq: $account_id }
+              }
+            ) {
+              account_id
+              available_balance
+              balances
+              block_height
+              controller_id
+              display_name
+              free_balance
+              identity
+              locked_balance
+              nonce
+              rank
+              stash_id
+              targets
+              timestamp
+              total_staked
+            }
+          }
+        `,
+        variables() {
+          return {
+            account_id: this.accountId,
+            session_index: this.currentSessionIndex
+          };
+        },
+        skip() {
+          return !this.currentSessionIndex;
+        },
+        result({ data }) {
+          this.nominator = {
+            ...data.nominator[0],
+            num_targets: JSON.parse(data.nominator[0].targets).length,
+            favorite: this.isFavorite(data.nominator[0].account_id)
+          };
+        }
+      },
+      sessionIndex: {
+        query: gql`
+          subscription nominator {
+            nominator(order_by: { session_index: desc }, where: {}, limit: 1) {
+              session_index
+            }
+          }
+        `,
+        result({ data }) {
+          if (data.nominator[0].session_index > this.currentSessionIndex) {
+            this.currentSessionIndex = data.nominator[0].session_index;
+          }
+        }
+      }
     }
   },
   head() {
     return {
-      title: "PolkaStats - Kusama nominator " + this.$route.query.accountId,
+      title: this.$t("pages.nominator.head_title", {
+        networkName: network.name,
+        address: this.$route.query.accountId
+      }),
       meta: [
         {
           hid: "description",
           name: "description",
-          content: "Kusama nominator " + this.$route.query.accountId
+          content: this.$tc("pages.nominator.head_content", {
+            networkName: network.name,
+            address: this.$route.query.accountId
+          })
         }
       ]
     };
@@ -500,12 +761,25 @@ export default {
 };
 </script>
 <style>
-.amount {
+.page-nominator .amount {
   color: #ef1073;
   font-weight: 700;
   font-size: 1rem;
 }
-.identicon {
+.page-nominator .small-amount {
+  color: #ef1073;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+.page-nominator .identicon {
   cursor: pointer;
+  display: inline-block;
+}
+.page-nominator .rank {
+  font-size: 1.4rem;
+  color: #7d7378;
+}
+.page-nominator .rank .identicon {
+  margin-bottom: 0.2rem;
 }
 </style>

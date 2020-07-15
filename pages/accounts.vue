@@ -7,7 +7,7 @@
         </h1>
         <!-- Filter -->
         <b-row>
-          <b-col lg="12" class="mb-4">
+          <b-col lg="12" class="mb-3">
             <b-form-input
               id="filterInput"
               v-model="filter"
@@ -57,18 +57,15 @@
             </b-form-group>
           </b-col>
         </div>
+        <JsonCSV
+          :data="accountsJSON"
+          class="download-csv mb-2"
+          name="polkastats.io_polkadot_accounts.csv"
+        >
+          <i class="fas fa-file-csv"></i>
+          {{ $t("pages.accounts.download_csv") }}
+        </JsonCSV>
         <!-- Table with sorting and pagination-->
-        <div v-if="!busy">
-          <b-alert
-            show
-            dismissible
-            variant="primary"
-            class="text-center"
-            data-testid="serverAlert"
-          >
-            <div>{{ $t("pages.accounts.loading_data") }}</div>
-          </b-alert>
-        </div>
         <div>
           <b-table
             id="accounts-table"
@@ -82,7 +79,6 @@
             :sort-desc.sync="sortDesc"
             :filter="filter"
             :filter-included-fields="filterOn"
-            :busy="busy"
             @filtered="onFiltered"
           >
             <template v-slot:cell(rank)="data">
@@ -238,19 +234,20 @@ import { mapMutations } from "vuex";
 import bootstrap from "bootstrap";
 import Identicon from "../components/identicon.vue";
 import commonMixin from "../mixins/commonMixin.js";
-import { numItemsTableOptions } from "../polkastats.config.js";
+import { paginationOptions, network } from "../polkastats.config.js";
+import JsonCSV from "vue-json-csv";
 
 export default {
   components: {
-    Identicon
+    Identicon,
+    JsonCSV
   },
   mixins: [commonMixin],
   data: function() {
     return {
-      busy: false,
-      tableOptions: numItemsTableOptions,
-      perPage: localStorage.numItemsTableSelected
-        ? parseInt(localStorage.numItemsTableSelected)
+      tableOptions: paginationOptions,
+      perPage: localStorage.paginationOptions
+        ? parseInt(localStorage.paginationOptions)
         : 10,
       currentPage: 1,
       sortBy: `favorite`,
@@ -317,6 +314,19 @@ export default {
         .map(f => {
           return { text: f.label, value: f.key };
         });
+    },
+    accountsJSON() {
+      return this.accounts.map(account => {
+        return {
+          rank: account.rank,
+          account_id: account.accountId,
+          identity_display_parent: account.parentIdentity,
+          identity_display: account.identity,
+          available_balance: account.availableBalance,
+          free_balance: account.freeBalance,
+          locked_balance: account.lockedBalance
+        };
+      });
     }
   },
   watch: {
@@ -369,19 +379,20 @@ export default {
       // Trigger pagination to update the number of buttons/pages due to filtering
       this.totalRows = filteredItems.length;
       this.currentPage = 1;
-    },
-    setDataLoaded() {
-      this.busy = true;
     }
   },
   head() {
     return {
-      title: this.$t("pages.accounts.head_title"),
+      title: this.$t("pages.accounts.head_title", {
+        networkName: network.name
+      }),
       meta: [
         {
           hid: "description",
           name: "description",
-          content: this.$t("pages.accounts.head_content")
+          content: this.$tc("pages.accounts.head_content", {
+            networkName: network.name
+          })
         }
       ]
     };
@@ -406,7 +417,8 @@ export default {
 .btn-secondary {
   font-size: 0.8rem;
 }
-table.b-table[aria-busy="true"] {
-  opacity: 1;
+.download-csv {
+  cursor: pointer;
+  text-align: right;
 }
 </style>

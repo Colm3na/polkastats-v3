@@ -2,643 +2,520 @@
   <div>
     <section>
       <b-container class="page-intention main pt-3 pb-5">
-        <template v-for="(validator, index) in intentions">
-          <template v-if="validator.accountId == accountId">
-            <div :key="validator.accountId" class="row">
-              <div class="col-2 col-lg-1">
-                <template v-if="index > 0">
-                  <nuxt-link
-                    :to="{
-                      name: 'intention',
-                      query: { accountId: intentions[index - 1].accountId }
-                    }"
-                    :title="
-                      $t('details.intention.previous_intention').concat(
-                        intentions[index - 1].accountId
-                      )
-                    "
-                  >
-                    <i class="fas fa-2x fa-chevron-left" />
-                  </nuxt-link>
-                </template>
-              </div>
-              <div class="col-8 col-lg-10 text-center">
-                <h4 class="mb-1">
-                  {{ $t("details.intention.intention") }} {{ accountId }}
-                </h4>
-              </div>
-              <div class="col-2 col-lg-1 text-right">
-                <template v-if="index < intentions.length - 1">
-                  <nuxt-link
-                    :to="{
-                      name: 'intention',
-                      query: { accountId: intentions[index + 1].accountId }
-                    }"
-                    :title="
-                      $t('details.intention.next_intention').concat(
-                        intentions[index + 1].accountId
-                      )
-                    "
-                  >
-                    <i class="fas fa-2x fa-chevron-right" />
-                  </nuxt-link>
-                </template>
-              </div>
+        <template v-if="intention">
+          <div :key="intention.account_id" class="row">
+            <div class="col-12 mt-4 text-center">
+              <h4 class="mb-1">
+                {{ $t("details.intention.intention") }}
+                <span v-if="intention.display_name">{{
+                  intention.display_name
+                }}</span>
+                <span v-else>{{ accountId }}</span>
+              </h4>
             </div>
-            <div :key="index" class="validator-detail card mt-4 mb-3">
-              <div class="card-body">
-                <i
-                  v-if="isFavorite(validator.accountId)"
-                  v-b-tooltip.hover
-                  class="favorite fas fa-star"
-                  style="color: #f1bd23"
-                  :title="$t('details.intention.in_favorites')"
-                />
-                <i
-                  v-else
-                  v-b-tooltip.hover
-                  class="favorite fas fa-star"
-                  style="color: #e6dfdf;"
-                  :title="$t('details.intention.not_in_favorites')"
-                />
-                <div class="row">
-                  <div class="col-md-3 mb-2 text-center">
-                    <div v-if="hasPolkaStatsIdentity(validator.accountId)">
-                      <div
-                        v-if="
-                          getPolkaStatsIdentity(validator.accountId).logo !== ''
-                        "
-                      >
-                        <img
-                          :src="getPolkaStatsIdentity(validator.accountId).logo"
-                          class="img-fluid"
-                          style="max-width: 150px;"
-                        />
-                        <h3
-                          v-if="
-                            getPolkaStatsIdentity(validator.accountId)
-                              .full_name !== ''
-                          "
-                          class="mt-2 mb-2"
-                        >
-                          {{
-                            getPolkaStatsIdentity(validator.accountId).full_name
-                          }}
-                        </h3>
-                      </div>
-                      <div v-else>
-                        <Identicon
-                          :key="validator.accountId"
-                          :value="validator.accountId"
-                          :size="80"
-                          :theme="'polkadot'"
-                        />
-                      </div>
+          </div>
+          <div class="validator-detail card mt-4 mb-3">
+            <div class="card-body">
+              <i
+                v-if="isFavorite(intention.account_id)"
+                v-b-tooltip.hover
+                class="favorite fas fa-star"
+                style="color: #f1bd23"
+                :title="$t('details.intention.in_favorites')"
+              />
+              <i
+                v-else
+                v-b-tooltip.hover
+                class="favorite fas fa-star"
+                style="color: #e6dfdf;"
+                :title="$t('details.intention.not_in_favorites')"
+              />
+              <div class="row">
+                <div class="col-md-3 mb-2 text-center">
+                  <div v-if="intention.display_name">
+                    <Identicon
+                      :key="intention.account_id"
+                      :value="intention.account_id"
+                      :size="80"
+                      :theme="'polkadot'"
+                    />
+                    {{ intention.display_name }}
+                  </div>
+                  <div v-else>
+                    <Identicon
+                      :key="intention.account_id"
+                      :value="intention.account_id"
+                      :size="80"
+                      :theme="'polkadot'"
+                    />
+                  </div>
+                  <p class="mb-0 rank">rank #{{ intention.rank }}</p>
+                  <p
+                    v-b-tooltip.hover
+                    class="bonded mb-0"
+                    :title="$t('details.intention.active_bonded')"
+                  >
+                    {{
+                      formatAmount(JSON.parse(intention.staking_ledger).active)
+                    }}
+                  </p>
+                  <p class="mb-0">
+                    <small>
+                      <span v-b-tooltip.hover title="Total bonded">
+                        {{ formatAmount(intention.staking_ledger_total) }}
+                      </span>
+                    </small>
+                  </p>
+                </div>
+                <div class="col-md-9">
+                  <div class="row">
+                    <div class="col-md-3 mb-2">
+                      <strong>Stash</strong>
                     </div>
-                    <div v-else>
+                    <div class="col-md-9 mb-2">
                       <Identicon
-                        :key="validator.accountId"
-                        :value="validator.accountId"
-                        :size="80"
+                        :key="intention.stash_id"
+                        :value="intention.stash_id"
+                        :size="20"
                         :theme="'polkadot'"
                       />
+                      <nuxt-link
+                        :to="{
+                          name: 'account',
+                          query: {
+                            accountId: intention.stash_id
+                          }
+                        }"
+                      >
+                        <span
+                          v-b-tooltip.hover
+                          class="d-inline d-sm-none d-md-none d-lg-none d-xl-none"
+                          :title="intention.stash_id"
+                          >{{ shortAddress(intention.stash_id) }}</span
+                        >
+                        <span
+                          class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline"
+                          >{{ shortAddress(intention.stash_id) }}</span
+                        >
+                      </nuxt-link>
                     </div>
-                    <p class="mb-0 rank">rank #{{ index + 1 }}</p>
-                    <p
-                      v-b-tooltip.hover
-                      class="bonded mb-0"
-                      :title="$t('details.intention.active_bonded')"
-                    >
-                      {{ formatAmount(validator.stakingLedger.active) }}
-                    </p>
-                    <p class="mb-0">
-                      <small>
-                        <span v-b-tooltip.hover title="Total bonded">
-                          {{ formatAmount(validator.stakingLedger.total) }}
-                        </span>
-                      </small>
-                    </p>
                   </div>
-                  <div class="col-md-9">
-                    <div class="row">
-                      <div class="col-md-3 mb-2">
-                        <strong>Stash</strong>
-                      </div>
-                      <div class="col-md-9 mb-2">
-                        <Identicon
-                          :key="validator.stashId"
-                          :value="validator.stashId"
-                          :size="20"
-                          :theme="'polkadot'"
-                        />
-                        <a
-                          :href="blockExplorer.account + validator.stashId"
-                          target="_blank"
-                        >
-                          <span
-                            v-b-tooltip.hover
-                            class="d-inline d-sm-none d-md-none d-lg-none d-xl-none"
-                            :title="validator.stashId"
-                            >{{ shortAddress(validator.stashId) }}</span
-                          >
-                          <span
-                            class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline"
-                            >{{ shortAddress(validator.stashId) }}</span
-                          >
-                        </a>
-                      </div>
+                  <div class="row">
+                    <div class="col-md-3 mb-2">
+                      <strong>Controller</strong>
                     </div>
-                    <div class="row">
-                      <div class="col-md-3 mb-2">
-                        <strong>Controller</strong>
-                      </div>
-                      <div class="col-md-9 mb-2">
-                        <Identicon
-                          :key="validator.controllerId"
-                          :value="validator.controllerId"
-                          :size="20"
-                          :theme="'polkadot'"
-                        />
-                        <a
-                          :href="blockExplorer.account + validator.controllerId"
-                          target="_blank"
+                    <div class="col-md-9 mb-2">
+                      <Identicon
+                        :key="intention.controller_id"
+                        :value="intention.controller_id"
+                        :size="20"
+                        :theme="'polkadot'"
+                      />
+                      <nuxt-link
+                        :to="{
+                          name: 'account',
+                          query: {
+                            accountId: intention.controller_id
+                          }
+                        }"
+                      >
+                        <span
+                          v-b-tooltip.hover
+                          class="d-inline d-sm-none d-md-none d-lg-none d-xl-none"
+                          :title="intention.controller_id"
+                          >{{ shortAddress(intention.controller_id) }}
+                        </span>
+                        <span
+                          class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline"
+                          >{{ shortAddress(intention.controller_id) }}</span
                         >
-                          <span
-                            v-b-tooltip.hover
-                            class="d-inline d-sm-none d-md-none d-lg-none d-xl-none"
-                            :title="validator.controllerId"
-                            >{{ shortAddress(validator.controllerId) }}
-                          </span>
-                          <span
-                            class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline"
-                            >{{ shortAddress(validator.controllerId) }}</span
-                          >
-                        </a>
-                      </div>
+                      </nuxt-link>
                     </div>
-                    <div v-if="validator.sessionIdHex" class="row">
-                      <div class="col-md-3 mb-2">
-                        <strong>{{
-                          $t("details.intention.session_id")
-                        }}</strong>
-                      </div>
-                      <div id="session-id-info" class="col-md-9 mb-2">
-                        <b-button
-                          v-b-toggle="`accordion-${index}-sessionIdHex`"
-                          variant="link"
-                          style="text-decoration: none; font-size: 1rem; padding: 0; border: 0; color: #670d35"
-                        >
-                          />
-                          {{ shortSessionId(validator.sessionIdHex) }}
-                        </b-button>
-                        <b-collapse
-                          :id="`accordion-${index}-sessionIdHex`"
-                          class="collapse pt-2 pb-3"
-                          :data-parent="'#session-id-info'"
-                        >
-                          {{ validator.sessionIdHex }}
-                        </b-collapse>
-                      </div>
+                  </div>
+                  <div v-if="intention.session_id_hex" class="row">
+                    <div class="col-md-3 mb-2">
+                      <strong>{{ $t("details.intention.session_id") }}</strong>
                     </div>
-                    <div v-if="validator.nextSessionIdHex" class="row">
-                      <div class="col-md-3 mb-2">
-                        <strong>{{
-                          $t("details.intention.next_session_id")
-                        }}</strong>
+                    <div id="session-id-info" class="col-md-9 mb-2">
+                      <b-button
+                        v-b-toggle="`accordion-sessionIdHex`"
+                        variant="link"
+                        style="text-decoration: none; font-size: 0.9rem; padding: 0; border: 0; color: #670d35"
+                      >
+                        <i
+                          class="fa fa-chevron-right mr-1"
+                          aria-hidden="true"
+                        ></i>
+                        {{ shortSessionId(intention.session_id_hex) }}
+                      </b-button>
+                      <b-collapse
+                        :id="`accordion-sessionIdHex`"
+                        class="collapse pt-2 pb-3"
+                        :data-parent="'#session-id-info'"
+                      >
+                        {{ intention.session_id_hex }}
+                      </b-collapse>
+                    </div>
+                  </div>
+                  <div v-if="intention.next_session_id_hex" class="row">
+                    <div class="col-md-3 mb-2">
+                      <strong>{{
+                        $t("details.intention.next_session_id")
+                      }}</strong>
+                    </div>
+                    <div id="next-session-id-info" class="col-md-9 mb-2">
+                      <b-button
+                        v-b-toggle="`accordion-nextSessionIdHex`"
+                        variant="link"
+                        style="text-decoration: none; font-size: 0.9rem; padding: 0; border: 0; color: #670d35"
+                      >
+                        <i
+                          class="fa fa-chevron-right mr-1"
+                          aria-hidden="true"
+                        ></i>
+                        {{ shortSessionId(intention.next_session_id_hex) }}
+                      </b-button>
+                      <b-collapse
+                        :id="`accordion-nextSessionIdHex`"
+                        class="collapse pt-2 pb-3"
+                        :data-parent="'#next-session-id-info'"
+                      >
+                        {{ intention.next_session_id_hex }}
+                      </b-collapse>
+                    </div>
+                  </div>
+                  <div v-if="intention.commission" class="row">
+                    <div class="col-md-3 mb-2">
+                      <strong>{{ $t("details.intention.commission") }}</strong>
+                    </div>
+                    <div class="col-md-9 mb-2 fee">
+                      {{ (intention.commission / 10000000).toFixed(2) }}%
+                    </div>
+                  </div>
+                  <div class="row mb-2">
+                    <div class="col-md-3 mb-2">
+                      <strong>{{
+                        $t("details.intention.reward_destination")
+                      }}</strong>
+                    </div>
+                    <div class="col-md-9 mb-2 fee">
+                      {{ intention.reward_destination }}
+                    </div>
+                  </div>
+                  <!-- identity start -->
+                  <div v-if="JSON.parse(intention.identity)">
+                    <div v-if="intention.display_name" class="row">
+                      <div class="col-md-3 mb-1">
+                        <strong>{{ $t("details.intention.name") }}</strong>
                       </div>
-                      <div id="next-session-id-info" class="col-md-9 mb-2">
-                        <b-button
-                          v-b-toggle="`accordion-${index}-nextSessionIdHex`"
-                          variant="link"
-                          style="text-decoration: none; font-size: 1rem; padding: 0; border: 0; color: #670d35"
-                        >
-                          >
-                          {{ shortSessionId(validator.nextSessionIdHex) }}
-                        </b-button>
-                        <b-collapse
-                          :id="`accordion-${index}-nextSessionIdHex`"
-                          class="collapse pt-2 pb-3"
-                          :data-parent="'#next-session-id-info'"
-                        >
-                          {{ validator.nextSessionIdHex }}
-                        </b-collapse>
+                      <div class="col-md-9 mb-1 fee">
+                        {{ intention.display_name }}
                       </div>
                     </div>
                     <div
-                      v-if="
-                        typeof validator.validatorPrefs.commission == 'number'
-                      "
+                      v-if="JSON.parse(intention.identity).email"
                       class="row"
                     >
                       <div class="col-md-3 mb-2">
-                        <strong>{{
-                          $t("details.intention.commission")
-                        }}</strong>
+                        <strong>{{ $t("details.intention.email") }}</strong>
                       </div>
                       <div class="col-md-9 mb-2 fee">
-                        {{
-                          (
-                            validator.validatorPrefs.commission / 10000000
-                          ).toFixed(2)
-                        }}%
+                        <a
+                          :href="
+                            `mailto:${JSON.parse(intention.identity).email}`
+                          "
+                          target="_blank"
+                        >
+                          {{ JSON.parse(intention.identity).email }}
+                        </a>
                       </div>
                     </div>
-                    <div class="row mb-2">
+                    <div
+                      v-if="JSON.parse(intention.identity).legal"
+                      class="row"
+                    >
                       <div class="col-md-3 mb-2">
-                        <strong>{{
-                          $t("details.intention.reward_destination")
-                        }}</strong>
+                        <strong>{{ $t("details.intention.legal") }}</strong>
                       </div>
                       <div class="col-md-9 mb-2 fee">
-                        {{ formatRewardDest(validator.rewardDestination) }}
+                        {{ JSON.parse(intention.identity).legal }}
                       </div>
                     </div>
-                    <!-- identity start -->
-                    <div v-if="hasIdentity(validator.accountId)">
-                      <div
-                        v-if="
-                          getIdentity(
-                            validator.accountId
-                          ).identity.hasOwnProperty('display')
-                        "
-                        class="row"
-                      >
-                        <div class="col-md-3 mb-1">
-                          <strong>{{ $t("details.intention.name") }}</strong>
-                        </div>
-                        <div class="col-md-9 mb-1 fee">
-                          {{
-                            getIdentity(validator.accountId).identity.display
-                          }}
-                        </div>
+                    <div v-if="JSON.parse(intention.identity).riot" class="row">
+                      <div class="col-md-3 mb-2">
+                        <strong>{{ $t("details.intention.riot") }}</strong>
                       </div>
-                      <div
-                        v-if="
-                          getIdentity(
-                            validator.accountId
-                          ).identity.hasOwnProperty('email')
-                        "
-                        class="row"
-                      >
-                        <div class="col-md-3 mb-2">
-                          <strong>{{ $t("details.intention.email") }}</strong>
-                        </div>
-                        <div class="col-md-9 mb-2 fee">
-                          <a
-                            :href="
-                              `mailto:${
-                                getIdentity(validator.accountId).identity.email
-                              }`
-                            "
-                            target="_blank"
-                          >
-                            {{
-                              getIdentity(validator.accountId).identity.email
-                            }}
-                          </a>
-                        </div>
-                      </div>
-                      <div
-                        v-if="
-                          getIdentity(
-                            validator.accountId
-                          ).identity.hasOwnProperty('legal')
-                        "
-                        class="row"
-                      >
-                        <div class="col-md-3 mb-2">
-                          <strong>{{ $t("details.intention.legal") }}</strong>
-                        </div>
-                        <div class="col-md-9 mb-2 fee">
-                          {{ getIdentity(validator.accountId).identity.legal }}
-                        </div>
-                      </div>
-                      <div
-                        v-if="
-                          getIdentity(
-                            validator.accountId
-                          ).identity.hasOwnProperty('riot')
-                        "
-                        class="row"
-                      >
-                        <div class="col-md-3 mb-2">
-                          <strong>{{ $t("details.intention.riot") }}</strong>
-                        </div>
-                        <div class="col-md-9 mb-2 fee">
-                          <a
-                            :href="
-                              `https://riot.im/app/#/user/${
-                                getIdentity(validator.accountId).identity.riot
-                              }`
-                            "
-                            target="_blank"
-                          >
-                            {{ getIdentity(validator.accountId).identity.riot }}
-                          </a>
-                        </div>
-                      </div>
-                      <div
-                        v-if="
-                          getIdentity(
-                            validator.accountId
-                          ).identity.hasOwnProperty('twitter')
-                        "
-                        class="row"
-                      >
-                        <div class="col-md-3 mb-2">
-                          <strong>Twitter</strong>
-                        </div>
-                        <div class="col-md-9 mb-2 fee">
-                          <a
-                            :href="
-                              `https://twitter.com/${
-                                getIdentity(validator.accountId).identity
-                                  .twitter
-                              }`
-                            "
-                            target="_blank"
-                          >
-                            {{
-                              getIdentity(validator.accountId).identity.twitter
-                            }}
-                          </a>
-                        </div>
-                      </div>
-                      <div
-                        v-if="
-                          getIdentity(
-                            validator.accountId
-                          ).identity.hasOwnProperty('web')
-                        "
-                        class="row"
-                      >
-                        <div class="col-md-3 mb-2">
-                          <strong>Web</strong>
-                        </div>
-                        <div class="col-md-9 mb-2 fee">
-                          <a
-                            :href="
-                              getIdentity(validator.accountId).identity.web
-                            "
-                            target="_blank"
-                          >
-                            {{ getIdentity(validator.accountId).identity.web }}
-                          </a>
-                        </div>
+                      <div class="col-md-9 mb-2 fee">
+                        <a
+                          :href="
+                            `https://riot.im/app/#/user/${
+                              JSON.parse(intention.identity).riot
+                            }`
+                          "
+                          target="_blank"
+                        >
+                          {{ JSON.parse(intention.identity).riot }}
+                        </a>
                       </div>
                     </div>
-                    <!-- identity end -->
-                    <div :id="'validator-info-' + index" class="mt-2">
-                      <template v-if="validator.exposure.others.length > 0">
-                        <b-button
-                          v-b-toggle="`accordion-${index}-staker-intention`"
-                          variant="link"
-                          style="text-decoration: none"
-                        >
-                          <h6 class="h6 nominators d-inline mr-4">
-                            >
-                            {{ $t("details.intention.stakers") }} ({{
-                              validator.exposure.others.length
-                            }})
-                          </h6>
-                        </b-button>
-                      </template>
-                      <template v-if="validator.sessionIds.length > 0">
-                        <b-button
-                          v-b-toggle="
-                            `accordion-${index}-current-session-id-intention`
+                    <div
+                      v-if="JSON.parse(intention.identity).twitter"
+                      class="row"
+                    >
+                      <div class="col-md-3 mb-2">
+                        <strong>Twitter</strong>
+                      </div>
+                      <div class="col-md-9 mb-2 fee">
+                        <a
+                          :href="
+                            `https://twitter.com/${
+                              JSON.parse(intention.identity).twitter
+                            }`
                           "
-                          variant="link"
-                          style="text-decoration: none"
+                          target="_blank"
                         >
-                          <h6 class="h6 nominators d-inline mr-4">
-                            >
-                            {{ $t("details.intention.current_session_ids") }}
-                            ({{ validator.sessionIds.length }})
-                          </h6>
-                        </b-button>
-                      </template>
-                      <template v-if="validator.nextSessionIds.length > 0">
-                        <b-button
-                          v-b-toggle="`accordion-${index}-session-id-intention`"
-                          variant="link"
-                          style="text-decoration: none"
+                          {{ JSON.parse(intention.identity).twitter }}
+                        </a>
+                      </div>
+                    </div>
+                    <div v-if="JSON.parse(intention.identity).web" class="row">
+                      <div class="col-md-3 mb-2">
+                        <strong>Web</strong>
+                      </div>
+                      <div class="col-md-9 mb-2 fee">
+                        <a
+                          :href="JSON.parse(intention.identity).web"
+                          target="_blank"
                         >
-                          <h6 class="h6 nominators d-inline mr-4">
-                            >
-                            {{ $t("details.intention.next_session_ids") }} ({{
-                              validator.nextSessionIds.length
-                            }})
-                          </h6>
-                        </b-button>
-                      </template>
-                      <template v-if="validator.sessionIds.length > 0">
-                        <b-collapse
-                          :id="
-                            `accordion-${index}-current-session-id-intention`
-                          "
-                          class="nominator collapse pt-2 pb-3"
-                          :data-parent="'#validator-info-' + index"
-                        >
-                          <div
-                            v-for="(sessionId, index) in validator.sessionIds"
-                            :key="index"
-                            class="row"
-                          >
-                            <div class="col-12 mb-1 who">
-                              {{ index + 1 }}.
-                              <Identicon
-                                :key="sessionId"
-                                :value="sessionId"
-                                :size="20"
-                                :theme="'polkadot'"
-                              />
-                              <a
-                                :href="blockExplorer.account + sessionId"
-                                target="_blank"
-                              >
-                                <span
-                                  v-b-tooltip.hover
-                                  class="d-inline-block d-sm-none d-md-none d-lg-none d-xl-none"
-                                  :title="sessionId"
-                                  >{{ shortAddress(sessionId) }}</span
-                                >
-                                <span
-                                  class="d-none d-sm-inline-block d-md-inline-block d-lg-inline-block d-xl-inline-block"
-                                  >{{ sessionId }}</span
-                                >
-                              </a>
-                            </div>
-                          </div>
-                        </b-collapse>
-                      </template>
-                      <template v-if="validator.nextSessionIds.length > 0">
-                        <b-collapse
-                          :id="`accordion-${index}-session-id-intention`"
-                          class="nominator collapse pt-2 pb-3"
-                          :data-parent="'#validator-info-' + index"
-                        >
-                          <div
-                            v-for="(sessionId,
-                            index) in validator.nextSessionIds"
-                            :key="index"
-                            class="row"
-                          >
-                            <div class="col-12 mb-1 who">
-                              {{ index + 1 }}.
-                              <Identicon
-                                :key="sessionId"
-                                :value="sessionId"
-                                :size="20"
-                                :theme="'polkadot'"
-                              />
-                              <a
-                                :href="blockExplorer.account + sessionId"
-                                target="_blank"
-                              >
-                                <span
-                                  v-b-tooltip.hover
-                                  class="d-inline-block d-sm-none d-md-none d-lg-none d-xl-none"
-                                  :title="sessionId"
-                                  >{{ shortAddress(sessionId) }}</span
-                                >
-                                <span
-                                  class="d-none d-sm-inline-block d-md-inline-block d-lg-inline-block d-xl-inline-block"
-                                  >{{ sessionId }}</span
-                                >
-                              </a>
-                            </div>
-                          </div>
-                        </b-collapse>
-                      </template>
-                      <template v-if="validator.exposure.others.length > 0">
+                          {{ JSON.parse(intention.identity).web }}
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- identity end -->
+                  <div id="validator-info" class="mt-2">
+                    <template v-if="intention.num_stakers > 0">
+                      <b-button
+                        v-b-toggle="`accordion-staker-intention`"
+                        variant="link"
+                        style="text-decoration: none"
+                      >
+                        <h6 class="h6 nominators d-inline mr-4">
+                          <i
+                            class="fa fa-chevron-right mr-1"
+                            aria-hidden="true"
+                          ></i>
+                          {{ $t("details.intention.stakers") }} ({{
+                            intention.num_stakers
+                          }})
+                        </h6>
+                      </b-button>
+                    </template>
+                    <template
+                      v-if="JSON.parse(intention.next_session_ids).length > 0"
+                    >
+                      <b-button
+                        v-b-toggle="`accordion-session-id-intention`"
+                        variant="link"
+                        style="text-decoration: none"
+                      >
+                        <h6 class="h6 nominators d-inline mr-4">
+                          <i
+                            class="fa fa-chevron-right mr-1"
+                            aria-hidden="true"
+                          ></i>
+                          {{ $t("details.intention.next_session_ids") }} ({{
+                            JSON.parse(intention.next_session_ids).length
+                          }})
+                        </h6>
+                      </b-button>
+                    </template>
+                    <template
+                      v-if="JSON.parse(intention.next_session_ids).length > 0"
+                    >
+                      <b-collapse
+                        :id="`accordion-session-id-intention`"
+                        class="nominator collapse pt-2 pb-3"
+                        data-parent="#validator-info"
+                      >
                         <div
-                          :id="`accordion-${index}-staker-intention`"
-                          class="nominator collapse pt-2 pb-3"
-                          :data-parent="'#validator-info-' + index"
+                          v-for="(sessionId, index) in JSON.parse(
+                            intention.next_session_ids
+                          )"
+                          :key="index"
+                          class="row"
                         >
-                          <div
-                            v-for="(staker, index) in validator.exposure.others"
-                            :key="index"
-                            class="row"
-                          >
-                            <div class="col-8 mb-1 who">
-                              <Identicon
-                                :key="staker.who"
-                                :value="staker.who"
-                                :size="20"
-                                :theme="'polkadot'"
-                              />
-                              <a
-                                :href="blockExplorer.account + staker.who"
-                                target="_blank"
+                          <div class="col-12 mb-1 who">
+                            {{ index + 1 }}.
+                            <Identicon
+                              :key="sessionId"
+                              :value="sessionId"
+                              :size="20"
+                              :theme="'polkadot'"
+                            />
+                            <nuxt-link
+                              :to="{
+                                name: 'account',
+                                query: {
+                                  accountId: sessionId
+                                }
+                              }"
+                            >
+                              <span
+                                v-b-tooltip.hover
+                                class="d-inline-block d-sm-none d-md-none d-lg-none d-xl-none"
+                                :title="sessionId"
+                                >{{ shortAddress(sessionId) }}</span
                               >
-                                <span
-                                  v-b-tooltip.hover
-                                  class="d-inline-block d-sm-none d-md-none d-lg-none d-xl-none"
-                                  :title="staker.who"
-                                  >{{ shortAddress(staker.who) }}</span
-                                >
-                                <span
-                                  class="d-none d-sm-inline-block d-md-inline-block d-lg-inline-block d-xl-inline-block"
-                                  >{{ shortAddress(staker.who) }}</span
-                                >
-                              </a>
-                            </div>
-                            <div class="col-4 text-right value">
-                              {{ formatAmount(staker.value) }}
-                            </div>
+                              <span
+                                class="d-none d-sm-inline-block d-md-inline-block d-lg-inline-block d-xl-inline-block"
+                                >{{ sessionId }}</span
+                              >
+                            </nuxt-link>
                           </div>
                         </div>
-                      </template>
-                    </div>
+                      </b-collapse>
+                    </template>
+                    <template v-if="intention.num_stakers > 0">
+                      <b-collapse
+                        :id="`accordion-staker-intention`"
+                        class="nominator collapse pt-2 pb-3"
+                        data-parent="#validator-info"
+                      >
+                        <div
+                          v-for="(staker, index) in JSON.parse(
+                            intention.stakers
+                          )"
+                          :key="index"
+                          class="row"
+                        >
+                          <div class="col-12 mb-1 who">
+                            <Identicon
+                              :key="staker"
+                              :value="staker"
+                              :size="20"
+                              :theme="'polkadot'"
+                            />
+                            <nuxt-link
+                              :to="{
+                                name: 'account',
+                                query: {
+                                  accountId: staker
+                                }
+                              }"
+                            >
+                              <span
+                                v-b-tooltip.hover
+                                class="d-inline-block d-sm-none d-md-none d-lg-none d-xl-none"
+                                :title="staker"
+                                >{{ shortAddress(staker) }}</span
+                              >
+                              <span
+                                class="d-none d-sm-inline-block d-md-inline-block d-lg-inline-block d-xl-inline-block"
+                                >{{ shortAddress(staker) }}</span
+                              >
+                            </nuxt-link>
+                          </div>
+                        </div>
+                      </b-collapse>
+                    </template>
                   </div>
                 </div>
               </div>
             </div>
-          </template>
+          </div>
         </template>
-        <div id="stake-evolution-monthly-chart" class="mt-5 text-center">
-          <h3>
-            {{ $t("details.intention.total_bonded") }} -
-            {{ $t("details.intention.monthly_chart") }}
-            <small
-              v-if="monthly.last - monthly.first > 0"
-              class="change text-success ml-3"
-              ><i class="far fa-thumbs-up" /> +{{
-                formatAmount(monthly.last - monthly.first)
-              }}</small
-            ><small
-              v-if="monthly.last - monthly.first < 0"
-              class="change text-danger ml-3"
-              ><i class="far fa-thumbs-down" />
-              {{ formatAmount(monthly.last - monthly.first) }}</small
+        <!-- Charts -->
+        <div class="row">
+          <div class="col-md-6">
+            <div id="stake-evolution-monthly-chart" class="mt-5 text-center">
+              <h3>
+                {{ $t("details.intention.total_bonded") }} -
+                {{ $t("details.intention.monthly_chart") }}
+                <small
+                  v-if="monthly.last - monthly.first > 0"
+                  class="change text-success ml-3"
+                  ><i class="far fa-thumbs-up" /> +{{
+                    formatAmount(monthly.last - monthly.first)
+                  }}</small
+                ><small
+                  v-if="monthly.last - monthly.first < 0"
+                  class="change text-danger ml-3"
+                  ><i class="far fa-thumbs-down" />
+                  {{ formatAmount(monthly.last - monthly.first) }}</small
+                >
+              </h3>
+              <chart
+                :options="StakeEvolutionMonthlyChartOptions"
+                :series="StakeEvolutionMonthlySeries"
+              />
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div
+              id="stake-evolution-weekly-chart"
+              class="mt-5 mb-5 text-center"
             >
-          </h3>
-          <chart
-            :options="StakeEvolutionMonthlyChartOptions"
-            :series="StakeEvolutionMonthlySeries"
-          />
+              <h3>
+                {{ $t("details.intention.total_bonded") }} -
+                {{ $t("details.intention.weekly_chart") }}
+                <small
+                  v-if="weekly.last - weekly.first > 0"
+                  class="change text-success ml-3"
+                  ><i class="far fa-thumbs-up" /> +{{
+                    formatAmount(weekly.last - weekly.first)
+                  }}</small
+                ><small
+                  v-if="weekly.last - weekly.first < 0"
+                  class="change text-danger ml-3"
+                  ><i class="far fa-thumbs-down" />
+                  {{ formatAmount(weekly.last - weekly.first) }}</small
+                >
+              </h3>
+              <chart
+                :options="StakeEvolutionWeeklyChartOptions"
+                :series="StakeEvolutionWeeklySeries"
+              />
+            </div>
+          </div>
         </div>
-        <div id="stake-evolution-weekly-chart" class="mt-5 mb-5 text-center">
-          <h3>
-            {{ $t("details.intention.total_bonded") }} -
-            {{ $t("details.intention.weekly_chart") }}
-            <small
-              v-if="weekly.last - weekly.first > 0"
-              class="change text-success ml-3"
-              ><i class="far fa-thumbs-up" /> +{{
-                formatAmount(weekly.last - weekly.first)
-              }}</small
-            ><small
-              v-if="weekly.last - weekly.first < 0"
-              class="change text-danger ml-3"
-              ><i class="far fa-thumbs-down" />
-              {{ formatAmount(weekly.last - weekly.first) }}</small
-            >
-          </h3>
-          <chart
-            :options="StakeEvolutionWeeklyChartOptions"
-            :series="StakeEvolutionWeeklySeries"
-          />
-        </div>
-        <div id="stake-evolution-daily-chart" class="mb-5 text-center">
-          <h3>
-            {{ $t("details.intention.total_bonded") }} -
-            {{ $t("details.intention.daily_chart") }}
-            <small
-              v-if="daily.last - daily.first > 0"
-              class="change text-success ml-3"
-              ><i class="far fa-thumbs-up" /> +{{
-                formatAmount(daily.last - daily.first)
-              }}</small
-            ><small
-              v-if="daily.last - daily.first < 0"
-              class="change text-danger ml-3"
-              ><i class="far fa-thumbs-down" />
-              {{ formatAmount(daily.last - daily.first) }}</small
-            >
-          </h3>
-          <chart
-            :options="StakeEvolutionDailyChartOptions"
-            :series="StakeEvolutionDailySeries"
-          />
+        <div class="row">
+          <div class="col-md-6">
+            <div id="stake-evolution-daily-chart" class="mb-5 text-center">
+              <h3>
+                {{ $t("details.intention.total_bonded") }} -
+                {{ $t("details.intention.daily_chart") }}
+                <small
+                  v-if="daily.last - daily.first > 0"
+                  class="change text-success ml-3"
+                  ><i class="far fa-thumbs-up" /> +{{
+                    formatAmount(daily.last - daily.first)
+                  }}</small
+                ><small
+                  v-if="daily.last - daily.first < 0"
+                  class="change text-danger ml-3"
+                  ><i class="far fa-thumbs-down" />
+                  {{ formatAmount(daily.last - daily.first) }}</small
+                >
+              </h3>
+              <chart
+                :options="StakeEvolutionDailyChartOptions"
+                :series="StakeEvolutionDailySeries"
+              />
+            </div>
+          </div>
         </div>
       </b-container>
     </section>
   </div>
 </template>
 <script>
-import { mapMutations } from "vuex";
 import gql from "graphql-tag";
 import moment from "moment";
 import chart from "../../components/chart";
-import { commonChartOptions } from "../commons/chartOptions";
 import Identicon from "../../components/identicon.vue";
-import { isHex } from "@polkadot/util";
-import BN from "bn.js";
-import { backendBaseURL, blockExplorer } from "../../polkastats.config.js";
 import commonMixin from "../../mixins/commonMixin.js";
+import { network } from "../../polkastats.config.js";
 
 export default {
   components: {
@@ -648,9 +525,9 @@ export default {
   mixins: [commonMixin],
   data: function() {
     return {
+      currentSessionIndex: 0,
+      intention: undefined,
       accountId: this.$route.query.accountId,
-      blockExplorer,
-      backendBaseURL,
       polling: null,
       graphPolling: null,
       favorites: [],
@@ -668,40 +545,58 @@ export default {
       },
       StakeEvolutionDailySeries: [
         {
-          name: "Total bonded (KSM)",
+          name: `Total bonded (${network.denom})`,
           data: []
         }
       ],
       StakeEvolutionWeeklySeries: [
         {
-          name: "Total bonded (KSM)",
+          name: `Total bonded (${network.denom})`,
           data: []
         }
       ],
       StakeEvolutionMonthlySeries: [
         {
-          name: "Total bonded (KSM)",
+          name: `Total bonded (${network.denom})`,
           data: []
         }
       ],
-      StakeEvolutionDailyChartOptions: {
-        ...commonChartOptions
+      commonChartOptions: {
+        chart: {
+          zoom: {
+            enabled: false
+          }
+        },
+        xaxis: {
+          categories: [],
+          type: "datetime",
+          title: {
+            text: "Date / time (UTC)"
+          },
+          labels: {
+            formatter: function(val) {
+              return moment.unix(val).format("MM/DD/YYYY HH:mm");
+            }
+          },
+          tooltip: {
+            enabled: false
+          }
+        },
+        yaxis: {
+          title: {
+            text: `Total bonded (${network.denom})`
+          },
+          labels: {
+            formatter: function(val) {
+              return val;
+            }
+          }
+        }
       },
-      StakeEvolutionWeeklyChartOptions: {
-        ...commonChartOptions
-      },
-      StakeEvolutionMonthlyChartOptions: {
-        ...commonChartOptions
-      }
+      StakeEvolutionDailyChartOptions: {},
+      StakeEvolutionWeeklyChartOptions: {},
+      StakeEvolutionMonthlyChartOptions: {}
     };
-  },
-  computed: {
-    intentions() {
-      return this.$store.state.intentions.list;
-    },
-    identities() {
-      return this.$store.state.identities.list;
-    }
   },
   watch: {
     $route() {
@@ -734,27 +629,6 @@ export default {
     this.getValidatorWeeklyGraphData();
     this.getValidatorMonthlyGraphData();
 
-    // Force update of validators list if empty
-    if (this.$store.state.intentions.list.length == 0) {
-      vm.$store.dispatch("intentions/update");
-    }
-
-    // Force update of staking_identity list if empty
-    if (this.$store.state.stakingIdentities.list.length == 0) {
-      vm.$store.dispatch("stakingIdentities/update");
-    }
-
-    // Force update of indentity list if empty
-    if (this.$store.state.identities.list.length == 0) {
-      vm.$store.dispatch("identities/update");
-    }
-
-    // Update intention validators every 10 seconds
-    this.polling = setInterval(() => {
-      vm.$store.dispatch("intentions/update");
-      vm.$store.dispatch("stakingIdentities/update");
-    }, 10000);
-
     // Refresh graph data every minute
     this.graphPolling = setInterval(() => {
       this.getValidatorDailyGraphData();
@@ -763,7 +637,6 @@ export default {
     }, 60000);
   },
   beforeDestroy: function() {
-    clearInterval(this.polling);
     clearInterval(this.graphPolling);
   },
   methods: {
@@ -783,16 +656,16 @@ export default {
       var vm = this;
 
       const GET_INTENTION_BONDED = gql`
-        query MyQuery {
-          intention_bonded(
+        query intention {
+          intention(
             where: { account_id: { _eq: "${
               this.accountId
             }" }, timestamp: { _gt: ${this.getTimestamp("day")} } }
             order_by: { timestamp: desc }
           ) {
             account_id
-            amount
-            block_number
+            staking_ledger_total
+            block_height
             session_index
             timestamp
           }
@@ -805,30 +678,28 @@ export default {
           // Update chart data
           var newCategories = [];
           var newData = [];
-          const { intention_bonded } = response.data;
+          const { intention } = response.data;
 
-          for (var i = 0; i < intention_bonded.length; i++) {
+          for (var i = 0; i < intention.length; i++) {
             // Insert firt point, last point and points with different values
             if (
               i == 0 ||
-              i == intention_bonded.length - 1 ||
+              i == intention.length - 1 ||
               (i > 0 &&
-                intention_bonded[i].amount != intention_bonded[i - 1].amount)
+                intention[i].staking_ledger_total !==
+                  intention[i - 1].staking_ledger_total)
             ) {
               // Save first and last point
-              if (i == 0) vm.daily.last = intention_bonded[i].amount;
-              if (i == intention_bonded.length - 1)
-                vm.daily.first = intention_bonded[i].amount;
+              if (i == 0) vm.daily.last = intention[i].staking_ledger_total;
+              if (i == intention.length - 1)
+                vm.daily.first = intention[i].staking_ledger_total;
 
               newCategories.push(
                 moment
-                  .unix(
-                    intention_bonded[i].timestamp,
-                    "YYYY-MM-DD HH:mm:ss.SSSSSS Z"
-                  )
+                  .unix(intention[i].timestamp / 1000)
                   .format("YYYY-MM-DD HH:mm:ss")
               );
-              newData.push(intention_bonded[i].amount);
+              newData.push(intention[i].staking_ledger_total);
             }
           }
 
@@ -837,7 +708,7 @@ export default {
 
           // Make sure to update the whole options config and not just a single property to allow the Vue watch catch the change.
           vm.StakeEvolutionDailyChartOptions = {
-            ...vm.StakeEvolutionDailyChartOptions,
+            ...vm.commonChartOptions,
             ...{
               xaxis: {
                 categories: newCategories,
@@ -853,7 +724,7 @@ export default {
               },
               yaxis: {
                 title: {
-                  text: "Total bonded (KSM)"
+                  text: `Total bonded (${network.denom})`
                 },
                 labels: {
                   formatter: function(val) {
@@ -876,16 +747,16 @@ export default {
       var vm = this;
 
       const GET_INTENTION_BONDED = gql`
-        query MyQuery {
-          intention_bonded(
+        query intention {
+          intention(
             where: { account_id: { _eq: "${
               this.accountId
             }" }, timestamp: { _gt: ${this.getTimestamp("week")} } }
             order_by: { timestamp: desc }
           ) {
             account_id
-            amount
-            block_number
+            staking_ledger_total
+            block_height
             session_index
             timestamp
           }
@@ -898,23 +769,20 @@ export default {
           // Update chart data
           var newCategories = [];
           var newData = [];
-          const { intention_bonded } = response.data;
+          const { intention } = response.data;
 
-          for (var i = 0; i < intention_bonded.length; i++) {
+          for (var i = 0; i < intention.length; i++) {
             // Save first and last point
-            if (i == 0) vm.weekly.last = intention_bonded[i].amount;
-            if (i == intention_bonded.length - 1)
-              vm.weekly.first = intention_bonded[i].amount;
+            if (i == 0) vm.weekly.last = intention[i].staking_ledger_total;
+            if (i == intention.length - 1)
+              vm.weekly.first = intention[i].staking_ledger_total;
 
             newCategories.push(
               moment
-                .unix(
-                  intention_bonded[i].timestamp,
-                  "YYYY-MM-DD HH:mm:ss.SSSSSS Z"
-                )
+                .unix(intention[i].timestamp / 1000)
                 .format("YYYY-MM-DD HH:mm:ss")
             );
-            newData.push(intention_bonded[i].amount);
+            newData.push(intention[i].staking_ledger_total);
           }
 
           newCategories.reverse();
@@ -922,7 +790,7 @@ export default {
 
           // Make sure to update the whole options config and not just a single property to allow the Vue watch catch the change.
           vm.StakeEvolutionWeeklyChartOptions = {
-            ...vm.StakeEvolutionWeeklyChartOptions,
+            ...vm.commonChartOptions,
             ...{
               xaxis: {
                 categories: newCategories,
@@ -938,7 +806,7 @@ export default {
               },
               yaxis: {
                 title: {
-                  text: "Total bonded (KSM)"
+                  text: `Total bonded (${network.denom})`
                 },
                 labels: {
                   formatter: function(val) {
@@ -961,16 +829,16 @@ export default {
       var vm = this;
 
       const GET_INTENTION_BONDED = gql`
-        query MyQuery {
-          intention_bonded(
+        query intention {
+          intention(
             where: { account_id: { _eq: "${
               this.accountId
             }" }, timestamp: { _gt: ${this.getTimestamp("month")} } }
             order_by: { timestamp: desc }
           ) {
             account_id
-            amount
-            block_number
+            staking_ledger_total
+            block_height
             session_index
             timestamp
           }
@@ -983,23 +851,20 @@ export default {
           // Update chart data
           var newCategories = [];
           var newData = [];
-          const { intention_bonded } = response.data;
+          const { intention } = response.data;
 
-          for (var i = 0; i < intention_bonded.length; i++) {
+          for (var i = 0; i < intention.length; i++) {
             // Save first and last point
-            if (i == 0) vm.monthly.last = intention_bonded[i].amount;
-            if (i == intention_bonded.length - 1)
-              vm.monthly.first = intention_bonded[i].amount;
+            if (i == 0) vm.monthly.last = intention[i].staking_ledger_total;
+            if (i == intention.length - 1)
+              vm.monthly.first = intention[i].staking_ledger_total;
 
             newCategories.push(
               moment
-                .unix(
-                  intention_bonded[i].timestamp,
-                  "YYYY-MM-DD HH:mm:ss.SSSSSS Z"
-                )
+                .unix(intention[i].timestamp / 1000)
                 .format("YYYY-MM-DD HH:mm:ss")
             );
-            newData.push(intention_bonded[i].amount);
+            newData.push(intention[i].staking_ledger_total);
           }
 
           newCategories.reverse();
@@ -1007,7 +872,7 @@ export default {
 
           // Make sure to update the whole options config and not just a single property to allow the Vue watch catch the change.
           vm.StakeEvolutionMonthlyChartOptions = {
-            ...vm.StakeEvolutionMonthlyChartOptions,
+            ...vm.commonChartOptions,
             ...{
               xaxis: {
                 categories: newCategories,
@@ -1023,7 +888,7 @@ export default {
               },
               yaxis: {
                 title: {
-                  text: "Total bonded (KSM)"
+                  text: `Total bonded (${network.denom})`
                 },
                 labels: {
                   formatter: function(val) {
@@ -1052,43 +917,84 @@ export default {
     },
     isFavorite(accountId) {
       return this.favorites.includes(accountId);
-    },
-    getIdentity(stashId) {
-      let filteredArray = this.$store.state.stakingIdentities.list.filter(
-        obj => {
-          return obj.accountId === stashId;
+    }
+  },
+  apollo: {
+    $subscribe: {
+      intention: {
+        query: gql`
+          subscription intention($session_index: Int!, $account_id: String!) {
+            intention(
+              where: {
+                session_index: { _eq: $session_index }
+                account_id: { _eq: $account_id }
+              }
+            ) {
+              account_id
+              block_height
+              commission
+              controller_id
+              display_name
+              identity
+              next_elected
+              next_session_id_hex
+              next_session_ids
+              nominators
+              rank
+              reward_destination
+              session_index
+              stakers
+              staking_ledger
+              staking_ledger_total
+              stash_id
+              timestamp
+              validator_prefs
+            }
+          }
+        `,
+        variables() {
+          return {
+            account_id: this.accountId,
+            session_index: this.currentSessionIndex
+          };
+        },
+        skip() {
+          return !this.currentSessionIndex;
+        },
+        result({ data }) {
+          this.intention = {
+            ...data.intention[0],
+            num_stakers: JSON.parse(data.intention[0].stakers).length,
+            favorite: this.isFavorite(data.intention[0].account_id)
+          };
         }
-      );
-      return filteredArray[0];
-    },
-    hasIdentity(stashId) {
-      return this.$store.state.stakingIdentities.list.some(obj => {
-        return obj.accountId === stashId;
-      });
-    },
-    hasPolkaStatsIdentity(stashId) {
-      return this.$store.state.identities.list.some(obj => {
-        return obj.stashId === stashId;
-      });
-    },
-    getPolkaStatsIdentity(stashId) {
-      let filteredArray = this.$store.state.identities.list.filter(obj => {
-        return obj.stashId === stashId;
-      });
-      return filteredArray[0];
+      },
+      sessionIndex: {
+        query: gql`
+          subscription intention {
+            intention(order_by: { session_index: desc }, where: {}, limit: 1) {
+              session_index
+            }
+          }
+        `,
+        result({ data }) {
+          if (data.intention[0].session_index > this.currentSessionIndex) {
+            this.currentSessionIndex = data.intention[0].session_index;
+          }
+        }
+      }
     }
   },
   head() {
     return {
       title:
-        "PolkaStats - Polkadot Kusama intention validator " +
+        "PolkaStats - Polkadot intention validator " +
         this.$route.query.accountId,
       meta: [
         {
           hid: "description",
           name: "description",
-          content:
-            "Polkadot Kusama intention validator " + this.$route.query.accountId
+          content: "Polkadot intention validator " + this.$route.query.accountId
         }
       ]
     };
@@ -1122,5 +1028,8 @@ export default {
   top: 0.4rem;
   right: 0.4rem;
   cursor: initial;
+}
+.page-intention .identicon {
+  margin-bottom: 0.8rem;
 }
 </style>

@@ -52,7 +52,7 @@ context("Header", () => {
         .and(
           "have.attr",
           "title",
-          "PolkaStats | Polkadot Kusama CC3 network statistics"
+          "PolkaStats | Polkadot CC1 network statistics"
         );
 
       cy.get("@logo")
@@ -306,7 +306,7 @@ context("Footer", function() {
         .and("be.visible");
 
       cy.get("[data-testid=github]")
-        .should("have.attr", "href", "https://github.com/Colm3na/polkastats-v2")
+        .should("have.attr", "href", "https://github.com/Colm3na/polkastats-v3")
         .and("have.attr", "title", "View source code on GitHub")
         .and("have.attr", "target", "_blank")
         .contains("View source code on GitHub");

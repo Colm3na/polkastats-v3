@@ -54,7 +54,14 @@
             </b-form-group>
           </b-col>
         </div>
-
+        <JsonCSV
+          :data="intentionsJSON"
+          class="download-csv mb-2"
+          name="polkastats.io_polkadot_intentions.csv"
+        >
+          <i class="fas fa-file-csv"></i>
+          {{ $t("pages.accounts.download_csv") }}
+        </JsonCSV>
         <!-- Table with sorting and pagination-->
         <div class="table-responsive">
           <b-table
@@ -83,22 +90,10 @@
                 <template>
                   <b-row class="intention-row">
                     <b-col cols="6">
-                      <div v-if="data.item.identity && data.item.identity.logo">
-                        <img
-                          :src="data.item.identity.logo"
-                          class="identity mt-2"
-                        />
-                        <h4 class="mt-2 mb-2">
-                          {{
-                            data.item.identity.fullname ||
-                              data.item.identity.display
-                          }}
-                        </h4>
-                      </div>
-                      <div v-else>
+                      <div>
                         <Identicon
-                          :key="data.item.accountId"
-                          :value="data.item.accountId"
+                          :key="data.item.account_id"
+                          :value="data.item.account_id"
                           :size="48"
                           :theme="'polkadot'"
                         />
@@ -106,40 +101,37 @@
                       <nuxt-link
                         :to="{
                           name: 'intention',
-                          query: { accountId: data.item.accountId }
+                          query: { accountId: data.item.account_id }
                         }"
                         :title="$t('pages.intentions.intention_details')"
                       >
-                        <h4 v-if="data.item.identity" class="mt-2 mb-2">
-                          {{
-                            data.item.identity.fullname ||
-                              data.item.identity.display
-                          }}
+                        <h4 v-if="data.item.display_name" class="mt-2 mb-2">
+                          {{ data.item.display_name }}
                         </h4>
                         <h4 v-else class="mt-2 mb-2">
                           <span
                             class="d-inline d-sm-inline d-md-inline d-lg-inline d-xl-none"
-                            >{{ shortAddress(data.item.accountId) }}</span
+                            >{{ shortAddress(data.item.account_id) }}</span
                           >
                           <span
                             class="d-none d-sm-none d-md-none d-lg-none d-xl-inline"
-                            >{{ shortAddress(data.item.accountId) }}</span
+                            >{{ shortAddress(data.item.account_id) }}</span
                           >
                         </h4>
                       </nuxt-link>
                     </b-col>
                     <b-col cols="6">
                       <p class="mb-0 rank">rank #{{ data.item.rank }}</p>
-                      <div v-if="data.item.activeStake">
+                      <div v-if="data.item.staking_ledger_total">
                         <p
                           v-b-tooltip.hover
                           class="bonded mb-0"
                           :title="$t('pages.intentions.active_bonded')"
                         >
-                          {{ formatAmount(data.item.activeStake) }}
+                          {{ formatAmount(data.item.staking_ledger_total) }}
                         </p>
                       </div>
-                      <div v-if="data.item.totalStake">
+                      <div v-if="data.item.staking_ledger_total">
                         <p class="mb-0">
                           <small>
                             <span
@@ -147,7 +139,7 @@
                               :title="$t('pages.intentions.total_bonded')"
                             >
                               {{ $t("pages.intentions.total_stake") }}:
-                              {{ formatAmount(data.item.totalStake) }}
+                              {{ formatAmount(data.item.staking_ledger_total) }}
                             </span>
                           </small>
                         </p>
@@ -157,19 +149,13 @@
                 </template>
               </div>
               <div class="d-none d-sm-none d-md-block d-lg-block d-xl-block">
-                <div
-                  v-if="data.item.identity && data.item.identity.logo"
-                  class="d-inline-block"
-                >
-                  <img
-                    :src="data.item.identity.logo"
-                    class="identity-small d-inline-block"
-                  />
-                </div>
-                <div v-else class="d-inline-block">
+                <span v-if="data.item.next_elected" class="circle blue">
+                  <i class="fa fa-chevron-right mr-1" aria-hidden="true"></i>
+                </span>
+                <div class="d-inline-block">
                   <Identicon
-                    :key="data.item.accountId"
-                    :value="data.item.accountId"
+                    :key="data.item.account_id"
+                    :value="data.item.account_id"
                     :size="20"
                     :theme="'polkadot'"
                   />
@@ -177,37 +163,40 @@
                 <nuxt-link
                   :to="{
                     name: 'intention',
-                    query: { accountId: data.item.accountId }
+                    query: { accountId: data.item.account_id }
                   }"
                   :title="$t('pages.intentions.intention_details')"
                 >
-                  <span v-if="data.item.identity !== null">
-                    {{
-                      data.item.identity.fullname || data.item.identity.display
-                    }}
+                  <span v-if="data.item.display_name">
+                    {{ data.item.display_name }}
                   </span>
                   <span v-else>
                     <span
                       class="d-inline d-sm-inline d-md-inline d-lg-inline d-xl-none"
-                      >{{ shortAddress(data.item.accountId) }}</span
+                      >{{ shortAddress(data.item.account_id) }}</span
                     >
                     <span
                       class="d-none d-sm-none d-md-none d-lg-none d-xl-inline"
-                      >{{ shortAddress(data.item.accountId) }}</span
+                      >{{ shortAddress(data.item.account_id) }}</span
                     >
                   </span>
                 </nuxt-link>
               </div>
             </template>
-            <template v-slot:cell(totalStake)="data">
-              <div v-if="data.item.totalStake">
+            <template v-slot:cell(staking_ledger_total)="data">
+              <div v-if="data.item.staking_ledger_total">
                 <p class="text-right mb-0">
-                  {{ formatAmount(data.item.totalStake) }}
+                  {{ formatAmount(data.item.staking_ledger_total) }}
                 </p>
               </div>
             </template>
+            <template v-slot:cell(num_stakers)="data">
+              <p class="text-right mb-0">
+                {{ data.item.num_stakers }}
+              </p>
+            </template>
             <template v-slot:cell(commission)="data">
-              <div v-if="typeof data.item.commission == 'number'">
+              <div v-if="data.item.commission">
                 <p class="text-right mb-0">
                   {{ (data.item.commission / 10000000).toFixed(2) }}%
                 </p>
@@ -217,7 +206,7 @@
               <p class="text-center mb-0">
                 <a
                   class="favorite"
-                  @click="toggleFavorite(data.item.accountId)"
+                  @click="toggleFavorite(data.item.account_id)"
                 >
                   <i
                     v-if="data.item.favorite"
@@ -260,26 +249,25 @@
   </div>
 </template>
 <script>
-import { mapMutations } from "vuex";
 import gql from "graphql-tag";
-import * as R from "ramda";
 import Identicon from "../components/identicon.vue";
-import { isHex } from "@polkadot/util";
-import BN from "bn.js";
-import { blockExplorer, numItemsTableOptions } from "../polkastats.config.js";
+import { paginationOptions, network } from "../polkastats.config.js";
 import commonMixin from "../mixins/commonMixin.js";
+import JsonCSV from "vue-json-csv";
 
 export default {
   components: {
-    Identicon
+    Identicon,
+    JsonCSV
   },
   mixins: [commonMixin],
   data: function() {
     return {
+      currentSessionIndex: 0,
       intentions: [],
-      tableOptions: numItemsTableOptions,
-      perPage: localStorage.numItemsTableSelected
-        ? parseInt(localStorage.numItemsTableSelected)
+      tableOptions: paginationOptions,
+      perPage: localStorage.paginationOptions
+        ? parseInt(localStorage.paginationOptions)
         : 10,
       currentPage: 1,
       sortBy: `favorite`,
@@ -296,8 +284,14 @@ export default {
         },
         { key: "accountId", label: "Intention", sortable: true },
         {
-          key: "totalStake",
+          key: "staking_ledger_total",
           label: this.$t("pages.intentions.total_stake"),
+          sortable: true,
+          class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
+        },
+        {
+          key: "num_stakers",
+          label: this.$t("pages.intentions.stakers"),
           sortable: true,
           class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
         },
@@ -314,21 +308,10 @@ export default {
           class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
         }
       ],
-      blockExplorer,
-      favorites: [],
-      polling: null
+      favorites: []
     };
   },
   computed: {
-    network() {
-      return this.$store.state.network.info;
-    },
-    identities() {
-      return this.$store.state.identities.list;
-    },
-    totalStakeBonded() {
-      return this.$store.state.validators.totalStakeBonded;
-    },
     sortOptions() {
       // Create an options list from our fields
       return this.fields
@@ -337,11 +320,20 @@ export default {
           return { text: f.label, value: f.key };
         });
     },
-    identitiesLoaded() {
-      return this.$store.state.identities.dataLoaded;
-    },
-    kusamaIdentitiesLoaded() {
-      return this.$store.state.stakingIdentities.dataLoaded;
+    intentionsJSON() {
+      return this.intentions.map(intention => {
+        return {
+          rank: intention.rank,
+          name: intention.display_name,
+          stash_account: intention.account_id,
+          commission_percent: (
+            parseInt(intention.commission) / 10000000
+          ).toFixed(2),
+          self_stake: intention.staking_ledger_total,
+          stakers: intention.stakers,
+          num_stakers: intention.num_stakers
+        };
+      });
     }
   },
   watch: {
@@ -353,37 +345,14 @@ export default {
     }
   },
   created: function() {
-    var vm = this;
-
     // Get favorites from cookie
     if (this.$cookies.get("favorites")) {
       this.favorites = this.$cookies.get("favorites");
     }
-
-    // Force update of network info
-    vm.$store.dispatch("network/update");
-
-    // Force update of indentity list if empty
-    if (this.$store.state.identities.list.length == 0) {
-      vm.$store.dispatch("identities/update");
-    }
-
-    // Force update of staking identities list if empty
-    if (this.$store.state.stakingIdentities.list.length === 0) {
-      vm.$store.dispatch("stakingIdentities/update");
-    }
-
-    // Update network info and intention validators every 10 seconds
-    this.polling = setInterval(() => {
-      vm.$store.dispatch("network/update");
-      vm.$store.dispatch("intentions/update");
-    }, 10000);
-  },
-  beforeDestroy: function() {
-    clearInterval(this.polling);
   },
   methods: {
     handleNumFields(num) {
+      localStorage.paginationOptions = num;
       this.perPage = parseInt(num);
     },
     toggleFavorite(accountId) {
@@ -393,7 +362,7 @@ export default {
         this.favorites.push(accountId);
       }
       this.intentions = this.intentions.map(intention => {
-        if (intention.accountId === accountId) {
+        if (intention.account_id === accountId) {
           intention.favorite = !intention.favorite;
         }
         return intention;
@@ -402,39 +371,6 @@ export default {
     },
     isFavorite(accountId) {
       return this.favorites.includes(accountId);
-    },
-    getRank(validator) {
-      // Receives validator accountId
-      for (var i = 0; i < this.validators.length; i++) {
-        if (this.validators[i].accountId == validator) {
-          return i + 1;
-        }
-      }
-      return false;
-    },
-    hasIdentity(stashId) {
-      return this.$store.state.identities.list.some(obj => {
-        return obj.stashId === stashId;
-      });
-    },
-    getIdentity(stashId) {
-      let filteredArray = this.$store.state.identities.list.filter(obj => {
-        return obj.stashId === stashId;
-      });
-      return filteredArray[0];
-    },
-    hasKusamaIdentity(stashId) {
-      return this.$store.state.stakingIdentities.list.some(obj => {
-        return obj.accountId === stashId;
-      });
-    },
-    getKusamaIdentity(stashId) {
-      let filteredArray = this.$store.state.stakingIdentities.list.filter(
-        obj => {
-          return obj.accountId === stashId;
-        }
-      );
-      return filteredArray[0] ? filteredArray[0].identity : null;
     },
     onFiltered(filteredItems) {
       // Trigger pagination to update the number of buttons/pages due to filtering
@@ -446,71 +382,69 @@ export default {
     $subscribe: {
       intentions: {
         query: gql`
-          subscription intentions {
-            intention_staking(order_by: { timestamp: desc }) {
-              timestamp
+          subscription intention($session_index: Int!) {
+            intention(
+              order_by: { rank: asc }
+              where: { session_index: { _eq: $session_index } }
+            ) {
+              account_id
+              stash_id
+              commission
+              next_elected
+              display_name
+              staking_ledger_total
+              rank
+              stakers
+            }
+          }
+        `,
+        variables() {
+          return {
+            session_index: this.currentSessionIndex
+          };
+        },
+        skip() {
+          return !this.currentSessionIndex;
+        },
+        result({ data }) {
+          this.totalRows = data.intention.length;
+          this.intentions = data.intention.map(intention => {
+            return {
+              ...intention,
+              num_stakers: JSON.parse(intention.stakers).length,
+              favorite: this.isFavorite(intention.account_id)
+            };
+          });
+        }
+      },
+      sessionIndex: {
+        query: gql`
+          subscription intention {
+            intention(order_by: { session_index: desc }, where: {}, limit: 1) {
               session_index
-              json
-              block_number
             }
           }
         `,
         result({ data }) {
-          const { intention_staking } = data;
-          const intentions = JSON.parse(intention_staking[0].json);
-          intentions.sort((a, b) =>
-            a.stakingLedger.total < b.stakingLedger.total ? 1 : -1
-          );
-          let rank = 0;
-
-          const transformations = intention => {
-            let identity = this.getIdentity(intention.accountId);
-            if (identity !== [] && typeof identity !== "undefined") {
-              intention.identity = identity.identity;
-            } else {
-              let kusamaIdentity = this.getKusamaIdentity(intention.accountId);
-              if (kusamaIdentity) {
-                intention.identity = kusamaIdentity;
-              } else {
-                intention.identity = null;
-              }
-            }
-
-            intention.rank = rank + 1;
-            intention.totalStake = intention.stakingLedger.total;
-            intention.activeStake = intention.stakingLedger.active;
-            intention.commission = intention.validatorPrefs.commission;
-            intention.favorite = this.isFavorite(intention.accountId);
-            rank++;
-          };
-
-          R.mapObjIndexed(transformations, intentions);
-
-          this.intentions = intentions;
-          this.totalRows = this.intentions.length;
-        },
-        skip() {
-          if (!this.identitiesLoaded) {
-            this.$store.dispatch("identities/update");
-            return true;
+          if (data.intention[0].session_index > this.currentSessionIndex) {
+            this.currentSessionIndex = data.intention[0].session_index;
           }
-          if (!this.kusamaIdentitiesLoaded) {
-            this.$store.dispatch("stakingIdentities/update");
-            return true;
-          }
-          return false;
         }
       }
     }
   },
   head() {
     return {
-      title: "PolkaStats -  Polkadot Kusama intention validators",
+      title: this.$t("pages.intentions.head_title", {
+        networkName: network.name
+      }),
       meta: [
         {
           hid: "description",
           name: "description",
-          content: "Polkadot Kusama intention validators"
+          content: this.$t("pages.intentions.head_content", {
+            networkName: network.name
+          })
         }
       ]
     };
@@ -587,9 +521,9 @@ body {
   font-size: 0.9rem;
   margin-left: 0.1rem;
 }
-/* .identity {
-  max-width: 80px;
-} */
+#intentions-table {
+  margin-bottom: 1rem;
+}
 #intentions-table th {
   text-align: center;
 }
