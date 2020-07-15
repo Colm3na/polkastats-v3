@@ -7,7 +7,15 @@
         </h1>
         <template v-if="enabled">
           <p v-if="blockHeight && timestamp" class="text-center">
-            Last execution at block #{{ blockHeight }} ({{ timestamp }})
+            {{ $t("pages.phragmen.last_execution") }}
+            <nuxt-link
+              v-b-tooltip.hover
+              :to="`/block?blockNumber=${phragmen.block_height}`"
+              title="Check block information"
+            >
+              #{{ formatNumber(blockHeight) }}
+            </nuxt-link>
+            ({{ timestamp }})
           </p>
           <!-- Filter -->
           <b-row>

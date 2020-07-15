@@ -41,6 +41,14 @@
                     </td>
                   </tr>
                   <tr>
+                    <td>{{ $t("details.block.timestamp") }}</td>
+                    <td class="text-right">
+                      <p class="mb-0">
+                        {{ getDateFromTimestamp(parsedBlock.timestamp) }}
+                      </p>
+                    </td>
+                  </tr>
+                  <tr>
                     <td>{{ $t("details.block.block_hash") }}</td>
                     <td class="text-right">
                       <p class="mb-0">{{ parsedBlock.block_hash }}</p>
@@ -250,6 +258,13 @@ export default {
   watch: {
     $route() {
       this.blockNumber = this.$route.query.blockNumber;
+    }
+  },
+  methods: {
+    getDateFromTimestamp(timestamp) {
+      var newDate = new Date();
+      newDate.setTime(timestamp * 1000);
+      return newDate.toUTCString() || timestamp;
     }
   },
   apollo: {

@@ -198,6 +198,7 @@
       "sort": "Ordenar"
     },
     "phragmen": {
+      "last_execution": "Última ejecución en el bloque",
       "predicted_candidates_by_TEXT": "Predicción de candidatos por algoritmo de elección phragmen",
       "offline_phragmen_is_TEXT": "offline-phragmen no está operativo por lo que está deshabilitado temporalmente",
       "search_placeholder": "Buscar candidatos por cuenta o nombre mostrado como identidad",
@@ -346,7 +347,8 @@
       "data": "Datos",
       "signer": "Firmante",
       "hash": "Hash",
-      "args": "Argumentos"
+      "args": "Argumentos",
+      "timestamp": "Fecha y hora"
     },
     "intention": {
       "previous_intention": "Intención previa",

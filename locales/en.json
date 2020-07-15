@@ -197,6 +197,7 @@
       "sort": "Sort"
     },
     "phragmen": {
+      "last_execution": "Last execution at block",
       "predicted_candidates_by_TEXT": "Predicted candidates by phragmen election algorithm",
       "offline_phragmen_is_TEXT": "offline-phragmen is currently broken so this is temporary disabled!",
       "search_placeholder": "Search candidate by account or identity display name",
@@ -345,7 +346,8 @@
       "args": "Arguments",
       "phase": "Phase",
       "data": "Data",
-      "account_details": "Account details"
+      "account_details": "Account details",
+      "timestamp": "Timestamp"
     },
     "intention": {
       "previous_intention": "Previous intention: ",
