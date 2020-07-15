@@ -443,8 +443,7 @@
       "produced_blocks": "bloques producidos",
       "status": "Status",
       "date_time": "Día y hora",
-      "charts": "Gráficas",
-      "produced_blocks": "Bloques producidos"
+      "charts": "Gráficas"
     }
   }
 }
