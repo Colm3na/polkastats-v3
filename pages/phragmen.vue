@@ -350,8 +350,6 @@ export default {
       } else {
         this.favorites.push(accountId);
       }
-      this.$store.dispatch("phragmen/toogleFavorite", accountId);
-
       return true;
     },
     isFavorite(accountId) {
@@ -395,7 +393,6 @@ export default {
           }
         `,
         result({ data }) {
-          console.log(data);
           const phragmenOutput = JSON.parse(data.phragmen[0].phragmen_json);
           let candidates = [];
           Object.entries(phragmenOutput.supports).forEach(
@@ -427,7 +424,6 @@ export default {
             block_height: data.phragmen[0].block_height,
             candidates
           };
-          console.log(this.phragmen);
           this.totalRows = this.phragmen.candidates.length;
         }
       }

@@ -231,6 +231,7 @@ export default {
   mixins: [commonMixin],
   data: function() {
     return {
+      network,
       era: null,
       rewards: [],
       tableOptions: paginationOptions,
