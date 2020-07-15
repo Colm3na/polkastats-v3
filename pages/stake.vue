@@ -449,7 +449,6 @@ export default {
     }
   },
   created: async function() {
-    console.log(network);
     // Get favorites from cookie
     if (this.$cookies.get("favorites")) {
       this.favorites = this.$cookies.get("favorites");
