@@ -234,8 +234,8 @@ export default {
       era: null,
       rewards: [],
       tableOptions: paginationOptions,
-      perPage: localStorage.numItemsTableSelected
-        ? parseInt(localStorage.numItemsTableSelected)
+      perPage: localStorage.paginationOptions
+        ? parseInt(localStorage.paginationOptions)
         : 20,
       currentPage: 1,
       sortBy: `favorite`,
@@ -373,7 +373,7 @@ export default {
       this.currentPage = 1;
     },
     handleNumFields(num) {
-      localStorage.numItemsTableSelected = num;
+      localStorage.paginationOptions = num;
       this.perPage = parseInt(num);
     },
     isFavorite(accountId) {

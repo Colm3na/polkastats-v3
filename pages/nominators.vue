@@ -261,8 +261,8 @@ export default {
       currentSessionIndex: 0,
       nominators: [],
       tableOptions: paginationOptions,
-      perPage: localStorage.numItemsTableSelected
-        ? parseInt(localStorage.numItemsTableSelected)
+      perPage: localStorage.paginationOptions
+        ? parseInt(localStorage.paginationOptions)
         : 10,
       currentPage: 1,
       sortBy: "favorite",

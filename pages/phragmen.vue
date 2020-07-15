@@ -201,6 +201,7 @@ import BN from "bn.js";
 import { paginationOptions, network } from "../polkastats.config.js";
 import commonMixin from "../mixins/commonMixin.js";
 import JsonCSV from "vue-json-csv";
+import gql from "graphql-tag";
 
 export default {
   components: {
@@ -212,8 +213,8 @@ export default {
     return {
       enabled: true,
       tableOptions: paginationOptions,
-      perPage: localStorage.numItemsTableSelected
-        ? parseInt(localStorage.numItemsTableSelected)
+      perPage: localStorage.paginationOptions
+        ? parseInt(localStorage.paginationOptions)
         : 10,
       currentPage: 1,
       sortBy: `favorite`,
@@ -254,12 +255,17 @@ export default {
         }
       ],
       polling: null,
-      favorites: []
+      favorites: [],
+      phragmen: {
+        timestamp: 0,
+        block_height: 0,
+        candidates: []
+      }
     };
   },
   computed: {
     candidates() {
-      return this.$store.state.phragmen.info.candidates.map(candidate => {
+      return this.phragmen.candidates.map(candidate => {
         if (this.getDisplayName(candidate.pub_key_stash)) {
           candidate.display_name = this.getDisplayName(candidate.pub_key_stash);
         } else {
@@ -285,14 +291,12 @@ export default {
     },
     timestamp() {
       var newDate = new Date();
-      newDate.setTime(this.$store.state.phragmen.info.timestamp);
-      return this.$store.state.phragmen.info.timestamp
-        ? newDate.toUTCString()
-        : ``;
+      newDate.setTime(this.phragmen.timestamp);
+      return this.phragmen.timestamp ? newDate.toUTCString() : ``;
     },
     blockHeight() {
-      return this.$store.state.phragmen.info.block_height
-        ? this.formatNumber(this.$store.state.phragmen.info.block_height)
+      return this.phragmen.block_height
+        ? this.formatNumber(this.phragmen.block_height)
         : ``;
     },
     sortOptions() {
@@ -320,12 +324,6 @@ export default {
       this.favorites = this.$cookies.get("favorites");
     }
 
-    // Force update of phragmen candidates list if empty
-    if (this.$store.state.phragmen.info.candidates.length == 0) {
-      vm.$store.dispatch("phragmen/update");
-    }
-    this.totalRows = this.$store.state.phragmen.info.candidates.length;
-
     // Force update of identity list if empty
     if (this.$store.state.identities.list.length === 0) {
       vm.$store.dispatch("identities/update");
@@ -333,10 +331,10 @@ export default {
 
     // Update data every 60 seconds
     this.polling = setInterval(() => {
-      vm.$store.dispatch("phragmen/update");
       vm.$store.dispatch("identities/update");
-      if (!this.filter)
-        this.totalRows = this.$store.state.phragmen.info.candidates.length;
+      if (!this.filter) {
+        this.totalRows = this.phragmen.candidates.length;
+      }
     }, 60000);
   },
   beforeDestroy: function() {
@@ -382,6 +380,57 @@ export default {
       // Trigger pagination to update the number of buttons/pages due to filtering
       this.totalRows = filteredItems.length;
       this.currentPage = 1;
+    }
+  },
+  apollo: {
+    $subscribe: {
+      phragmen: {
+        query: gql`
+          subscription phragmen {
+            phragmen(limit: 1, order_by: { block_height: desc }) {
+              timestamp
+              phragmen_json
+              block_height
+            }
+          }
+        `,
+        result({ data }) {
+          console.log(data);
+          const phragmenOutput = JSON.parse(data.phragmen[0].phragmen_json);
+          let candidates = [];
+          Object.entries(phragmenOutput.supports).forEach(
+            ([pub_key_stash, candidate]) => {
+              candidates.push({
+                pub_key_stash,
+                other_stake_count: candidate.voters.length,
+                stake_total: candidate.total
+              });
+            }
+          );
+          candidates = candidates.sort((a, b) => {
+            return new BN(a.stake_total.toString(), 10).lt(
+              new BN(b.stake_total.toString(), 10)
+            )
+              ? 1
+              : -1;
+          });
+
+          candidates = candidates.map((candidate, rank) => {
+            return {
+              rank: rank + 1,
+              ...candidate
+            };
+          });
+
+          this.phragmen = {
+            timestamp: data.phragmen[0].timestamp,
+            block_height: data.phragmen[0].block_height,
+            candidates
+          };
+          console.log(this.phragmen);
+          this.totalRows = this.phragmen.candidates.length;
+        }
+      }
     }
   },
   head() {

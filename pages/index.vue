@@ -2,34 +2,38 @@
   <div>
     <section>
       <b-container class="main pt-4 pb-5 dashboard">
-        <b-alert show dismissible variant="primary" class="text-center">
+        <b-alert
+          v-if="network.validator"
+          show
+          dismissible
+          variant="primary"
+          class="text-center"
+        >
           <div>
             <h3>{{ $t("pages.dashboard.polkastats_validator") }}</h3>
             <h5>{{ $t("pages.dashboard.polkastats_validator_subtitle") }}</h5>
           </div>
           <Identicon
-            value="15psTaipmWG86U5vNkF7Guv9TRPMRLKHkGS8cXT74v3RCC5t"
+            :value="network.validator"
             size="30"
             theme="polkadot"
             class="my-3"
           />
           <nuxt-link
-            to="/intention?accountId=15psTaipmWG86U5vNkF7Guv9TRPMRLKHkGS8cXT74v3RCC5t"
+            :to="
+              `/${
+                network.name === 'Kusama' ? 'validator' : 'account'
+              }?accountId=${network.validator}`
+            "
           >
             <span
               v-b-tooltip.hover
               class="d-inline d-sm-none d-md-none d-lg-none d-xl-none"
               title="15psTaipmWG86U5vNkF7Guv9TRPMRLKHkGS8cXT74v3RCC5t"
-              >{{
-                shortAddress(`15psTaipmWG86U5vNkF7Guv9TRPMRLKHkGS8cXT74v3RCC5t`)
-              }}</span
+              >{{ shortAddress(network.validator) }}</span
             >
             <span class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline"
-              >🤖 POLKASTATS ({{
-                shortAddress(
-                  `15psTaipmWG86U5vNkF7Guv9TRPMRLKHkGS8cXT74v3RCC5t`
-                )
-              }})</span
+              >🤖 POLKASTATS ({{ shortAddress(network.validator) }})</span
             >
           </nuxt-link>
         </b-alert>
@@ -112,6 +116,11 @@ export default {
     Identicon
   },
   mixins: [commonMixin],
+  data: function() {
+    return {
+      network
+    };
+  },
   head() {
     return {
       title: this.$t("pages.dashboard.head_title", {

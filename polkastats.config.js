@@ -14,7 +14,9 @@ export const networks = [
     nodeWs: "wss://rpc.polkadot.io",
     backendWs: "wss://polkastats.io/api/v3",
     backendHttp: "http://polkastats.io/api/v3",
-    erasPerDay: 1
+    erasPerDay: 1,
+    lockUpPeriod: 28,
+    validator: "15psTaipmWG86U5vNkF7Guv9TRPMRLKHkGS8cXT74v3RCC5t"
   },
   {
     id: "kusama-cc3",
@@ -26,7 +28,9 @@ export const networks = [
     nodeWs: "wss://kusama-rpc.polkadot.io",
     backendWs: "wss://kusama.polkastats.io/api/v3",
     backendHttp: "http://kusama.polkastats.io/api/v3",
-    erasPerDay: 4
+    erasPerDay: 4,
+    lockUpPeriod: 7,
+    validator: "GTzRQPzkcuynHgkEHhsPBFpKdh4sAacVRsnd8vYfPpTMeEY"
   }
 ];
 
