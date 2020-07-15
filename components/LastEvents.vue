@@ -74,6 +74,13 @@ export default {
 </script>
 
 <style>
+.last-events .table thead th {
+  border-bottom: 0;
+}
+.last-events .table td,
+.last-events .table th {
+  padding: 0.45rem;
+}
 .last-events .identicon {
   display: inline-block;
   margin: 0 0.2rem 0 0;

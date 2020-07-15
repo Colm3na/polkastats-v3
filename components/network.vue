@@ -131,26 +131,15 @@ export default {
           subscription blocks {
             block(order_by: { block_number: desc }, where: {}, limit: 1) {
               block_number
-              block_hash
               block_author
               block_author_name
               current_era
               current_index
               era_length
               era_progress
-              extrinsics_root
-              is_epoch
-              new_accounts
-              num_transfers
-              parent_hash
               session_length
               session_per_era
               session_progress
-              spec_name
-              spec_version
-              state_root
-              timestamp
-              total_events
               validator_count
             }
           }

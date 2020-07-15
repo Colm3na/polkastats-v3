@@ -88,24 +88,6 @@ export default {
               block_hash
               block_author
               block_author_name
-              current_era
-              current_index
-              era_length
-              era_progress
-              extrinsics_root
-              is_epoch
-              new_accounts
-              num_transfers
-              parent_hash
-              session_length
-              session_per_era
-              session_progress
-              spec_name
-              spec_version
-              state_root
-              timestamp
-              total_events
-              validator_count
             }
           }
         `,
@@ -119,6 +101,13 @@ export default {
 </script>
 
 <style>
+.last-blocks .table thead th {
+  border-bottom: 0;
+}
+.last-blocks .table td,
+.last-blocks .table th {
+  padding: 0.45rem;
+}
 .last-blocks .identicon {
   display: inline-block;
   margin: 0 0.2rem 0 0;

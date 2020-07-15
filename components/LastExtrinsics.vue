@@ -15,15 +15,15 @@
             </nuxt-link>
           </p>
         </template>
+        <template v-slot:cell(hash)="data">
+          <p class="mb-0">
+            {{ shortHash(data.item.hash) }}
+          </p>
+        </template>
         <template v-slot:cell(section)="data">
           <p class="mb-0">
             {{ data.item.section }} ➡
             {{ data.item.method }}
-          </p>
-        </template>
-        <template v-slot:cell(args)="data">
-          <p class="mb-0 d-inline-block">
-            {{ data.item.args }}
           </p>
         </template>
       </b-table>
@@ -47,6 +47,12 @@ export default {
           sortable: true
         },
         {
+          key: "hash",
+          label: "Hash",
+          class: "d-none d-sm-none d-md-none d-lg-block d-xl-block",
+          sortable: true
+        },
+        {
           key: "section",
           label: "Extrinsic",
           sortable: true
@@ -66,7 +72,6 @@ export default {
               signer
               section
               method
-              args
               hash
               doc
             }
@@ -82,6 +87,13 @@ export default {
 </script>
 
 <style>
+.last-extrinsics .table thead th {
+  border-bottom: 0;
+}
+.last-extrinsics .table td,
+.last-extrinsics .table th {
+  padding: 0.45rem;
+}
 .last-extrinsics .identicon {
   display: inline-block;
   margin: 0 0.2rem 0 0;
