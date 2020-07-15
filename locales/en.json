@@ -347,7 +347,8 @@
       "phase": "Phase",
       "data": "Data",
       "account_details": "Account details",
-      "timestamp": "Timestamp"
+      "timestamp": "Timestamp",
+      "genesis": "🎁 Genesis block"
     },
     "intention": {
       "previous_intention": "Previous intention: ",

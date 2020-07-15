@@ -13,31 +13,36 @@
                   <tr>
                     <td>{{ $t("details.block.block_author") }}</td>
                     <td class="text-right">
-                      <nuxt-link
-                        :to="{
-                          name: 'account',
-                          query: {
-                            accountId: parsedBlock.block_author
-                          }
-                        }"
-                        class="d-block"
-                      >
-                        <Identicon
-                          :key="parsedBlock.block_author"
-                          :value="parsedBlock.block_author"
-                          :size="20"
-                          :theme="'polkadot'"
-                        />
-                        <span
-                          v-b-tooltip.hover
-                          :title="$t('details.block.account_details')"
+                      <span v-if="parsedBlock.block_number === 0">
+                        {{ $t("details.block.genesis") }}
+                      </span>
+                      <span v-else>
+                        <nuxt-link
+                          :to="{
+                            name: 'account',
+                            query: {
+                              accountId: parsedBlock.block_author
+                            }
+                          }"
+                          class="d-block"
                         >
-                          {{ shortAddress(parsedBlock.block_author) }}
-                        </span>
-                        <span v-if="parsedBlock.block_author_name !== ``"
-                          >[ {{ parsedBlock.block_author_name }} ]</span
-                        >
-                      </nuxt-link>
+                          <Identicon
+                            :key="parsedBlock.block_author"
+                            :value="parsedBlock.block_author"
+                            :size="20"
+                            :theme="'polkadot'"
+                          />
+                          <span
+                            v-b-tooltip.hover
+                            :title="$t('details.block.account_details')"
+                          >
+                            {{ shortAddress(parsedBlock.block_author) }}
+                          </span>
+                          <span v-if="parsedBlock.block_author_name !== ``"
+                            >[ {{ parsedBlock.block_author_name }} ]</span
+                          >
+                        </nuxt-link>
+                      </span>
                     </td>
                   </tr>
                   <tr>
@@ -63,9 +68,16 @@
                   <tr>
                     <td>{{ $t("details.block.parent_hash") }}</td>
                     <td class="text-right">
-                      <nuxt-link :to="`/block?blockNumber=${blockNumber - 1}`">
-                        {{ parsedBlock.parent_hash }}
-                      </nuxt-link>
+                      <span v-if="parsedBlock.block_number === 0">
+                        --
+                      </span>
+                      <span v-else>
+                        <nuxt-link
+                          :to="`/block?blockNumber=${blockNumber - 1}`"
+                        >
+                          {{ parsedBlock.parent_hash }}
+                        </nuxt-link>
+                      </span>
                     </td>
                   </tr>
                   <tr>

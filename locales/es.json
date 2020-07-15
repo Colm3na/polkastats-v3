@@ -348,7 +348,8 @@
       "signer": "Firmante",
       "hash": "Hash",
       "args": "Argumentos",
-      "timestamp": "Fecha y hora"
+      "timestamp": "Fecha y hora",
+      "genesis": "🎁 Bloque génesis"
     },
     "intention": {
       "previous_intention": "Intención previa",
