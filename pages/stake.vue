@@ -339,6 +339,9 @@ export default {
   mixins: [commonMixin, validationMixin],
   data() {
     return {
+      network,
+      currentSessionIndex: 0,
+      validators: [],
       extensionAccounts: [],
       extensionAddresses: [],
       selectedAccount: null,
@@ -382,6 +385,12 @@ export default {
           label: ""
         },
         {
+          key: "rank",
+          label: "Rank",
+          sortable: true,
+          filterByFormatted: true
+        },
+        {
           key: "accountId",
           label: "Validator",
           sortable: true,
@@ -416,32 +425,14 @@ export default {
   },
   computed: {
     filteredValidators() {
-      return this.$store.state.validators.list.map(validator => {
-        const { identity } = this.getIdentity(validator.accountId);
-        let name = "";
-        if (identity) {
-          if (
-            identity.displayParent &&
-            identity.displayParent !== `` &&
-            identity.display &&
-            identity.display !== ``
-          ) {
-            name = `${identity.displayParent} / ${identity.display}`;
-          } else {
-            name = identity.display || ``;
-          }
-        }
+      return this.validators.map(validator => {
         return {
-          name,
-          accountId: validator.accountId,
-          commission: (validator.validatorPrefs.commission / 10000000).toFixed(
-            2
-          )
+          rank: validator.rank,
+          name: validator.display_name,
+          accountId: validator.account_id,
+          commission: (validator.commission / 10000000).toFixed(2)
         };
       });
-    },
-    validators() {
-      return this.$store.state.validators.list;
     },
     sortOptions() {
       // Create an options list from our fields
@@ -458,11 +449,11 @@ export default {
     }
   },
   created: async function() {
-    // Load validators from store if empty
-    if (this.$store.state.validators.list.length == 0) {
-      await this.$store.dispatch("validators/update");
+    console.log(network);
+    // Get favorites from cookie
+    if (this.$cookies.get("favorites")) {
+      this.favorites = this.$cookies.get("favorites");
     }
-    this.totalRows = this.$store.state.validators.list.length;
 
     // Load identities from store if empty
     if (this.$store.state.identities.list.length == 0) {
@@ -474,7 +465,7 @@ export default {
       .then(() => {
         web3Accounts()
           .then(accounts => {
-            const wsProvider = new WsProvider(network.nodeURL);
+            const wsProvider = new WsProvider(this.network.nodeWs);
             ApiPromise.create({ provider: wsProvider }).then(api => {
               this.api = api;
               if (accounts.length > 0) {
@@ -593,14 +584,69 @@ export default {
     },
     getIdentity(stashId) {
       return (
-        this.$store.state.identities.list.find(
-          identity => identity.accountId === stashId
-        ) || {}
+        this.validators.find(identity => identity.accountId === stashId) || {}
       );
+    },
+    isFavorite(accountId) {
+      return this.favorites.includes(accountId);
     }
   },
   apollo: {
     $subscribe: {
+      validators: {
+        query: gql`
+          subscription validator($session_index: Int!) {
+            validator(
+              order_by: { rank: asc }
+              where: { session_index: { _eq: $session_index } }
+            ) {
+              account_id
+              stash_id
+              commission
+              next_elected
+              display_name
+              exposure_others
+              exposure_own
+              exposure_total
+              produced_blocks
+              rank
+              stakers
+            }
+          }
+        `,
+        variables() {
+          return {
+            session_index: this.currentSessionIndex
+          };
+        },
+        skip() {
+          return !this.currentSessionIndex;
+        },
+        result({ data }) {
+          this.validators = data.validator.map(validator => {
+            return {
+              ...validator,
+              num_stakers: JSON.parse(validator.stakers).length,
+              favorite: this.isFavorite(validator.account_id)
+            };
+          });
+          this.totalRows = this.validators.length;
+        }
+      },
+      sessionIndex: {
+        query: gql`
+          subscription validator {
+            validator(order_by: { session_index: desc }, where: {}, limit: 1) {
+              session_index
+            }
+          }
+        `,
+        result({ data }) {
+          if (data.validator[0].session_index > this.currentSessionIndex) {
+            this.currentSessionIndex = data.validator[0].session_index;
+          }
+        }
+      },
       extrinsic: {
         query: gql`
           subscription extrinsics($hash: String!) {

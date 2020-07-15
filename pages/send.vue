@@ -259,6 +259,7 @@ export default {
   mixins: [commonMixin, validationMixin],
   data() {
     return {
+      network,
       extensionAccounts: [],
       extensionAddresses: [],
       selectedAccount: null,
@@ -284,8 +285,7 @@ export default {
       extrinsicHash: null,
       extrinsic: null,
       success: null,
-      noAccountsFound: false,
-      network
+      noAccountsFound: false
     };
   },
   validations: {
@@ -316,7 +316,7 @@ export default {
       .then(() => {
         web3Accounts()
           .then(accounts => {
-            const wsProvider = new WsProvider(network.nodeURL);
+            const wsProvider = new WsProvider(this.network.nodeWs);
             ApiPromise.create({ provider: wsProvider }).then(api => {
               this.api = api;
               if (accounts.length > 0) {
