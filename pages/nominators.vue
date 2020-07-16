@@ -325,7 +325,7 @@ export default {
           name: nominator.display_name,
           stash_account: nominator.stash_id,
           controller_account: nominator.controller_id,
-          num_targets: nominator.targets.length,
+          num_targets: JSON.parse(nominator.targets).length,
           targets: JSON.parse(nominator.targets).map(
             target => target.validator
           ),
