@@ -1,6 +1,6 @@
 // Selected network
-const selectedNetwork = `Polkadot`;
-// const selectedNetwork = `Kusama`;
+// const selectedNetwork = `Polkadot`;
+const selectedNetwork = `Kusama`;
 
 // Substrate networks
 export const networks = [
@@ -31,6 +31,20 @@ export const networks = [
     erasPerDay: 4,
     lockUpPeriod: 7,
     validator: "GTzRQPzkcuynHgkEHhsPBFpKdh4sAacVRsnd8vYfPpTMeEY"
+  },
+  {
+    id: "westend",
+    name: "Westend",
+    denom: "WND",
+    coinGeckoDenom: undefined,
+    decimalPlaces: 12,
+    addressPrefix: 2,
+    nodeWs: "wss://westend-rpc.polkadot.io",
+    backendWs: "wss://v3dev2.polkastats.io/api/v3",
+    backendHttp: "http://v3dev2.polkastats.io/api/v3",
+    erasPerDay: 4,
+    lockUpPeriod: 7,
+    validator: undefined
   }
 ];
 

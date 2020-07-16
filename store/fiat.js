@@ -18,15 +18,17 @@ export const mutations = {
 
 export const actions = {
   update({ commit }) {
-    axios
-      .get(
-        `https://api.coingecko.com/api/v3/simple/price?ids=${network.coinGeckoDenom}&vs_currencies=usd&include_24hr_change=true`
-      )
-      .then(response => {
-        commit("update", response);
-      })
-      .catch(error => {
-        console.log("Error fetching fiat values: ", error);
-      });
+    if (network.coinGeckoDenom) {
+      axios
+        .get(
+          `https://api.coingecko.com/api/v3/simple/price?ids=${network.coinGeckoDenom}&vs_currencies=usd&include_24hr_change=true`
+        )
+        .then(response => {
+          commit("update", response);
+        })
+        .catch(error => {
+          console.log("Error fetching fiat values: ", error);
+        });
+    }
   }
 };

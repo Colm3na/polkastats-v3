@@ -4,7 +4,7 @@
       <div class="nav-bg-color fixed-top">
         <div class="container">
           <div id="top-bar">
-            <div>
+            <div v-if="network.coinGeckoDenom">
               <span class="fiat" data-testid="fiat">
                 <strong>{{ network.denom }}</strong> ${{ USDConversion }} ({{
                   USD24hChange
@@ -294,10 +294,12 @@ export default {
   created: async function() {
     this.$store.dispatch("system/update");
     // Refresh fiat conversion values every minute
-    this.$store.dispatch("fiat/update");
-    setInterval(() => {
+    if (this.network.coinGeckoDenom) {
       this.$store.dispatch("fiat/update");
-    }, 60000);
+      setInterval(() => {
+        this.$store.dispatch("fiat/update");
+      }, 60000);
+    }
   }
 };
 </script>
