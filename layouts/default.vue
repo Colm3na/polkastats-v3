@@ -3,20 +3,44 @@
     <section id="navigation" data-testid="header">
       <div class="nav-bg-color fixed-top">
         <div class="container">
-          <div id="top-bar">
-            <div v-if="network.coinGeckoDenom">
-              <span class="fiat" data-testid="fiat">
+          <div id="top-bar" class="row">
+            <div class="col-md-10 text-right pb-2">
+              <span
+                v-if="network.coinGeckoDenom"
+                class="fiat"
+                data-testid="fiat"
+              >
                 <strong>{{ network.denom }}</strong> ${{ USDConversion }} ({{
-                  USD24hChange
-                }}%)
+                }} ({{ USD24hChange }}%)
               </span>
-              <span class="network" data-testid="network">
-                <i class="fas fa-project-diagram" /> {{ system.chain }}
-                {{ $t("layout.default.system_message")
-                }}{{ system.client_version.split(`-`)[0] }}
-              </span>
+              <button
+                type="button"
+                class="btn btn-outline-white btn-sm mr-2"
+                :disabled="network.name === 'Polkadot'"
+                @click="goTo('https://polkastats.io')"
+              >
+                <i
+                  v-if="network.name === 'Polkadot'"
+                  class="fa fa-check"
+                  aria-hidden="true"
+                ></i>
+                Polkadot CC1
+              </button>
+              <button
+                type="button"
+                class="btn btn-outline-white btn-sm"
+                :disabled="network.name === 'Kusama'"
+                @click="goTo('https://kusama.polkastats.io')"
+              >
+                <i
+                  v-if="network.name === 'Kusama'"
+                  class="fa fa-check"
+                  aria-hidden="true"
+                ></i>
+                Kusama CC3
+              </button>
             </div>
-            <div>
+            <div class="col-md-2 pt-1 pb-2">
               <languages />
             </div>
           </div>
@@ -300,6 +324,11 @@ export default {
         this.$store.dispatch("fiat/update");
       }, 60000);
     }
+  },
+  methods: {
+    goTo(url) {
+      window.location.href = url;
+    }
   }
 };
 </script>
@@ -486,6 +515,19 @@ section#navigation nav {
   color: #000000;
   background-color: #ffffff;
   border-color: #ffffff;
+}
+
+.btn-outline-white:disabled {
+  color: #ef1073;
+  background-color: #000000;
+  border-color: #ef1073;
+  opacity: 1;
+}
+
+.btn-outline-white:disabled:hover {
+  color: #ef1073;
+  background-color: #000000;
+  border-color: #ef1073;
 }
 
 .nav-link {
