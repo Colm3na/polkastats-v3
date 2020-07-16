@@ -203,7 +203,6 @@
 import { mapMutations } from "vuex";
 import bootstrap from "bootstrap";
 import Identicon from "../components/identicon.vue";
-import Network from "../components/network.vue";
 import { isHex } from "@polkadot/util";
 import BN from "bn.js";
 import { paginationOptions, network } from "../polkastats.config.js";

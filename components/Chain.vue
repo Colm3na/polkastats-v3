@@ -1,6 +1,42 @@
 <template>
   <div v-if="lastBlock && chain">
     <div class="row">
+      <div v-if="lastBlock.is_elecion" class="col-12">
+        <b-alert
+          v-if="lastBlock.is_elecion"
+          show
+          dismissible
+          variant="warning"
+          class="text-center"
+        >
+          <div>
+            <h3>
+              {{ $t("pages.dashboard.ongoing_election_title") }}
+              {{
+                (
+                  (100 * lastBlock.session_progress) /
+                  lastBlock.session_length
+                ).toFixed(0)
+              }}%
+            </h3>
+          </div>
+          <p>
+            {{
+              $t("pages.dashboard.ongoing_election_1", {
+                numBlocks:
+                  lastBlock.session_length - lastBlock.session_progress,
+                minutes: (
+                  (lastBlock.session_length - lastBlock.session_progress) /
+                  10
+                ).toFixed(0)
+              })
+            }}
+          </p>
+          <p>
+            <strong>{{ $t("pages.dashboard.ongoing_election_2") }}</strong>
+          </p>
+        </b-alert>
+      </div>
       <div class="col-6 col-md-6 col-lg-3 mb-4">
         <div class="card">
           <div class="card-body">
@@ -237,26 +273,15 @@ export default {
             block(order_by: { block_number: desc }, where: {}, limit: 1) {
               block_number
               block_number_finalized
-              block_hash
               block_author
-              block_author_name
               current_era
               current_index
               era_length
               era_progress
-              extrinsics_root
-              is_epoch
-              new_accounts
-              num_transfers
-              parent_hash
+              is_election
               session_length
               session_per_era
               session_progress
-              spec_name
-              spec_version
-              state_root
-              timestamp
-              total_events
               validator_count
             }
           }

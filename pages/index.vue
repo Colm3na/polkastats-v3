@@ -11,7 +11,13 @@
         >
           <div>
             <h3>{{ $t("pages.dashboard.polkastats_validator") }}</h3>
-            <h5>{{ $t("pages.dashboard.polkastats_validator_subtitle") }}</h5>
+            <h5>
+              {{
+                $t("pages.dashboard.polkastats_validator_subtitle", {
+                  networkName: network.name
+                })
+              }}
+            </h5>
           </div>
           <Identicon
             :value="network.validator"

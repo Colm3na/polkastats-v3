@@ -266,7 +266,10 @@
       "recent_extrinsics": "Recent extrinsics",
       "recent_events": "Recent events",
       "polkastats_validator": "Do you like PolkaStats? ❤️",
-      "polkastats_validator_subtitle": "Now you can support our work staking in our {networkName} validator!"
+      "polkastats_validator_subtitle": "Now you can support our work staking in our {networkName} validator!",
+      "ongoing_election_title": "Ongoing validator election process",
+      "ongoing_election_1": "{numBlocks} remaining blocks ({minutes} min)",
+      "ongoing_election_2": "No staking action are allowed until it finished"
     },
     "blocks": {
       "title": "Last blocks",
