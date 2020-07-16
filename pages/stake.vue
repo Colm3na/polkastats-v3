@@ -78,7 +78,7 @@
             </b-row>
             <div>
               <p class="ml-2 mb-0 mt-1" style="font-size: 0.8rem">
-                Amount: {{ formatAmount(getAmount()) }}
+                Amount: {{ formatAmount(getAmount() || 0) }}
               </p>
             </div>
           </b-form-group>
@@ -344,6 +344,7 @@ export default {
   data() {
     return {
       network,
+      favorites: [],
       currentSessionIndex: 0,
       validators: [],
       detectedExtension: false,
