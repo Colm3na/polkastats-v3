@@ -261,10 +261,11 @@
       "title": "Dashboard",
       "head_title": "PolkaStats - {networkName} network statistics",
       "head_content": "{networkName} dashboard",
-      "recent_blocks": "Recent blocks",
+      "recent_blocks": "Last blocks",
       "top_rich": "Top 10 rich accounts",
-      "recent_extrinsics": "Recent extrinsics",
-      "recent_events": "Recent events",
+      "recent_extrinsics": "Last extrinsics",
+      "recent_events": "Last events",
+      "recent_transfers": "Last transfers",
       "polkastats_validator": "PolkaStats Validator",
       "polkastats_validator_subtitle": "Support our work staking in our {networkName} validator!",
       "ongoing_election_title": "Ongoing validator election process",
@@ -288,6 +289,15 @@
     "extrinsic": {
       "head_title": "PolkaStats - {networkName} extrinsic {extrinsicHash}",
       "head_content": "{networkName} extrinsic {extrinsicHash}"
+    },
+    "transfers": {
+      "title": "Last transfers",
+      "head_title": "PolkaStats - {networkName} last transfers",
+      "head_content": "{networkName} last transfers"
+    },
+    "transfer": {
+      "head_title": "PolkaStats - {networkName} transfer {extrinsicHash}",
+      "head_content": "{networkName} transfer {extrinsicHash}"
     },
     "events": {
       "title": "Last system events",

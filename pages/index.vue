@@ -77,13 +77,13 @@
             <h3>
               <nuxt-link
                 v-b-tooltip.hover
-                :to="`/extrinsics`"
-                title="Click to see last extrinsics"
+                :to="`/transfers`"
+                title="Click to see last transfers"
               >
-                {{ $t("pages.dashboard.recent_extrinsics") }}
+                {{ $t("pages.dashboard.recent_transfers") }}
               </nuxt-link>
             </h3>
-            <LastExtrinsics />
+            <LastTransfers />
           </div>
           <div class="col-md-6 mb-4">
             <h3>
@@ -106,7 +106,7 @@
 import Chain from "../components/Chain.vue";
 import LastBlocks from "../components/LastBlocks.vue";
 import LastEvents from "../components/LastEvents.vue";
-import LastExtrinsics from "../components/LastExtrinsics.vue";
+import LastTransfers from "../components/LastTransfers.vue";
 import Top10Rich from "../components/Top10Rich.vue";
 import commonMixin from "../mixins/commonMixin.js";
 import Identicon from "../components/identicon.vue";
@@ -117,7 +117,7 @@ export default {
     Chain,
     LastBlocks,
     LastEvents,
-    LastExtrinsics,
+    LastTransfers,
     Top10Rich,
     Identicon
   },

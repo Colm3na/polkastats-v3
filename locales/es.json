@@ -266,6 +266,7 @@
       "top_rich": "Top 10 cuentas",
       "recent_extrinsics": "Últimos extrinsics",
       "recent_events": "Últimos eventos",
+      "recent_transfers": "Últimas transferencias",
       "polkastats_validator": "Validador PolkaStats",
       "polkastats_validator_subtitle": "¡Participa en nuestro validator de {networkName}!",
       "ongoing_election_title": "Proceso de elección de validadores en curso",
@@ -289,6 +290,15 @@
     "extrinsic": {
       "head_title": "PolkaStats - {networkName} extrinsic {extrinsicHash}",
       "head_content": "{networkName} extrinsic {extrinsicHash}"
+    },
+    "transfers": {
+      "title": "Últimas transferencias",
+      "head_title": "PolkaStats - {networkName} últimos transferencias",
+      "head_content": "{networkName} últimos transferencias"
+    },
+    "transfer": {
+      "head_title": "PolkaStats - {networkName} transferencia {extrinsicHash}",
+      "head_content": "{networkName} transferencia {extrinsicHash}"
     },
     "events": {
       "title": "Últimos eventos de sistema",
