@@ -154,14 +154,14 @@ export default {
   },
   head() {
     return {
-      title: this.$t("pages.extrinsics.head_title", {
+      title: this.$t("pages.transfers.head_title", {
         networkName: network.name
       }),
       meta: [
         {
           hid: "description",
           name: "description",
-          content: this.$t("pages.extrinsics.head_content", {
+          content: this.$t("pages.transfers.head_content", {
             networkName: network.name
           })
         }
