@@ -365,7 +365,9 @@
       "experimental_content": "Por ahora el staking usando esta aplicación solo es posible para direcciones sin ninguna participación existente (ej: cuentas que no hayan realizado ninguna acción de staking). La misma dirección será usada como controlador y stash.",
       "search_validator": "Buscar validador...",
       "select_validator": "Seleccione el validador",
-      "validator_feedback": "Por favor, selecciona un validador"
+      "validator_feedback": "Por favor, selecciona un validador",
+      "selected": "Seleccionado",
+      "not_selected": "No seleccionado"
     }
   },
   "details": {

@@ -363,7 +363,9 @@
       "experimental_content": "By now staking using this tool is only possible for addresses without any existent bond (i.e. accounts that didn't issue any staking action yet). The same address will be used as stash and controller.",
       "search_validator": "Search validator...",
       "select_validator": "Select your validator",
-      "validator_feedback": "Please select a validator"
+      "validator_feedback": "Please select a validator",
+      "selected": "Selected",
+      "not_selected": "Not selected"
     }
   },
   "details": {

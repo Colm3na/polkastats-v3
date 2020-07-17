@@ -31,9 +31,13 @@
               :state="validateState('selectedAddress')"
               aria-describedby="selectedAddress-feedback"
               class="w-100"
+              @change="getBalance(selectedAddress)"
             ></b-form-select>
             <div>
-              <p class="ml-2 mb-0 mt-1">
+              <p
+                class="ml-2 mb-0 mt-1"
+                :class="{ 'text-danger': !(tranferableBalance > 0) }"
+              >
                 {{ $t("pages.stake.transferable_balance") }}:
                 {{ formatAmount(tranferableBalance) }}
               </p>
@@ -137,11 +141,13 @@
               <template v-slot:cell(selected)="{ rowSelected }">
                 <template v-if="rowSelected">
                   <span aria-hidden="true">&check;</span>
-                  <span class="sr-only">Selected</span>
+                  <span class="sr-only">{{ $t("pages.stake.selected") }}</span>
                 </template>
                 <template v-else>
                   <span aria-hidden="true">&nbsp;</span>
-                  <span class="sr-only">Not selected</span>
+                  <span class="sr-only">{{
+                    $t("pages.stake.not_selected")
+                  }}</span>
                 </template>
               </template>
               <template v-slot:cell(accountId)="data">
@@ -192,7 +198,7 @@
           >
             <p class="my-2 text-center">
               <span v-if="selectedAddress">
-                Stake
+                {{ $t("pages.stake.stake") }}
                 <span v-if="getAmount() > 0">
                   {{ formatAmount(getAmount()) }}
                 </span>
@@ -432,8 +438,7 @@ export default {
   },
   validations: {
     selectedAddress: {
-      required,
-      isValidAddress
+      required
     },
     amount: {
       required,
@@ -466,20 +471,10 @@ export default {
         });
     }
   },
-  watch: {
-    selectedAccount: async function() {
-      this.tranferableBalance = await this.getBalance();
-    }
-  },
   created: async function() {
     // Get favorites from cookie
     if (this.$cookies.get("favorites")) {
       this.favorites = this.$cookies.get("favorites");
-    }
-
-    // Load identities from store if empty
-    if (this.$store.state.identities.list.length == 0) {
-      await this.$store.dispatch("identities/update");
     }
 
     this.enableWeb3 = await web3Enable("PolkaStats");
@@ -556,21 +551,19 @@ export default {
           return this.amount * 1000000000000000000000000;
       }
     },
-    async getBalance() {
-      const { availableBalance } = await this.api.derive.balances.all(
-        this.selectedAddress
-      );
-      return availableBalance;
+    async getBalance(address) {
+      const { availableBalance } = await this.api.derive.balances.all(address);
+      this.tranferableBalance = availableBalance;
     },
     async stake() {
-      web3FromAddress(this.selectedAccount.address).then(async injector => {
+      web3FromAddress(this.selectedAddress).then(async injector => {
         this.api.setSigner(injector.signer);
         const amount = this.getAmount();
         const rewardDestination = 0;
         let transactions = [];
         transactions.push(
           await this.api.tx.staking.bond(
-            this.selectedAccount.address,
+            this.selectedAddress,
             amount,
             rewardDestination
           )
@@ -579,9 +572,7 @@ export default {
           await this.api.tx.staking.nominate([this.targetValidator])
         );
         const extrinsic = await this.api.tx.utility.batch(transactions);
-        this.extrinsicHash = await extrinsic.signAndSend(
-          this.selectedAccount.address
-        );
+        this.extrinsicHash = await extrinsic.signAndSend(this.selectedAddress);
       });
     },
     onFiltered(filteredItems) {

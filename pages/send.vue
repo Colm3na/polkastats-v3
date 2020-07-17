@@ -31,7 +31,7 @@
               :state="validateState('selectedAddress')"
               aria-describedby="selectedAddress-feedback"
               class="w-100"
-              @change="getBalance"
+              @change="getBalance(selectedAddress)"
             ></b-form-select>
             <div>
               <p
