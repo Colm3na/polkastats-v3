@@ -4,7 +4,6 @@
       <b-col md="12">
         <h1 class="mb-4">
           {{ $t("pages.send.title", { networkDenom: network.denom }) }}
-          {{ selectedAccount || `undef` }}
         </h1>
       </b-col>
     </b-row>
