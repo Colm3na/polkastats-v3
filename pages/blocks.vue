@@ -1,7 +1,7 @@
 <template>
   <div>
     <section>
-      <b-container class="main pt-4 pb-5">
+      <b-container class="main py-5">
         <h1 class="mb-4">
           {{ $t("pages.blocks.title") }}
         </h1>

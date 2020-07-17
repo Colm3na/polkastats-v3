@@ -1,7 +1,7 @@
 <template>
   <div>
     <section>
-      <b-container class="main pt-4 page-intentions">
+      <b-container class="main py-5 page-intentions">
         <!-- Filter -->
         <b-row>
           <b-col lg="12" class="mb-4">

@@ -1,7 +1,7 @@
 <template>
   <div>
     <section>
-      <b-container class="page-favorites main pt-4">
+      <b-container class="page-favorites main py-5">
         <!-- Empty favorites message -->
         <div
           v-if="favorites.length === 0"

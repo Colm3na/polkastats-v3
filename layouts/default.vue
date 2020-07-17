@@ -4,14 +4,17 @@
       <div class="nav-bg-color fixed-top">
         <div class="container">
           <div id="top-bar" class="row">
-            <div class="col-md-10 text-right pb-2">
+            <div
+              class="col-md-10 text-right pb-2 pb-sm-0 pb-md-0 pb-lg-0 pb-xl-0"
+            >
               <span
                 v-if="network.coinGeckoDenom"
                 class="fiat"
                 data-testid="fiat"
               >
                 <strong>{{ network.denom }}</strong> ${{ USDConversion }} ({{
-                }} ({{ USD24hChange }}%)
+                  USD24hChange
+                }}%)
               </span>
               <button
                 type="button"
@@ -40,7 +43,7 @@
                 Kusama CC3
               </button>
             </div>
-            <div class="col-md-2 pt-1 pb-2">
+            <div class="col-md-2 pt-1 pb-2 pb-0">
               <languages />
             </div>
           </div>

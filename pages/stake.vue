@@ -270,17 +270,16 @@
             class="btn-send btn-block mt-3"
             :disabled="noAccountsFound"
           >
-            <i class="fas fa-paper-plane mr-2"></i> Stake
+            <i class="fas fa-paper-plane mr-2"></i>
+            {{ $t("pages.stake.stake") }}
           </b-button>
         </b-form>
       </b-col>
       <b-col md="5">
         <b-alert variant="warning" class="mb-3" show>
-          <h2>Warning, experimental!</h2>
+          <h2>{{ $t("pages.stake.experimental_title") }}</h2>
           <p>
-            By now staking it's only possible for addresses without any bond
-            (i.e. accounts that didn't issue any staking action yet). The same
-            address will be used as stash and controller.
+            {{ $t("pages.stake.experimental_content") }}
           </p>
         </b-alert>
         <b-card>

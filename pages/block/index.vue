@@ -1,7 +1,7 @@
 <template>
   <div>
     <section>
-      <b-container class="block-page main pt-4 pb-5">
+      <b-container class="block-page main py-5">
         <template v-if="block">
           <div class="card mt-4 mb-3">
             <div class="card-body">

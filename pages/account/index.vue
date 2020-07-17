@@ -1,7 +1,7 @@
 <template>
   <div>
     <section>
-      <b-container class="account-page main pt-4 pb-5">
+      <b-container class="account-page main py-5">
         <template v-if="parsedAccount">
           <div class="row">
             <div class="col-12 text-center">

@@ -1,7 +1,7 @@
 <template>
   <div>
     <section>
-      <b-container id="page-index" class="main pt-4">
+      <b-container id="page-index" class="main py-5">
         <!-- Filter -->
         <b-row style="margin-bottom: 1rem">
           <b-col cols="12">

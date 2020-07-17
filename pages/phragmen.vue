@@ -1,7 +1,7 @@
 <template>
   <div>
     <section>
-      <b-container class="page-phragmen main pt-4">
+      <b-container class="page-phragmen main py-5">
         <h1 class="text-center mb-4">
           {{ $t("pages.phragmen.predicted_candidates_by_TEXT") }}
         </h1>

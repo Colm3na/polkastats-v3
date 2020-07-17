@@ -1,7 +1,7 @@
 <template>
   <div>
     <section>
-      <b-container class="main pt-4 pb-5 dashboard">
+      <b-container class="main py-5 dashboard">
         <b-alert
           v-if="network.validator"
           show

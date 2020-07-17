@@ -1,7 +1,7 @@
 <template>
   <div>
     <section>
-      <b-container class="page-accounts main pt-4">
+      <b-container class="page-accounts main py-5">
         <h1 class="text-center mb-4">
           {{ $t("pages.accounts.active_accounts") }}
         </h1>

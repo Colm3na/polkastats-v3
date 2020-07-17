@@ -1,5 +1,5 @@
 <template>
-  <b-container class="pt-4">
+  <b-container class="main py-5">
     <TargetInfo
       id="delegators_rewards"
       :button="$t('pages.targets.accordion-info.delegator_rewards')"
