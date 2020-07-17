@@ -4,6 +4,7 @@
       <b-col md="12">
         <h1 class="mb-4">
           {{ $t("pages.send.title", { networkDenom: network.denom }) }}
+          {{ selectedAccount || `undef` }}
         </h1>
       </b-col>
     </b-row>
@@ -30,9 +31,13 @@
               :state="validateState('selectedAddress')"
               aria-describedby="selectedAddress-feedback"
               class="w-100"
+              @change="getBalance"
             ></b-form-select>
             <div>
-              <p class="ml-2 mb-0 mt-1">
+              <p
+                class="ml-2 mb-0 mt-1"
+                :class="{ 'text-danger': !(tranferableBalance > 0) }"
+              >
                 {{ $t("pages.send.transferable_balance") }}:
                 {{ formatAmount(tranferableBalance) }}
               </p>
@@ -144,7 +149,7 @@
             fade
             show
           >
-            <h4>{{ $t("pages.send.transaction_sent") }}</h4>
+            <h4>{{ $t("pages.send.tx_sent") }}</h4>
             <p>{{ $t("pages.send.extrinsic_hash") }} {{ extrinsicHash }}</p>
           </b-alert>
           <b-alert
@@ -309,9 +314,7 @@ export default {
   },
   validations: {
     selectedAddress: {
-      required,
-      isValidAddress,
-      isValidPolkadotAddress
+      required
     },
     amount: {
       required,
@@ -322,11 +325,6 @@ export default {
     targetAddress: {
       required,
       isValidAddress
-    }
-  },
-  watch: {
-    selectedAccount: async function() {
-      this.tranferableBalance = await this.getBalance();
     }
   },
   created: async function() {
@@ -341,18 +339,11 @@ export default {
               if (accounts.length > 0) {
                 this.detectedExtension = true;
                 this.extensionAccounts = accounts;
-                accounts
-                  .filter(account =>
-                    isValidPolkadotAddress(
-                      account.address,
-                      network.addressPrefix
-                    )
+                accounts.forEach(account =>
+                  this.extensionAddresses.push(
+                    encodeAddress(account.address, this.network.addressPrefix)
                   )
-                  .forEach(account =>
-                    this.extensionAddresses.push(
-                      encodeAddress(account.address, network.addressPrefix)
-                    )
-                  );
+                );
                 if (
                   this.extensionAccounts.length > 0 &&
                   this.extensionAddresses.length > 0
@@ -411,23 +402,19 @@ export default {
           return this.amount * 1000000000000000000000000;
       }
     },
-    async getBalance() {
-      const { availableBalance } = await this.api.derive.balances.all(
-        this.selectedAddress
-      );
-      return availableBalance;
+    async getBalance(address) {
+      const { availableBalance } = await this.api.derive.balances.all(address);
+      this.tranferableBalance = availableBalance;
     },
     async send() {
-      web3FromAddress(this.selectedAccount.address).then(async injector => {
+      web3FromAddress(this.selectedAddress).then(async injector => {
         this.api.setSigner(injector.signer);
         const amount = this.getAmount();
         const extrinsic = await this.api.tx.balances.transfer(
           this.targetAddress,
           amount
         );
-        this.extrinsicHash = await extrinsic.signAndSend(
-          this.selectedAccount.address
-        );
+        this.extrinsicHash = await extrinsic.signAndSend(this.selectedAddress);
       });
     }
   },

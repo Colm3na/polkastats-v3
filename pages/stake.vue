@@ -89,7 +89,7 @@
 
           <b-form-group
             id="input-group-targetValidator"
-            label="Select your validator:"
+            :label="$t('pages.stake.select_validator')"
             label-for="input-targetValidator"
             class="w-100"
           >
@@ -102,7 +102,7 @@
               placeholder="Target validator"
             ></b-form-input>
             <b-form-invalid-feedback id="targetValidator-feedback"
-              >Please select a validator
+              >{{ $t("pages.stake.validator_feedback") }}
             </b-form-invalid-feedback>
           </b-form-group>
 
@@ -111,7 +111,7 @@
             id="filterInput"
             v-model="filter"
             type="search"
-            placeholder="Search validator..."
+            :placeholder="$t('pages.stake.search_validator')"
             class="mb-3"
           />
           <!-- Table with sorting and pagination-->
@@ -219,7 +219,7 @@
             fade
             show
           >
-            <h4>{{ $t("pages.stake.transaction_sent") }}</h4>
+            <h4>{{ $t("pages.stake.tx_sent") }}</h4>
             <p>{{ $t("pages.stake.extrinsic_hash") }} {{ extrinsicHash }}</p>
           </b-alert>
           <b-alert
@@ -493,18 +493,11 @@ export default {
               if (accounts.length > 0) {
                 this.detectedExtension = true;
                 this.extensionAccounts = accounts;
-                accounts
-                  .filter(account =>
-                    isValidPolkadotAddress(
-                      account.address,
-                      network.addressPrefix
-                    )
+                accounts.forEach(account =>
+                  this.extensionAddresses.push(
+                    encodeAddress(account.address, this.network.addressPrefix)
                   )
-                  .forEach(account =>
-                    this.extensionAddresses.push(
-                      encodeAddress(account.address, network.addressPrefix)
-                    )
-                  );
+                );
                 if (
                   this.extensionAccounts.length > 0 &&
                   this.extensionAddresses.length > 0

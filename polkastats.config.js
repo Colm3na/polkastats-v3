@@ -1,6 +1,6 @@
 // Selected network
 // const selectedNetwork = `Polkadot`;
-const selectedNetwork = `Kusama`;
+const selectedNetwork = `Westend`;
 
 // Substrate networks
 export const networks = [
@@ -38,7 +38,7 @@ export const networks = [
     denom: "WND",
     coinGeckoDenom: undefined,
     decimalPlaces: 12,
-    addressPrefix: 2,
+    addressPrefix: 42,
     nodeWs: "wss://westend-rpc.polkadot.io",
     backendWs: "wss://v3dev2.polkastats.io/api/v3",
     backendHttp: "http://v3dev2.polkastats.io/api/v3",

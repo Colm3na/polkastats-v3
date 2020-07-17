@@ -339,6 +339,7 @@
       "transferable_balance": "Transferable balance",
       "install_extension": "Please install extension, import an account and allow access",
       "amount_validation": "Please enter a positive amount, less or equal to",
+      "stake": "Stake",
       "from": "From",
       "amount": "Amount",
       "destination": "Please enter the destination address",
@@ -359,7 +360,10 @@
       "guide_4": "Refresh this page and allow to access the extension",
       "guide_5": "Fill the form and sign the transaction in the extension!",
       "experimental_title": "Warning, experimental!",
-      "experimental_content": "By now staking using this tool is only possible for addresses without any existent bond (i.e. accounts that didn't issue any staking action yet). The same address will be used as stash and controller."
+      "experimental_content": "By now staking using this tool is only possible for addresses without any existent bond (i.e. accounts that didn't issue any staking action yet). The same address will be used as stash and controller.",
+      "search_validator": "Search validator...",
+      "select_validator": "Select your validator",
+      "validator_feedback": "Please select a validator"
     }
   },
   "details": {

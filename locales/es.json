@@ -335,11 +335,12 @@
       "title": "Stake {networkDenom}s usando la extensión JS de Polkadot",
       "head_title": "PolkaStats - Stake {networkDenom}s usando la extensión JS de Polkadot",
       "head_content": "Stake {networkDenom}s usando la extensión JS de Polkadot",
-      "no_extension_found": "No se ha detectado la extensión Polkadot JS, por favor instálala",
+      "no_extension_found": "No se ha detectado la extensión Polkadot JS, por favor instálela",
       "no_accounts_found": "No se han detectado cuentas en la extensión Polkadot JS",
       "transferable_balance": "Balance transferible",
       "install_extension": "Por favor instale la extensión, importe o cree una cuenta y permita el acceso",
       "amount_validation": "Por favor introduzca una cantidad positiva, menor o igual a",
+      "stake": "Stake",
       "from": "Desde",
       "address": "Dirección",
       "amount": "Cantidad",
@@ -361,8 +362,10 @@
       "guide_4": "Refresca la página y permite el acceso a la extensión",
       "guide_5": "Rellena los campos del formulario y firma la transacción en la extensión",
       "experimental_title": "Atención, experimental!",
-      "experimental_content": "Por ahora el staking usando esta aplicación solo es posible para direcciones sin ninguna participación existente (ej: cuentas que no hayan realizado ninguna acción de staking). La misma dirección será usada como controlador y stash."
-    
+      "experimental_content": "Por ahora el staking usando esta aplicación solo es posible para direcciones sin ninguna participación existente (ej: cuentas que no hayan realizado ninguna acción de staking). La misma dirección será usada como controlador y stash.",
+      "search_validator": "Buscar validador...",
+      "select_validator": "Seleccione el validador",
+      "validator_feedback": "Por favor, selecciona un validador"
     }
   },
   "details": {
