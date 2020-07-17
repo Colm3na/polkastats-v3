@@ -267,7 +267,9 @@ export default {
         },
         {
           key: "estimated_payout",
-          label: this.$t("pages.targets.estimated_payout"),
+          label: this.$t("pages.targets.estimated_payout", {
+            networkDenom: network.denom
+          }),
           sortable: false,
           class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
         },
