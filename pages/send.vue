@@ -3,24 +3,23 @@
     <b-row>
       <b-col md="12">
         <h1 class="mb-4">
-          Send {{ network.denom }}s using Polkadot JS extension
+          {{ $t("pages.send.title", { networkDenom: network.denom }) }}
         </h1>
       </b-col>
     </b-row>
     <b-row>
       <b-col md="6 mb-4">
         <b-alert v-if="!detectedExtension" variant="danger" show>
-          <i class="fa fa-frown-o"></i> No Polkadot JS extension found, please
-          install it.
+          <i class="fa fa-frown-o"></i>
+          {{ $t("pages.send.no_extension_found") }}
         </b-alert>
         <b-alert v-if="noAccountsFound" variant="danger" show>
-          <i class="fa fa-frown-o"></i> No {{ network.name }} accounts found in
-          extension.
+          <i class="fa fa-frown-o"></i> {{ $t("pages.send.no_accounts_found") }}
         </b-alert>
         <b-form class="mt-2" @submit="onSubmit">
           <b-form-group
             id="input-group-from"
-            label="From:"
+            :label="$t('pages.send.from')"
             label-for="input-from"
             class="w-100"
           >
@@ -34,16 +33,17 @@
             ></b-form-select>
             <div>
               <p class="ml-2 mb-0 mt-1">
-                Transferable balance: {{ formatAmount(tranferableBalance) }}
+                {{ $t("pages.send.transferable_balance") }}:
+                {{ formatAmount(tranferableBalance) }}
               </p>
             </div>
             <b-form-invalid-feedback id="selectedAddress-feedback"
-              >Please install extension, import an account and allow access
+              >{{ $t("pages.send.install_extension") }}
             </b-form-invalid-feedback>
           </b-form-group>
           <b-form-group
             id="input-group-amount"
-            label="Amount:"
+            :label="$t('pages.send.amount')"
             label-for="input-amount"
             class="w-100"
           >
@@ -55,10 +55,10 @@
                   type="number"
                   :state="validateState('amount')"
                   aria-describedby="amount-feedback"
-                  placeholder="Amount"
+                  :placeholder="$t('pages.send.amount')"
                 ></b-form-input>
                 <b-form-invalid-feedback id="amount-feedback"
-                  >Please enter a positive amount, less or equal to
+                  >{{ $t("pages.send.amount_validation") }}
                   {{ formatAmount(tranferableBalance) }}
                 </b-form-invalid-feedback>
               </b-col>
@@ -80,13 +80,14 @@
             </b-row>
             <div>
               <p class="ml-2 mb-0 mt-1" style="font-size: 0.8rem">
-                Amount: {{ formatAmount(getAmount() || 0) }}
+                {{ $t("pages.send.amount") }}:
+                {{ formatAmount(getAmount() || 0) }}
               </p>
             </div>
           </b-form-group>
           <b-form-group
             id="input-group-targetAddress"
-            label="To:"
+            :label="$t('pages.send.to')"
             label-for="input-targetAddress"
             class="w-100"
           >
@@ -95,11 +96,11 @@
               v-model="$v.targetAddress.$model"
               :state="validateState('targetAddress')"
               aria-describedby="targetAddress-feedback"
-              placeholder="Address"
+              :placeholder="$t('pages.send.address')"
               class="w-100"
             ></b-form-input>
             <b-form-invalid-feedback id="targetAddress-feedback"
-              >Please enter the destination address
+              >{{ $t("pages.send.destination") }}
             </b-form-invalid-feedback>
           </b-form-group>
           <b-alert
@@ -111,11 +112,11 @@
           >
             <p class="my-2 text-center">
               <span v-if="selectedAddress">
-                Send
+                {{ $t("pages.send.send") }}
                 <span v-if="getAmount() > 0">
                   {{ formatAmount(getAmount()) }}
                 </span>
-                from
+                {{ $t("pages.send.from") }}
                 <Identicon
                   :key="selectedAddress"
                   :value="selectedAddress"
@@ -143,8 +144,8 @@
             fade
             show
           >
-            <h4>Transaction sent!</h4>
-            <p>Extrinsic hash is {{ extrinsicHash }}</p>
+            <h4>{{ $t("pages.send.transaction_sent") }}</h4>
+            <p>{{ $t("pages.send.extrinsic_hash") }} {{ extrinsicHash }}</p>
           </b-alert>
           <b-alert
             v-if="extrinsic && success"
@@ -153,9 +154,11 @@
             fade
             show
           >
-            <h4><i class="fa fa-check"></i> Succesful transaction!</h4>
+            <h4>
+              <i class="fa fa-check"></i> {{ $t("pages.send.successful_tx") }}
+            </h4>
             <p>
-              Extrinsic with hash {{ extrinsicHash }} was included in block
+              {{ $t("pages.send.included_in_block", { extrinsicHash }) }}
               <nuxt-link
                 v-b-tooltip.hover
                 :to="`/block?blockNumber=${extrinsic.block_number}`"
@@ -172,9 +175,11 @@
             fade
             show
           >
-            <h4><i class="fa fa-frown-o"></i> Failed transaction!</h4>
+            <h4>
+              <i class="fa fa-frown-o"></i> {{ $t("pages.send.failed_tx") }}
+            </h4>
             <p>
-              Extrinsic with hash {{ extrinsicHash }} was included in block
+              {{ $t("pages.send.included_in_block", { extrinsicHash }) }}
               <nuxt-link
                 v-b-tooltip.hover
                 :to="`/block?blockNumber=${extrinsic.block_number}`"
@@ -190,37 +195,45 @@
             class="btn-send btn-block mt-3"
             :disabled="noAccountsFound"
           >
-            <i class="fas fa-paper-plane mr-2"></i> Send
+            <i class="fas fa-paper-plane mr-2"></i> {{ $t("pages.send.send") }}
           </b-button>
         </b-form>
       </b-col>
       <b-col md="1"></b-col>
       <b-col md="5">
         <b-card>
-          <h2>How to send DOTs</h2>
+          <h2>
+            {{ $t("pages.send.guide_title", { networkDenom: network.denom }) }}
+          </h2>
           <p>
-            Now you can transfer DOTs using PolkaStats &
+            {{
+              $t("pages.send.guide_subtitle_1", { networkDenom: network.denom })
+            }}
+            &
             <a href="https://github.com/polkadot-js/extension" target="_blank"
               >Polkadot JS extension</a
             >
-            in a safe way.
+            {{ $t("pages.send.guide_subtitle_2") }}
           </p>
           <ul>
             <li>
-              First of all you need a <strong>Polkadot account</strong> with
-              some <strong>free balance</strong>.
+              {{ $t("pages.send.guide_1_1") }}
+              <strong>{{ $t("pages.send.guide_1_2") }}</strong>
+              {{ $t("pages.send.guide_1_3") }}
+              <strong>{{ $t("pages.send.guide_1_4") }}</strong
+              >.
             </li>
             <li>
-              Install Polkadot JS extension from
+              {{ $t("pages.send.guide_2") }}
               <a
                 href="https://chrome.google.com/webstore/detail/polkadot%7Bjs%7D-extension/mopnmbcafieddcagagdcbnhejhlodfdd?hl=es"
                 target="_blank"
                 >chrome web store</a
               >.
             </li>
-            <li>Import your existings account/s or create a new one.</li>
-            <li>Refresh this page and allow to access the extension.</li>
-            <li>Fill the form and sign the transaction in the extension!</li>
+            <li>{{ $t("pages.send.guide_3") }}</li>
+            <li>{{ $t("pages.send.guide_4") }}</li>
+            <li>{{ $t("pages.send.guide_5") }}</li>
           </ul>
         </b-card>
       </b-col>
