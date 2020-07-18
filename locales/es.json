@@ -30,6 +30,9 @@
       "waiting_validators": "En cola",
       "nominators": "Nominadores",
       "progress": "Progreso"
+    },
+    "transfers": {
+      "search": "Buscar transferencia por número de bloque, hash, dirección o nombre de identidad"
     }
   },
   "layout": {
@@ -78,7 +81,9 @@
     },
     "account": {
       "head_title": "PolkaStats - {networkName} cuenta {address}",
-      "head_content": "{networkName} cuenta {address}"
+      "head_content": "{networkName} cuenta {address}",
+      "sent_transfers": "Transferencias enviadas",
+      "received_transfers": "Transferencias recibidos"
     },
     "favorites": {
       "hi_there": "¡Hola!",

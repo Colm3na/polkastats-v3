@@ -362,25 +362,6 @@ export default {
     isFavorite(accountId) {
       return this.favorites.includes(accountId);
     },
-    getDisplayName: function(accountId) {
-      let identity = this.$store.state.identities.list.find(
-        identity => identity.accountId === accountId
-      );
-      if (identity) {
-        identity = identity.identity;
-        if (
-          identity.displayParent &&
-          identity.displayParent !== `` &&
-          identity.display &&
-          identity.display !== ``
-        ) {
-          return `${identity.displayParent} / ${identity.display}`;
-        } else {
-          return identity.display;
-        }
-      }
-      return ``;
-    },
     onFiltered(filteredItems) {
       // Trigger pagination to update the number of buttons/pages due to filtering
       this.totalRows = filteredItems.length;

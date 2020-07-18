@@ -7,10 +7,18 @@
           id="filterInput"
           v-model="filter"
           type="search"
-          placeholder="Search transfer by block number, hash, source or destination address"
+          :placeholder="$t('components.transfers.search')"
         />
       </b-col>
     </b-row>
+    <JsonCSV
+      :data="transfers"
+      class="download-csv mb-2"
+      :name="`polkastats.io_received_transfers_{${accountId}.csv`"
+    >
+      <i class="fas fa-file-csv"></i>
+      {{ $t("pages.accounts.download_csv") }}
+    </JsonCSV>
     <div class="table-responsive">
       <b-table
         striped
@@ -59,7 +67,12 @@
                 :size="20"
                 :theme="'polkadot'"
               />
-              {{ shortAddress(data.item.from) }}
+              <span v-if="getDisplayName(data.item.from)">
+                {{ getDisplayName(data.item.from) }}
+              </span>
+              <span v-else>
+                {{ shortAddress(data.item.from) }}
+              </span>
             </nuxt-link>
           </p>
         </template>
@@ -78,7 +91,12 @@
                 :size="20"
                 :theme="'polkadot'"
               />
-              {{ shortAddress(data.item.to) }}
+              <span v-if="getDisplayName(data.item.to)">
+                {{ getDisplayName(data.item.to) }}
+              </span>
+              <span v-else>
+                {{ shortAddress(data.item.to) }}
+              </span>
             </nuxt-link>
           </p>
         </template>
@@ -128,10 +146,12 @@ import commonMixin from "../mixins/commonMixin.js";
 import Identicon from "../components/identicon.vue";
 import { paginationOptions } from "../polkastats.config.js";
 import gql from "graphql-tag";
+import JsonCSV from "vue-json-csv";
 
 export default {
   components: {
-    Identicon
+    Identicon,
+    JsonCSV
   },
   mixins: [commonMixin],
   props: {
@@ -187,6 +207,17 @@ export default {
       ]
     };
   },
+  created: function() {
+    var vm = this;
+    // Force update of identity list if empty
+    if (this.$store.state.identities.list.length === 0) {
+      vm.$store.dispatch("identities/update");
+    }
+    // Update data every 60 seconds
+    this.polling = setInterval(() => {
+      vm.$store.dispatch("identities/update");
+    }, 60000);
+  },
   methods: {
     handleNumFields(num) {
       localStorage.paginationOptions = num;
@@ -199,6 +230,25 @@ export default {
       // Trigger pagination to update the number of buttons/pages due to filtering
       this.totalRows = filteredItems.length;
       this.currentPage = 1;
+    },
+    getDisplayName: function(accountId) {
+      let identity = this.$store.state.identities.list.find(
+        identity => identity.accountId === accountId
+      );
+      if (identity) {
+        identity = identity.identity;
+        if (
+          identity.displayParent &&
+          identity.displayParent !== `` &&
+          identity.display &&
+          identity.display !== ``
+        ) {
+          return `${identity.displayParent} / ${identity.display}`;
+        } else {
+          return identity.display;
+        }
+      }
+      return ``;
     }
   },
   apollo: {
