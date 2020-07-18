@@ -189,6 +189,20 @@
                   </tr>
                 </tbody>
               </table>
+              <b-tabs class="mt-4" content-class="mt-4" fill>
+                <b-tab active>
+                  <template v-slot:title>
+                    <h5>Sent transfers</h5>
+                  </template>
+                  <SentTransfers :account-id="accountId" />
+                </b-tab>
+                <b-tab>
+                  <template v-slot:title>
+                    <h5>Received transfers</h5>
+                  </template>
+                  <ReceivedTransfers :account-id="accountId" />
+                </b-tab>
+              </b-tabs>
             </div>
           </div>
         </template>
@@ -198,20 +212,47 @@
 </template>
 <script>
 import Identicon from "../../components/identicon.vue";
+import SentTransfers from "../../components/SentTransfers.vue";
+import ReceivedTransfers from "../../components/ReceivedTransfers.vue";
 import commonMixin from "../../mixins/commonMixin.js";
 import gql from "graphql-tag";
 import { network } from "../../polkastats.config.js";
 
 export default {
   components: {
-    Identicon
+    Identicon,
+    SentTransfers,
+    ReceivedTransfers
   },
   mixins: [commonMixin],
   data: function() {
     return {
       accountId: this.$route.query.accountId,
       parsedAccount: undefined,
-      polling: undefined
+      transfers: [],
+      fields: [
+        {
+          key: "block_number",
+          label: "Block number",
+          class: "d-none d-sm-none d-md-none d-lg-block d-xl-block",
+          sortable: true
+        },
+        {
+          key: "from",
+          label: "From",
+          sortable: true
+        },
+        {
+          key: "to",
+          label: "To",
+          sortable: true
+        },
+        {
+          key: "amount",
+          label: "Amount",
+          sortable: true
+        }
+      ]
     };
   },
   computed: {
@@ -279,13 +320,6 @@ export default {
 <style>
 .identicon {
   cursor: pointer;
-}
-.account-page .table tr td:first-child {
-  width: 30%;
-  font-weight: bold;
-}
-.account-page .table tr td:nth-child(2) {
-  width: 70%;
 }
 .account-page .table tr td .identicon {
   display: inline-block;

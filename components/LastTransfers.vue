@@ -47,8 +47,8 @@
                 :size="20"
                 :theme="'polkadot'"
               />
+              {{ shortAddress(data.item.to) }}
             </nuxt-link>
-            {{ shortAddress(data.item.to) }}
           </p>
         </template>
         <template v-slot:cell(amount)="data">
@@ -77,7 +77,7 @@ export default {
       fields: [
         {
           key: "block_number",
-          label: "Id",
+          label: "Block number",
           class: "d-none d-sm-none d-md-none d-lg-block d-xl-block",
           sortable: true
         },
