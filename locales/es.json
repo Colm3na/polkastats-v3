@@ -389,8 +389,8 @@
     "account": {
       "account": "Cuenta",
       "free_balance": "Fondo libre",
-      "account_id": "Cuenta ID",
-      "account_nonce": "Nonce de Cuenta",
+      "account_id": "Dirección",
+      "account_nonce": "Nonce",
       "total_balance": "Fondo Total",
       "available_balance": "Fondo Disponible",
       "locked_balance": "Fondo Bloqueado",
@@ -398,7 +398,7 @@
       "is_vesting": "¿Es una adquisición?",
       "vested_balance": "Balance Adquirido",
       "vesting_total": "Total Adquirido",
-      "voting_balance": "Balance de la Votación"
+      "voting_balance": "Balance para votación"
     },
     "block": {
       "block": "bloque",

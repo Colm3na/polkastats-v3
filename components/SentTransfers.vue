@@ -1,141 +1,147 @@
 <template>
-  <div v-if="transfers.length > 0" class="sent-transfers">
-    <!-- Filter -->
-    <b-row style="margin-bottom: 1rem">
-      <b-col cols="12">
-        <b-form-input
-          id="filterInput"
-          v-model="filter"
-          type="search"
-          :placeholder="$t('components.transfers.search')"
-        />
-      </b-col>
-    </b-row>
-    <JsonCSV
-      :data="transfers"
-      class="download-csv mb-2"
-      :name="`polkastats.io_sent_transfers_{${accountId}.csv`"
-    >
-      <i class="fas fa-file-csv"></i>
-      {{ $t("pages.accounts.download_csv") }}
-    </JsonCSV>
-    <div class="table-responsive">
-      <b-table
-        striped
-        hover
-        :fields="fields"
-        :per-page="perPage"
-        :current-page="currentPage"
-        :items="transfers"
-        :filter="filter"
-        @filtered="onFiltered"
+  <div class="sent-transfers">
+    <div v-if="!transfers.length > 0" class="text-center py-4">
+      <i class="fa fa-cog fa-spin fa-3x fa-fw spinner"></i>
+      <span class="sr-only">Loading...</span>
+    </div>
+    <div v-else>
+      <!-- Filter -->
+      <b-row style="margin-bottom: 1rem">
+        <b-col cols="12">
+          <b-form-input
+            id="filterInput"
+            v-model="filter"
+            type="search"
+            :placeholder="$t('components.transfers.search')"
+          />
+        </b-col>
+      </b-row>
+      <JsonCSV
+        :data="transfers"
+        class="download-csv mb-2"
+        :name="`polkastats.io_sent_transfers_{${accountId}.csv`"
       >
-        <template v-slot:cell(block_number)="data">
-          <p class="mb-0">
-            <nuxt-link
-              v-b-tooltip.hover
-              :to="`/block?blockNumber=${data.item.block_number}`"
-              title="Check block information"
-            >
-              #{{ formatNumber(data.item.block_number) }}
-            </nuxt-link>
-          </p>
-        </template>
-        <template v-slot:cell(hash)="data">
-          <p class="mb-0">
-            <nuxt-link
-              v-b-tooltip.hover
-              :to="`/block?blockNumber=${data.item.block_number}`"
-              title="Check block information"
-            >
-              {{ shortHash(data.item.hash) }}
-            </nuxt-link>
-          </p>
-        </template>
-        <template v-slot:cell(from)="data">
-          <p class="mb-0">
-            <nuxt-link
-              :to="{
-                name: 'account',
-                query: { accountId: data.item.from }
-              }"
-              :title="$t('pages.validators.validator_details')"
-            >
-              <Identicon
-                :key="data.item.from"
-                :value="data.item.from"
-                :size="20"
-                :theme="'polkadot'"
-              />
-              <span v-if="getDisplayName(data.item.from)">
-                {{ getDisplayName(data.item.from) }}
-              </span>
-              <span v-else>
-                {{ shortAddress(data.item.from) }}
-              </span>
-            </nuxt-link>
-          </p>
-        </template>
-        <template v-slot:cell(to)="data">
-          <p class="mb-0">
-            <nuxt-link
-              :to="{
-                name: 'account',
-                query: { accountId: data.item.to }
-              }"
-              :title="$t('pages.validators.validator_details')"
-            >
-              <Identicon
-                :key="data.item.to"
-                :value="data.item.to"
-                :size="20"
-                :theme="'polkadot'"
-              />
-              <span v-if="getDisplayName(data.item.to)">
-                {{ getDisplayName(data.item.to) }}
-              </span>
-              <span v-else>
-                {{ shortAddress(data.item.to) }}
-              </span>
-            </nuxt-link>
-          </p>
-        </template>
-        <template v-slot:cell(amount)="data">
-          <p class="mb-0">
-            {{ formatAmount(data.item.amount) }}
-          </p>
-        </template>
-        <template v-slot:cell(success)="data">
-          <p class="mb-0">
-            <i
-              v-if="data.item.success"
-              class="fa fa-check-circle text-success"
-              aria-hidden="true"
-            ></i>
-            <i
-              v-else
-              class="fa fa-check-circle text-danger"
-              aria-hidden="true"
-            ></i>
-          </p>
-        </template>
-      </b-table>
-      <div class="mt-4 d-flex">
-        <b-pagination
-          v-model="currentPage"
-          :total-rows="totalRows"
+        <i class="fas fa-file-csv"></i>
+        {{ $t("pages.accounts.download_csv") }}
+      </JsonCSV>
+      <div class="table-responsive">
+        <b-table
+          striped
+          hover
+          :fields="fields"
           :per-page="perPage"
-          aria-controls="validators-table"
-        />
-        <b-button-group class="ml-2">
-          <b-button
-            v-for="(item, index) in tableOptions"
-            :key="index"
-            @click="handleNumFields(item)"
-          >
-            {{ item }}
-          </b-button>
-        </b-button-group>
+          :current-page="currentPage"
+          :items="transfers"
+          :filter="filter"
+          @filtered="onFiltered"
+        >
+          <template v-slot:cell(block_number)="data">
+            <p class="mb-0">
+              <nuxt-link
+                v-b-tooltip.hover
+                :to="`/block?blockNumber=${data.item.block_number}`"
+                title="Check block information"
+              >
+                #{{ formatNumber(data.item.block_number) }}
+              </nuxt-link>
+            </p>
+          </template>
+          <template v-slot:cell(hash)="data">
+            <p class="mb-0">
+              <nuxt-link
+                v-b-tooltip.hover
+                :to="`/block?blockNumber=${data.item.block_number}`"
+                title="Check block information"
+              >
+                {{ shortHash(data.item.hash) }}
+              </nuxt-link>
+            </p>
+          </template>
+          <template v-slot:cell(from)="data">
+            <p class="mb-0">
+              <nuxt-link
+                :to="{
+                  name: 'account',
+                  query: { accountId: data.item.from }
+                }"
+                :title="$t('pages.validators.validator_details')"
+              >
+                <Identicon
+                  :key="data.item.from"
+                  :value="data.item.from"
+                  :size="20"
+                  :theme="'polkadot'"
+                />
+                <span v-if="getDisplayName(data.item.from)">
+                  {{ getDisplayName(data.item.from) }}
+                </span>
+                <span v-else>
+                  {{ shortAddress(data.item.from) }}
+                </span>
+              </nuxt-link>
+            </p>
+          </template>
+          <template v-slot:cell(to)="data">
+            <p class="mb-0">
+              <nuxt-link
+                :to="{
+                  name: 'account',
+                  query: { accountId: data.item.to }
+                }"
+                :title="$t('pages.validators.validator_details')"
+              >
+                <Identicon
+                  :key="data.item.to"
+                  :value="data.item.to"
+                  :size="20"
+                  :theme="'polkadot'"
+                />
+                <span v-if="getDisplayName(data.item.to)">
+                  {{ getDisplayName(data.item.to) }}
+                </span>
+                <span v-else>
+                  {{ shortAddress(data.item.to) }}
+                </span>
+              </nuxt-link>
+            </p>
+          </template>
+          <template v-slot:cell(amount)="data">
+            <p class="mb-0">
+              {{ formatAmount(data.item.amount) }}
+            </p>
+          </template>
+          <template v-slot:cell(success)="data">
+            <p class="mb-0">
+              <i
+                v-if="data.item.success"
+                class="fa fa-check-circle text-success"
+                aria-hidden="true"
+              ></i>
+              <i
+                v-else
+                class="fa fa-check-circle text-danger"
+                aria-hidden="true"
+              ></i>
+            </p>
+          </template>
+        </b-table>
+        <div class="mt-4 d-flex">
+          <b-pagination
+            v-model="currentPage"
+            :total-rows="totalRows"
+            :per-page="perPage"
+            aria-controls="validators-table"
+          />
+          <b-button-group class="ml-2">
+            <b-button
+              v-for="(item, index) in tableOptions"
+              :key="index"
+              @click="handleNumFields(item)"
+            >
+              {{ item }}
+            </b-button>
+          </b-button-group>
+        </div>
       </div>
     </div>
   </div>
@@ -301,5 +307,8 @@ export default {
 <style>
 .sent-trnasfers {
   background-color: white;
+}
+.spinner {
+  color: #d3d2d2;
 }
 </style>
