@@ -2,7 +2,10 @@
   <div>
     <section>
       <b-container class="block-page main py-5">
-        <template v-if="block">
+        <template v-if="!parsedBlock">
+          <h1 class="text-center">Block not found!</h1>
+        </template>
+        <template v-else>
           <div class="card mt-4 mb-3">
             <div class="card-body">
               <h4 class="text-center mb-4">
@@ -139,7 +142,7 @@
             </div>
           </div>
         </template>
-        <template v-if="parsedExtrinsics">
+        <template v-if="parsedExtrinsics.length > 0">
           <div class="card mt-4 mb-3">
             <div class="card-body">
               <h4 class="text-center mb-4">
@@ -171,7 +174,7 @@
             </div>
           </div>
         </template>
-        <template v-if="parsedEvents">
+        <template v-if="parsedEvents.length > 0">
           <div class="card mt-4 mb-3">
             <div class="card-body">
               <h4 class="text-center mb-4">
@@ -263,8 +266,8 @@ export default {
     return {
       blockNumber: this.$route.query.blockNumber,
       parsedBlock: undefined,
-      parsedEvents: undefined,
-      parsedExtrinsics: undefined
+      parsedEvents: [],
+      parsedExtrinsics: []
     };
   },
   watch: {
@@ -274,9 +277,12 @@ export default {
   },
   methods: {
     getDateFromTimestamp(timestamp) {
+      if (timestamp === 0) {
+        return `--`;
+      }
       var newDate = new Date();
       newDate.setTime(timestamp * 1000);
-      return newDate.toUTCString() || timestamp;
+      return newDate.toUTCString();
     }
   },
   apollo: {
@@ -314,9 +320,9 @@ export default {
         };
       },
       result({ data }) {
-        this.parsedBlock = {
-          ...data.block[0]
-        };
+        if (data.block[0]) {
+          this.parsedBlock = data.block[0];
+        }
       }
     },
     event: {
@@ -338,9 +344,8 @@ export default {
         };
       },
       result({ data }) {
-        this.parsedEvents = {
-          ...data.event
-        };
+        this.parsedEvents = data.event;
+        console.log(this.parsedEvents);
       }
     },
     extrinsic: {
@@ -365,9 +370,7 @@ export default {
         };
       },
       result({ data }) {
-        this.parsedExtrinsics = {
-          ...data.extrinsic
-        };
+        this.parsedExtrinsics = data.extrinsic;
       }
     }
   },
