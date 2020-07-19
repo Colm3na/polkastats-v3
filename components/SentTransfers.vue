@@ -1,8 +1,11 @@
 <template>
   <div class="sent-transfers">
-    <div v-if="!transfers.length > 0" class="text-center py-4">
+    <div v-if="$apollo.loading" class="text-center py-4">
       <i class="fa fa-cog fa-spin fa-3x fa-fw spinner"></i>
       <span class="sr-only">Loading...</span>
+    </div>
+    <div v-else-if="transfers.length === 0" class="text-center py-4">
+      <h5>{{ $t("components.transfers.no_transfer_found") }}</h5>
     </div>
     <div v-else>
       <!-- Filter -->
@@ -286,6 +289,7 @@ export default {
           return !this.accountId;
         },
         result({ data }) {
+          console.log(`sent tx:`, data);
           this.transfers = data.extrinsic.map(transfer => {
             return {
               block_number: transfer.block_number,

@@ -32,7 +32,8 @@
       "progress": "Progress"
     },
     "transfers": {
-      "search": "Search transfer by block number, hash or source/destination address or identity name"
+      "search": "Search transfer by block number, hash or source/destination address or identity name",
+      "no_transfer_found": "No transfer found"
     }
   },
   "layout": {

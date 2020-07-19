@@ -32,7 +32,8 @@
       "progress": "Progreso"
     },
     "transfers": {
-      "search": "Buscar transferencia por número de bloque, hash, dirección o nombre de identidad"
+      "search": "Buscar transferencia por número de bloque, hash, dirección o nombre de identidad",
+      "no_transfer_found": "No se han encontrado transferencias"
     }
   },
   "layout": {
