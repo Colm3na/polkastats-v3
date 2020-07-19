@@ -333,7 +333,7 @@
       "extrinsic_hash": "El hash del extrinsic es",
       "successful_tx": "¡Transacción realizada con éxito!",
       "failed_tx": "¡Error en la transacción!",
-      "included_in_block": "El extrinsic con hash {extrinsicHash} ha sido incluida en el bloque",
+      "included_in_block": "El extrinsic con hash {extrinsicHash} ha sido incluido en el bloque",
       "guide_title": "Como transferir {networkDenom}s",
       "guide_subtitle_1": "Ahora puedes transferir {networkDenom}s con PolkaStats",
       "guide_subtitle_2": "de una forma segura.",
