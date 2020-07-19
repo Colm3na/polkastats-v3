@@ -171,7 +171,6 @@ export default {
               amount: JSON.parse(transfer.args)[1]
             };
           });
-          console.log(this.transfers);
         }
       }
     }

@@ -292,7 +292,6 @@ export default {
             };
           });
           this.totalRows = this.transfers.length;
-          console.log(this.transfers);
         }
       }
     }

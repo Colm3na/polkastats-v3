@@ -345,7 +345,6 @@ export default {
       },
       result({ data }) {
         this.parsedEvents = data.event;
-        console.log(this.parsedEvents);
       }
     },
     extrinsic: {
