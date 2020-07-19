@@ -291,7 +291,6 @@ export default {
           return !this.accountId;
         },
         result({ data }) {
-          console.log(`sent tx:`, data);
           this.transfers = data.extrinsic.map(transfer => {
             return {
               block_number: transfer.block_number,
