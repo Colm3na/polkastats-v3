@@ -156,6 +156,7 @@
                     <th>{{ $t("details.block.section") }}</th>
                     <th>{{ $t("details.block.method") }}</th>
                     <th>{{ $t("details.block.args") }}</th>
+                    <th>{{ $t("details.block.success") }}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -163,11 +164,41 @@
                     v-for="extrinsic in parsedExtrinsics"
                     :key="extrinsic.hash"
                   >
-                    <td>{{ extrinsic.hash }}</td>
-                    <td>{{ extrinsic.signer }}</td>
+                    <td>{{ shortHash(extrinsic.hash) }}</td>
+                    <td>
+                      <span v-if="extrinsic.signer">
+                        <Identicon
+                          :key="extrinsic.signer"
+                          :value="extrinsic.signer"
+                          :size="20"
+                          :theme="'polkadot'"
+                        />
+                        <nuxt-link
+                          :to="{
+                            name: 'account',
+                            query: { accountId: extrinsic.signer }
+                          }"
+                          :title="$t('details.block.account_details')"
+                        >
+                          {{ shortAddress(extrinsic.signer) }}
+                        </nuxt-link>
+                      </span>
+                    </td>
                     <td>{{ extrinsic.section }}</td>
                     <td>{{ extrinsic.method }}</td>
                     <td>{{ extrinsic.args }}</td>
+                    <td>
+                      <i
+                        v-if="extrinsic.success"
+                        class="fa fa-check-circle text-success"
+                        aria-hidden="true"
+                      ></i>
+                      <i
+                        v-else
+                        class="fa fa-check-circle text-danger"
+                        aria-hidden="true"
+                      ></i>
+                    </td>
                   </tr>
                 </tbody>
               </table>
@@ -360,6 +391,7 @@ export default {
             args
             hash
             doc
+            success
           }
         }
       `,

@@ -427,7 +427,8 @@
       "hash": "Hash",
       "args": "Argumentos",
       "timestamp": "Fecha y hora",
-      "genesis": "🎁 Bloque génesis"
+      "genesis": "🎁 Bloque génesis",
+      "success": "Resultado"
     },
     "intention": {
       "previous_intention": "Intención previa",

@@ -425,7 +425,8 @@
       "data": "Data",
       "account_details": "Account details",
       "timestamp": "Timestamp",
-      "genesis": "🎁 Genesis block"
+      "genesis": "🎁 Genesis block",
+      "success": "Success"
     },
     "intention": {
       "previous_intention": "Previous intention: ",

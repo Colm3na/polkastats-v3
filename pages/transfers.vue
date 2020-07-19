@@ -77,6 +77,20 @@
                   {{ formatAmount(data.item.amount) }}
                 </p>
               </template>
+              <template v-slot:cell(success)="data">
+                <p class="mb-0">
+                  <i
+                    v-if="data.item.success"
+                    class="fa fa-check-circle text-success"
+                    aria-hidden="true"
+                  ></i>
+                  <i
+                    v-else
+                    class="fa fa-check-circle text-danger"
+                    aria-hidden="true"
+                  ></i>
+                </p>
+              </template>
             </b-table>
           </div>
         </div>
@@ -123,6 +137,11 @@ export default {
         {
           key: "amount",
           label: "Amount",
+          sortable: true
+        },
+        {
+          key: "success",
+          label: "Success",
           sortable: true
         }
       ]
@@ -177,6 +196,7 @@ export default {
               signer
               hash
               args
+              success
             }
           }
         `,
@@ -187,7 +207,8 @@ export default {
               hash: transfer.hash,
               from: transfer.signer,
               to: JSON.parse(transfer.args)[0],
-              amount: JSON.parse(transfer.args)[1]
+              amount: JSON.parse(transfer.args)[1],
+              success: transfer.success
             };
           });
         }
