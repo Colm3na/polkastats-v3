@@ -214,6 +214,18 @@
                   </template>
                   <ReceivedTransfers :account-id="accountId" />
                 </b-tab>
+                <b-tab>
+                  <template v-slot:title>
+                    <h5>Rewards</h5>
+                  </template>
+                  <Rewards :account-id="accountId" />
+                </b-tab>
+                <b-tab>
+                  <template v-slot:title>
+                    <h5>Slashes</h5>
+                  </template>
+                  <Slashes :account-id="accountId" />
+                </b-tab>
               </b-tabs>
             </div>
           </div>
@@ -226,6 +238,8 @@
 import Identicon from "../../components/identicon.vue";
 import SentTransfers from "../../components/SentTransfers.vue";
 import ReceivedTransfers from "../../components/ReceivedTransfers.vue";
+import Rewards from "../../components/Rewards.vue";
+import Slashes from "../../components/Slashes.vue";
 import commonMixin from "../../mixins/commonMixin.js";
 import gql from "graphql-tag";
 import { network } from "../../polkastats.config.js";
@@ -234,7 +248,9 @@ export default {
   components: {
     Identicon,
     SentTransfers,
-    ReceivedTransfers
+    ReceivedTransfers,
+    Rewards,
+    Slashes
   },
   mixins: [commonMixin],
   data: function() {

@@ -22,7 +22,7 @@
       <JsonCSV
         :data="transfers"
         class="download-csv mb-2"
-        :name="`polkastats.io_received_transfers_{${accountId}.csv`"
+        :name="`polkastats.io_received_transfers_${accountId}.csv`"
       >
         <i class="fas fa-file-csv"></i>
         {{ $t("pages.accounts.download_csv") }}
@@ -310,7 +310,7 @@ export default {
 </script>
 
 <style>
-.sent-trnasfers {
+.sent-transfers {
   background-color: white;
 }
 </style>

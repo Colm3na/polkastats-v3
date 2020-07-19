@@ -1,11 +1,11 @@
 <template>
-  <div class="sent-transfers">
+  <div class="slashes">
     <div v-if="$apollo.loading" class="text-center py-4">
       <i class="fa fa-cog fa-spin fa-3x fa-fw spinner"></i>
       <span class="sr-only">Loading...</span>
     </div>
-    <div v-else-if="transfers.length === 0" class="text-center py-4">
-      <h5>{{ $t("components.transfers.no_transfer_found") }}</h5>
+    <div v-else-if="slashes.length === 0" class="text-center py-4">
+      <h5>{{ $t("components.slashes.no_slash_found") }}</h5>
     </div>
     <div v-else>
       <!-- Filter -->
@@ -15,14 +15,14 @@
             id="filterInput"
             v-model="filter"
             type="search"
-            :placeholder="$t('components.transfers.search')"
+            :placeholder="$t('components.slashes.search')"
           />
         </b-col>
       </b-row>
       <JsonCSV
-        :data="transfers"
+        :data="slashes"
         class="download-csv mb-2"
-        :name="`polkastats.io_sent_transfers_${accountId}.csv`"
+        :name="`polkastats.io_slashes_${accountId}.csv`"
       >
         <i class="fas fa-file-csv"></i>
         {{ $t("pages.accounts.download_csv") }}
@@ -34,7 +34,7 @@
           :fields="fields"
           :per-page="perPage"
           :current-page="currentPage"
-          :items="transfers"
+          :items="slashes"
           :filter="filter"
           @filtered="onFiltered"
         >
@@ -49,82 +49,22 @@
               </nuxt-link>
             </p>
           </template>
-          <template v-slot:cell(hash)="data">
+          <template v-slot:cell(event_index)="data">
             <p class="mb-0">
               <nuxt-link
                 v-b-tooltip.hover
                 :to="`/block?blockNumber=${data.item.block_number}`"
                 title="Check block information"
               >
-                {{ shortHash(data.item.hash) }}
+                {{ formatNumber(data.item.block_number) }}-{{
+                  data.item.event_index
+                }}
               </nuxt-link>
             </p>
           </template>
-          <template v-slot:cell(from)="data">
+          <template v-slot:cell(data)="data">
             <p class="mb-0">
-              <nuxt-link
-                :to="{
-                  name: 'account',
-                  query: { accountId: data.item.from }
-                }"
-                :title="$t('pages.validators.validator_details')"
-              >
-                <Identicon
-                  :key="data.item.from"
-                  :value="data.item.from"
-                  :size="20"
-                  :theme="'polkadot'"
-                />
-                <span v-if="getDisplayName(data.item.from)">
-                  {{ getDisplayName(data.item.from) }}
-                </span>
-                <span v-else>
-                  {{ shortAddress(data.item.from) }}
-                </span>
-              </nuxt-link>
-            </p>
-          </template>
-          <template v-slot:cell(to)="data">
-            <p class="mb-0">
-              <nuxt-link
-                :to="{
-                  name: 'account',
-                  query: { accountId: data.item.to }
-                }"
-                :title="$t('pages.validators.validator_details')"
-              >
-                <Identicon
-                  :key="data.item.to"
-                  :value="data.item.to"
-                  :size="20"
-                  :theme="'polkadot'"
-                />
-                <span v-if="getDisplayName(data.item.to)">
-                  {{ getDisplayName(data.item.to) }}
-                </span>
-                <span v-else>
-                  {{ shortAddress(data.item.to) }}
-                </span>
-              </nuxt-link>
-            </p>
-          </template>
-          <template v-slot:cell(amount)="data">
-            <p class="mb-0">
-              {{ formatAmount(data.item.amount) }}
-            </p>
-          </template>
-          <template v-slot:cell(success)="data">
-            <p class="mb-0">
-              <i
-                v-if="data.item.success"
-                class="fa fa-check-circle text-success"
-                aria-hidden="true"
-              ></i>
-              <i
-                v-else
-                class="fa fa-check-circle text-danger"
-                aria-hidden="true"
-              ></i>
+              {{ formatAmount(JSON.parse(data.item.data)[1]) }}
             </p>
           </template>
         </b-table>
@@ -133,7 +73,6 @@
             v-model="currentPage"
             :total-rows="totalRows"
             :per-page="perPage"
-            aria-controls="validators-table"
           />
           <b-button-group class="ml-2">
             <b-button
@@ -152,14 +91,12 @@
 
 <script>
 import commonMixin from "../mixins/commonMixin.js";
-import Identicon from "../components/identicon.vue";
 import { paginationOptions } from "../polkastats.config.js";
 import gql from "graphql-tag";
 import JsonCSV from "vue-json-csv";
 
 export default {
   components: {
-    Identicon,
     JsonCSV
   },
   mixins: [commonMixin],
@@ -171,7 +108,7 @@ export default {
   },
   data: function() {
     return {
-      transfers: [],
+      slashes: [],
       filter: null,
       filterOn: [],
       tableOptions: paginationOptions,
@@ -188,29 +125,14 @@ export default {
           sortable: true
         },
         {
-          key: "hash",
-          label: "Hash",
+          key: "event_index",
+          label: "Event index",
           class: "d-none d-sm-none d-md-none d-lg-table-cell d-xl-table-cell",
           sortable: true
         },
         {
-          key: "from",
-          label: "From",
-          sortable: true
-        },
-        {
-          key: "to",
-          label: "To",
-          sortable: true
-        },
-        {
-          key: "amount",
+          key: "data",
           label: "Amount",
-          sortable: true
-        },
-        {
-          key: "success",
-          label: "Success",
           sortable: true
         }
       ]
@@ -262,45 +184,34 @@ export default {
   },
   apollo: {
     $subscribe: {
-      extrinsic: {
+      event: {
         query: gql`
-          subscription extrinsic($signer: String!) {
-            extrinsic(
-              order_by: { block_number: desc }
+          subscription event($accountId: String!) {
+            event(
+              order_by: { block_number: desc, event_index: desc }
               where: {
-                section: { _eq: "balances" }
-                method: { _eq: "transfer" }
-                signer: { _eq: $signer }
+                section: { _eq: "staking" }
+                method: { _eq: "Slash" }
+                data: { _like: $accountId }
               }
             ) {
               block_number
-              hash
-              args
-              success
+              event_index
+              data
             }
           }
         `,
         variables() {
           return {
-            signer: this.accountId
+            accountId: `%${this.accountId}%`
           };
         },
         skip() {
           return !this.accountId;
         },
         result({ data }) {
-          console.log(`sent tx:`, data);
-          this.transfers = data.extrinsic.map(transfer => {
-            return {
-              block_number: transfer.block_number,
-              hash: transfer.hash,
-              from: this.accountId,
-              to: JSON.parse(transfer.args)[0],
-              amount: JSON.parse(transfer.args)[1],
-              success: transfer.success
-            };
-          });
-          this.totalRows = this.transfers.length;
+          this.slashes = data.event;
+          this.totalRows = this.slashes.length;
         }
       }
     }
@@ -309,10 +220,7 @@ export default {
 </script>
 
 <style>
-.sent-transfers {
+.slashes {
   background-color: white;
-}
-.spinner {
-  color: #d3d2d2;
 }
 </style>

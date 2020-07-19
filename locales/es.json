@@ -34,6 +34,14 @@
     "transfers": {
       "search": "Buscar transferencia por número de bloque, hash, dirección o nombre de identidad",
       "no_transfer_found": "No se han encontrado transferencias"
+    },
+    "rewards": {
+      "search": "Buscar recompensa por número de bloque, índice de evento o cantidad",
+      "no_reward_found": "No se han encontrado recompensas"
+    },
+    "slashes": {
+      "search": "Buscar slash por número de bloque, índice de evento o cantidad",
+      "no_slash_found": "No se han encontrado slashes"
     }
   },
   "layout": {
