@@ -1,14 +1,8 @@
 <template>
   <div v-if="lastBlock && chain">
     <div class="row">
-      <div v-if="lastBlock.is_elecion" class="col-12">
-        <b-alert
-          v-if="lastBlock.is_elecion"
-          show
-          dismissible
-          variant="warning"
-          class="text-center"
-        >
+      <div v-if="inElection" class="col-12">
+        <b-alert show dismissible variant="warning" class="text-center">
           <div>
             <h3>
               {{ $t("pages.dashboard.ongoing_election_title") }}
@@ -237,7 +231,8 @@ export default {
       currentSessionIndex: 0,
       validatorCount: 0,
       waitingCount: 0,
-      nominatorCount: 0
+      nominatorCount: 0,
+      inElection: false
     };
   },
   computed: {
@@ -291,6 +286,11 @@ export default {
             this.currentSessionIndex = data.block[0].current_index;
           }
           this.lastBlock = data.block[0];
+          if (this.lastBlock.is_election) {
+            this.inElection = true;
+          } else {
+            this.inElection = false;
+          }
         }
       },
       validators: {
