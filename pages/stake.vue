@@ -539,7 +539,7 @@ export default {
           return this.amount * 1000000;
         case "mili":
           return this.amount * 1000000000;
-        case "DOT":
+        case `${network.denom}`:
           return this.amount * 1000000000000;
         case "kilo":
           return this.amount * 1000000000000000;
