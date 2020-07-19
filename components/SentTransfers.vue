@@ -1,8 +1,7 @@
 <template>
   <div class="sent-transfers">
-    <div v-if="$apollo.loading" class="text-center py-4">
-      <i class="fa fa-cog fa-spin fa-3x fa-fw spinner"></i>
-      <span class="sr-only">Loading...</span>
+    <div v-if="loading" class="text-center py-4">
+      <Loading />
     </div>
     <div v-else-if="transfers.length === 0" class="text-center py-4">
       <h5>{{ $t("components.transfers.no_transfer_found") }}</h5>
@@ -153,6 +152,7 @@
 <script>
 import commonMixin from "../mixins/commonMixin.js";
 import Identicon from "../components/identicon.vue";
+import Loading from "../components/Loading.vue";
 import { paginationOptions } from "../polkastats.config.js";
 import gql from "graphql-tag";
 import JsonCSV from "vue-json-csv";
@@ -160,7 +160,8 @@ import JsonCSV from "vue-json-csv";
 export default {
   components: {
     Identicon,
-    JsonCSV
+    JsonCSV,
+    Loading
   },
   mixins: [commonMixin],
   props: {
@@ -171,6 +172,7 @@ export default {
   },
   data: function() {
     return {
+      loading: true,
       transfers: [],
       filter: null,
       filterOn: [],
@@ -301,6 +303,7 @@ export default {
             };
           });
           this.totalRows = this.transfers.length;
+          this.loading = false;
         }
       }
     }

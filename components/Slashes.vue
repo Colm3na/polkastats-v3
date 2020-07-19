@@ -1,8 +1,7 @@
 <template>
   <div class="slashes">
-    <div v-if="$apollo.loading" class="text-center py-4">
-      <i class="fa fa-cog fa-spin fa-3x fa-fw spinner"></i>
-      <span class="sr-only">Loading...</span>
+    <div v-if="loading" class="text-center py-4">
+      <Loading />
     </div>
     <div v-else-if="slashes.length === 0" class="text-center py-4">
       <h5>{{ $t("components.slashes.no_slash_found") }}</h5>
@@ -91,13 +90,15 @@
 
 <script>
 import commonMixin from "../mixins/commonMixin.js";
+import Loading from "../components/Loading.vue";
 import { paginationOptions } from "../polkastats.config.js";
 import gql from "graphql-tag";
 import JsonCSV from "vue-json-csv";
 
 export default {
   components: {
-    JsonCSV
+    JsonCSV,
+    Loading
   },
   mixins: [commonMixin],
   props: {
@@ -108,6 +109,7 @@ export default {
   },
   data: function() {
     return {
+      loading: true,
       slashes: [],
       filter: null,
       filterOn: [],
@@ -212,6 +214,7 @@ export default {
         result({ data }) {
           this.slashes = data.event;
           this.totalRows = this.slashes.length;
+          this.loading = false;
         }
       }
     }
@@ -219,8 +222,44 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .slashes {
   background-color: white;
+}
+.loader {
+  text-align: center;
+}
+.lds-ripple {
+  display: inline-block;
+  position: relative;
+  width: 80px;
+  height: 80px;
+  text-align: center;
+}
+.lds-ripple div {
+  position: absolute;
+  border: 4px solid #d75ea1;
+  opacity: 1;
+  border-radius: 50%;
+  animation: lds-ripple 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+}
+.lds-ripple div:nth-child(2) {
+  animation-delay: -0.5s;
+}
+@keyframes lds-ripple {
+  0% {
+    top: 36px;
+    left: 36px;
+    width: 0;
+    height: 0;
+    opacity: 1;
+  }
+  100% {
+    top: 0px;
+    left: 0px;
+    width: 72px;
+    height: 72px;
+    opacity: 0;
+  }
 }
 </style>

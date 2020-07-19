@@ -1,8 +1,7 @@
 <template>
   <div class="rewards">
-    <div v-if="$apollo.loading" class="text-center py-4">
-      <i class="fa fa-cog fa-spin fa-3x fa-fw spinner"></i>
-      <span class="sr-only">Loading...</span>
+    <div v-if="loading" class="text-center py-4">
+      <Loading />
     </div>
     <div v-else-if="rewards.length === 0" class="text-center py-4">
       <h5>{{ $t("components.rewards.no_reward_found") }}</h5>
@@ -91,13 +90,15 @@
 
 <script>
 import commonMixin from "../mixins/commonMixin.js";
+import Loading from "../components/Loading.vue";
 import { paginationOptions } from "../polkastats.config.js";
 import gql from "graphql-tag";
 import JsonCSV from "vue-json-csv";
 
 export default {
   components: {
-    JsonCSV
+    JsonCSV,
+    Loading
   },
   mixins: [commonMixin],
   props: {
@@ -108,6 +109,7 @@ export default {
   },
   data: function() {
     return {
+      loading: true,
       rewards: [],
       filter: null,
       filterOn: [],
@@ -212,6 +214,7 @@ export default {
         result({ data }) {
           this.rewards = data.event;
           this.totalRows = this.rewards.length;
+          this.loading = false;
         }
       }
     }
