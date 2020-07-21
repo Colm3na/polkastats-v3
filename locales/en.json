@@ -63,7 +63,12 @@
       "made_by": "Made by PolkaStats Team in Colmena Labs",
       "built_with": "Built with",
       "view_source_code_on_github": "View source code on GitHub",
-      "dashboard": "Dashboard"
+      "dashboard": "Dashboard",
+      "blockchain": "Blockchain",
+      "blocks": "Blocks",
+      "extrinsics": "Extrinsics",
+      "transfers": "Transfers",
+      "events": "Events"
     },
     "error": {
       "page_not_found": "Page not found!",

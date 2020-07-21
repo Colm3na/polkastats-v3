@@ -87,7 +87,7 @@ export default {
       fields: [
         {
           key: "block_number",
-          label: "Block number",
+          label: "Block",
           class: "d-none d-sm-none d-md-none d-lg-block d-xl-block",
           sortable: true
         },

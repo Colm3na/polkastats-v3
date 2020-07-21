@@ -1,6 +1,7 @@
 // Selected network
 // const selectedNetwork = `Polkadot`;
-const selectedNetwork = `Westend`;
+const selectedNetwork = `Kusama`;
+// const selectedNetwork = `Westend`;
 
 // Substrate networks
 export const networks = [
