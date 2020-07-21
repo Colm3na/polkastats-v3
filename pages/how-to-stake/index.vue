@@ -1,0 +1,42 @@
+<template>
+  <div>
+    <section>
+      <b-container class="main py-5 support-us">
+        <h1 class="mb-4">
+          {{
+            $t("pages.how_to_stake.title", {
+              networkName: network.name
+            })
+          }}
+        </h1>
+        <p></p>
+      </b-container>
+    </section>
+  </div>
+</template>
+<script>
+import commonMixin from "../../mixins/commonMixin.js";
+import { network } from "../../polkastats.config.js";
+
+export default {
+  mixins: [commonMixin],
+  data: function() {
+    return {
+      network
+    };
+  },
+  head() {
+    return {
+      title: this.$t("pages.support-us.head_title"),
+      meta: [
+        {
+          hid: "description",
+          name: "description",
+          content: this.$t("pages.polkastats_validator.head_content")
+        }
+      ]
+    };
+  }
+};
+</script>
+<style></style>

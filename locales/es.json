@@ -68,7 +68,9 @@
       "blocks": "Bloques",
       "extrinsics": "Extrinsics",
       "transfers": "Transferencias",
-      "events": "Eventos"
+      "events": "Eventos",
+      "validator": "Validador",
+      "how_to_stake": "Como participar"
     },
     "error": {
       "page_not_found": "¡Página no encontrada!",
@@ -277,6 +279,11 @@
       "head_title": "PolkaStats - {networkName} validador {address}",
       "head_content": "{networkName} validador {address}"
     },
+    "polkastats_validator": {
+      "title": "Validador PolkaStats",
+      "head_title": "PolkaStats - Validador PolkaStats {networkName}",
+      "head_content": "Validador PolkaStats {networkName}"
+    },
     "dashboard": {
       "title": "Dashboard",
       "head_title": "PolkaStats - Cuadro de mando {networkName}",
@@ -397,6 +404,11 @@
       "validator_feedback": "Por favor, selecciona un validador",
       "selected": "Seleccionado",
       "not_selected": "No seleccionado"
+    },
+    "how_to_stake": {
+      "title": "Como participar",
+      "head_title": "PolkaStats - Como participar",
+      "head_content": "Como participar"
     }
   },
   "details": {

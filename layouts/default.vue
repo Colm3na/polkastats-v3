@@ -5,6 +5,9 @@
         <div class="container">
           <div id="top-bar" class="row">
             <div class="col-10 text-right pb-2 pb-sm-0 pb-md-0 pb-lg-0 pb-xl-0">
+              <span class="network mr-2">
+                Selected network:
+              </span>
               <span v-if="network.name === 'Polkadot'">
                 <i class="fa fa-check" aria-hidden="true"></i>
                 Polkadot
@@ -13,10 +16,10 @@
                 <i class="fa fa-check" aria-hidden="true"></i>
                 Kusama
               </span>
-              <!-- <span v-if="network.name === 'Westend'">
+              <span v-if="network.name === 'Westend'">
                 <i class="fa fa-check" aria-hidden="true"></i>
                 Westend
-              </span> -->
+              </span>
               <span
                 v-if="network.coinGeckoDenom"
                 class="fiat ml-2"
@@ -49,6 +52,24 @@
               class="flex-grow-1 text-center text-sx-right text-md-right text-lg-right"
             >
               <b-navbar-nav class="navbar-nav ml-auto flex-nowrap">
+                <b-nav-item>
+                  <nuxt-link
+                    to="/validator"
+                    active-class="nuxt-link-exact-active"
+                    class="nav-link"
+                  >
+                    {{ $t("layout.default.validator") }}
+                  </nuxt-link>
+                </b-nav-item>
+                <b-nav-item>
+                  <nuxt-link
+                    to="/how-to-stake"
+                    active-class="nuxt-link-exact-active"
+                    class="nav-link"
+                  >
+                    {{ $t("layout.default.how_to_stake") }}
+                  </nuxt-link>
+                </b-nav-item>
                 <b-nav-item-dropdown text="Blockchain" class="py-1">
                   <b-dropdown-item to="/blocks">
                     {{ $t("layout.default.blocks") }}
