@@ -78,6 +78,9 @@
     }
   },
   "pages": {
+    "home": {
+      "title": "Home"
+    },
     "accounts": {
       "active_accounts": "Active accounts",
       "search_placeholder": "Search account by address or identity",
@@ -406,7 +409,47 @@
     "how_to_stake": {
       "title": "How to stake",
       "head_title": "PolkaStats - How to stake",
-      "head_content": "How to stake"
+      "head_content": "How to stake",
+      "kusama": {
+        "title": "How to stake in Kusama",
+        "head_title": "PolkaStats - How to stake in Kusama",
+        "head_content": "How to stake in Kusama",
+        "lunie": {
+          "title": "How to stake in Kusama using Lunie",
+          "head_title": "PolkaStats - How to stake in Kusama using Lunie",
+          "head_content": "How to stake in Kusama using Lunie"
+        },
+        "polkadotjs": {
+          "title": "How to stake in Kusama using Polkadot JS",
+          "head_title": "PolkaStats - How to stake in Kusama using Polkadot JS",
+          "head_content": "How to stake in Kusama using Polkadot JS"
+        },
+        "polkastats": {
+          "title": "How to stake in Kusama using PolkaStats",
+          "head_title": "PolkaStats - How to stake in Kusama using PolkaStats",
+          "head_content": "How to stake in Kusama using PolkaStats"
+        }
+      },
+      "polkadot": {
+        "title": "How to stake in Polkadot",
+        "head_title": "PolkaStats - How to stake in Polkadot",
+        "head_content": "How to stake in Polkadot",
+        "lunie": {
+          "title": "How to stake in Polkadot using Lunie",
+          "head_title": "PolkaStats - How to stake in Polkadot using Lunie",
+          "head_content": "How to stake in Polkadot using Lunie"
+        },
+        "polkadotjs": {
+          "title": "How to stake in Polkadot using Polkadot JS",
+          "head_title": "PolkaStats - How to stake in Polkadot using Polkadot JS",
+          "head_content": "How to stake in Polkadot using Polkadot JS"
+        },
+        "polkastats": {
+          "title": "How to stake in Polkadot using PolkaStats",
+          "head_title": "PolkaStats - How to stake in Polkadot using PolkaStats",
+          "head_content": "How to stake in Polkadot using PolkaStats"
+        }
+      }
     }
   },
   "details": {

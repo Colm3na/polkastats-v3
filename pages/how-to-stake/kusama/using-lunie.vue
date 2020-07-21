@@ -4,26 +4,13 @@
       <b-container class="main py-5 support-us">
         <h1 class="mb-4">
           {{
-            $t("pages.how_to_stake.title", {
+            $t("pages.how_to_stake.kusama.lunie.title", {
               networkName: network.name
             })
           }}
         </h1>
         <b-breadcrumb :items="breadcrumbsItems"></b-breadcrumb>
-        <nuxt-link
-          to="/how-to-stake/polkadot"
-          active-class="nuxt-link-exact-active"
-          class="nav-link"
-        >
-          {{ $t("pages.how_to_stake.polkadot.title") }}
-        </nuxt-link>
-        <nuxt-link
-          to="/how-to-stake/kusama"
-          active-class="nuxt-link-exact-active"
-          class="nav-link"
-        >
-          {{ $t("pages.how_to_stake.kusama.title") }}
-        </nuxt-link>
+        <p></p>
       </b-container>
     </section>
   </div>
@@ -46,6 +33,18 @@ export default {
           text: this.$t("pages.how_to_stake.title", {
             networkName: network.name
           }),
+          href: "/how-to-stake"
+        },
+        {
+          text: this.$t("pages.how_to_stake.kusama.title", {
+            networkName: network.name
+          }),
+          href: "/how-to-stake/kusama"
+        },
+        {
+          text: this.$t("pages.how_to_stake.kusama.lunie.title", {
+            networkName: network.name
+          }),
           href: "#"
         }
       ]
@@ -53,12 +52,12 @@ export default {
   },
   head() {
     return {
-      title: this.$t("pages.how_to_stake.head_title"),
+      title: this.$t("pages.how_to_stake.kusama.lunie.head_title"),
       meta: [
         {
           hid: "description",
           name: "description",
-          content: this.$t("pages.how_to_stake.head_content")
+          content: this.$t("pages.how_to_stake.kusama.lunie.head_content")
         }
       ]
     };

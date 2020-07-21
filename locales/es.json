@@ -78,6 +78,9 @@
     }
   },
   "pages": {
+    "home": {
+      "title": "Inicio"
+    },
     "accounts": {
       "active_accounts": "Cuentas activas",
       "search_placeholder": "Buscar cuenta por dirección o identidad",
@@ -408,7 +411,47 @@
     "how_to_stake": {
       "title": "Como participar",
       "head_title": "PolkaStats - Como participar",
-      "head_content": "Como participar"
+      "head_content": "Como participar",
+      "kusama": {
+        "title": "Como participar en Kusama",
+        "head_title": "PolkaStats - Como participar en Kusama",
+        "head_content": "Como participar en Kusama",
+        "lunie": {
+          "title": "Como participar en Kusama usando Lunie",
+          "head_title": "PolkaStats - Como participar en Kusama usando Lunie",
+          "head_content": "Como participar en Kusama usando Lunie"
+        },
+        "polkadotjs": {
+          "title": "Como participar en Kusama usando Polkadot JS",
+          "head_title": "PolkaStats - Como participar en Kusama usando Polkadot JS",
+          "head_content": "Como participar en Kusama usando Polkadot JS"
+        },
+        "polkastats": {
+          "title": "Como participar en Kusama usando PolkaStats",
+          "head_title": "PolkaStats - Como participar en Kusama usando PolkaStats",
+          "head_content": "Como participar en Kusama usando PolkaStats"
+        }
+      },
+      "polkadot": {
+        "title": "Como participar en Polkadot",
+        "head_title": "PolkaStats - Como participar en Polkadot",
+        "head_content": "Como participar en Polkadot",
+        "lunie": {
+          "title": "Como participar en Polkadot usando Lunie",
+          "head_title": "PolkaStats - Como participar en Polkadot usando Lunie",
+          "head_content": "Como participar en Polkadot usando Lunie"
+        },
+        "polkadotjs": {
+          "title": "Como participar en Polkadot usando Polkadot JS",
+          "head_title": "PolkaStats - Como participar en Polkadot usando Polkadot JS",
+          "head_content": "Como participar en Polkadot usando Polkadot JS"
+        },
+        "polkastats": {
+          "title": "Como participar en Polkadot usando PolkaStats",
+          "head_title": "PolkaStats - Como participar en Polkadot usando PolkaStats",
+          "head_content": "Como participar en Polkadot usando PolkaStats"
+        }
+      }
     }
   },
   "details": {
