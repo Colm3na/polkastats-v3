@@ -1,7 +1,7 @@
 <template>
   <div>
     <section>
-      <b-container class="main py-5 support-us">
+      <b-container class="main py-5 how_to_stake-polkadot">
         <h1 class="mb-4">
           {{
             $t("pages.how_to_stake.polkadot.title", {
@@ -10,27 +10,59 @@
           }}
         </h1>
         <b-breadcrumb :items="breadcrumbsItems"></b-breadcrumb>
-        <nuxt-link
-          to="/how-to-stake/polkadot/using-polkastats"
-          active-class="nuxt-link-exact-active"
-          class="nav-link"
-        >
-          {{ $t("pages.how_to_stake.polkadot.polkastats.title") }}
-        </nuxt-link>
-        <nuxt-link
-          to="/how-to-stake/polkadot/using-lunie"
-          active-class="nuxt-link-exact-active"
-          class="nav-link"
-        >
-          {{ $t("pages.how_to_stake.polkadot.lunie.title") }}
-        </nuxt-link>
-        <nuxt-link
-          to="/how-to-stake/polkadot/using-polkadotjs"
-          active-class="nuxt-link-exact-active"
-          class="nav-link"
-        >
-          {{ $t("pages.how_to_stake.polkadot.polkadotjs.title") }}
-        </nuxt-link>
+        <div class="row">
+          <div class="col-md-4 mb-4">
+            <b-card class="text-center">
+              <nuxt-link
+                to="/how-to-stake/polkadot/using-polkastats"
+                active-class="nuxt-link-exact-active"
+                class="nav-link"
+              >
+                <img
+                  class="wallet-logo img-fluid mb-2"
+                  src="/img/PolkaStats_Logo_Circle.png"
+                />
+                <h4 class="pt-4">
+                  {{ $t("pages.how_to_stake.polkadot.polkastats.title") }}
+                </h4>
+              </nuxt-link>
+            </b-card>
+          </div>
+          <div class="col-md-4 mb-4">
+            <b-card class="text-center">
+              <nuxt-link
+                to="/how-to-stake/polkadot/using-lunie"
+                active-class="nuxt-link-exact-active"
+                class="nav-link"
+              >
+                <img
+                  class="wallet-logo img-fluid mb-2 pt-2 pb-2"
+                  src="/img/lunie.svg"
+                />
+                <h4 class="pt-4">
+                  {{ $t("pages.how_to_stake.polkadot.lunie.title") }}
+                </h4>
+              </nuxt-link>
+            </b-card>
+          </div>
+          <div class="col-md-4 mb-4">
+            <b-card class="text-center">
+              <nuxt-link
+                to="/how-to-stake/polkadot/using-polkadotjs"
+                active-class="nuxt-link-exact-active"
+                class="nav-link"
+              >
+                <img
+                  class="wallet-logo img-fluid mb-2"
+                  src="/img/PolkadotJS.png"
+                />
+                <h4 class="pt-4">
+                  {{ $t("pages.how_to_stake.polkadot.polkadotjs.title") }}
+                </h4>
+              </nuxt-link>
+            </b-card>
+          </div>
+        </div>
       </b-container>
     </section>
   </div>
@@ -78,4 +110,12 @@ export default {
   }
 };
 </script>
-<style></style>
+<style>
+.how_to_stake-polkadot .card {
+  min-height: 250px;
+}
+.how_to_stake-polkadot .wallet-logo {
+  max-height: 80px;
+  height: 100%;
+}
+</style>
