@@ -691,6 +691,29 @@ section .section-title {
   }
 }
 
+/* Tables */
+.table td,
+.table th {
+  padding: 0.35rem;
+  border-top: 1px solid #dee2e6;
+}
+.page-item.active .page-link {
+  z-index: 1;
+  color: #fff;
+  background-color: #343a40;
+  border-color: #343a40;
+}
+.page-link {
+  position: relative;
+  display: block;
+  padding: 0.5rem 0.75rem;
+  margin-left: -1px;
+  line-height: 1.25;
+  color: #343a40;
+  background-color: #fff;
+  border: 1px solid #dee2e6;
+}
+
 /*----------------------- Media queries --------------------------*/
 
 @media (max-width: 991px) {
