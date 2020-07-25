@@ -25,6 +25,20 @@
                   {{ data.item.method }}
                 </p>
               </template>
+              <template v-slot:cell(success)="data">
+                <p class="mb-0">
+                  <i
+                    v-if="data.item.success"
+                    class="fa fa-check-circle text-success"
+                    aria-hidden="true"
+                  ></i>
+                  <i
+                    v-else
+                    class="fa fa-check-circle text-danger"
+                    aria-hidden="true"
+                  ></i>
+                </p>
+              </template>
             </b-table>
           </div>
         </div>
@@ -57,12 +71,12 @@ export default {
         },
         {
           key: "section",
-          label: "Event",
+          label: "Extrinsic",
           sortable: true
         },
         {
-          key: "args",
-          label: "Args",
+          key: "success",
+          label: "Success",
           sortable: true
         }
       ]
@@ -73,7 +87,11 @@ export default {
       extrinsic: {
         query: gql`
           subscription extrinsics {
-            extrinsic(order_by: { block_number: desc }, where: {}, limit: 50) {
+            extrinsic(
+              order_by: { block_number: desc }
+              where: { is_signed: { _eq: true } }
+              limit: 50
+            ) {
               block_number
               extrinsic_index
               is_signed
@@ -83,6 +101,7 @@ export default {
               args
               hash
               doc
+              success
             }
           }
         `,

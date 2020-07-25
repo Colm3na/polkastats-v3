@@ -692,6 +692,9 @@ section .section-title {
 }
 
 /* Tables */
+.table {
+  font-size: 0.9rem;
+}
 .table td,
 .table th {
   padding: 0.35rem;

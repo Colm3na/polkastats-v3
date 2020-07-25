@@ -303,18 +303,19 @@
       "ongoing_election_2": "No se permiten las transacciones de staking hasta que este finalize"
     },
     "blocks": {
-      "title": "Últimos bloques",
-      "head_title": "PolkaStats - {networkName} últimos bloques",
-      "head_content": "{networkName} últimos bloques"
+      "title": "Bloques",
+      "head_title": "PolkaStats - Bloques de {networkName}",
+      "head_content": "Bloques de {networkName}",
+      "search_placeholder": "Buscar por número de bloque"
     },
     "block": {
       "head_title": "PolkaStats - {networkName} bloque {blockNumber}",
       "head_content": "{networkName} bloque {blockNumber}"
     },
     "extrinsics": {
-      "title": "Últimas extrinsics",
-      "head_title": "PolkaStats - {networkName} últimos extrinsics",
-      "head_content": "{networkName} últimos extrinsics"
+      "title": "Extrinsics",
+      "head_title": "PolkaStats - Extrinsics en {networkName}",
+      "head_content": "Extrinsics en {networkName}"
     },
     "extrinsic": {
       "head_title": "PolkaStats - {networkName} extrinsic {extrinsicHash}",
