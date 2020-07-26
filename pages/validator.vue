@@ -2,13 +2,6 @@
   <div>
     <section>
       <b-container class="main py-5 validator-page">
-        <h1 class="mb-4">
-          {{
-            $t("pages.polkastats_validator.title", {
-              networkName: network.name
-            })
-          }}
-        </h1>
         <!-- English content -->
         <div v-if="this.$i18n.locale == 'en'">
           <b-row>

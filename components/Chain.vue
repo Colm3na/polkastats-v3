@@ -7,10 +7,7 @@
             <h3>
               {{ $t("pages.dashboard.ongoing_election_title") }}
               {{
-                (
-                  (100 * lastBlock.session_progress) /
-                  lastBlock.session_length
-                ).toFixed(0)
+                ((100 * (lastBlock.session_progress - 450)) / 150).toFixed(0)
               }}%
             </h3>
           </div>
