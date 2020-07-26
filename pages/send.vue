@@ -371,7 +371,6 @@ export default {
     onSubmit(evt) {
       evt.preventDefault();
       this.$v.$touch();
-      console.log(this.$v);
       if (this.$v.$invalid) {
         return;
       }
