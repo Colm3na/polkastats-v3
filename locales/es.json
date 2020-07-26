@@ -322,7 +322,7 @@
       "head_content": "{networkName} extrinsic {extrinsicHash}"
     },
     "transfers": {
-      "title": "Últimas transferencias",
+      "title": "Transferencias",
       "head_title": "PolkaStats - Transferencias en {networkName}",
       "head_content": "Transferencias en {networkName}"
     },
@@ -502,7 +502,7 @@
       "success": "Resultado",
       "logs": "Logs",
       "index": "Índice",
-      "engine": "MotorP"
+      "engine": "Motor"
     },
     "intention": {
       "previous_intention": "Intención previa",

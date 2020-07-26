@@ -139,167 +139,172 @@
                   </tr>
                 </tbody>
               </table>
-            </div>
-          </div>
-        </template>
-        <template v-if="parsedExtrinsics.length > 0">
-          <div class="card mt-4 mb-3">
-            <div class="card-body">
-              <h4 class="text-center mb-4">
-                {{ $t("details.block.extrinsics") }}
-              </h4>
-              <table class="table table-striped">
-                <thead>
-                  <tr>
-                    <th>{{ $t("details.block.hash") }}</th>
-                    <th>{{ $t("details.block.signer") }}</th>
-                    <th>{{ $t("details.block.section") }}</th>
-                    <th>{{ $t("details.block.method") }}</th>
-                    <th>{{ $t("details.block.args") }}</th>
-                    <th>{{ $t("details.block.success") }}</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr
-                    v-for="extrinsic in parsedExtrinsics"
-                    :key="extrinsic.hash"
-                  >
-                    <td>{{ shortHash(extrinsic.hash) }}</td>
-                    <td>
-                      <span v-if="extrinsic.signer">
-                        <Identicon
-                          :key="extrinsic.signer"
-                          :value="extrinsic.signer"
-                          :size="20"
-                          :theme="'polkadot'"
-                        />
-                        <nuxt-link
-                          :to="{
-                            name: 'account',
-                            query: { accountId: extrinsic.signer }
-                          }"
-                          :title="$t('details.block.account_details')"
+              <b-tabs class="mt-4" content-class="mt-4" fill>
+                <b-tab active>
+                  <template v-slot:title>
+                    <h5>{{ $t("details.block.extrinsics") }}</h5>
+                  </template>
+                  <template v-if="parsedExtrinsics.length > 0">
+                    <table class="table table-striped">
+                      <thead>
+                        <tr>
+                          <th>{{ $t("details.block.hash") }}</th>
+                          <th>{{ $t("details.block.signer") }}</th>
+                          <th>{{ $t("details.block.section") }}</th>
+                          <th>{{ $t("details.block.method") }}</th>
+                          <th>{{ $t("details.block.args") }}</th>
+                          <th>{{ $t("details.block.success") }}</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr
+                          v-for="extrinsic in parsedExtrinsics"
+                          :key="extrinsic.hash"
                         >
-                          {{ shortAddress(extrinsic.signer) }}
-                        </nuxt-link>
-                      </span>
-                    </td>
-                    <td>{{ extrinsic.section }}</td>
-                    <td>{{ extrinsic.method }}</td>
-                    <td>{{ extrinsic.args }}</td>
-                    <td>
-                      <i
-                        v-if="extrinsic.success"
-                        class="fa fa-check-circle text-success"
-                        aria-hidden="true"
-                      ></i>
-                      <i
-                        v-else
-                        class="fa fa-check-circle text-danger"
-                        aria-hidden="true"
-                      ></i>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </template>
-        <template v-if="parsedEvents.length > 0">
-          <div class="card mt-4 mb-3">
-            <div class="card-body">
-              <h4 class="text-center mb-4">
-                {{ $t("details.block.system_events") }}
-              </h4>
-              <table class="table table-striped">
-                <thead>
-                  <tr>
-                    <th>{{ $t("details.block.section") }}</th>
-                    <th>{{ $t("details.block.method") }}</th>
-                    <th>{{ $t("details.block.phase") }}</th>
-                    <th>{{ $t("details.block.data") }}</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="event in parsedEvents" :key="event.event_index">
-                    <td>{{ event.section }}</td>
-                    <td>{{ event.method }}</td>
-                    <td>{{ event.phase }}</td>
-                    <td>
-                      <template
-                        v-if="
-                          event.section === `balances` &&
-                            event.method === `Transfer`
-                        "
-                      >
-                        <Identicon
-                          :key="JSON.parse(event.data)[0]"
-                          :value="JSON.parse(event.data)[0]"
-                          :size="20"
-                          :theme="'polkadot'"
-                        />
-                        <nuxt-link
-                          :to="{
-                            name: 'account',
-                            query: { accountId: JSON.parse(event.data)[0] }
-                          }"
-                          :title="$t('details.block.account_details')"
+                          <td>{{ shortHash(extrinsic.hash) }}</td>
+                          <td>
+                            <span v-if="extrinsic.signer">
+                              <Identicon
+                                :key="extrinsic.signer"
+                                :value="extrinsic.signer"
+                                :size="20"
+                                :theme="'polkadot'"
+                              />
+                              <nuxt-link
+                                :to="{
+                                  name: 'account',
+                                  query: { accountId: extrinsic.signer }
+                                }"
+                                :title="$t('details.block.account_details')"
+                              >
+                                {{ shortAddress(extrinsic.signer) }}
+                              </nuxt-link>
+                            </span>
+                          </td>
+                          <td>{{ extrinsic.section }}</td>
+                          <td>{{ extrinsic.method }}</td>
+                          <td>{{ extrinsic.args }}</td>
+                          <td>
+                            <i
+                              v-if="extrinsic.success"
+                              class="fa fa-check-circle text-success"
+                              aria-hidden="true"
+                            ></i>
+                            <i
+                              v-else
+                              class="fa fa-check-circle text-danger"
+                              aria-hidden="true"
+                            ></i>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </template>
+                </b-tab>
+                <b-tab>
+                  <template v-slot:title>
+                    <h5>{{ $t("details.block.system_events") }}</h5>
+                  </template>
+                  <template v-if="parsedEvents.length > 0">
+                    <table class="table table-striped">
+                      <thead>
+                        <tr>
+                          <th>{{ $t("details.block.section") }}</th>
+                          <th>{{ $t("details.block.method") }}</th>
+                          <th>{{ $t("details.block.phase") }}</th>
+                          <th>{{ $t("details.block.data") }}</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr
+                          v-for="event in parsedEvents"
+                          :key="event.event_index"
                         >
-                          {{ shortAddress(JSON.parse(event.data)[0]) }}
-                        </nuxt-link>
-                        <i class="fas fa-arrow-right"></i>
-                        <Identicon
-                          :key="JSON.parse(event.data)[1]"
-                          :value="JSON.parse(event.data)[1]"
-                          :size="20"
-                          :theme="'polkadot'"
-                        />
-                        <nuxt-link
-                          :to="{
-                            name: 'account',
-                            query: { accountId: JSON.parse(event.data)[1] }
-                          }"
-                          :title="$t('details.block.account_details')"
-                        >
-                          {{ shortAddress(JSON.parse(event.data)[1]) }}
-                        </nuxt-link>
-                        <i class="fas fa-arrow-right"></i>
-                        <span class="amount">
-                          {{ formatAmount(JSON.parse(event.data)[2]) }}
-                        </span>
-                      </template>
-                      <template v-else>
-                        {{ event.data }}
-                      </template>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </template>
-        <template v-if="parsedLogs.length > 0">
-          <div class="card mt-4 mb-3">
-            <div class="card-body">
-              <h4 class="text-center mb-4">
-                {{ $t("details.block.logs") }}
-              </h4>
-              <table class="table table-striped">
-                <thead>
-                  <tr>
-                    <th>{{ $t("details.block.index") }}</th>
-                    <th>{{ $t("details.block.engine") }}</th>
-                    <th>{{ $t("details.block.data") }}</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="log in parsedLogs" :key="log.log_index">
-                    <td>{{ log.log_index }}</td>
-                    <td>{{ log.engine }}</td>
-                    <td>{{ log.data }}</td>
-                  </tr>
-                </tbody>
-              </table>
+                          <td>{{ event.section }}</td>
+                          <td>{{ event.method }}</td>
+                          <td>{{ event.phase }}</td>
+                          <td>
+                            <template
+                              v-if="
+                                event.section === `balances` &&
+                                  event.method === `Transfer`
+                              "
+                            >
+                              <Identicon
+                                :key="JSON.parse(event.data)[0]"
+                                :value="JSON.parse(event.data)[0]"
+                                :size="20"
+                                :theme="'polkadot'"
+                              />
+                              <nuxt-link
+                                :to="{
+                                  name: 'account',
+                                  query: {
+                                    accountId: JSON.parse(event.data)[0]
+                                  }
+                                }"
+                                :title="$t('details.block.account_details')"
+                              >
+                                {{ shortAddress(JSON.parse(event.data)[0]) }}
+                              </nuxt-link>
+                              <i class="fas fa-arrow-right"></i>
+                              <Identicon
+                                :key="JSON.parse(event.data)[1]"
+                                :value="JSON.parse(event.data)[1]"
+                                :size="20"
+                                :theme="'polkadot'"
+                              />
+                              <nuxt-link
+                                :to="{
+                                  name: 'account',
+                                  query: {
+                                    accountId: JSON.parse(event.data)[1]
+                                  }
+                                }"
+                                :title="$t('details.block.account_details')"
+                              >
+                                {{ shortAddress(JSON.parse(event.data)[1]) }}
+                              </nuxt-link>
+                              <i class="fas fa-arrow-right"></i>
+                              <span class="amount">
+                                {{ formatAmount(JSON.parse(event.data)[2]) }}
+                              </span>
+                            </template>
+                            <template v-else>
+                              {{ event.data }}
+                            </template>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </template>
+                </b-tab>
+                <b-tab>
+                  <template v-slot:title>
+                    <h5>{{ $t("details.block.logs") }}</h5>
+                  </template>
+                  <template v-if="parsedLogs.length > 0">
+                    <div class="card mt-4 mb-3">
+                      <table class="table table-striped">
+                        <thead>
+                          <tr>
+                            <th>{{ $t("details.block.index") }}</th>
+                            <th>{{ $t("details.block.engine") }}</th>
+                            <th>{{ $t("details.block.data") }}</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr v-for="log in parsedLogs" :key="log.log_index">
+                            <td>{{ log.log_index }}</td>
+                            <td>{{ log.engine }}</td>
+                            <td>{{ log.data }}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </template>
+                </b-tab>
+              </b-tabs>
             </div>
           </div>
         </template>

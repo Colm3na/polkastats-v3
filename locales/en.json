@@ -321,7 +321,7 @@
       "head_content": "{networkName} extrinsic {extrinsicHash}"
     },
     "transfers": {
-      "title": "transfers",
+      "title": "Transfers",
       "head_title": "PolkaStats - {networkName} transfers",
       "head_content": "{networkName} transfers"
     },
