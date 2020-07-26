@@ -323,12 +323,12 @@
     },
     "transfers": {
       "title": "Últimas transferencias",
-      "head_title": "PolkaStats - {networkName} últimos transferencias",
-      "head_content": "{networkName} últimos transferencias"
+      "head_title": "PolkaStats - Transferencias en {networkName}",
+      "head_content": "Transferencias en {networkName}"
     },
     "transfer": {
-      "head_title": "PolkaStats - {networkName} transferencia {extrinsicHash}",
-      "head_content": "{networkName} transferencia {extrinsicHash}"
+      "head_title": "PolkaStats - Transferencia de {networkName} hash {extrinsicHash}",
+      "head_content": "Transferencia de {networkName} hash {extrinsicHash}"
     },
     "events": {
       "title": "Eventos",

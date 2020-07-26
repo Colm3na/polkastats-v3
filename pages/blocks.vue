@@ -63,7 +63,6 @@
                 v-model="page"
                 :total-rows="totalRows"
                 :per-page="perPage"
-                aria-controls="validators-table"
               />
               <b-button-group class="mx-4">
                 <b-button

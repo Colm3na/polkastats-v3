@@ -6,6 +6,17 @@
           {{ $t("pages.extrinsics.title") }}
         </h1>
         <div class="last-extrinsics">
+          <!-- Filter -->
+          <b-row style="margin-bottom: 1rem">
+            <b-col cols="12">
+              <b-form-input
+                id="filterInput"
+                v-model="filter"
+                type="search"
+                :placeholder="$t('pages.blocks.search_placeholder')"
+              />
+            </b-col>
+          </b-row>
           <div class="table-responsive">
             <b-table striped hover :fields="fields" :items="extrinsics">
               <template v-slot:cell(block_number)="data">
@@ -40,6 +51,22 @@
                 </p>
               </template>
             </b-table>
+            <div class="mt-2" style="display: flex">
+              <b-pagination
+                v-model="page"
+                :total-rows="totalRows"
+                :per-page="perPage"
+              />
+              <b-button-group class="mx-4">
+                <b-button
+                  v-for="(item, index) in tableOptions"
+                  :key="index"
+                  @click="handleNumFields(item)"
+                >
+                  {{ item }}
+                </b-button>
+              </b-button-group>
+            </div>
           </div>
         </div>
       </b-container>
@@ -51,13 +78,20 @@
 import commonMixin from "../mixins/commonMixin.js";
 import Identicon from "../components/identicon.vue";
 import gql from "graphql-tag";
-import { network } from "../polkastats.config.js";
+import { network, paginationOptions } from "../polkastats.config.js";
 
 export default {
   mixins: [commonMixin],
   data: function() {
     return {
+      filter: "",
       extrinsics: [],
+      tableOptions: paginationOptions,
+      perPage: localStorage.paginationOptions
+        ? parseInt(localStorage.paginationOptions)
+        : 10,
+      page: 1,
+      totalRows: 1,
       fields: [
         {
           key: "block_number",
@@ -82,15 +116,26 @@ export default {
       ]
     };
   },
+  methods: {
+    handleNumFields(num) {
+      localStorage.paginationOptions = num;
+      this.perPage = parseInt(num);
+    }
+  },
   apollo: {
     $subscribe: {
       extrinsic: {
         query: gql`
-          subscription extrinsics {
+          subscription extrinsics(
+            $blockNumber: bigint
+            $perPage: Int!
+            $offset: Int!
+          ) {
             extrinsic(
-              order_by: { block_number: desc }
-              where: { is_signed: { _eq: true } }
-              limit: 50
+              limit: $perPage
+              offset: $offset
+              where: { block_number: { _eq: $blockNumber } }
+              order_by: { block_number: desc, extrinsic_index: desc }
             ) {
               block_number
               extrinsic_index
@@ -98,15 +143,37 @@ export default {
               signer
               section
               method
-              args
               hash
-              doc
               success
             }
           }
         `,
+        variables() {
+          return {
+            blockNumber: this.filter ? parseInt(this.filter) : undefined,
+            perPage: this.perPage,
+            offset: (this.page - 1) * this.perPage
+          };
+        },
         result({ data }) {
           this.extrinsics = data.extrinsic;
+          if (this.filter) {
+            this.totalRows = this.extrinsics.length;
+          }
+        }
+      },
+      totalExtrinsics: {
+        query: gql`
+          subscription total {
+            total(where: { name: { _eq: "extrinsics" } }, limit: 1) {
+              count
+            }
+          }
+        `,
+        result({ data }) {
+          if (!this.filter) {
+            this.totalRows = data.total[0].count;
+          }
         }
       }
     }
