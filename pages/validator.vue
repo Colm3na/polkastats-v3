@@ -1,7 +1,7 @@
 <template>
   <div>
     <section>
-      <b-container class="main py-5 support-us">
+      <b-container class="main py-5 validator-page">
         <h1 class="mb-4">
           {{
             $t("pages.polkastats_validator.title", {
@@ -9,7 +9,104 @@
             })
           }}
         </h1>
-        <p></p>
+
+        <b-row>
+          <b-col md="6" class="mb-4">
+            <b-card>
+              <h4 class="mb-4">Polkadot validator</h4>
+              <Identicon
+                value="15psTaipmWG86U5vNkF7Guv9TRPMRLKHkGS8cXT74v3RCC5t"
+                size="25"
+                theme="polkadot"
+              />
+              <span>15psTaipmWG86U5vNkF7Guv9TRPMRLKHkGS8cXT74v3RCC5t</span>
+              <p class="text-right mb-0 pt-4">
+                <nuxt-link to="/how-to-stake/polkadot/" class="btn btn-stake">
+                  How to nominate on Polkadot
+                </nuxt-link>
+              </p>
+            </b-card>
+          </b-col>
+          <b-col md="6" class="mb-4">
+            <b-card>
+              <h4 class="mb-4">Kusama validator</h4>
+              <Identicon
+                value="GTzRQPzkcuynHgkEHhsPBFpKdh4sAacVRsnd8vYfPpTMeEY"
+                size="25"
+                theme="polkadot"
+              />
+              <span>GTzRQPzkcuynHgkEHhsPBFpKdh4sAacVRsnd8vYfPpTMeEY</span>
+              <p class="text-right mb-0 pt-4">
+                <nuxt-link to="/how-to-stake/kusama/" class="btn btn-stake">
+                  How to nominate on Kusama
+                </nuxt-link>
+              </p>
+            </b-card>
+          </b-col>
+        </b-row>
+
+        <h2 class="text-center mb-4">Why?</h2>
+
+        <b-row class="pt-4">
+          <b-col md="4" class="mb-4">
+            <h3>High availability</h3>
+            <hr />
+            <p>
+              To ensure maximum availability and security our validators run
+              behind sentry nodes using a private network.
+            </p>
+          </b-col>
+          <b-col md="4" class="mb-4">
+            <h3>24/7 moritoring</h3>
+            <hr />
+            <p>
+              We monitor our infrastructure 24/7 using state-of-the-art
+              monitoring tools to proactively detect problems.
+            </p>
+          </b-col>
+          <b-col md="4" class="mb-4">
+            <h3>Daily reward payout</h3>
+            <hr />
+            <p>
+              Nominate to PolkaStats and don't waste your time or funds claiming
+              your rewards, we do it for you on a daily basis.
+            </p>
+          </b-col>
+          <b-col md="4" class="mb-4">
+            <h3>Team</h3>
+            <hr />
+            <p>
+              Passionate web3 developers and sysadmins that are active part of
+              the community.
+            </p>
+          </b-col>
+          <b-col md="4" class="mb-4">
+            <h3>Polkadot Bounty winner</h3>
+            <hr />
+            <p>
+              We strongly believe in the Substrate ecosystem contributing with
+              <a target="_blank" href="https://polkastats.io">PolkaStats</a> and
+              <a target="_blank" href="https://polkapulse.polkastats.io"
+                >PolkaPulse</a
+              >
+              (3rd prize in
+              <a
+                href="https://polkadot.network/build-polkadot-network-launch-bounty-challenges/"
+                target="_blank"
+                >Polkadot Launch Bounty Challenges</a
+              >
+              / Visualization category).
+            </p>
+          </b-col>
+          <b-col md="4" class="mb-4">
+            <h3>Early Polkadot supporter</h3>
+            <hr />
+            <p>
+              We support substrate networks since Alexander testnet, been an
+              Polkadot and Substrate community member.
+            </p>
+          </b-col>
+        </b-row>
       </b-container>
     </section>
   </div>
@@ -17,8 +114,12 @@
 <script>
 import commonMixin from "../mixins/commonMixin.js";
 import { network } from "../polkastats.config.js";
+import Identicon from "../components/identicon.vue";
 
 export default {
+  components: {
+    Identicon
+  },
   mixins: [commonMixin],
   data: function() {
     return {
@@ -27,7 +128,7 @@ export default {
   },
   head() {
     return {
-      title: this.$t("pages.support-us.head_title"),
+      title: this.$t("pages.polkastats_validator.head_title"),
       meta: [
         {
           hid: "description",
@@ -39,4 +140,25 @@ export default {
   }
 };
 </script>
-<style></style>
+<style>
+.validator-page .clipboard {
+  display: inline-block;
+}
+.validator-page .identicon {
+  margin-right: 0.2rem;
+  cursor: copy;
+}
+.validator-page .btn-stake {
+  color: white !important;
+  background-color: #c51062 !important;
+  border-color: #c51062 !important;
+  box-shadow: none !important;
+}
+.validator-page .btn-stake:hover,
+.validator-page .btn-stake:active,
+.validator-page .btn-stake:visited {
+  background-color: #ef1073 !important;
+  border-color: #ef1073 !important;
+  box-shadow: 0 0 0 0.2rem rgba(239, 16, 115, 0.5) !important;
+}
+</style>
