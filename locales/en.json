@@ -330,9 +330,10 @@
       "head_content": "{networkName} transfer {extrinsicHash}"
     },
     "events": {
-      "title": "Last system events",
-      "head_title": "PolkaStats - {networkName} last system events",
-      "head_content": "{networkName} last system events"
+      "title": "Events",
+      "head_title": "PolkaStats - {networkName} events",
+      "head_content": "{networkName} events",
+      "search_placeholder": "Search by block number"
     },
     "event": {
       "head_title": "PolkaStats - {networkName} event {systemEvent}",
@@ -496,7 +497,10 @@
       "account_details": "Account details",
       "timestamp": "Timestamp",
       "genesis": "🎁 Genesis block",
-      "success": "Success"
+      "success": "Success",
+      "logs": "Logs",
+      "index": "Index",
+      "engine": "Engine"
     },
     "intention": {
       "previous_intention": "Previous intention: ",

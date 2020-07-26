@@ -331,9 +331,10 @@
       "head_content": "{networkName} transferencia {extrinsicHash}"
     },
     "events": {
-      "title": "Últimos eventos de sistema",
-      "head_title": "PolkaStats - {networkName} últimos eventos de sistema",
-      "head_content": "{networkName} últimos eventos de sistema"
+      "title": "Eventos",
+      "head_title": "PolkaStats - Eventos en {networkName}",
+      "head_content": "Eventos en {networkName}",
+      "search_placeholder": "Buscar por número de bloque"
     },
     "event": {
       "head_title": "PolkaStats - {networkName} evento de sistema {systemEvent}",
@@ -498,7 +499,10 @@
       "args": "Argumentos",
       "timestamp": "Fecha y hora",
       "genesis": "🎁 Bloque génesis",
-      "success": "Resultado"
+      "success": "Resultado",
+      "logs": "Logs",
+      "index": "Índice",
+      "engine": "MotorP"
     },
     "intention": {
       "previous_intention": "Intención previa",

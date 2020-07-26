@@ -278,6 +278,31 @@
             </div>
           </div>
         </template>
+        <template v-if="parsedLogs.length > 0">
+          <div class="card mt-4 mb-3">
+            <div class="card-body">
+              <h4 class="text-center mb-4">
+                {{ $t("details.block.logs") }}
+              </h4>
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>{{ $t("details.block.index") }}</th>
+                    <th>{{ $t("details.block.engine") }}</th>
+                    <th>{{ $t("details.block.data") }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="log in parsedLogs" :key="log.log_index">
+                    <td>{{ log.log_index }}</td>
+                    <td>{{ log.engine }}</td>
+                    <td>{{ log.data }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </template>
       </b-container>
     </section>
   </div>
@@ -297,8 +322,9 @@ export default {
     return {
       blockNumber: this.$route.query.blockNumber,
       parsedBlock: undefined,
+      parsedExtrinsics: [],
       parsedEvents: [],
-      parsedExtrinsics: []
+      parsedLogs: []
     };
   },
   watch: {
@@ -403,13 +429,34 @@ export default {
       result({ data }) {
         this.parsedExtrinsics = data.extrinsic;
       }
+    },
+    log: {
+      query: gql`
+        query log($block_number: bigint!) {
+          log(where: { block_number: { _eq: $block_number } }) {
+            block_number
+            log_index
+            type
+            engine
+            data
+          }
+        }
+      `,
+      variables() {
+        return {
+          block_number: this.$route.query.blockNumber
+        };
+      },
+      result({ data }) {
+        this.parsedLogs = data.log;
+      }
     }
   },
   head() {
     return {
       title: this.$t("pages.block.head_title", {
         networkName: network.name,
-        address: this.$route.query.blockNumber
+        blockNumber: this.$route.query.blockNumber
       }),
       meta: [
         {
@@ -417,7 +464,7 @@ export default {
           name: "description",
           content: this.$tc("pages.block.head_content", {
             networkName: network.name,
-            address: this.$route.query.blockNumber
+            blockNumber: this.$route.query.blockNumber
           })
         }
       ]

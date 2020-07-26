@@ -18,13 +18,7 @@
             </b-col>
           </b-row>
           <div class="table-responsive">
-            <b-table
-              striped
-              hover
-              :fields="fields"
-              :per-page="0"
-              :items="blocks"
-            >
+            <b-table striped hover :fields="fields" :items="blocks">
               <template v-slot:cell(block_number)="data">
                 <p class="mb-0">
                   <nuxt-link
@@ -166,7 +160,7 @@ export default {
         result({ data }) {
           this.blocks = data.block;
           if (this.filter) {
-            this.totalRows = data.block.length;
+            this.totalRows = this.blocks.length;
           }
         }
       },
