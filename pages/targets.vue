@@ -8,7 +8,7 @@
     <TargetInfo
       id="risks"
       :button="$t('pages.targets.accordion-info.risks')"
-      :text="$t('pages.targets.accordion-info.risks_TEXT')"
+      :text="$t('pages.targets.accordion-info.risks_text', { validatorSlots })"
     />
     <b-row class="pt-2 ml-1 mr-1 mb-4">
       <b-form-input
@@ -233,6 +233,7 @@ export default {
     return {
       network,
       era: null,
+      validatorSlots: 111,
       rewards: [],
       tableOptions: paginationOptions,
       perPage: localStorage.paginationOptions
@@ -291,29 +292,23 @@ export default {
       infoList: [
         {
           id: 1,
-          text: this.$t("pages.targets.accordion-info.there_are_225_TEXT")
+          text: this.$t("pages.targets.accordion-info.info_1")
         },
         {
           id: 2,
-          text: this.$t("pages.targets.accordion-info.an_slot_is_TEXT")
+          text: this.$t("pages.targets.accordion-info.info_2")
         },
         {
           id: 3,
-          text: this.$t(
-            "pages.targets.accordion-info.validators_acummulate_TEXT"
-          )
+          text: this.$t("pages.targets.accordion-info.info_3")
         },
         {
           id: 4,
-          text: this.$t("pages.targets.accordion-info.at_the_end_TEXT")
+          text: this.$t("pages.targets.accordion-info.info_4")
         },
         {
           id: 5,
-          text: this.$t("pages.targets.accordion-info.once_each_slots_TEXT")
-        },
-        {
-          id: 6,
-          text: this.$t("pages.targets.accordion-info.the_rest_of_TEXT")
+          text: this.$t("pages.targets.accordion-info.info_5")
         }
       ]
     };
@@ -417,11 +412,13 @@ export default {
         query block {
           block(limit: 1, order_by: { timestamp: desc }) {
             current_era
+            validator_count
           }
         }
       `,
       result({ data }) {
         this.era = data.block[0].current_era - 1;
+        this.validatorSlots = data.block[0].validator_count;
       }
     },
     $subscribe: {

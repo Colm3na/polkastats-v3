@@ -210,14 +210,13 @@
       "estimated_annualized_payout_percentage": "Ganancia estimada anual",
       "accordion-info": {
         "delegator_rewards": "Recompensas de delegadores. ¿Cómo funciona?",
-        "there_are_225_TEXT": "Actualmente hay 225 slots, así como 225 validadores.",
-        "an_slot_is_TEXT": "Un slot es un grupo de cuentas que incluye al validador y sus cuentas delegadas.",
-        "validators_acummulate_TEXT": "Los validadores acumulan puntos por su actividad. Tienen que firmar declaraciones de validez y producir bloques para ganar puntos.",
-        "at_the_end_TEXT": "Al final de una era (6 épocas de 600 bloques cada una) la recompensa total es dividida entre los 225 slots basandose en sus puntos acumulados.",
-        "once_each_slots_TEXT": "Una vez que cada slot obtiene su recompensa, la comisión del validador es restada de estas ganancias.",
-        "the_rest_of_TEXT": "El resto de la recompoensa del slot es distribuidad entra los delegadores basandose en el porcentaje de su depósito en el slot.",
+        "info_1": "Un slot es un grupo de cuentas que incluye al validador y a sus cuentas delegadas.",
+        "info_2": "Los validadores acumulan puntos por su actividad. Tienen que firmar declaraciones de validez y producir bloques para ganar puntos.",
+        "info_3": "Al final de una era la recompensa total es dividida entre todos los slots basandose en sus puntos acumulados.",
+        "info_4": "Una vez que cada slot obtiene su recompensa, la comisión del validador es restada de estas ganancias.",
+        "info_5": "El resto de la recompensa del slot es distribuida entre los delegadores basandose en el porcentaje de su depósito en el slot.",
         "risks": "Riesgos",
-        "risks_TEXT": "De acuerdo con las reglas del juego, se podría pensar que el validador más rentable sería el correspondiente al slot con menor depósito. En parte es verdad, pero mejor considerar los siguientes riesgos. El último slot de la lista (actuálmente el número 225) tiene muchas posibilidades de quedar fuera de la lista en la siguiente época. Cuando un validador queda fuera de la lista, el validador y sus nominadores dejan de recibir recompensas y su slot es ocupado por un nuevo validador. Slashing es otro tipo de riesgo que deberías considerar. Cuando un validador se comporta mal sufre un evento slashing, el cual es un castigo por no seguir el protocolo. La penalización es aplicada al validador y a todos los delegadores del slot. Los tiempor de inactividad y las equivoceciones (malas firmas) son las razones más comunes que desencadenan un evento de slashing. La única manera de protegerte del slashing es eligiendo cuidadosamente el valiador que vas a nominar. Estudiar su historia, configuración y reputación puede ayudarte a seleccionar el validador en cual confiar (tu stake)"
+        "risks_text": "En términos generales el validador más rentable sería el correspondiente al slot con menor depósito. Esto es cierto aunque hay que considerar también los siguientes riesgos. El último slot de la lista tiene más posibilidades de quedar fuera de la lista de validadores activos. Cuando un validador queda fuera de la lista, el validador y sus nominadores dejan de recibir recompensas y su slot es ocupado por un nuevo validador. Slashing es otro tipo de riesgo que deberías considerar. Cuando un validador se comporta mal sufre un evento slashing, el cual es un castigo por no seguir el protocolo. La penalización es aplicada al validador y a todos los delegadores del slot. Los tiempos de inactividad y los errores de firma son las causas más comunes que desencadenan un evento de slash. La única manera de protegerte del slashing es eligiendo cuidadosamente los valiador/es a los que vas a nominar. Estudiar su historia, configuración y reputación puede ayudarte a seleccionar el validador en cual confiar tu stake."
       },
       "sort": "Ordenar"
     },

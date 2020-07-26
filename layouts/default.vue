@@ -97,7 +97,10 @@
                   <b-dropdown-item to="/targets">
                     {{ $t("layout.default.targets") }}
                   </b-dropdown-item>
-                  <b-dropdown-item to="/phragmen">
+                  <b-dropdown-item
+                    v-if="network.phragmenEnabled"
+                    to="/phragmen"
+                  >
                     {{ $t("layout.default.phragmen") }}
                   </b-dropdown-item>
                 </b-nav-item-dropdown>
