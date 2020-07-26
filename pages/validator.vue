@@ -39,7 +39,7 @@
             </b-col>
           </b-row>
 
-          <h2 class="text-center mb-4">Why?</h2>
+          <h2 class="text-center my-4">Why?</h2>
 
           <b-row class="pt-4">
             <b-col md="4" class="mb-4">
@@ -140,7 +140,7 @@
             </b-col>
           </b-row>
 
-          <h2 class="text-center mb-4">¿Por qué nominar a PolkaStats?</h2>
+          <h2 class="text-center my-4">¿Por qué nominar a PolkaStats?</h2>
 
           <b-row class="pt-4">
             <b-col md="4" class="mb-4">
