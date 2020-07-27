@@ -122,136 +122,123 @@
                 </div>
               </div>
 
-              <hr />
+              <b-tabs class="mt-4" content-class="mt-4" fill>
+                <b-tab active>
+                  <template v-slot:title>
+                    <h5>Nominations</h5>
+                  </template>
+                  <Nominations :account-id="accountId" />
+                </b-tab>
+                <b-tab>
+                  <template v-slot:title>
+                    <h5>Sent transfers</h5>
+                  </template>
+                  <SentTransfers :account-id="accountId" />
+                </b-tab>
+                <b-tab>
+                  <template v-slot:title>
+                    <h5>Received transfers</h5>
+                  </template>
+                  <ReceivedTransfers :account-id="accountId" />
+                </b-tab>
+                <b-tab>
+                  <template v-slot:title>
+                    <h5>Rewards</h5>
+                  </template>
+                  <Rewards :account-id="accountId" />
+                </b-tab>
+                <b-tab>
+                  <template v-slot:title>
+                    <h5>Slashes</h5>
+                  </template>
+                  <Slashes :account-id="accountId" />
+                </b-tab>
+              </b-tabs>
+              <!-- Charts -->
               <div class="row">
-                <div
-                  v-for="nomination in JSON.parse(nominator.targets)"
-                  :key="nomination.validator"
-                  class="col-6 col-md-4 col-lg-3 col-xl-2 text-center"
-                >
-                  <Identicon
-                    :key="nomination.validator"
-                    :value="nomination.validator"
-                    :size="40"
-                    :theme="'polkadot'"
-                  />
-                  <nuxt-link
-                    :to="{
-                      name: 'validator',
-                      query: { accountId: nomination.validator }
-                    }"
-                    :title="$t('details.nominator.validator_details')"
-                    class="mt-2 mb-0 d-block"
+                <div class="col-md-6">
+                  <div
+                    id="stake-evolution-monthly-chart"
+                    class="mt-5 text-center"
                   >
-                    <span
-                      v-if="nomination.displayName"
-                      v-b-tooltip.hover
-                      :title="nomination.validator"
-                    >
-                      {{ nomination.displayName }}
-                    </span>
-                    <span
-                      v-else
-                      v-b-tooltip.hover
-                      :title="nomination.validator"
-                    >
-                      {{ shortAddress(nomination.validator) }}
-                    </span>
-                  </nuxt-link>
-                  <p class="amount">
-                    {{ formatAmount(nomination.amount) }}
-                    <small
-                      >({{
-                        (
-                          getTotalStakePercen(
-                            nominator.total_staked,
-                            nomination.amount
-                          ) / 100
-                        ).toFixed(2)
-                      }}%)</small
-                    >
-                  </p>
+                    <h3>
+                      {{ $t("details.nominator.total_balance") }} -
+                      {{ $t("details.nominator.monthly_chart") }}
+                      <small
+                        v-if="monthly.last - monthly.first > 0"
+                        class="change text-success ml-3"
+                        ><i class="far fa-thumbs-up" /> +{{
+                          formatAmount(monthly.last - monthly.first)
+                        }}</small
+                      ><small
+                        v-if="monthly.last - monthly.first < 0"
+                        class="change text-danger ml-3"
+                        ><i class="far fa-thumbs-down" />
+                        {{ formatAmount(monthly.last - monthly.first) }}</small
+                      >
+                    </h3>
+                    <chart
+                      :options="TotalBalanceEvolutionMonthlyChartOptions"
+                      :series="TotalBalanceEvolutionMonthlySeries"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div
+                    id="stake-evolution-weekly-chart"
+                    class="mt-5 mb-5 text-center"
+                  >
+                    <h3>
+                      {{ $t("details.nominator.total_balance") }} -
+                      {{ $t("details.nominator.weekly_chart") }}
+                      <small
+                        v-if="weekly.last - weekly.first > 0"
+                        class="change text-success ml-3"
+                        ><i class="far fa-thumbs-up" /> +{{
+                          formatAmount(weekly.last - weekly.first)
+                        }}</small
+                      ><small
+                        v-if="weekly.last - weekly.first < 0"
+                        class="change text-danger ml-3"
+                        ><i class="far fa-thumbs-down" />
+                        {{ formatAmount(weekly.last - weekly.first) }}</small
+                      >
+                    </h3>
+                    <chart
+                      :options="TotalBalanceEvolutionWeeklyChartOptions"
+                      :series="TotalBalanceEvolutionWeeklySeries"
+                    />
+                  </div>
                 </div>
               </div>
-            </div>
-          </div>
-          <!-- Charts -->
-          <div class="row">
-            <div class="col-md-6">
-              <div id="stake-evolution-monthly-chart" class="mt-5 text-center">
-                <h3>
-                  {{ $t("details.nominator.total_balance") }} -
-                  {{ $t("details.nominator.monthly_chart") }}
-                  <small
-                    v-if="monthly.last - monthly.first > 0"
-                    class="change text-success ml-3"
-                    ><i class="far fa-thumbs-up" /> +{{
-                      formatAmount(monthly.last - monthly.first)
-                    }}</small
-                  ><small
-                    v-if="monthly.last - monthly.first < 0"
-                    class="change text-danger ml-3"
-                    ><i class="far fa-thumbs-down" />
-                    {{ formatAmount(monthly.last - monthly.first) }}</small
+              <div class="row">
+                <div class="col-md-6">
+                  <div
+                    id="stake-evolution-daily-chart"
+                    class="mb-5 text-center"
                   >
-                </h3>
-                <chart
-                  :options="TotalBalanceEvolutionMonthlyChartOptions"
-                  :series="TotalBalanceEvolutionMonthlySeries"
-                />
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div
-                id="stake-evolution-weekly-chart"
-                class="mt-5 mb-5 text-center"
-              >
-                <h3>
-                  {{ $t("details.nominator.total_balance") }} -
-                  {{ $t("details.nominator.weekly_chart") }}
-                  <small
-                    v-if="weekly.last - weekly.first > 0"
-                    class="change text-success ml-3"
-                    ><i class="far fa-thumbs-up" /> +{{
-                      formatAmount(weekly.last - weekly.first)
-                    }}</small
-                  ><small
-                    v-if="weekly.last - weekly.first < 0"
-                    class="change text-danger ml-3"
-                    ><i class="far fa-thumbs-down" />
-                    {{ formatAmount(weekly.last - weekly.first) }}</small
-                  >
-                </h3>
-                <chart
-                  :options="TotalBalanceEvolutionWeeklyChartOptions"
-                  :series="TotalBalanceEvolutionWeeklySeries"
-                />
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-6">
-              <div id="stake-evolution-daily-chart" class="mb-5 text-center">
-                <h3>
-                  {{ $t("details.nominator.total_balance") }} -
-                  {{ $t("details.nominator.daily_chart") }}
-                  <small
-                    v-if="daily.last - daily.first > 0"
-                    class="change text-success ml-3"
-                    ><i class="far fa-thumbs-up" /> +{{
-                      formatAmount(daily.last - daily.first)
-                    }}</small
-                  ><small
-                    v-if="daily.last - daily.first < 0"
-                    class="change text-danger ml-3"
-                    ><i class="far fa-thumbs-down" />
-                    {{ formatAmount(daily.last - daily.first) }}</small
-                  >
-                </h3>
-                <chart
-                  :options="TotalBalanceEvolutionDailyChartOptions"
-                  :series="TotalBalanceEvolutionDailySeries"
-                />
+                    <h3>
+                      {{ $t("details.nominator.total_balance") }} -
+                      {{ $t("details.nominator.daily_chart") }}
+                      <small
+                        v-if="daily.last - daily.first > 0"
+                        class="change text-success ml-3"
+                        ><i class="far fa-thumbs-up" /> +{{
+                          formatAmount(daily.last - daily.first)
+                        }}</small
+                      ><small
+                        v-if="daily.last - daily.first < 0"
+                        class="change text-danger ml-3"
+                        ><i class="far fa-thumbs-down" />
+                        {{ formatAmount(daily.last - daily.first) }}</small
+                      >
+                    </h3>
+                    <chart
+                      :options="TotalBalanceEvolutionDailyChartOptions"
+                      :series="TotalBalanceEvolutionDailySeries"
+                    />
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -269,6 +256,11 @@ import { network } from "../../polkastats.config.js";
 import commonMixin from "../../mixins/commonMixin.js";
 import gql from "graphql-tag";
 import chart from "../../components/chart";
+import Nominations from "../../components/Nominations.vue";
+import SentTransfers from "../../components/SentTransfers.vue";
+import ReceivedTransfers from "../../components/ReceivedTransfers.vue";
+import Rewards from "../../components/Rewards.vue";
+import Slashes from "../../components/Slashes.vue";
 formatBalance.setDefaults({
   decimals: network.decimalPlaces,
   unit: network.denom
@@ -277,7 +269,12 @@ formatBalance.setDefaults({
 export default {
   components: {
     chart,
-    Identicon
+    Identicon,
+    Nominations,
+    SentTransfers,
+    ReceivedTransfers,
+    Rewards,
+    Slashes
   },
   mixins: [commonMixin],
   data: function() {
@@ -680,7 +677,7 @@ export default {
   },
   apollo: {
     $subscribe: {
-      validators: {
+      nominators: {
         query: gql`
           subscription nominator($session_index: Int!, $account_id: String!) {
             nominator(
