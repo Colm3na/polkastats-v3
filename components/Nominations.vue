@@ -170,28 +170,15 @@ export default {
         {
           key: "percent",
           label: this.$t("details.validator.percentage"),
-          sortable: true,
-          class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
+          sortable: true
         },
         {
           key: "amount",
           label: this.$t("details.validator.amount"),
-          sortable: true,
-          class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
+          sortable: true
         }
       ]
     };
-  },
-  created: function() {
-    var vm = this;
-    // Force update of identity list if empty
-    if (this.$store.state.identities.list.length === 0) {
-      vm.$store.dispatch("identities/update");
-    }
-    // Update data every 60 seconds
-    this.polling = setInterval(() => {
-      vm.$store.dispatch("identities/update");
-    }, 60000);
   },
   methods: {
     handleNumFields(num) {
@@ -199,28 +186,8 @@ export default {
       this.perPage = parseInt(num);
     },
     onFiltered(filteredItems) {
-      // Trigger pagination to update the number of buttons/pages due to filtering
       this.totalRows = filteredItems.length;
       this.currentPage = 1;
-    },
-    getDisplayName: function(accountId) {
-      let identity = this.$store.state.identities.list.find(
-        identity => identity.accountId === accountId
-      );
-      if (identity) {
-        identity = identity.identity;
-        if (
-          identity.displayParent &&
-          identity.displayParent !== `` &&
-          identity.display &&
-          identity.display !== ``
-        ) {
-          return `${identity.displayParent} / ${identity.display}`;
-        } else {
-          return identity.display;
-        }
-      }
-      return ``;
     }
   },
   apollo: {
