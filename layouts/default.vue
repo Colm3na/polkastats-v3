@@ -322,7 +322,7 @@ export default {
 </script>
 <style>
 @import url("https://use.fontawesome.com/releases/v5.6.3/css/all.css");
-@import url("https://fonts.googleapis.com/css?family=Roboto:300,400,700&display=swap");
+@import url("https://fonts.googleapis.com/css?family=Roboto:100,200,300,400,700&display=swap");
 
 /*----------------------- Global Styles --------------------------*/
 
@@ -336,6 +336,27 @@ body {
 .main.container {
   padding-left: 5px;
   padding-right: 5px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
+  font-weight: 300;
+}
+
+h1,
+.h1 {
+  font-size: 2.2rem;
+  text-transform: uppercase;
 }
 
 a {
