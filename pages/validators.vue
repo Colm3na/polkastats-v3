@@ -435,7 +435,7 @@ export default {
             parseInt(validator.commission) / 10000000
           ).toFixed(2),
           self_stake: validator.exposure_own,
-          total_stake: validator.exposure_own,
+          total_stake: validator.exposure_total,
           num_stakers: validator.num_stakers,
           produced_blocks: validator.produced_blocks,
           next_elected: validator.next_elected
