@@ -329,7 +329,7 @@ export default {
 body {
   font-family: "Roboto", sans-serif;
   color: #52555a;
-  background-color: rgba(247, 238, 246, 0.5);
+  background-color: white;
   word-break: break-word;
 }
 
