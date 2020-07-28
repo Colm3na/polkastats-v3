@@ -22,7 +22,7 @@
     "@nuxtjs/apollo": "^4.0.0-rc9",
     "@nuxtjs/google-analytics": "^2.3.0",
     "@nuxtjs/toast": "^3.3.0",
-    "@polkadot/api": "^1.24.1",
+    "@polkadot/api": "^1.25.1",
     "@polkadot/extension-dapp": "^0.31.1",
     "@polkadot/util": "^2.18.1",
     "@polkadot/util-crypto": "^2.18.1",

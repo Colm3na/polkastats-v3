@@ -63,7 +63,14 @@
       "made_by": "Hecho por el Equipo Polkastats en Colmena Labs",
       "built_with": "Hecho con",
       "view_source_code_on_github": "Ver código fuente en GitHub",
-      "dashboard": "Dashboard"
+      "dashboard": "Dashboard",
+      "blockchain": "Blockchain",
+      "blocks": "Bloques",
+      "extrinsics": "Extrinsics",
+      "transfers": "Transferencias",
+      "events": "Eventos",
+      "validator": "Validador",
+      "how_to_stake": "Como participar"
     },
     "error": {
       "page_not_found": "¡Página no encontrada!",
@@ -71,6 +78,9 @@
     }
   },
   "pages": {
+    "home": {
+      "title": "Inicio"
+    },
     "accounts": {
       "active_accounts": "Cuentas activas",
       "search_placeholder": "Buscar cuenta por dirección o identidad",
@@ -200,14 +210,13 @@
       "estimated_annualized_payout_percentage": "Ganancia estimada anual",
       "accordion-info": {
         "delegator_rewards": "Recompensas de delegadores. ¿Cómo funciona?",
-        "there_are_225_TEXT": "Actualmente hay 225 slots, así como 225 validadores.",
-        "an_slot_is_TEXT": "Un slot es un grupo de cuentas que incluye al validador y sus cuentas delegadas.",
-        "validators_acummulate_TEXT": "Los validadores acumulan puntos por su actividad. Tienen que firmar declaraciones de validez y producir bloques para ganar puntos.",
-        "at_the_end_TEXT": "Al final de una era (6 épocas de 600 bloques cada una) la recompensa total es dividida entre los 225 slots basandose en sus puntos acumulados.",
-        "once_each_slots_TEXT": "Una vez que cada slot obtiene su recompensa, la comisión del validador es restada de estas ganancias.",
-        "the_rest_of_TEXT": "El resto de la recompoensa del slot es distribuidad entra los delegadores basandose en el porcentaje de su depósito en el slot.",
+        "info_1": "Un slot es un grupo de cuentas que incluye al validador y a sus cuentas delegadas.",
+        "info_2": "Los validadores acumulan puntos por su actividad. Tienen que firmar declaraciones de validez y producir bloques para ganar puntos.",
+        "info_3": "Al final de una era la recompensa total es dividida entre todos los slots basandose en sus puntos acumulados.",
+        "info_4": "Una vez que cada slot obtiene su recompensa, la comisión del validador es restada de estas ganancias.",
+        "info_5": "El resto de la recompensa del slot es distribuida entre los delegadores basandose en el porcentaje de su depósito en el slot.",
         "risks": "Riesgos",
-        "risks_TEXT": "De acuerdo con las reglas del juego, se podría pensar que el validador más rentable sería el correspondiente al slot con menor depósito. En parte es verdad, pero mejor considerar los siguientes riesgos. El último slot de la lista (actuálmente el número 225) tiene muchas posibilidades de quedar fuera de la lista en la siguiente época. Cuando un validador queda fuera de la lista, el validador y sus nominadores dejan de recibir recompensas y su slot es ocupado por un nuevo validador. Slashing es otro tipo de riesgo que deberías considerar. Cuando un validador se comporta mal sufre un evento slashing, el cual es un castigo por no seguir el protocolo. La penalización es aplicada al validador y a todos los delegadores del slot. Los tiempor de inactividad y las equivoceciones (malas firmas) son las razones más comunes que desencadenan un evento de slashing. La única manera de protegerte del slashing es eligiendo cuidadosamente el valiador que vas a nominar. Estudiar su historia, configuración y reputación puede ayudarte a seleccionar el validador en cual confiar (tu stake)"
+        "risks_text": "En términos generales el validador más rentable sería el correspondiente al slot con menor depósito. Esto es cierto aunque hay que considerar también los siguientes riesgos. El último slot de la lista tiene más posibilidades de quedar fuera de la lista de validadores activos. Cuando un validador queda fuera de la lista, el validador y sus nominadores dejan de recibir recompensas y su slot es ocupado por un nuevo validador. Slashing es otro tipo de riesgo que deberías considerar. Cuando un validador se comporta mal sufre un evento slashing, el cual es un castigo por no seguir el protocolo. La penalización es aplicada al validador y a todos los delegadores del slot. Los tiempos de inactividad y los errores de firma son las causas más comunes que desencadenan un evento de slash. La única manera de protegerte del slashing es eligiendo cuidadosamente los valiador/es a los que vas a nominar. Estudiar su historia, configuración y reputación puede ayudarte a seleccionar el validador en cual confiar tu stake."
       },
       "sort": "Ordenar"
     },
@@ -272,6 +281,11 @@
       "head_title": "PolkaStats - {networkName} validador {address}",
       "head_content": "{networkName} validador {address}"
     },
+    "polkastats_validator": {
+      "title": "Validador PolkaStats",
+      "head_title": "PolkaStats - Validador PolkaStats {networkName}",
+      "head_content": "Validador PolkaStats {networkName}"
+    },
     "dashboard": {
       "title": "Dashboard",
       "head_title": "PolkaStats - Cuadro de mando {networkName}",
@@ -288,36 +302,38 @@
       "ongoing_election_2": "No se permiten las transacciones de staking hasta que este finalize"
     },
     "blocks": {
-      "title": "Últimos bloques",
-      "head_title": "PolkaStats - {networkName} últimos bloques",
-      "head_content": "{networkName} últimos bloques"
+      "title": "Bloques",
+      "head_title": "PolkaStats - Bloques de {networkName}",
+      "head_content": "Bloques de {networkName}",
+      "search_placeholder": "Buscar por número de bloque"
     },
     "block": {
       "head_title": "PolkaStats - {networkName} bloque {blockNumber}",
       "head_content": "{networkName} bloque {blockNumber}"
     },
     "extrinsics": {
-      "title": "Últimas extrinsics",
-      "head_title": "PolkaStats - {networkName} últimos extrinsics",
-      "head_content": "{networkName} últimos extrinsics"
+      "title": "Extrinsics",
+      "head_title": "PolkaStats - Extrinsics en {networkName}",
+      "head_content": "Extrinsics en {networkName}"
     },
     "extrinsic": {
       "head_title": "PolkaStats - {networkName} extrinsic {extrinsicHash}",
       "head_content": "{networkName} extrinsic {extrinsicHash}"
     },
     "transfers": {
-      "title": "Últimas transferencias",
-      "head_title": "PolkaStats - {networkName} últimos transferencias",
-      "head_content": "{networkName} últimos transferencias"
+      "title": "Transferencias",
+      "head_title": "PolkaStats - Transferencias en {networkName}",
+      "head_content": "Transferencias en {networkName}"
     },
     "transfer": {
-      "head_title": "PolkaStats - {networkName} transferencia {extrinsicHash}",
-      "head_content": "{networkName} transferencia {extrinsicHash}"
+      "head_title": "PolkaStats - Transferencia de {networkName} hash {extrinsicHash}",
+      "head_content": "Transferencia de {networkName} hash {extrinsicHash}"
     },
     "events": {
-      "title": "Últimos eventos de sistema",
-      "head_title": "PolkaStats - {networkName} últimos eventos de sistema",
-      "head_content": "{networkName} últimos eventos de sistema"
+      "title": "Eventos",
+      "head_title": "PolkaStats - Eventos en {networkName}",
+      "head_content": "Eventos en {networkName}",
+      "search_placeholder": "Buscar por número de bloque"
     },
     "event": {
       "head_title": "PolkaStats - {networkName} evento de sistema {systemEvent}",
@@ -392,6 +408,51 @@
       "validator_feedback": "Por favor, selecciona un validador",
       "selected": "Seleccionado",
       "not_selected": "No seleccionado"
+    },
+    "how_to_stake": {
+      "title": "Como participar",
+      "head_title": "PolkaStats - Como participar",
+      "head_content": "Como participar",
+      "kusama": {
+        "title": "Como participar en Kusama",
+        "head_title": "PolkaStats - Como participar en Kusama",
+        "head_content": "Como participar en Kusama",
+        "lunie": {
+          "title": "Como participar en Kusama usando Lunie",
+          "head_title": "PolkaStats - Como participar en Kusama usando Lunie",
+          "head_content": "Como participar en Kusama usando Lunie"
+        },
+        "polkadotjs": {
+          "title": "Como participar en Kusama usando Polkadot JS",
+          "head_title": "PolkaStats - Como participar en Kusama usando Polkadot JS",
+          "head_content": "Como participar en Kusama usando Polkadot JS"
+        },
+        "polkastats": {
+          "title": "Como participar en Kusama usando PolkaStats",
+          "head_title": "PolkaStats - Como participar en Kusama usando PolkaStats",
+          "head_content": "Como participar en Kusama usando PolkaStats"
+        }
+      },
+      "polkadot": {
+        "title": "Como participar en Polkadot",
+        "head_title": "PolkaStats - Como participar en Polkadot",
+        "head_content": "Como participar en Polkadot",
+        "lunie": {
+          "title": "Como participar en Polkadot usando Lunie",
+          "head_title": "PolkaStats - Como participar en Polkadot usando Lunie",
+          "head_content": "Como participar en Polkadot usando Lunie"
+        },
+        "polkadotjs": {
+          "title": "Como participar en Polkadot usando Polkadot JS",
+          "head_title": "PolkaStats - Como participar en Polkadot usando Polkadot JS",
+          "head_content": "Como participar en Polkadot usando Polkadot JS"
+        },
+        "polkastats": {
+          "title": "Como participar en Polkadot usando PolkaStats",
+          "head_title": "PolkaStats - Como participar en Polkadot usando PolkaStats",
+          "head_content": "Como participar en Polkadot usando PolkaStats"
+        }
+      }
     }
   },
   "details": {
@@ -437,7 +498,10 @@
       "args": "Argumentos",
       "timestamp": "Fecha y hora",
       "genesis": "🎁 Bloque génesis",
-      "success": "Resultado"
+      "success": "Resultado",
+      "logs": "Logs",
+      "index": "Índice",
+      "engine": "Motor"
     },
     "intention": {
       "previous_intention": "Intención previa",

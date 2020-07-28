@@ -4,46 +4,33 @@
       <div class="nav-bg-color fixed-top">
         <div class="container">
           <div id="top-bar" class="row">
-            <div
-              class="col-md-10 text-right pb-2 pb-sm-0 pb-md-0 pb-lg-0 pb-xl-0"
-            >
+            <div class="col-10 text-right pb-2 pb-sm-0 pb-md-0 pb-lg-0 pb-xl-0">
+              <span class="network mr-2">
+                Selected network:
+              </span>
+              <span v-if="network.name === 'Polkadot'">
+                <i class="fa fa-check" aria-hidden="true"></i>
+                Polkadot
+              </span>
+              <span v-if="network.name === 'Kusama'">
+                <i class="fa fa-check" aria-hidden="true"></i>
+                Kusama
+              </span>
+              <span v-if="network.name === 'Westend'">
+                <i class="fa fa-check" aria-hidden="true"></i>
+                Westend
+              </span>
               <span
                 v-if="network.coinGeckoDenom"
-                class="fiat"
+                class="fiat ml-2"
                 data-testid="fiat"
               >
                 <strong>{{ network.denom }}</strong> ${{ USDConversion }} ({{
                   USD24hChange
                 }}%)
               </span>
-              <button
-                type="button"
-                class="btn btn-outline-white btn-sm mr-2"
-                :disabled="network.name === 'Polkadot'"
-                @click="goTo('https://polkastats.io')"
-              >
-                <i
-                  v-if="network.name === 'Polkadot'"
-                  class="fa fa-check"
-                  aria-hidden="true"
-                ></i>
-                Polkadot CC1
-              </button>
-              <button
-                type="button"
-                class="btn btn-outline-white btn-sm"
-                :disabled="network.name === 'Kusama'"
-                @click="goTo('https://kusama.polkastats.io')"
-              >
-                <i
-                  v-if="network.name === 'Kusama'"
-                  class="fa fa-check"
-                  aria-hidden="true"
-                ></i>
-                Kusama CC3
-              </button>
             </div>
-            <div class="col-md-2 pt-1 pb-2 pb-0">
+            <div class="col-2 pt-1 pb-2 pb-0 text-right">
               <languages />
             </div>
           </div>
@@ -67,81 +54,79 @@
               <b-navbar-nav class="navbar-nav ml-auto flex-nowrap">
                 <b-nav-item>
                   <nuxt-link
-                    to="/validators"
-                    active-class="home-active"
+                    to="/validator"
+                    active-class="nuxt-link-exact-active"
                     class="nav-link"
-                    data-testid="menu-validators"
                   >
+                    {{ $t("layout.default.validator") }}
+                  </nuxt-link>
+                </b-nav-item>
+                <b-nav-item>
+                  <nuxt-link
+                    to="/how-to-stake"
+                    active-class="nuxt-link-exact-active"
+                    class="nav-link"
+                  >
+                    {{ $t("layout.default.how_to_stake") }}
+                  </nuxt-link>
+                </b-nav-item>
+                <b-nav-item-dropdown text="Blockchain" class="py-1">
+                  <b-dropdown-item to="/blocks">
+                    {{ $t("layout.default.blocks") }}
+                  </b-dropdown-item>
+                  <b-dropdown-item to="/extrinsics">
+                    {{ $t("layout.default.extrinsics") }}
+                  </b-dropdown-item>
+                  <b-dropdown-item to="/transfers">
+                    {{ $t("layout.default.transfers") }}
+                  </b-dropdown-item>
+                  <b-dropdown-item to="/events">
+                    {{ $t("layout.default.events") }}
+                  </b-dropdown-item>
+                </b-nav-item-dropdown>
+                <b-nav-item-dropdown text="Staking" class="py-1">
+                  <b-dropdown-item to="/validators">
                     {{ $t("layout.default.validators") }}
-                  </nuxt-link>
-                </b-nav-item>
-                <b-nav-item>
-                  <nuxt-link
-                    to="/intentions"
-                    active-class="nuxt-link-exact-active"
-                    class="nav-link"
-                    data-testid="menu-intentions"
-                  >
+                  </b-dropdown-item>
+                  <b-dropdown-item to="/intentions">
                     {{ $t("layout.default.intentions") }}
-                  </nuxt-link>
-                </b-nav-item>
-                <b-nav-item>
-                  <nuxt-link
-                    to="/favorites"
-                    active-class="nuxt-link-exact-active"
-                    class="nav-link"
-                    data-testid="menu-favorites"
-                  >
-                    {{ $t("layout.default.favorites") }}
-                  </nuxt-link>
-                </b-nav-item>
-                <b-nav-item>
-                  <nuxt-link
-                    to="/targets"
-                    active-class="nuxt-link-exact-active"
-                    class="nav-link"
-                    data-testid="menu-targets"
-                  >
+                  </b-dropdown-item>
+                  <b-dropdown-item to="/nominators">
+                    {{ $t("layout.default.nominators") }}
+                  </b-dropdown-item>
+                  <b-dropdown-item to="/targets">
                     {{ $t("layout.default.targets") }}
-                  </nuxt-link>
-                </b-nav-item>
-                <b-nav-item>
-                  <nuxt-link
+                  </b-dropdown-item>
+                  <b-dropdown-item
+                    v-if="network.phragmenEnabled"
                     to="/phragmen"
-                    active-class="nuxt-link-exact-active"
-                    class="nav-link"
-                    data-testid="menu-phragmen"
                   >
                     {{ $t("layout.default.phragmen") }}
-                  </nuxt-link>
-                </b-nav-item>
-                <b-nav-item>
-                  <nuxt-link
-                    to="/nominators"
-                    active-class="nuxt-link-exact-active"
-                    class="nav-link"
-                    data-testid="menu-nominators"
-                  >
-                    {{ $t("layout.default.nominators") }}
-                  </nuxt-link>
-                </b-nav-item>
+                  </b-dropdown-item>
+                </b-nav-item-dropdown>
                 <b-nav-item>
                   <nuxt-link
                     to="/accounts"
                     active-class="nuxt-link-exact-active"
                     class="nav-link"
-                    data-testid="menu-accounts"
                   >
                     {{ $t("layout.default.account") }}
                   </nuxt-link>
                 </b-nav-item>
                 <b-nav-item-dropdown text="Wallet" class="py-1">
-                  <b-dropdown-item to="/send" data-testid="menu-send"
-                    >Send</b-dropdown-item
+                  <b-dropdown-item to="/send">Send</b-dropdown-item>
+                  <b-dropdown-item to="/stake">Stake</b-dropdown-item>
+                </b-nav-item-dropdown>
+                <b-nav-item-dropdown text="Network" class="py-1">
+                  <b-dropdown-item href="https://polkastats.io"
+                    >Polkadot</b-dropdown-item
                   >
-                  <b-dropdown-item to="/stake" data-testid="menu-stake"
-                    >Stake</b-dropdown-item
+                  <b-dropdown-item href="https://kusama.polkastats.io"
+                    >Kusama</b-dropdown-item
                   >
+                  <!-- <b-dropdown-item href="https://v3dev2.polkastats.io"
+                    >Westend</b-dropdown-item
+                  > -->
                 </b-nav-item-dropdown>
               </b-navbar-nav>
             </b-collapse>
@@ -337,7 +322,7 @@ export default {
 </script>
 <style>
 @import url("https://use.fontawesome.com/releases/v5.6.3/css/all.css");
-@import url("https://fonts.googleapis.com/css?family=Roboto:300,400,700&display=swap");
+@import url("https://fonts.googleapis.com/css?family=Roboto:100,200,300,400,700&display=swap");
 
 /*----------------------- Global Styles --------------------------*/
 
@@ -351,6 +336,27 @@ body {
 .main.container {
   padding-left: 5px;
   padding-right: 5px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
+  font-weight: 300;
+}
+
+h1,
+.h1 {
+  font-size: 2.2rem;
+  text-transform: uppercase;
 }
 
 a {
@@ -480,10 +486,6 @@ section#navigation nav {
 .navbar-dark .navbar-nav .nav-link:hover,
 .navbar-dark .navbar-nav .nav-link:focus {
   color: rgba(255, 255, 255, 1);
-}
-
-.navbar-nav {
-  text-transform: uppercase;
 }
 
 .nav-bg-color {
@@ -711,6 +713,32 @@ section .section-title {
   .github-corner .octo-arm {
     animation: octocat-wave 560ms ease-in-out;
   }
+}
+
+/* Tables */
+.table {
+  font-size: 0.9rem;
+}
+.table td,
+.table th {
+  padding: 0.35rem;
+  border-top: 1px solid #dee2e6;
+}
+.page-item.active .page-link {
+  z-index: 1;
+  color: #fff;
+  background-color: #343a40;
+  border-color: #343a40;
+}
+.page-link {
+  position: relative;
+  display: block;
+  padding: 0.5rem 0.75rem;
+  margin-left: -1px;
+  line-height: 1.25;
+  color: #343a40;
+  background-color: #fff;
+  border: 1px solid #dee2e6;
 }
 
 /*----------------------- Media queries --------------------------*/

@@ -5,7 +5,7 @@
         <h1 class="text-center mb-4">
           {{ $t("pages.phragmen.predicted_candidates_by_TEXT") }}
         </h1>
-        <template v-if="enabled">
+        <template v-if="phragmenEnabled">
           <p v-if="blockHeight && timestamp" class="text-center">
             {{ $t("pages.phragmen.last_execution") }}
             <nuxt-link
@@ -218,7 +218,7 @@ export default {
   mixins: [commonMixin],
   data: function() {
     return {
-      enabled: true,
+      phragmenEnabled: network.phragmenEnabled,
       tableOptions: paginationOptions,
       perPage: localStorage.paginationOptions
         ? parseInt(localStorage.paginationOptions)

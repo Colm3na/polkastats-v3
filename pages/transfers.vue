@@ -6,8 +6,28 @@
           {{ $t("pages.transfers.title") }}
         </h1>
         <div class="last-transfers">
+          <!-- Filter -->
+          <b-row style="margin-bottom: 1rem">
+            <b-col cols="12">
+              <b-form-input
+                id="filterInput"
+                v-model="filter"
+                type="search"
+                :placeholder="$t('components.transfers.search')"
+              />
+            </b-col>
+          </b-row>
           <div class="table-responsive">
-            <b-table striped hover :fields="fields" :items="transfers">
+            <b-table
+              striped
+              hover
+              :fields="fields"
+              :per-page="perPage"
+              :current-page="currentPage"
+              :items="transfers"
+              :filter="filter"
+              @filtered="onFiltered"
+            >
               <template v-slot:cell(block_number)="data">
                 <p class="mb-0">
                   <nuxt-link
@@ -92,6 +112,23 @@
                 </p>
               </template>
             </b-table>
+            <div class="mt-4 d-flex">
+              <b-pagination
+                v-model="currentPage"
+                :total-rows="totalRows"
+                :per-page="perPage"
+                aria-controls="validators-table"
+              />
+              <b-button-group class="ml-2">
+                <b-button
+                  v-for="(item, index) in tableOptions"
+                  :key="index"
+                  @click="handleNumFields(item)"
+                >
+                  {{ item }}
+                </b-button>
+              </b-button-group>
+            </div>
           </div>
         </div>
       </b-container>
@@ -103,7 +140,7 @@
 import commonMixin from "../mixins/commonMixin.js";
 import Identicon from "../components/identicon.vue";
 import gql from "graphql-tag";
-import { network } from "../polkastats.config.js";
+import { network, paginationOptions } from "../polkastats.config.js";
 
 export default {
   components: {
@@ -112,7 +149,15 @@ export default {
   mixins: [commonMixin],
   data: function() {
     return {
+      filter: null,
+      filterOn: [],
       transfers: [],
+      tableOptions: paginationOptions,
+      perPage: localStorage.paginationOptions
+        ? parseInt(localStorage.paginationOptions)
+        : 10,
+      currentPage: 1,
+      totalRows: 1,
       fields: [
         {
           key: "block_number",
@@ -159,6 +204,15 @@ export default {
     }, 60000);
   },
   methods: {
+    handleNumFields(num) {
+      localStorage.paginationOptions = num;
+      this.perPage = parseInt(num);
+    },
+    onFiltered(filteredItems) {
+      // Trigger pagination to update the number of buttons/pages due to filtering
+      this.totalRows = filteredItems.length;
+      this.currentPage = 1;
+    },
     getDisplayName: function(accountId) {
       let identity = this.$store.state.identities.list.find(
         identity => identity.accountId === accountId
@@ -185,12 +239,11 @@ export default {
         query: gql`
           subscription extrinsic {
             extrinsic(
-              order_by: { block_number: desc }
               where: {
                 section: { _eq: "balances" }
                 method: { _eq: "transfer" }
               }
-              limit: 50
+              order_by: { block_number: desc, extrinsic_index: desc }
             ) {
               block_number
               signer
@@ -206,11 +259,15 @@ export default {
               block_number: transfer.block_number,
               hash: transfer.hash,
               from: transfer.signer,
+              fromIdentity: this.getDisplayName(transfer.signer),
               to: JSON.parse(transfer.args)[0],
+              toIdentity: this.getDisplayName(JSON.parse(transfer.args)[0]),
               amount: JSON.parse(transfer.args)[1],
               success: transfer.success
             };
           });
+          this.totalRows = this.transfers.length;
+          this.loading = false;
         }
       }
     }

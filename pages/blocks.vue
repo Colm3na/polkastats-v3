@@ -6,6 +6,17 @@
           {{ $t("pages.blocks.title") }}
         </h1>
         <div class="last-blocks">
+          <!-- Filter -->
+          <b-row style="margin-bottom: 1rem">
+            <b-col cols="12">
+              <b-form-input
+                id="filterInput"
+                v-model="filter"
+                type="search"
+                :placeholder="$t('pages.blocks.search_placeholder')"
+              />
+            </b-col>
+          </b-row>
           <div class="table-responsive">
             <b-table striped hover :fields="fields" :items="blocks">
               <template v-slot:cell(block_number)="data">
@@ -47,6 +58,22 @@
                 </p>
               </template>
             </b-table>
+            <div class="mt-2" style="display: flex">
+              <b-pagination
+                v-model="page"
+                :total-rows="totalRows"
+                :per-page="perPage"
+              />
+              <b-button-group class="mx-4">
+                <b-button
+                  v-for="(item, index) in tableOptions"
+                  :key="index"
+                  @click="handleNumFields(item)"
+                >
+                  {{ item }}
+                </b-button>
+              </b-button-group>
+            </div>
           </div>
         </div>
       </b-container>
@@ -58,7 +85,7 @@
 import commonMixin from "../mixins/commonMixin.js";
 import Identicon from "../components/identicon.vue";
 import gql from "graphql-tag";
-import { network } from "../polkastats.config.js";
+import { network, paginationOptions } from "../polkastats.config.js";
 
 export default {
   components: {
@@ -67,7 +94,14 @@ export default {
   mixins: [commonMixin],
   data: function() {
     return {
+      filter: "",
       blocks: [],
+      tableOptions: paginationOptions,
+      perPage: localStorage.paginationOptions
+        ? parseInt(localStorage.paginationOptions)
+        : 10,
+      page: 1,
+      totalRows: 1,
       fields: [
         {
           key: "block_number",
@@ -87,39 +121,60 @@ export default {
       ]
     };
   },
+  methods: {
+    handleNumFields(num) {
+      localStorage.paginationOptions = num;
+      this.perPage = parseInt(num);
+    }
+  },
   apollo: {
     $subscribe: {
       block: {
         query: gql`
-          subscription blocks {
-            block(order_by: { block_number: desc }, where: {}, limit: 50) {
+          subscription blocks(
+            $blockNumber: bigint
+            $perPage: Int!
+            $offset: Int!
+          ) {
+            block(
+              limit: $perPage
+              offset: $offset
+              where: { block_number: { _eq: $blockNumber } }
+              order_by: { block_number: desc }
+            ) {
               block_number
               block_hash
               block_author
               block_author_name
-              current_era
-              current_index
-              era_length
-              era_progress
-              extrinsics_root
-              is_epoch
-              new_accounts
-              num_transfers
-              parent_hash
-              session_length
-              session_per_era
-              session_progress
-              spec_name
-              spec_version
-              state_root
-              timestamp
-              total_events
-              validator_count
+            }
+          }
+        `,
+        variables() {
+          return {
+            blockNumber: this.filter ? parseInt(this.filter) : undefined,
+            perPage: this.perPage,
+            offset: (this.page - 1) * this.perPage
+          };
+        },
+        result({ data }) {
+          this.blocks = data.block;
+          if (this.filter) {
+            this.totalRows = this.blocks.length;
+          }
+        }
+      },
+      totalBlocks: {
+        query: gql`
+          subscription total {
+            total(where: { name: { _eq: "blocks" } }, limit: 1) {
+              count
             }
           }
         `,
         result({ data }) {
-          this.blocks = data.block;
+          if (!this.filter) {
+            this.totalRows = data.total[0].count;
+          }
         }
       }
     }

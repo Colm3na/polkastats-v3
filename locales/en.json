@@ -63,7 +63,14 @@
       "made_by": "Made by PolkaStats Team in Colmena Labs",
       "built_with": "Built with",
       "view_source_code_on_github": "View source code on GitHub",
-      "dashboard": "Dashboard"
+      "dashboard": "Dashboard",
+      "blockchain": "Blockchain",
+      "blocks": "Blocks",
+      "extrinsics": "Extrinsics",
+      "transfers": "Transfers",
+      "events": "Events",
+      "validator": "Validator",
+      "how_to_stake": "How to stake"
     },
     "error": {
       "page_not_found": "Page not found!",
@@ -71,6 +78,9 @@
     }
   },
   "pages": {
+    "home": {
+      "title": "Home"
+    },
     "accounts": {
       "active_accounts": "Active accounts",
       "search_placeholder": "Search account by address or identity",
@@ -199,14 +209,13 @@
       "estimated_annualized_payout_percentage": "Estimated annualized rewards",
       "accordion-info": {
         "delegator_rewards": "Delegators rewards. How does it work",
-        "there_are_225_TEXT": "There are 225 slots currently, as there are 225 validators.",
-        "an_slot_is_TEXT": "An slot is the group of accounts that includes the validator account and its delegator accounts.",
-        "validators_acummulate_TEXT": "Validators accumulate points for their activity. They have to sign validity statments and produce blocks to gain points.",
-        "at_the_end_TEXT": "At the end of an era (6 epochs of 600 blocks each) the total reward is divided among the 225 slots based on their accumulated points.",
-        "once_each_slots_TEXT": "Once each slots gets its reward, the commission of the validator is subtracted from the slot earnings.",
-        "the_rest_of_TEXT": "The rest of the slot earnings is distributed among the delegators based in their percentaje of stake of in the slot.",
+        "info_1": "An slot is the group of accounts that includes the validator account and its delegator accounts.",
+        "info_2": "Validators accumulate points for their activity. They have to sign validity statments and produce blocks to earn points.",
+        "info_3": "At the end of the era the total reward is divided among the slots based on their accumulated points.",
+        "info_4": "Once each slots gets its reward, the commission of the validator is subtracted from the slot earnings.",
+        "info_5": "The rest of the slot earnings is distributed among the delegators based in their percentaje of stake of in the slot.",
         "risks": "Risks",
-        "risks_TEXT": "According to the game rules, you may think that the most profitable validator is the one occuping the slot with less total stake. This is partially true, but you better consider the folowing risks. Last slot of the list (number 225 currently) has great chances of being out of the list in the next epoch. When a validator gets out of the list that validator and its nominators stop receiving rewards and its slot is occupied by a new validator. Slashing is a different kind of risk you may consider. When a validator misbehaves it suffers an slashing event. Slashing is the punishment for failing to follow the protocol. The punishment is applied to the validator and all delegators of its slot. Downtimes and equivocations (bad signing) are the most common reasons that trigger a slashing event. The only way to protect yourself from slashing events is to carefully chose the validators you are nominating. Studing its history, setup and reputation may help you when selecting the validators where you are depositing your trust (your stake)"
+        "risks_text": "According to the game rules, you may think that the most profitable validator is the one occuping the slot with less total stake. This is partially true, but you better consider the folowing risks. Last slot of the list has greater chance of being out of the list. When a validator gets out of the list that validator and its nominators stop receiving rewards and its slot is occupied by a new validator. Slashing is a different kind of risk you may consider. When a validator misbehaves it suffers an slashing event. Slashing is the punishment for failing to follow the protocol. The punishment is applied to the validator and all delegators of its slot. Downtimes and equivocations (bad signing) are the most common reasons that trigger a slashing event. The only way to protect yourself from slashing events is to carefully chose the validators you are nominating. Studing its history, setup and reputation may help you when selecting the validators where you are depositing your trust your stake."
       },
       "sort": "Sort"
     },
@@ -271,6 +280,11 @@
       "head_title": "PolkaStats - {networkName} validator {address}",
       "head_content": "{networkName} validator {address}"
     },
+    "polkastats_validator": {
+      "title": "PolkaStats validator",
+      "head_title": "PolkaStats - {networkName} PolkaStats validator",
+      "head_content": "{networkName} PolkaStats validator"
+    },
     "dashboard": {
       "title": "Dashboard",
       "head_title": "PolkaStats - {networkName} network statistics",
@@ -287,36 +301,38 @@
       "ongoing_election_2": "No staking action are allowed until it finished"
     },
     "blocks": {
-      "title": "Last blocks",
-      "head_title": "PolkaStats - {networkName} last blocks",
-      "head_content": "{networkName} last blocks"
+      "title": "Blocks",
+      "head_title": "PolkaStats - {networkName} blocks",
+      "head_content": "{networkName} blocks",
+      "search_placeholder": "Search by block number"
     },
     "block": {
       "head_title": "PolkaStats - {networkName} block {blockNumber}",
       "head_content": "{networkName} block {blockNumber}"
     },
     "extrinsics": {
-      "title": "Last extrinsics",
-      "head_title": "PolkaStats - {networkName} last extrinsics",
-      "head_content": "{networkName} last extrinsics"
+      "title": "Extrinsics",
+      "head_title": "PolkaStats - {networkName} extrinsics",
+      "head_content": "{networkName} extrinsics"
     },
     "extrinsic": {
       "head_title": "PolkaStats - {networkName} extrinsic {extrinsicHash}",
       "head_content": "{networkName} extrinsic {extrinsicHash}"
     },
     "transfers": {
-      "title": "Last transfers",
-      "head_title": "PolkaStats - {networkName} last transfers",
-      "head_content": "{networkName} last transfers"
+      "title": "Transfers",
+      "head_title": "PolkaStats - {networkName} transfers",
+      "head_content": "{networkName} transfers"
     },
     "transfer": {
       "head_title": "PolkaStats - {networkName} transfer {extrinsicHash}",
       "head_content": "{networkName} transfer {extrinsicHash}"
     },
     "events": {
-      "title": "Last system events",
-      "head_title": "PolkaStats - {networkName} last system events",
-      "head_content": "{networkName} last system events"
+      "title": "Events",
+      "head_title": "PolkaStats - {networkName} events",
+      "head_content": "{networkName} events",
+      "search_placeholder": "Search by block number"
     },
     "event": {
       "head_title": "PolkaStats - {networkName} event {systemEvent}",
@@ -390,6 +406,51 @@
       "validator_feedback": "Please select a validator",
       "selected": "Selected",
       "not_selected": "Not selected"
+    },
+    "how_to_stake": {
+      "title": "How to stake",
+      "head_title": "PolkaStats - How to stake",
+      "head_content": "How to stake",
+      "kusama": {
+        "title": "How to stake in Kusama",
+        "head_title": "PolkaStats - How to stake in Kusama",
+        "head_content": "How to stake in Kusama",
+        "lunie": {
+          "title": "How to stake in Kusama using Lunie",
+          "head_title": "PolkaStats - How to stake in Kusama using Lunie",
+          "head_content": "How to stake in Kusama using Lunie"
+        },
+        "polkadotjs": {
+          "title": "How to stake in Kusama using Polkadot JS",
+          "head_title": "PolkaStats - How to stake in Kusama using Polkadot JS",
+          "head_content": "How to stake in Kusama using Polkadot JS"
+        },
+        "polkastats": {
+          "title": "How to stake in Kusama using PolkaStats",
+          "head_title": "PolkaStats - How to stake in Kusama using PolkaStats",
+          "head_content": "How to stake in Kusama using PolkaStats"
+        }
+      },
+      "polkadot": {
+        "title": "How to stake in Polkadot",
+        "head_title": "PolkaStats - How to stake in Polkadot",
+        "head_content": "How to stake in Polkadot",
+        "lunie": {
+          "title": "How to stake in Polkadot using Lunie",
+          "head_title": "PolkaStats - How to stake in Polkadot using Lunie",
+          "head_content": "How to stake in Polkadot using Lunie"
+        },
+        "polkadotjs": {
+          "title": "How to stake in Polkadot using Polkadot JS",
+          "head_title": "PolkaStats - How to stake in Polkadot using Polkadot JS",
+          "head_content": "How to stake in Polkadot using Polkadot JS"
+        },
+        "polkastats": {
+          "title": "How to stake in Polkadot using PolkaStats",
+          "head_title": "PolkaStats - How to stake in Polkadot using PolkaStats",
+          "head_content": "How to stake in Polkadot using PolkaStats"
+        }
+      }
     }
   },
   "details": {
@@ -435,7 +496,10 @@
       "account_details": "Account details",
       "timestamp": "Timestamp",
       "genesis": "🎁 Genesis block",
-      "success": "Success"
+      "success": "Success",
+      "logs": "Logs",
+      "index": "Index",
+      "engine": "Engine"
     },
     "intention": {
       "previous_intention": "Previous intention: ",

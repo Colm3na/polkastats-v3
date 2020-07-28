@@ -234,9 +234,6 @@ export default {
       localStorage.paginationOptions = num;
       this.perPage = parseInt(num);
     },
-    isFavorite(accountId) {
-      return this.favorites.includes(accountId);
-    },
     onFiltered(filteredItems) {
       // Trigger pagination to update the number of buttons/pages due to filtering
       this.totalRows = filteredItems.length;
