@@ -54,7 +54,7 @@
               <b-navbar-nav class="navbar-nav ml-auto flex-nowrap">
                 <b-nav-item>
                   <nuxt-link
-                    to="/validator"
+                    to="/polkastats-validator"
                     active-class="nuxt-link-exact-active"
                     class="nav-link"
                   >
