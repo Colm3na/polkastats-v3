@@ -349,6 +349,7 @@ export default {
                 ) {
                   this.selectedAccount = this.extensionAccounts[0];
                   this.selectedAddress = this.extensionAddresses[0];
+                  this.getBalance(this.selectedAddress);
                 } else {
                   this.noAccountsFound = true;
                 }
