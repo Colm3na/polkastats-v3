@@ -366,6 +366,25 @@ export default {
       // Trigger pagination to update the number of buttons/pages due to filtering
       this.totalRows = filteredItems.length;
       this.currentPage = 1;
+    },
+    getDisplayName: function(accountId) {
+      let identity = this.$store.state.identities.list.find(
+        identity => identity.accountId === accountId
+      );
+      if (identity) {
+        identity = identity.identity;
+        if (
+          identity.displayParent &&
+          identity.displayParent !== `` &&
+          identity.display &&
+          identity.display !== ``
+        ) {
+          return `${identity.displayParent} / ${identity.display}`;
+        } else {
+          return identity.display;
+        }
+      }
+      return ``;
     }
   },
   apollo: {
