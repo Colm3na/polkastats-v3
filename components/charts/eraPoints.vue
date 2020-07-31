@@ -68,12 +68,19 @@ export default {
                 enabled: false
               }
             },
+            stroke: {
+              curve: "straight",
+              width: 4
+            },
+            markers: {
+              size: 4
+            },
             dataLabels: {
               enabled: false
             },
-            stroke: {
-              curve: "straight"
-            },
+            // stroke: {
+            //   curve: "straight"
+            // },
             title: {
               text: "Era points",
               align: "left"
