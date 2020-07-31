@@ -208,14 +208,14 @@
       "estimated_payout": "Estimated payout/era 100 {networkDenom}",
       "estimated_annualized_payout_percentage": "Estimated annualized rewards",
       "accordion-info": {
-        "delegator_rewards": "Delegators rewards. How does it work",
-        "info_1": "An slot is the group of accounts that includes the validator account and its delegator accounts.",
-        "info_2": "Validators accumulate points for their activity. They have to sign validity statments and produce blocks to earn points.",
-        "info_3": "At the end of the era the total reward is divided among the slots based on their accumulated points.",
-        "info_4": "Once each slots gets its reward, the commission of the validator is subtracted from the slot earnings.",
-        "info_5": "The rest of the slot earnings is distributed among the delegators based in their percentaje of stake of in the slot.",
+        "delegator_rewards": "Nominators rewards. How does it work",
+        "info_1": "The validators along with their nominators form different groups.",
+        "info_2": "Validators accumulate (era) points for their activity. They have to sign validity statments and produce blocks to gain points.",
+        "info_3": "At the end of an era the total reward is divided among the groups based on their accumulated points.",
+        "info_4": "Once each group gets its reward, the commission of the validator is subtracted from the group earnings.",
+        "info_5": "The rest of the group earnings is distributed among the nominators based in their percentaje of stake of in the group.",
         "risks": "Risks",
-        "risks_text": "According to the game rules, you may think that the most profitable validator is the one occuping the slot with less total stake. This is partially true, but you better consider the folowing risks. Last slot of the list has greater chance of being out of the list. When a validator gets out of the list that validator and its nominators stop receiving rewards and its slot is occupied by a new validator. Slashing is a different kind of risk you may consider. When a validator misbehaves it suffers an slashing event. Slashing is the punishment for failing to follow the protocol. The punishment is applied to the validator and all delegators of its slot. Downtimes and equivocations (bad signing) are the most common reasons that trigger a slashing event. The only way to protect yourself from slashing events is to carefully chose the validators you are nominating. Studing its history, setup and reputation may help you when selecting the validators where you are depositing your trust your stake."
+        "risks_text": "According to the game rules, you may think that the most profitable validator is the one occuping the group with less total stake. This is partially true, but you better consider the folowing risks. Last group of the list (number 197 currently) has great chances of being out of the list in the next epoch. When a validator gets out of the list that validator and its nominators stop receiving rewards and its group is occupied by a new validator and its nominators. Slashing is a different kind of risk you may consider. When a validator misbehaves it suffers an slashing event. Slashing is the punishment for failing to follow the protocol. The punishment is applied to the validator and all delegators of its slot. Downtimes and equivocations (bad signing) are the most common reasons that trigger a slashing event. The only way to protect yourself from slashing events is to carefully chose the validators you are nominating. Studing its history, setup and reputation may help you when selecting the validators where you are depositing your trust (your stake)."
       },
       "sort": "Sort"
     },
