@@ -452,9 +452,6 @@ export default {
 };
 </script>
 <style>
-body {
-  font-size: 0.9rem;
-}
 .page-intentions
   .table.b-table.b-table-stacked-md
   > tbody

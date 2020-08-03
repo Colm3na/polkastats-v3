@@ -455,9 +455,6 @@ export default {
 };
 </script>
 <style>
-body {
-  font-size: 0.9rem;
-}
 .page-phragmen .favorite {
   position: absolute;
   z-index: 10;

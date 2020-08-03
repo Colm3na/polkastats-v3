@@ -799,9 +799,6 @@ export default {
 };
 </script>
 <style>
-body {
-  font-size: 0.9rem;
-}
 .page-favorites .favorite {
   position: absolute;
   top: 0.2rem;

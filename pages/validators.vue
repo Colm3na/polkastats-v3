@@ -574,9 +574,6 @@ export default {
 };
 </script>
 <style>
-body {
-  font-size: 0.9rem;
-}
 .favorite {
   cursor: pointer;
   font-size: 1.1rem;
