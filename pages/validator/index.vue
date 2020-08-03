@@ -349,40 +349,34 @@
                   <!-- identity end -->
                 </div>
               </div>
-              <hr class="separator" />
-              <!-- Charts -->
-              <div class="row">
-                <div class="col-md-12">
-                  <h5 class="h5 account my-3">
-                    {{ $t("details.validator.charts") }}
-                  </h5>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-6 mb-4">
-                  <eraRewards :account-id="accountId" />
-                </div>
-                <div class="col-md-6 mb-4">
-                  <eraPoints :account-id="accountId" />
-                </div>
-                <div class="col-md-6 mb-4">
-                  <eraStake :account-id="accountId" />
-                </div>
-                <div class="col-md-6 mb-4">
-                  <eraSlashes :account-id="accountId" />
-                </div>
-                <div class="col-md-6 mb-4">
-                  <eraCommission :account-id="accountId" />
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-12">
-                  <!-- Charts end -->
-                  <hr class="separator" />
-                  <!-- Stakers -->
-                  <h5 class="h5 account my-3">
-                    {{ $t("details.validator.nominators") }}
-                  </h5>
+
+              <b-tabs class="mt-4" content-class="mt-4" fill>
+                <b-tab active>
+                  <template v-slot:title>
+                    <h5>{{ $t("details.validator.charts") }}</h5>
+                  </template>
+                  <div class="row">
+                    <div class="col-md-6 mb-4">
+                      <eraRewards :account-id="accountId" />
+                    </div>
+                    <div class="col-md-6 mb-4">
+                      <eraPoints :account-id="accountId" />
+                    </div>
+                    <div class="col-md-6 mb-4">
+                      <eraStake :account-id="accountId" />
+                    </div>
+                    <div class="col-md-6 mb-4">
+                      <eraSlashes :account-id="accountId" />
+                    </div>
+                    <div class="col-md-6 mb-4">
+                      <eraCommission :account-id="accountId" />
+                    </div>
+                  </div>
+                </b-tab>
+                <b-tab>
+                  <template v-slot:title>
+                    <h5>{{ $t("details.validator.nominators") }}</h5>
+                  </template>
                   <!-- Filter -->
                   <b-row class="mb-4">
                     <b-col lg="12">
@@ -553,8 +547,8 @@
                       aria-controls="nominators-table"
                     />
                   </div>
-                </div>
-              </div>
+                </b-tab>
+              </b-tabs>
             </div>
           </div>
         </template>

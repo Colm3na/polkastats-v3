@@ -81,7 +81,7 @@ export default {
               size: 4
             },
             title: {
-              text: "Era rewards",
+              text: "Rewards",
               align: "left"
             },
             grid: {

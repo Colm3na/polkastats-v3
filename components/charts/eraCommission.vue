@@ -80,7 +80,7 @@ export default {
               size: 4
             },
             title: {
-              text: "Era commission",
+              text: "Commission (%)",
               align: "left"
             },
             grid: {

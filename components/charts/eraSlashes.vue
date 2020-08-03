@@ -79,7 +79,7 @@ export default {
               size: 4
             },
             title: {
-              text: "Era slashes",
+              text: "Slashes",
               align: "left"
             },
             grid: {
