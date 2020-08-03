@@ -72,7 +72,11 @@ export default {
               enabled: false
             },
             stroke: {
-              curve: "straight"
+              curve: "straight",
+              width: 4
+            },
+            markers: {
+              size: 4
             },
             title: {
               text: "Era slashes",
