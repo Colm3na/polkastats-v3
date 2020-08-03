@@ -54,7 +54,7 @@
                 />
               </div>
               <div class="row">
-                <div class="col-md-3 mb-2 text-center">
+                <div class="col-md-3 pt-4 mb-2 text-center">
                   <div v-if="validator.display_name">
                     <Identicon
                       :key="validator.account_id"
@@ -62,7 +62,7 @@
                       :size="80"
                       :theme="'polkadot'"
                     />
-                    {{ validator.display_name }}
+                    <p class="mt-4 mb-0">{{ validator.display_name }}</p>
                   </div>
                   <div v-else>
                     <Identicon
@@ -437,8 +437,8 @@
                   <div class="table-responsive">
                     <b-table
                       id="nominators-table"
+                      striped
                       stacked="md"
-                      head-variant="dark"
                       :fields="fields"
                       :items="JSON.parse(validator.stakers)"
                       :per-page="perPage"
@@ -548,6 +548,18 @@
                     />
                   </div>
                 </b-tab>
+                <b-tab>
+                  <template v-slot:title>
+                    <h5>Rewards</h5>
+                  </template>
+                  <Rewards :account-id="accountId" />
+                </b-tab>
+                <b-tab>
+                  <template v-slot:title>
+                    <h5>Slashes</h5>
+                  </template>
+                  <Slashes :account-id="accountId" />
+                </b-tab>
               </b-tabs>
             </div>
           </div>
@@ -566,12 +578,13 @@ import { isHex } from "@polkadot/util";
 import BN from "bn.js";
 import { network } from "../../polkastats.config.js";
 import commonMixin from "../../mixins/commonMixin.js";
-
 import eraRewards from "../../components/charts/eraRewards";
 import eraPoints from "../../components/charts/eraPoints";
 import eraStake from "../../components/charts/eraStake";
 import eraSlashes from "../../components/charts/eraSlashes";
 import eraCommission from "../../components/charts/eraCommission";
+import Rewards from "../../components/Rewards.vue";
+import Slashes from "../../components/Slashes.vue";
 
 export default {
   components: {
@@ -580,7 +593,9 @@ export default {
     eraPoints,
     eraStake,
     eraSlashes,
-    eraCommission
+    eraCommission,
+    Rewards,
+    Slashes
   },
   mixins: [commonMixin],
   data: function() {
@@ -835,7 +850,28 @@ export default {
   font-size: 1.1rem;
   color: red;
 }
-
+.circle {
+  float: right;
+  display: block;
+  padding: 0.1rem;
+  margin-left: 0.5rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  text-align: center;
+  font-size: 0.8rem;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 3px 3px;
+}
+.green {
+  color: white;
+  background: #008000;
+}
+.blue {
+  color: white;
+  background: #4682b4;
+  padding-left: 0.4rem;
+  padding-top: 0.1rem;
+}
 .page-validator .elected {
   position: absolute;
   top: 0.4rem;
@@ -843,7 +879,6 @@ export default {
   display: block;
   cursor: pointer;
 }
-
 .page-validator .blocks {
   position: absolute;
   top: 0.4rem;
@@ -851,7 +886,6 @@ export default {
   display: block;
   cursor: pointer;
 }
-
 .page-validator .notElected {
   position: absolute;
   top: 0.4rem;
@@ -864,14 +898,7 @@ export default {
   top: 0.4rem;
   right: 0.4rem;
 }
-.page-validator #nominators-table th,
-.page-validator #nominators-table td {
-  padding: 0.5rem;
-}
-.page-validator #nominators-table th {
-  text-align: center;
-}
-.page-validator .identicon {
-  margin-bottom: 0.8rem;
+.page-validator .clipboard {
+  display: inline-block;
 }
 </style>
