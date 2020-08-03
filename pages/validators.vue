@@ -2,6 +2,9 @@
   <div>
     <section>
       <b-container id="page-index" class="main py-5">
+        <h1 class="mb-4">
+          {{ $t("pages.validators.title") }}
+        </h1>
         <!-- Filter -->
         <b-row style="margin-bottom: 1rem">
           <b-col cols="12">

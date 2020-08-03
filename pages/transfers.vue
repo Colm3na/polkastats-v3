@@ -161,7 +161,7 @@ export default {
       fields: [
         {
           key: "block_number",
-          label: "Id",
+          label: "Block",
           sortable: true
         },
         {

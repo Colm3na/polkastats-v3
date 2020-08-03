@@ -2,11 +2,11 @@
   <div>
     <section>
       <b-container class="page-phragmen main py-5">
-        <h1 class="text-center mb-4">
-          {{ $t("pages.phragmen.predicted_candidates_by_TEXT") }}
+        <h1 class="mb-4">
+          {{ $t("pages.phragmen.title") }}
         </h1>
         <template v-if="phragmenEnabled">
-          <p v-if="blockHeight && timestamp" class="text-center">
+          <p v-if="blockHeight && timestamp">
             {{ $t("pages.phragmen.last_execution") }}
             <nuxt-link
               v-b-tooltip.hover

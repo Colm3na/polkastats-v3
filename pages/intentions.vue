@@ -2,6 +2,9 @@
   <div>
     <section>
       <b-container class="main py-5 page-intentions">
+        <h1 class="mb-4">
+          {{ $t("pages.intentions.title") }}
+        </h1>
         <!-- Filter -->
         <b-row>
           <b-col lg="12" class="mb-4">

@@ -162,6 +162,7 @@
       "loading_data": "Loading data"
     },
     "intentions": {
+      "title": "Intentions",
       "search_placeholder": "Search intention by account or identity display name",
       "sort": "Sort",
       "intention_details": "Intention details",
@@ -176,6 +177,7 @@
       "head_content": "{networkName} intention validators"
     },
     "nominators": {
+      "title": "Nominators",
       "search_placeholder": "Search nominator by account or identity display name",
       "sort": "Sort",
       "nominator_details": "Nominator details",
@@ -195,7 +197,7 @@
       "head_content": "{networkName} nominator {address}"
     },
     "targets": {
-      "targets": "Targets",
+      "title": "Targets",
       "search_placeholder": "Search validator by identity",
       "loading_data": "Loading data, it can take a long time. Be patient, please",
       "remove_from_favorites": "Remove from Favorites",
@@ -220,6 +222,7 @@
       "sort": "Sort"
     },
     "phragmen": {
+      "title": "Phragmen prediction",
       "last_execution": "Last execution at block",
       "predicted_candidates_by_TEXT": "Predicted candidates by phragmen election algorithm",
       "offline_phragmen_is_TEXT": "offline-phragmen is currently broken so this is temporary disabled!",
@@ -255,6 +258,7 @@
       "head_content": "Support us"
     },
     "validators": {
+      "title": "Validators",
       "search_placeholder": "Search validator by account or identity display name",
       "filter": "Filter",
       "where": "where",

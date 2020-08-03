@@ -1,5 +1,8 @@
 <template>
   <b-container class="main py-5">
+    <h1 class="mb-4">
+      {{ $t("pages.targets.title") }}
+    </h1>
     <TargetInfo
       id="delegators_rewards"
       :button="$t('pages.targets.accordion-info.delegator_rewards')"
