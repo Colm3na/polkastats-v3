@@ -38,52 +38,6 @@
           {{ $t("pages.support-us.this_is_an_TEXT") }}
         </p>
 
-        <b-card class="mb-3">
-          <div class="row">
-            <div class="col-md-2 text-center">
-              <img
-                v-b-tooltip.hover
-                src="https://s3.amazonaws.com/keybase_processed_uploads/ceb4f17440dc978fa4faa64814290005_360_360.jpg"
-                class="img-fluid"
-                style="max-width: 80px;"
-                title="PolkaStats"
-              />
-            </div>
-            <div class="col-md-10">
-              <h3 class="mt-1 mb-2">
-                PolkaStats validator
-              </h3>
-              <Identicon
-                value="15psTaipmWG86U5vNkF7Guv9TRPMRLKHkGS8cXT74v3RCC5t"
-                size="20"
-                theme="polkadot"
-              />
-              <nuxt-link
-                :to="{
-                  name: 'account',
-                  query: {
-                    accountId: `15psTaipmWG86U5vNkF7Guv9TRPMRLKHkGS8cXT74v3RCC5t`
-                  }
-                }"
-              >
-                <span
-                  v-b-tooltip.hover
-                  class="d-inline d-sm-none d-md-none d-lg-none d-xl-none"
-                  title="GTzRQPzkcuynHgkEHhsPBFpKdh4sAacVRsnd8vYfPpTMeEY"
-                  >{{
-                    shortAddress(
-                      `15psTaipmWG86U5vNkF7Guv9TRPMRLKHkGS8cXT74v3RCC5t`
-                    )
-                  }}</span
-                >
-                <span
-                  class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline"
-                  >15psTaipmWG86U5vNkF7Guv9TRPMRLKHkGS8cXT74v3RCC5t</span
-                >
-              </nuxt-link>
-            </div>
-          </div>
-        </b-card>
         <h2 class="mt-5 mb-4">
           {{ $t("pages.support-us.follow_polkastats_on_twitter") }}
         </h2>
