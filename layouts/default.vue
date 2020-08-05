@@ -124,9 +124,9 @@
                   <b-dropdown-item href="https://kusama.polkastats.io"
                     >Kusama</b-dropdown-item
                   >
-                  <!-- <b-dropdown-item href="https://v3dev2.polkastats.io"
+                  <b-dropdown-item href="https://westend.polkastats.io"
                     >Westend</b-dropdown-item
-                  > -->
+                  >
                 </b-nav-item-dropdown>
               </b-navbar-nav>
             </b-collapse>
