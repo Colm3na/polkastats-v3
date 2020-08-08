@@ -102,6 +102,14 @@
                 <div
                   class="d-block d-sm-block d-md-none d-lg-none d-xl-none text-center"
                 >
+                  <span
+                    v-if="data.item.elected"
+                    v-b-tooltip.hover
+                    :title="$t('details.validator.elected_for_next_session')"
+                    class="circle blue"
+                  >
+                    <i class="fa fa-chevron-right mr-1" aria-hidden="true"></i>
+                  </span>
                   <div>
                     <Identicon
                       :key="data.item.pub_key_stash"
@@ -127,6 +135,17 @@
                 </div>
                 <div class="d-none d-sm-none d-md-block d-lg-block d-xl-block">
                   <div class="d-inline-block">
+                    <span
+                      v-if="data.item.elected"
+                      v-b-tooltip.hover
+                      :title="$t('details.validator.elected_for_next_session')"
+                      class="circle blue"
+                    >
+                      <i
+                        class="fa fa-chevron-right mr-1"
+                        aria-hidden="true"
+                      ></i>
+                    </span>
                     <Identicon
                       :key="data.item.pub_key_stash"
                       :value="data.item.pub_key_stash"
@@ -267,7 +286,8 @@ export default {
         timestamp: 0,
         block_height: 0,
         candidates: []
-      }
+      },
+      validatorCount: undefined
     };
   },
   computed: {
@@ -399,6 +419,9 @@ export default {
             }
           }
         `,
+        skip() {
+          return !this.validatorCount;
+        },
         result({ data }) {
           const phragmenOutput = JSON.parse(data.phragmen[0].phragmen_json);
           let candidates = [];
@@ -422,6 +445,7 @@ export default {
           candidates = candidates.map((candidate, rank) => {
             return {
               rank: rank + 1,
+              elected: rank < this.validatorCount ? true : false,
               ...candidate
             };
           });
@@ -432,6 +456,18 @@ export default {
             candidates
           };
           this.totalRows = this.phragmen.candidates.length;
+        }
+      },
+      block: {
+        query: gql`
+          subscription block {
+            block(limit: 1, order_by: { block_number: desc }) {
+              validator_count
+            }
+          }
+        `,
+        result({ data }) {
+          this.validatorCount = data.block[0].validator_count;
         }
       }
     }
@@ -455,6 +491,9 @@ export default {
 };
 </script>
 <style>
+.page-phragmen .clipboard {
+  display: inline-block;
+}
 .page-phragmen .favorite {
   position: absolute;
   z-index: 10;
@@ -526,5 +565,22 @@ export default {
 }
 .btn-secondary {
   font-size: 0.8rem;
+}
+.page-phragmen .circle {
+  display: inline-block;
+  padding: 0.1rem;
+  margin-left: 0.5rem;
+  width: 1.4rem;
+  height: 1.4rem;
+  border-radius: 50%;
+  text-align: center;
+  font-size: 0.8rem;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 3px 3px;
+}
+.page-phragmen .blue {
+  color: white;
+  background: #4682b4;
+  padding-left: 0.35rem;
+  padding-top: 0.1rem;
 }
 </style>

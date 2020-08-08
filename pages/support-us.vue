@@ -53,14 +53,7 @@
   </div>
 </template>
 <script>
-import Identicon from "../components/identicon.vue";
-import commonMixin from "../mixins/commonMixin.js";
-
 export default {
-  components: {
-    Identicon
-  },
-  mixins: [commonMixin],
   head() {
     return {
       title: this.$t("pages.support-us.head_title"),
