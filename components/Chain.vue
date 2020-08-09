@@ -1,5 +1,5 @@
 <template>
-  <div v-if="lastBlock && chain">
+  <div v-if="lastBlock">
     <div class="row">
       <div v-if="inElection" class="col-12">
         <b-alert show dismissible variant="warning" class="text-center">
@@ -227,7 +227,6 @@ export default {
   data: function() {
     return {
       lastBlock: undefined,
-      chain: undefined,
       validators: [],
       intentions: [],
       currentSessionIndex: 0,
@@ -252,8 +251,11 @@ export default {
       return totalStakeBonded.toString(10);
     },
     bondedStakePercentage() {
-      if (this.totalStakeBonded !== 0 && this.chain.total_issuance !== 0) {
-        const totalIssuance = new BN(this.chain.total_issuance.toString(), 10);
+      if (this.totalStakeBonded !== 0 && this.lastBlock.total_issuance !== 0) {
+        const totalIssuance = new BN(
+          this.lastBlock.total_issuance.toString(),
+          10
+        );
         const totalStakeBonded = new BN(this.totalStakeBonded, 10).mul(
           new BN("100", 10)
         );
@@ -363,19 +365,6 @@ export default {
         result({ data }) {
           this.nominators = data.nominator;
           this.nominatorCount = data.nominator.length;
-        }
-      },
-      chain: {
-        query: gql`
-          subscription chain {
-            chain(order_by: { block_height: desc }, where: {}, limit: 1) {
-              active_accounts
-              total_issuance
-            }
-          }
-        `,
-        result({ data }) {
-          this.chain = data.chain[0];
         }
       }
     }
