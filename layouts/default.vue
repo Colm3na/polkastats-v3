@@ -101,7 +101,7 @@
                     v-if="network.phragmenEnabled"
                     to="/election-prediction"
                   >
-                    {{ $t("layout.default.phragmen") }}
+                    {{ $t("layout.default.election-prediction") }}
                   </b-dropdown-item>
                 </b-nav-item-dropdown>
                 <b-nav-item>
