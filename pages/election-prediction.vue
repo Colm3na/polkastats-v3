@@ -3,11 +3,11 @@
     <section>
       <b-container class="page-phragmen main py-5">
         <h1 class="mb-4">
-          {{ $t("pages.phragmen.title") }}
+          {{ $t("pages.election-prediction.title") }}
         </h1>
         <template v-if="phragmenEnabled">
           <p v-if="blockHeight && timestamp">
-            {{ $t("pages.phragmen.last_execution") }}
+            {{ $t("pages.election-prediction.last_execution") }}
             <nuxt-link
               v-b-tooltip.hover
               :to="`/block?blockNumber=${phragmen.block_height}`"
@@ -24,7 +24,9 @@
                 id="filterInput"
                 v-model="filter"
                 type="search"
-                :placeholder="$t('pages.phragmen.search_placeholder')"
+                :placeholder="
+                  $t('pages.election-prediction.search_placeholder')
+                "
               />
             </b-col>
           </b-row>
@@ -32,7 +34,7 @@
           <div class="row d-block d-sm-block d-md-block d-lg-none d-xl-none">
             <b-col lg="6" class="my-1">
               <b-form-group
-                :label="$t('pages.phragmen.sort')"
+                :label="$t('pages.election-prediction.sort')"
                 label-cols-sm="3"
                 label-align-sm="right"
                 label-size="sm"
@@ -81,8 +83,8 @@
           <div>
             <b-table
               id="candidates-table"
+              striped
               stacked="md"
-              head-variant="dark"
               :fields="fields"
               :items="candidates"
               :per-page="perPage"
@@ -102,6 +104,14 @@
                 <div
                   class="d-block d-sm-block d-md-none d-lg-none d-xl-none text-center"
                 >
+                  <span
+                    v-if="data.item.elected"
+                    v-b-tooltip.hover
+                    :title="$t('details.validator.elected_for_next_session')"
+                    class="circle blue"
+                  >
+                    <i class="fa fa-chevron-right mr-1" aria-hidden="true"></i>
+                  </span>
                   <div>
                     <Identicon
                       :key="data.item.pub_key_stash"
@@ -120,13 +130,24 @@
                   <p
                     v-b-tooltip.hover
                     class="bonded mb-0"
-                    title="$t('pages.phragmen.total_stake')"
+                    title="$t('pages.election-prediction.total_stake')"
                   >
                     {{ formatAmount(data.item.stake_total) }}
                   </p>
                 </div>
                 <div class="d-none d-sm-none d-md-block d-lg-block d-xl-block">
                   <div class="d-inline-block">
+                    <span
+                      v-if="data.item.elected"
+                      v-b-tooltip.hover
+                      :title="$t('details.validator.elected_for_next_session')"
+                      class="circle blue"
+                    >
+                      <i
+                        class="fa fa-chevron-right mr-1"
+                        aria-hidden="true"
+                      ></i>
+                    </span>
                     <Identicon
                       :key="data.item.pub_key_stash"
                       :value="data.item.pub_key_stash"
@@ -163,14 +184,16 @@
                       v-b-tooltip.hover
                       class="fas fa-star"
                       style="color: #f1bd23"
-                      :title="$t('pages.phragmen.remove_from_favorites')"
+                      :title="
+                        $t('pages.election-prediction.remove_from_favorites')
+                      "
                     />
                     <i
                       v-else
                       v-b-tooltip.hover
                       class="fas fa-star"
                       style="color: #e6dfdf;"
-                      :title="$t('pages.phragmen.add_to_favorites')"
+                      :title="$t('pages.election-prediction.add_to_favorites')"
                     />
                   </a>
                 </p>
@@ -238,19 +261,19 @@ export default {
         },
         {
           key: "pub_key_stash",
-          label: this.$i18n.t("pages.phragmen.candidate"),
+          label: this.$i18n.t("pages.election-prediction.candidate"),
           sortable: true,
           filterByFormatted: true
         },
         {
           key: "other_stake_count",
-          label: this.$i18n.t("pages.phragmen.voters"),
+          label: this.$i18n.t("pages.election-prediction.voters"),
           sortable: true,
           class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
         },
         {
           key: "stake_total",
-          label: this.$i18n.t("pages.phragmen.total_stake"),
+          label: this.$i18n.t("pages.election-prediction.total_stake"),
           sortable: true,
           class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
         },
@@ -267,7 +290,8 @@ export default {
         timestamp: 0,
         block_height: 0,
         candidates: []
-      }
+      },
+      validatorCount: undefined
     };
   },
   computed: {
@@ -399,6 +423,9 @@ export default {
             }
           }
         `,
+        skip() {
+          return !this.validatorCount;
+        },
         result({ data }) {
           const phragmenOutput = JSON.parse(data.phragmen[0].phragmen_json);
           let candidates = [];
@@ -422,6 +449,7 @@ export default {
           candidates = candidates.map((candidate, rank) => {
             return {
               rank: rank + 1,
+              elected: rank < this.validatorCount ? true : false,
               ...candidate
             };
           });
@@ -433,19 +461,31 @@ export default {
           };
           this.totalRows = this.phragmen.candidates.length;
         }
+      },
+      block: {
+        query: gql`
+          subscription block {
+            block(limit: 1, order_by: { block_number: desc }) {
+              validator_count
+            }
+          }
+        `,
+        result({ data }) {
+          this.validatorCount = data.block[0].validator_count;
+        }
       }
     }
   },
   head() {
     return {
-      title: this.$t("pages.phragmen.head_title", {
+      title: this.$t("pages.election-prediction.head_title", {
         networkName: network.name
       }),
       meta: [
         {
           hid: "description",
           name: "description",
-          content: this.$t("pages.phragmen.head_content", {
+          content: this.$t("pages.election-prediction.head_content", {
             networkName: network.name
           })
         }
@@ -455,6 +495,9 @@ export default {
 };
 </script>
 <style>
+.page-phragmen .clipboard {
+  display: inline-block;
+}
 .page-phragmen .favorite {
   position: absolute;
   z-index: 10;
@@ -526,5 +569,22 @@ export default {
 }
 .btn-secondary {
   font-size: 0.8rem;
+}
+.page-phragmen .circle {
+  display: inline-block;
+  padding: 0.1rem;
+  margin-left: 0.5rem;
+  width: 1.4rem;
+  height: 1.4rem;
+  border-radius: 50%;
+  text-align: center;
+  font-size: 0.8rem;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 3px 3px;
+}
+.page-phragmen .blue {
+  color: white;
+  background: #4682b4;
+  padding-left: 0.35rem;
+  padding-top: 0.1rem;
 }
 </style>

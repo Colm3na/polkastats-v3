@@ -51,7 +51,7 @@
       "intentions": "Intentions",
       "favorites": "Favorites",
       "targets": "Targets",
-      "phragmen": "Phragmen",
+      "election-prediction": "Election prediction",
       "nominators": "Nominators",
       "account": "Accounts",
       "get_in_contact": "Get in contact",
@@ -221,8 +221,8 @@
       },
       "sort": "Sort"
     },
-    "phragmen": {
-      "title": "Phragmen prediction",
+    "election-prediction": {
+      "title": "Election prediction",
       "last_execution": "Last execution at block",
       "predicted_candidates_by_TEXT": "Predicted candidates by phragmen election algorithm",
       "offline_phragmen_is_TEXT": "offline-phragmen is currently broken so this is temporary disabled!",
@@ -503,7 +503,8 @@
       "success": "Success",
       "logs": "Logs",
       "index": "Index",
-      "engine": "Engine"
+      "engine": "Engine",
+      "total_issuance": "Total issuance"
     },
     "intention": {
       "previous_intention": "Previous intention: ",

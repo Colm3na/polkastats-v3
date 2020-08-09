@@ -75,8 +75,8 @@
         <div class="table-responsive">
           <b-table
             id="rewards-table"
+            striped
             stacked="md"
-            head-variant="dark"
             :fields="fields"
             :items="rewards"
             :per-page="perPage"

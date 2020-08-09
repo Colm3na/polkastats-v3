@@ -69,8 +69,8 @@
         <div class="table-responsive">
           <b-table
             id="intentions-table"
+            striped
             stacked="md"
-            head-variant="dark"
             :fields="fields"
             :items="intentions"
             :per-page="perPage"

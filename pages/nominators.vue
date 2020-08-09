@@ -69,8 +69,8 @@
         <div class="table-responsive">
           <b-table
             id="nominators-table"
+            striped
             stacked="md"
-            head-variant="dark"
             :fields="fields"
             :items="nominators"
             :per-page="perPage"

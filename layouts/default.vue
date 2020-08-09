@@ -99,9 +99,9 @@
                   </b-dropdown-item>
                   <b-dropdown-item
                     v-if="network.phragmenEnabled"
-                    to="/phragmen"
+                    to="/election-prediction"
                   >
-                    {{ $t("layout.default.phragmen") }}
+                    {{ $t("layout.default.election-prediction") }}
                   </b-dropdown-item>
                 </b-nav-item-dropdown>
                 <b-nav-item>
@@ -312,11 +312,6 @@ export default {
       setInterval(() => {
         this.$store.dispatch("fiat/update");
       }, 60000);
-    }
-  },
-  methods: {
-    goTo(url) {
-      window.location.href = url;
     }
   }
 };

@@ -69,8 +69,8 @@
         <div class="table-responsive">
           <b-table
             id="validators-table"
+            striped
             stacked="md"
-            head-variant="dark"
             :fields="fields"
             :items="validators"
             :per-page="perPage"
