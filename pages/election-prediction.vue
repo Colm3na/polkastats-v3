@@ -3,11 +3,11 @@
     <section>
       <b-container class="page-phragmen main py-5">
         <h1 class="mb-4">
-          {{ $t("pages.phragmen.title") }}
+          {{ $t("pages.election-prediction.title") }}
         </h1>
         <template v-if="phragmenEnabled">
           <p v-if="blockHeight && timestamp">
-            {{ $t("pages.phragmen.last_execution") }}
+            {{ $t("pages.election-prediction.last_execution") }}
             <nuxt-link
               v-b-tooltip.hover
               :to="`/block?blockNumber=${phragmen.block_height}`"
@@ -24,7 +24,9 @@
                 id="filterInput"
                 v-model="filter"
                 type="search"
-                :placeholder="$t('pages.phragmen.search_placeholder')"
+                :placeholder="
+                  $t('pages.election-prediction.search_placeholder')
+                "
               />
             </b-col>
           </b-row>
@@ -32,7 +34,7 @@
           <div class="row d-block d-sm-block d-md-block d-lg-none d-xl-none">
             <b-col lg="6" class="my-1">
               <b-form-group
-                :label="$t('pages.phragmen.sort')"
+                :label="$t('pages.election-prediction.sort')"
                 label-cols-sm="3"
                 label-align-sm="right"
                 label-size="sm"
@@ -128,7 +130,7 @@
                   <p
                     v-b-tooltip.hover
                     class="bonded mb-0"
-                    title="$t('pages.phragmen.total_stake')"
+                    title="$t('pages.election-prediction.total_stake')"
                   >
                     {{ formatAmount(data.item.stake_total) }}
                   </p>
@@ -182,14 +184,16 @@
                       v-b-tooltip.hover
                       class="fas fa-star"
                       style="color: #f1bd23"
-                      :title="$t('pages.phragmen.remove_from_favorites')"
+                      :title="
+                        $t('pages.election-prediction.remove_from_favorites')
+                      "
                     />
                     <i
                       v-else
                       v-b-tooltip.hover
                       class="fas fa-star"
                       style="color: #e6dfdf;"
-                      :title="$t('pages.phragmen.add_to_favorites')"
+                      :title="$t('pages.election-prediction.add_to_favorites')"
                     />
                   </a>
                 </p>
@@ -257,19 +261,19 @@ export default {
         },
         {
           key: "pub_key_stash",
-          label: this.$i18n.t("pages.phragmen.candidate"),
+          label: this.$i18n.t("pages.election-prediction.candidate"),
           sortable: true,
           filterByFormatted: true
         },
         {
           key: "other_stake_count",
-          label: this.$i18n.t("pages.phragmen.voters"),
+          label: this.$i18n.t("pages.election-prediction.voters"),
           sortable: true,
           class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
         },
         {
           key: "stake_total",
-          label: this.$i18n.t("pages.phragmen.total_stake"),
+          label: this.$i18n.t("pages.election-prediction.total_stake"),
           sortable: true,
           class: `d-none d-sm-none d-md-table-cell d-lg-table-cell d-xl-table-cell`
         },
@@ -474,14 +478,14 @@ export default {
   },
   head() {
     return {
-      title: this.$t("pages.phragmen.head_title", {
+      title: this.$t("pages.election-prediction.head_title", {
         networkName: network.name
       }),
       meta: [
         {
           hid: "description",
           name: "description",
-          content: this.$t("pages.phragmen.head_content", {
+          content: this.$t("pages.election-prediction.head_content", {
             networkName: network.name
           })
         }

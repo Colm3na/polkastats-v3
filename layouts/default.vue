@@ -99,7 +99,7 @@
                   </b-dropdown-item>
                   <b-dropdown-item
                     v-if="network.phragmenEnabled"
-                    to="/phragmen"
+                    to="/election-prediction"
                   >
                     {{ $t("layout.default.phragmen") }}
                   </b-dropdown-item>

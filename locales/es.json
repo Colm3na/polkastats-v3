@@ -222,8 +222,8 @@
       },
       "sort": "Ordenar"
     },
-    "phragmen": {
-      "title": "Predicción Phragmen",
+    "election-prediction": {
+      "title": "Predicción de elecciones",
       "last_execution": "Última ejecución en el bloque",
       "predicted_candidates_by_TEXT": "Predicción de candidatos por algoritmo de elección phragmen",
       "offline_phragmen_is_TEXT": "offline-phragmen no está operativo por lo que está deshabilitado temporalmente",
