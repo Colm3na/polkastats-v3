@@ -1,14 +1,16 @@
 <template>
   <b-container class="pt-4">
-    <InflationChart />
+    <InflationChartHC />
   </b-container>
 </template>
 
 <script>
-import InflationChart from "../components/InflationChart.vue";
+// import InflationChart from "../components/InflationChart.vue";
+import InflationChartHC from "../components/InflationChartHC.vue";
 export default {
   components: {
-    InflationChart
+    // InflationChart,
+    InflationChartHC
   }
 };
 </script>
