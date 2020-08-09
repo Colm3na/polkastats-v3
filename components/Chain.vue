@@ -189,7 +189,7 @@
               {{ $t("components.chain.total_issuance") }}
             </h4>
             <h5 class="d-inline-block">
-              {{ formatAmount(chain.total_issuance) }}
+              {{ formatAmount(lastBlock.total_issuance) }}
             </h5>
           </div>
         </div>
@@ -280,6 +280,7 @@ export default {
               session_per_era
               session_progress
               validator_count
+              total_issuance
             }
           }
         `,
