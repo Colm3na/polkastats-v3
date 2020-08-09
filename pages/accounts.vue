@@ -69,8 +69,8 @@
         <div>
           <b-table
             id="accounts-table"
+            striped
             stacked="md"
-            head-variant="dark"
             :fields="fields"
             :items="accounts"
             :per-page="perPage"

@@ -505,7 +505,8 @@
       "success": "Resultado",
       "logs": "Logs",
       "index": "Índice",
-      "engine": "Motor"
+      "engine": "Motor",
+      "total_issuance": "Emisión total"
     },
     "intention": {
       "previous_intention": "Intención previa",

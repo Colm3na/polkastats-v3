@@ -503,7 +503,8 @@
       "success": "Success",
       "logs": "Logs",
       "index": "Index",
-      "engine": "Engine"
+      "engine": "Engine",
+      "total_issuance": "Total issuance"
     },
     "intention": {
       "previous_intention": "Previous intention: ",

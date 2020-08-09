@@ -83,8 +83,8 @@
           <div>
             <b-table
               id="candidates-table"
+              striped
               stacked="md"
-              head-variant="dark"
               :fields="fields"
               :items="candidates"
               :per-page="perPage"

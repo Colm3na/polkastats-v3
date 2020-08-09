@@ -313,11 +313,6 @@ export default {
         this.$store.dispatch("fiat/update");
       }, 60000);
     }
-  },
-  methods: {
-    goTo(url) {
-      window.location.href = url;
-    }
   }
 };
 </script>

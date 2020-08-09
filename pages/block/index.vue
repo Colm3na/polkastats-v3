@@ -137,6 +137,14 @@
                       <p class="mb-0">{{ parsedBlock.era_length }}</p>
                     </td>
                   </tr>
+                  <tr>
+                    <td>{{ $t("details.block.total_issuance") }}</td>
+                    <td class="text-right">
+                      <p class="mb-0">
+                        {{ formatAmount(parsedBlock.total_issuance) }}
+                      </p>
+                    </td>
+                  </tr>
                 </tbody>
               </table>
               <b-tabs class="mt-4" content-class="mt-4" fill>
@@ -373,6 +381,7 @@ export default {
             timestamp
             total_events
             validator_count
+            total_issuance
           }
         }
       `,
