@@ -98,10 +98,7 @@
                   :theme="'polkadot'"
                 />
                 <nuxt-link
-                  :to="{
-                    name: 'account',
-                    query: { accountId: data.item.accountId }
-                  }"
+                  :to="`/account/${data.item.accountId}`"
                   :title="$t('pages.accounts.account_details')"
                 >
                   <h4>{{ shortAddress(data.item.accountId) }}</h4>
@@ -150,10 +147,7 @@
                   :theme="'polkadot'"
                 />
                 <nuxt-link
-                  :to="{
-                    name: 'account',
-                    query: { accountId: data.item.accountId }
-                  }"
+                  :to="`/account/${data.item.accountId}`"
                   :title="$t('pages.accounts.account_details')"
                 >
                   {{ shortAddress(data.item.accountId) }}

@@ -2,7 +2,10 @@
   <div>
     <section>
       <b-container class="account-page main py-5">
-        <template v-if="parsedAccount">
+        <template v-if="!parsedAccount">
+          <h1 class="text-center">Account not found!</h1>
+        </template>
+        <template v-else>
           <div class="card mb-4">
             <div class="card-body">
               <p class="text-center mb-2">
@@ -38,7 +41,7 @@
                   :title="`1 DOT = ${USDConversion} $`"
                   class="fiat"
                 >
-                  ({{
+                  (${{
                     formatNumber(
                       (
                         parsedAccount.balances.freeBalance *
@@ -47,7 +50,7 @@
                       ).toFixed(3)
                     )
                   }}
-                  $)
+                  )
                 </span>
               </h4>
               <div class="table-responsive pb-4">
@@ -255,7 +258,7 @@ export default {
   mixins: [commonMixin],
   data: function() {
     return {
-      accountId: this.$route.query.accountId,
+      accountId: this.$route.params.id,
       parsedAccount: undefined,
       transfers: [],
       fields: [
@@ -290,7 +293,7 @@ export default {
   },
   watch: {
     $route() {
-      this.accountId = this.$route.query.accountId;
+      this.accountId = this.$route.params.id;
     }
   },
   apollo: {
@@ -308,7 +311,7 @@ export default {
       `,
       variables() {
         return {
-          account_id: this.$route.query.accountId
+          account_id: this.accountId
         };
       },
       result({ data }) {
@@ -329,7 +332,7 @@ export default {
     return {
       title: this.$t("pages.account.head_title", {
         networkName: network.name,
-        address: this.$route.query.accountId
+        address: this.accountId
       }),
       meta: [
         {
@@ -337,7 +340,7 @@ export default {
           name: "description",
           content: this.$tc("pages.account.head_content", {
             networkName: network.name,
-            address: this.$route.query.accountId
+            address: this.accountId
           })
         }
       ]
