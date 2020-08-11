@@ -103,6 +103,9 @@
                   >
                     {{ $t("layout.default.election-prediction") }}
                   </b-dropdown-item>
+                  <b-dropdown-item to="/economics">
+                    {{ $t("layout.default.economics") }}
+                  </b-dropdown-item>
                 </b-nav-item-dropdown>
                 <b-nav-item>
                   <nuxt-link

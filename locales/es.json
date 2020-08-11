@@ -70,7 +70,8 @@
       "transfers": "Transferencias",
       "events": "Eventos",
       "validator": "Validador",
-      "how_to_stake": "Como participar"
+      "how_to_stake": "Como participar",
+      "economics": "Economía"
     },
     "error": {
       "page_not_found": "¡Página no encontrada!",
@@ -241,6 +242,14 @@
       "voters_stake": "Participación de votantes",
       "head_title": "PolkaStats - {networkName} candidatos phragmen",
       "head_content": "{networkName} candidatos phragmen"
+    },
+    "economics": {
+      "title": "Economía de la red {networkName}",
+      "head_title": "PolkaStats - Economía de la red {networkName}",
+      "head_content": "Economía de la red {networkName}",
+      "total_issuance": "Emisión total",
+      "fiat": "{networkDenom} / USD",
+      "lowest_validator_stake": "Stake val mas bajo"
     },
     "support-us": {
       "support_polkastats": "APOYA POLKASTATS",

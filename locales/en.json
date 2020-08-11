@@ -70,7 +70,8 @@
       "transfers": "Transfers",
       "events": "Events",
       "validator": "Validator",
-      "how_to_stake": "How to stake"
+      "how_to_stake": "How to stake",
+      "economics": "Economics"
     },
     "error": {
       "page_not_found": "Page not found!",
@@ -240,6 +241,14 @@
       "voters_stake": "Voters stake",
       "head_title": "PolkaStats - {networkName} phragmen candidates",
       "head_content": "{networkName} phragmen candidates"
+    },
+    "economics": {
+      "title": "{networkName} economics",
+      "head_title": "PolkaStats - {networkName} economics",
+      "head_content": "{networkName} economics",
+      "total_issuance": "Total issuance",
+      "fiat": "{networkDenom} / USD",
+      "lowest_validator_stake": "Lowest val stake"
     },
     "support-us": {
       "support_polkastats": "SUPPORT POLKASTATS",
