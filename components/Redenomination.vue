@@ -7,6 +7,12 @@
       <p>
         {{ $t("components.redenomination.message") }}
       </p>
+      <p>
+        {{ $t("components.redenomination.more_info") }}
+        <a href="https://polkadot.network/the-results-are-in/" target="_blank"
+          >https://polkadot.network/the-results-are-in/</a
+        >
+      </p>
     </div>
   </b-alert>
 </template>
