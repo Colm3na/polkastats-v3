@@ -19,6 +19,17 @@
           </b-row>
           <div class="table-responsive">
             <b-table striped hover :fields="fields" :items="extrinsics">
+              <template v-slot:cell(hash)="data">
+                <p class="mb-0">
+                  <nuxt-link
+                    v-b-tooltip.hover
+                    :to="`/extrinsic/${data.item.hash}`"
+                    title="Check extrinsic information"
+                  >
+                    {{ shortHash(data.item.hash) }}
+                  </nuxt-link>
+                </p>
+              </template>
               <template v-slot:cell(block_number)="data">
                 <p class="mb-0">
                   <nuxt-link
@@ -93,6 +104,11 @@ export default {
       page: 1,
       totalRows: 1,
       fields: [
+        {
+          key: "hash",
+          label: "Hash",
+          sortable: true
+        },
         {
           key: "block_number",
           label: "Block",

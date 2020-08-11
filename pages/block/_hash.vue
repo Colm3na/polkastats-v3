@@ -343,7 +343,7 @@ export default {
   },
   watch: {
     $route() {
-      this.blockHash = this.$route.params.blockHash;
+      this.blockHash = this.$route.params.hash;
     }
   },
   methods: {
