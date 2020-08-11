@@ -42,6 +42,10 @@
     "slashes": {
       "search": "Search slash by block number, event index or amount",
       "no_slash_found": "No slash found"
+    },
+    "redenomination": {
+      "title": "{blocksLeft} blocks left for DOT REDENOMINATION",
+      "message": "On approximately August 21st at 13:15 UTC (block number 1,248,328), the DOT token will undergo a redenomination from its original sale. New DOTs will be 100x smaller than DOTs (old). Therefore, your DOT balance will be 100x higher and the price per DOT will be 100x lower."
     }
   },
   "layout": {
