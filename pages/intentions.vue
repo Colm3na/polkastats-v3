@@ -102,10 +102,7 @@
                         />
                       </div>
                       <nuxt-link
-                        :to="{
-                          name: 'intention',
-                          query: { accountId: data.item.account_id }
-                        }"
+                        :to="`/intention/${data.item.account_id}`"
                         :title="$t('pages.intentions.intention_details')"
                       >
                         <h4 v-if="data.item.display_name" class="mt-2 mb-2">
@@ -164,10 +161,7 @@
                   />
                 </div>
                 <nuxt-link
-                  :to="{
-                    name: 'intention',
-                    query: { accountId: data.item.account_id }
-                  }"
+                  :to="`/intention/${data.item.account_id}`"
                   :title="$t('pages.intentions.intention_details')"
                 >
                   <span v-if="data.item.display_name">

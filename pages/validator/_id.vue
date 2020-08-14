@@ -577,6 +577,7 @@ import eraSlashes from "../../components/charts/eraSlashes";
 import eraCommission from "../../components/charts/eraCommission";
 import Rewards from "../../components/Rewards.vue";
 import Slashes from "../../components/Slashes.vue";
+import Loading from "../../components/Loading.vue";
 
 export default {
   components: {
@@ -587,7 +588,8 @@ export default {
     eraSlashes,
     eraCommission,
     Rewards,
-    Slashes
+    Slashes,
+    Loading
   },
   mixins: [commonMixin],
   data: function() {
@@ -596,7 +598,7 @@ export default {
       totalStakeBonded: 0,
       currentSessionIndex: 0,
       validator: undefined,
-      accountId: this.$route.query.accountId,
+      accountId: this.$route.params.id,
       polling: null,
       graphPolling: null,
       favorites: [],
@@ -643,7 +645,7 @@ export default {
   },
   watch: {
     $route() {
-      this.accountId = this.$route.query.accountId;
+      this.accountId = this.$route.params.id;
     }
   },
   created: function() {
@@ -785,7 +787,7 @@ export default {
     return {
       title: this.$t("pages.validator.head_title", {
         networkName: network.name,
-        address: this.$route.query.accountId
+        address: this.accountId
       }),
       meta: [
         {
@@ -793,7 +795,7 @@ export default {
           name: "description",
           content: this.$tc("pages.validator.head_content", {
             networkName: network.name,
-            address: this.$route.query.accountId
+            address: this.accountId
           })
         }
       ]

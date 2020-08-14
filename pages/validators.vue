@@ -125,10 +125,7 @@
                   <b-row>
                     <b-col cols="4">
                       <nuxt-link
-                        :to="{
-                          name: 'validator',
-                          query: { accountId: data.item.account_id }
-                        }"
+                        :to="`/validator/${data.item.account_id}`"
                         :title="$t('pages.validators.validator_details')"
                       >
                         <div class="logo">
@@ -144,10 +141,7 @@
                     <b-col cols="8">
                       <div>
                         <nuxt-link
-                          :to="{
-                            name: 'validator',
-                            query: { accountId: data.item.account_id }
-                          }"
+                          :to="`/validator/${data.item.account_id}`"
                           :title="$t('pages.validators.validator_details')"
                         >
                           <h4 v-if="data.item.display_name">
@@ -218,10 +212,7 @@
                   />
                 </div>
                 <nuxt-link
-                  :to="{
-                    name: 'validator',
-                    query: { accountId: data.item.account_id }
-                  }"
+                  :to="`/validator/${data.item.account_id}`"
                   :title="$t('pages.validators.validator_details')"
                 >
                   <span v-if="data.item.display_name !== ``">

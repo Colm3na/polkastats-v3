@@ -508,7 +508,7 @@ export default {
       loading: true,
       currentSessionIndex: 0,
       intention: undefined,
-      accountId: this.$route.query.accountId,
+      accountId: this.$route.params.id,
       polling: null,
       graphPolling: null,
       favorites: [],
@@ -588,7 +588,7 @@ export default {
   },
   watch: {
     $route() {
-      this.accountId = this.$route.query.accountId;
+      this.accountId = this.$route.params.id;
 
       // Update graph data
       this.getValidatorDailyGraphData();
@@ -976,14 +976,12 @@ export default {
   },
   head() {
     return {
-      title:
-        "PolkaStats - Polkadot intention validator " +
-        this.$route.query.accountId,
+      title: "PolkaStats - Polkadot intention validator " + this.accountId,
       meta: [
         {
           hid: "description",
           name: "description",
-          content: "Polkadot intention validator " + this.$route.query.accountId
+          content: "Polkadot intention validator " + this.accountId
         }
       ]
     };
