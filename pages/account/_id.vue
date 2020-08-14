@@ -2,7 +2,10 @@
   <div>
     <section>
       <b-container class="account-page main py-5">
-        <template v-if="!parsedAccount">
+        <div v-if="loading" class="text-center py-4">
+          <Loading />
+        </div>
+        <template v-else-if="!parsedAccount">
           <h1 class="text-center">Account not found!</h1>
         </template>
         <template v-else>
@@ -239,6 +242,7 @@
 </template>
 <script>
 import Identicon from "../../components/identicon.vue";
+import Loading from "../../components/Loading.vue";
 import SentTransfers from "../../components/SentTransfers.vue";
 import ReceivedTransfers from "../../components/ReceivedTransfers.vue";
 import Rewards from "../../components/Rewards.vue";
@@ -250,6 +254,7 @@ import { network } from "../../polkastats.config.js";
 export default {
   components: {
     Identicon,
+    Loading,
     SentTransfers,
     ReceivedTransfers,
     Rewards,
@@ -258,6 +263,7 @@ export default {
   mixins: [commonMixin],
   data: function() {
     return {
+      loading: true,
       accountId: this.$route.params.id,
       parsedAccount: undefined,
       transfers: [],
@@ -325,6 +331,7 @@ export default {
               : {},
           timestamp: data.account[0].timestamp
         };
+        this.loading = false;
       }
     }
   },
