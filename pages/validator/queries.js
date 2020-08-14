@@ -1,7 +1,7 @@
 export const createQueryValidadorBonded = (timestamp, accountId) => `
   query validator {
     validator(
-    where: { account_id: { _eq: "${accountId}" }, timestamp: { _gt: ${timestamp} } },
+    where: { limit: 84, account_id: { _eq: "${accountId}" }, timestamp: { _gt: ${timestamp} } },
     order_by: {timestamp: desc}
     ) {
       account_id
@@ -15,6 +15,7 @@ export const createQueryValidadorBonded = (timestamp, accountId) => `
 
 export const createQueryRewards = accountId => `
   query validator_era_staking {
+    limit: 84
     validator_era_staking(
     where: { stash_id: { _eq: "${accountId}" } },
     order_by: { era_index: asc }
@@ -32,7 +33,7 @@ export const createQueryRewards = accountId => `
 
 export const createQuerySlashes = (timestamp, accountId) => `
   query slashes {
-    validator_era_slash(where: {account_id: {_eq: "${accountId}"}, timestamp: {_gt: ${timestamp}}}, order_by: {timestamp: desc}) {
+    validator_era_slash(limit: 84, where: {account_id: {_eq: "${accountId}"}, timestamp: {_gt: ${timestamp}}}, order_by: {timestamp: desc}) {
       account_id
       amount
       era_index
@@ -43,7 +44,7 @@ export const createQuerySlashes = (timestamp, accountId) => `
 
 export const createQueryProducedBlocks = (timestamp, accountId) => `
   query produced_blocks {
-    validator(where: {account_id: {_eq: "${accountId}"}, timestamp: {_gt: ${timestamp}}}, order_by: {timestamp: desc}) {
+    validator(where: {limit: 84, account_id: {_eq: "${accountId}"}, timestamp: {_gt: ${timestamp}}}, order_by: {timestamp: desc}) {
       account_id
       produced_blocks
       session_index
