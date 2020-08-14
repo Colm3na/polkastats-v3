@@ -28,6 +28,7 @@ export default {
         query: gql`
           query validator_era_staking($account_id: String!) {
             validator_era_staking(
+              limit 84
               where: { stash_id: { _eq: $account_id } }
               order_by: { era_index: asc }
             ) {
