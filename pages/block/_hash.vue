@@ -159,6 +159,7 @@
                     <table class="table table-striped">
                       <thead>
                         <tr>
+                          <th>ID</th>
                           <th>{{ $t("details.block.hash") }}</th>
                           <th>{{ $t("details.block.signer") }}</th>
                           <th>{{ $t("details.block.section") }}</th>
@@ -172,6 +173,18 @@
                           v-for="extrinsic in parsedExtrinsics"
                           :key="extrinsic.hash"
                         >
+                          <td>
+                            <nuxt-link
+                              :to="
+                                `/extrinsic/${extrinsic.block_number}/${extrinsic.extrinsic_index}`
+                              "
+                              :title="$t('details.block.account_details')"
+                            >
+                              {{ extrinsic.block_number }}-{{
+                                extrinsic.extrinsic_index
+                              }}
+                            </nuxt-link>
+                          </td>
                           <td>{{ shortHash(extrinsic.hash) }}</td>
                           <td>
                             <span v-if="extrinsic.signer">

@@ -19,27 +19,21 @@
           </b-row>
           <div class="table-responsive">
             <b-table striped hover :fields="fields" :items="extrinsics">
-              <template v-slot:cell(hash)="data">
-                <p class="mb-0">
-                  <nuxt-link
-                    v-b-tooltip.hover
-                    :to="`/extrinsic/${data.item.hash}`"
-                    title="Check extrinsic information"
-                  >
-                    {{ shortHash(data.item.hash) }}
-                  </nuxt-link>
-                </p>
-              </template>
               <template v-slot:cell(block_number)="data">
                 <p class="mb-0">
                   <nuxt-link
                     v-b-tooltip.hover
-                    :to="`/block?blockNumber=${data.item.block_number}`"
-                    title="Check block information"
+                    :to="
+                      `/extrinsic/${data.item.block_number}/${data.item.extrinsic_index}`
+                    "
+                    title="Check extrinsic information"
                   >
-                    #{{ formatNumber(data.item.block_number) }}
+                    {{ data.item.block_number }}-{{ data.item.extrinsic_index }}
                   </nuxt-link>
                 </p>
+              </template>
+              <template v-slot:cell(hash)="data">
+                <p class="mb-0">{{ shortHash(data.item.hash) }}</p>
               </template>
               <template v-slot:cell(section)="data">
                 <p class="mb-0">
@@ -105,18 +99,13 @@ export default {
       totalRows: 1,
       fields: [
         {
+          key: "block_number",
+          label: "Extrinsic",
+          sortable: true
+        },
+        {
           key: "hash",
           label: "Hash",
-          sortable: true
-        },
-        {
-          key: "block_number",
-          label: "Block",
-          sortable: true
-        },
-        {
-          key: "extrinsic_index",
-          label: "Index",
           sortable: true
         },
         {

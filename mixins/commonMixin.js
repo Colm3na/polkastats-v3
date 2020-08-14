@@ -32,7 +32,7 @@ export default {
       );
     },
     shortHash(hash) {
-      return `${hash.substr(0, 6)}…${hash.substr(hash.length - 5, 4)}`;
+      return `${hash.substr(0, 6)}…${hash.substr(hash.length - 4, 4)}`;
     },
     shortSessionId(sessionId) {
       return (
