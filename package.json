@@ -22,7 +22,7 @@
     "@nuxtjs/apollo": "^4.0.1-rc.3",
     "@nuxtjs/google-analytics": "^2.4.0",
     "@nuxtjs/toast": "^3.3.1",
-    "@polkadot/api": "^1.27.1",
+    "@polkadot/api": "^1.28.1",
     "@polkadot/extension-dapp": "^0.31.1",
     "@polkadot/util": "^2.18.1",
     "@polkadot/util-crypto": "^2.18.1",
@@ -62,6 +62,6 @@
     "eslint-plugin-vue": "^6.2.2",
     "nodemon": "^2.0.4",
     "prettier": "^1.19.1",
-    "serialize-javascript": "^3.1.0"
+    "serialize-javascript": "^4.0.0"
   }
 }
