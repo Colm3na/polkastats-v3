@@ -12,7 +12,7 @@
             />
             <nuxt-link
               v-b-tooltip.hover
-              :to="`/account?accountId=${data.item.account_id}`"
+              :to="`/account/${data.item.account_id}`"
               title="Check account information"
             >
               <span v-if="data.item.identity_display">

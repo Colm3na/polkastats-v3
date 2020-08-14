@@ -24,12 +24,7 @@
                       </span>
                       <span v-else>
                         <nuxt-link
-                          :to="{
-                            name: 'account',
-                            query: {
-                              accountId: parsedBlock.block_author
-                            }
-                          }"
+                          :to="`/account/${parsedBlock.block_author}`"
                           class="d-block"
                         >
                           <Identicon
@@ -195,10 +190,7 @@
                                 :theme="'polkadot'"
                               />
                               <nuxt-link
-                                :to="{
-                                  name: 'account',
-                                  query: { accountId: extrinsic.signer }
-                                }"
+                                :to="`/account/${extrinsic.signer}`"
                                 :title="$t('details.block.account_details')"
                               >
                                 {{ shortAddress(extrinsic.signer) }}
@@ -261,12 +253,7 @@
                                 :theme="'polkadot'"
                               />
                               <nuxt-link
-                                :to="{
-                                  name: 'account',
-                                  query: {
-                                    accountId: JSON.parse(event.data)[0]
-                                  }
-                                }"
+                                :to="`/account/${JSON.parse(event.data)[0]}`"
                                 :title="$t('details.block.account_details')"
                               >
                                 {{ shortAddress(JSON.parse(event.data)[0]) }}
@@ -279,12 +266,7 @@
                                 :theme="'polkadot'"
                               />
                               <nuxt-link
-                                :to="{
-                                  name: 'account',
-                                  query: {
-                                    accountId: JSON.parse(event.data)[1]
-                                  }
-                                }"
+                                :to="`/account/${JSON.parse(event.data)[1]}`"
                                 :title="$t('details.block.account_details')"
                               >
                                 {{ shortAddress(JSON.parse(event.data)[1]) }}

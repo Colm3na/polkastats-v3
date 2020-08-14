@@ -16,10 +16,7 @@
         <template v-slot:cell(from)="data">
           <p class="mb-0">
             <nuxt-link
-              :to="{
-                name: 'account',
-                query: { accountId: data.item.from }
-              }"
+              :to="`/account/${data.item.from}`"
               :title="$t('pages.validators.validator_details')"
             >
               <Identicon
@@ -40,10 +37,7 @@
         <template v-slot:cell(to)="data">
           <p class="mb-0">
             <nuxt-link
-              :to="{
-                name: 'account',
-                query: { accountId: data.item.to }
-              }"
+              :to="`/account/${data.item.to}`"
               :title="$t('pages.validators.validator_details')"
             >
               <Identicon
