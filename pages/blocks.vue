@@ -6,75 +6,80 @@
           {{ $t("pages.blocks.title") }}
         </h1>
         <div class="last-blocks">
-          <!-- Filter -->
-          <b-row style="margin-bottom: 1rem">
-            <b-col cols="12">
-              <b-form-input
-                id="filterInput"
-                v-model="filter"
-                type="search"
-                :placeholder="$t('pages.blocks.search_placeholder')"
-              />
-            </b-col>
-          </b-row>
-          <div class="table-responsive">
-            <b-table striped hover :fields="fields" :items="blocks">
-              <template v-slot:cell(block_number)="data">
-                <p class="mb-0">
-                  <nuxt-link
-                    v-b-tooltip.hover
-                    :to="`/block/${data.item.block_hash}`"
-                    title="Check block information"
-                  >
-                    #{{ formatNumber(data.item.block_number) }}
-                  </nuxt-link>
-                </p>
-              </template>
-              <template v-slot:cell(block_hash)="data">
-                <p class="mb-0">
-                  {{ shortHash(data.item.block_hash) }}
-                </p>
-              </template>
-              <template v-slot:cell(block_author)="data">
-                <p class="mb-0 d-inline-block">
-                  <Identicon
-                    :key="data.item.block_author"
-                    :value="data.item.block_author"
-                    :size="20"
-                    :theme="'polkadot'"
-                  />
-                  <nuxt-link
-                    v-b-tooltip.hover
-                    :to="`/validator?accountId=${data.item.block_author}`"
-                    title="Check validator information"
-                  >
-                    <span v-if="data.item.block_author_name">
-                      {{ data.item.block_author_name }}
-                    </span>
-                    <span v-else>
-                      {{ shortAddress(data.item.block_author) }}
-                    </span>
-                  </nuxt-link>
-                </p>
-              </template>
-            </b-table>
-            <div class="mt-2" style="display: flex">
-              <b-pagination
-                v-model="page"
-                :total-rows="totalRows"
-                :per-page="perPage"
-              />
-              <b-button-group class="mx-4">
-                <b-button
-                  v-for="(item, index) in tableOptions"
-                  :key="index"
-                  @click="handleNumFields(item)"
-                >
-                  {{ item }}
-                </b-button>
-              </b-button-group>
-            </div>
+          <div v-if="loading" class="text-center py-4">
+            <Loading />
           </div>
+          <template v-else>
+            <!-- Filter -->
+            <b-row style="margin-bottom: 1rem">
+              <b-col cols="12">
+                <b-form-input
+                  id="filterInput"
+                  v-model="filter"
+                  type="search"
+                  :placeholder="$t('pages.blocks.search_placeholder')"
+                />
+              </b-col>
+            </b-row>
+            <div class="table-responsive">
+              <b-table striped hover :fields="fields" :items="blocks">
+                <template v-slot:cell(block_number)="data">
+                  <p class="mb-0">
+                    <nuxt-link
+                      v-b-tooltip.hover
+                      :to="`/block/${data.item.block_hash}`"
+                      title="Check block information"
+                    >
+                      #{{ formatNumber(data.item.block_number) }}
+                    </nuxt-link>
+                  </p>
+                </template>
+                <template v-slot:cell(block_hash)="data">
+                  <p class="mb-0">
+                    {{ shortHash(data.item.block_hash) }}
+                  </p>
+                </template>
+                <template v-slot:cell(block_author)="data">
+                  <p class="mb-0 d-inline-block">
+                    <Identicon
+                      :key="data.item.block_author"
+                      :value="data.item.block_author"
+                      :size="20"
+                      :theme="'polkadot'"
+                    />
+                    <nuxt-link
+                      v-b-tooltip.hover
+                      :to="`/validator?accountId=${data.item.block_author}`"
+                      title="Check validator information"
+                    >
+                      <span v-if="data.item.block_author_name">
+                        {{ data.item.block_author_name }}
+                      </span>
+                      <span v-else>
+                        {{ shortAddress(data.item.block_author) }}
+                      </span>
+                    </nuxt-link>
+                  </p>
+                </template>
+              </b-table>
+              <div class="mt-2" style="display: flex">
+                <b-pagination
+                  v-model="page"
+                  :total-rows="totalRows"
+                  :per-page="perPage"
+                />
+                <b-button-group class="mx-4">
+                  <b-button
+                    v-for="(item, index) in tableOptions"
+                    :key="index"
+                    @click="handleNumFields(item)"
+                  >
+                    {{ item }}
+                  </b-button>
+                </b-button-group>
+              </div>
+            </div>
+          </template>
         </div>
       </b-container>
     </section>
@@ -84,16 +89,19 @@
 <script>
 import commonMixin from "../mixins/commonMixin.js";
 import Identicon from "../components/identicon.vue";
+import Loading from "../components/Loading.vue";
 import gql from "graphql-tag";
 import { network, paginationOptions } from "../polkastats.config.js";
 
 export default {
   components: {
-    Identicon
+    Identicon,
+    Loading
   },
   mixins: [commonMixin],
   data: function() {
     return {
+      loading: true,
       filter: "",
       blocks: [],
       tableOptions: paginationOptions,
@@ -161,6 +169,7 @@ export default {
           if (this.filter) {
             this.totalRows = this.blocks.length;
           }
+          this.loading = false;
         }
       },
       totalBlocks: {

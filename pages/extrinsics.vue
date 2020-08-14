@@ -23,10 +23,7 @@
                 <p class="mb-0">
                   <nuxt-link
                     v-b-tooltip.hover
-                    :to="{
-                      name: 'extrinsic',
-                      params: { hash: data.item.hash }
-                    }"
+                    :to="`/extrinsic/${data.item.hash}`"
                     title="Check extrinsic information"
                   >
                     {{ shortHash(data.item.hash) }}
