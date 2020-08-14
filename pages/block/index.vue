@@ -2,7 +2,10 @@
   <div>
     <section>
       <b-container class="block-page main py-5">
-        <template v-if="!parsedBlock">
+        <div v-if="loading" class="text-center py-4">
+          <Loading />
+        </div>
+        <template v-else-if="!parsedBlock">
           <h1 class="text-center">Block not found!</h1>
         </template>
         <template v-else>
@@ -322,17 +325,20 @@
 </template>
 <script>
 import Identicon from "../../components/identicon.vue";
+import Loading from "../../components/Loading.vue";
 import commonMixin from "../../mixins/commonMixin.js";
 import gql from "graphql-tag";
 import { network } from "../../polkastats.config.js";
 
 export default {
   components: {
-    Identicon
+    Identicon,
+    Loading
   },
   mixins: [commonMixin],
   data: function() {
     return {
+      loading: true,
       blockNumber: this.$route.query.blockNumber,
       parsedBlock: undefined,
       parsedExtrinsics: [],
@@ -393,6 +399,7 @@ export default {
       result({ data }) {
         if (data.block[0]) {
           this.parsedBlock = data.block[0];
+          this.loading = false;
         }
       }
     },
