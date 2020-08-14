@@ -45,12 +45,7 @@
                         :size="20"
                         :theme="'polkadot'"
                       />
-                      <nuxt-link
-                        :to="{
-                          name: 'account',
-                          query: { accountId: nominator.stash_id }
-                        }"
-                      >
+                      <nuxt-link :to="`/account/${nominator.stash_id}`">
                         <span
                           v-b-tooltip.hover
                           :title="$t('details.nominator.account_details')"
@@ -71,10 +66,7 @@
                         :theme="'polkadot'"
                       />
                       <nuxt-link
-                        :to="{
-                          name: 'account',
-                          query: { accountId: nominator.controller_id }
-                        }"
+                        :to="`/account/${nominator.controller_id}`"
                         title="Controller account details"
                       >
                         <span

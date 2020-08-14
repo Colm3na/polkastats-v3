@@ -181,10 +181,7 @@
                 :theme="'polkadot'"
               />
               <nuxt-link
-                :to="{
-                  name: 'account',
-                  query: { accountId: data.item.controller_id }
-                }"
+                :to="`/account/${data.item.controller_id}`"
                 :title="$t('pages.nominators.controller_details')"
               >
                 {{ shortAddress(data.item.controller_id) }}

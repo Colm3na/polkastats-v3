@@ -27,9 +27,9 @@
           />
           <nuxt-link
             :to="
-              `/${
-                network.name === 'Kusama' ? 'validator' : 'account'
-              }?accountId=${network.validator}`
+              `/${network.name === 'Kusama' ? 'validator' : 'account'}/${
+                network.validator
+              }`
             "
           >
             <span

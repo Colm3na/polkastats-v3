@@ -79,14 +79,7 @@
                         :size="20"
                         :theme="'polkadot'"
                       />
-                      <nuxt-link
-                        :to="{
-                          name: 'account',
-                          query: {
-                            accountId: intention.stash_id
-                          }
-                        }"
-                      >
+                      <nuxt-link :to="`/account/${intention.stash_id}`">
                         <span
                           v-b-tooltip.hover
                           class="d-inline d-sm-none d-md-none d-lg-none d-xl-none"
@@ -111,14 +104,7 @@
                         :size="20"
                         :theme="'polkadot'"
                       />
-                      <nuxt-link
-                        :to="{
-                          name: 'account',
-                          query: {
-                            accountId: intention.controller_id
-                          }
-                        }"
-                      >
+                      <nuxt-link :to="`/account/${intention.controller_id}`">
                         <span
                           v-b-tooltip.hover
                           class="d-inline d-sm-none d-md-none d-lg-none d-xl-none"
@@ -353,14 +339,7 @@
                               :size="20"
                               :theme="'polkadot'"
                             />
-                            <nuxt-link
-                              :to="{
-                                name: 'account',
-                                query: {
-                                  accountId: sessionId
-                                }
-                              }"
-                            >
+                            <nuxt-link :to="`/account/${sessionId}`">
                               <span
                                 v-b-tooltip.hover
                                 class="d-inline-block d-sm-none d-md-none d-lg-none d-xl-none"
@@ -396,14 +375,7 @@
                               :size="20"
                               :theme="'polkadot'"
                             />
-                            <nuxt-link
-                              :to="{
-                                name: 'account',
-                                query: {
-                                  accountId: staker
-                                }
-                              }"
-                            >
+                            <nuxt-link :to="`/account/${staker}`">
                               <span
                                 v-b-tooltip.hover
                                 class="d-inline-block d-sm-none d-md-none d-lg-none d-xl-none"

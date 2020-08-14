@@ -138,14 +138,7 @@
                         :size="20"
                         :theme="'polkadot'"
                       />
-                      <nuxt-link
-                        :to="{
-                          name: 'account',
-                          query: {
-                            accountId: validator.stash_id
-                          }
-                        }"
-                      >
+                      <nuxt-link :to="`/account/${validator.stash_id}`">
                         <span
                           v-b-tooltip.hover
                           class="d-inline d-sm-none d-md-none d-lg-none d-xl-none"
@@ -170,14 +163,7 @@
                         :size="20"
                         :theme="'polkadot'"
                       />
-                      <nuxt-link
-                        :to="{
-                          name: 'account',
-                          query: {
-                            accountId: validator.controller_id
-                          }
-                        }"
-                      >
+                      <nuxt-link :to="`/account/${validator.controller_id}`">
                         <span
                           v-b-tooltip.hover
                           class="d-inline d-sm-none d-md-none d-lg-none d-xl-none"
