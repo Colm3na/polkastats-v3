@@ -48,7 +48,7 @@ export const actions = {
         commit("update", data.system[0]);
       })
       .catch(error => {
-        console.log("Error fetching Block table: ", error);
+        console.log("Error fetching system info: ", error);
       });
   }
 };
