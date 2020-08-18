@@ -18,7 +18,8 @@ export const networks = [
     erasPerDay: 1,
     lockUpPeriod: 28,
     validator: "15psTaipmWG86U5vNkF7Guv9TRPMRLKHkGS8cXT74v3RCC5t",
-    phragmenEnabled: true
+    phragmenEnabled: true,
+    googleAnalytics: "UA-144344973-1"
   },
   {
     id: "kusama-cc3",
@@ -33,7 +34,8 @@ export const networks = [
     erasPerDay: 4,
     lockUpPeriod: 7,
     validator: "GTzRQPzkcuynHgkEHhsPBFpKdh4sAacVRsnd8vYfPpTMeEY",
-    phragmenEnabled: true
+    phragmenEnabled: true,
+    googleAnalytics: "UA-172854168-1"
   },
   {
     id: "westend",
@@ -48,7 +50,8 @@ export const networks = [
     erasPerDay: 4,
     lockUpPeriod: 7,
     validator: undefined,
-    phragmenEnabled: false
+    phragmenEnabled: false,
+    googleAnalytics: "UA-175653321-1"
   }
 ];
 
