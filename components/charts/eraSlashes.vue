@@ -20,7 +20,8 @@ export default {
           data: []
         }
       ],
-      chartOptions: {}
+      chartOptions: {},
+      network
     };
   },
   apollo: {
@@ -52,7 +53,10 @@ export default {
           const { validator_era_slash } = data;
           for (var i = 0; i < validator_era_slash.length; i++) {
             newCategories.push(validator_era_slash[i].era_index);
-            newData.push(validator_era_slash[i].era_rewards * 1e-12 || 0);
+            newData.push(
+              validator_era_slash[i].era_rewards /
+                Math.pow(10, this.network.decimalPlaces) || 0
+            );
           }
 
           this.chartOptions = {

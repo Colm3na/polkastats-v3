@@ -47,8 +47,8 @@
                   (${{
                     formatNumber(
                       (
-                        parsedAccount.balances.freeBalance *
-                        1e-12 *
+                        (parsedAccount.balances.freeBalance /
+                          Math.pow(10, network.decimalPlaces)) *
                         USDConversion
                       ).toFixed(3)
                     )

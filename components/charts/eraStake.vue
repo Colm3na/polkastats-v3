@@ -20,7 +20,8 @@ export default {
           data: []
         }
       ],
-      chartOptions: {}
+      chartOptions: {},
+      network
     };
   },
   apollo: {
@@ -54,7 +55,8 @@ export default {
             newCategories.push(validator_era_staking[i].era_index);
             newData.push(
               (
-                JSON.parse(validator_era_staking[i].stake_info).total * 1e-12
+                JSON.parse(validator_era_staking[i].stake_info).total /
+                Math.pow(10, this.network.decimalPlaces)
               ).toFixed(3)
             );
           }

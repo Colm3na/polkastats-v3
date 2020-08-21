@@ -5,6 +5,7 @@
 <script>
 import { Chart } from "highcharts-vue";
 import gql from "graphql-tag";
+import { network } from "../../polkastats.config.js";
 
 export default {
   components: {
@@ -32,7 +33,8 @@ export default {
             data: []
           }
         ]
-      }
+      },
+      network
     };
   },
   apollo: {
@@ -52,7 +54,7 @@ export default {
         this.InflationChartOptions.series[0].data = data.block.map(
           ({ total_issuance, block_number }) => [
             block_number,
-            total_issuance / 1e12
+            total_issuance / Math.pow(10, this.network.decimalPlacess)
           ]
         );
 
@@ -65,7 +67,10 @@ export default {
           (this.last24hInflation * 100) / lastTotalIssuance;
 
         console.log(`Last issuance:`, lastTotalIssuance);
-        console.log(`Last 24h inflation:`, this.last24hInflation / 1e12);
+        console.log(
+          `Last 24h inflation:`,
+          this.last24hInflation / Math.pow(10, this.network.decimalPlaces)
+        );
         console.log(
           `Last 24h percentage:`,
           this.last24hInflationPercentage.toFixed(6)
@@ -76,7 +81,8 @@ export default {
         );
         console.log(
           `Acumulated inflation:`,
-          (lastTotalIssuance - this.initialTotalIssuance) / 1e12
+          (lastTotalIssuance - this.initialTotalIssuance) /
+            Math.pow(10, this.network.decimalPlaces)
         );
         console.log(
           `Acumulated inflation percentage:`,

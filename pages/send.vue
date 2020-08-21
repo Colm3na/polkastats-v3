@@ -7,7 +7,16 @@
         </h1>
       </b-col>
     </b-row>
-    <b-row>
+    <b-row v-if="network.name === `Polkadot`">
+      <b-col md="12 mb-4">
+        <b-alert variant="danger" show class="text-center">
+          <h2>Transfers disabled due to Polkadot redenomination</h2>
+          Balance transfer will be enabled two hours after redenomination,
+          please be patience.
+        </b-alert>
+      </b-col>
+    </b-row>
+    <b-row v-else>
       <b-col md="6 mb-4">
         <b-alert v-if="!detectedExtension" variant="danger" show>
           <i class="fa fa-frown-o"></i>
