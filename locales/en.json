@@ -44,8 +44,9 @@
       "no_slash_found": "No slash found"
     },
     "redenomination": {
-      "title": "{blocksLeft} blocks left for DOT REDENOMINATION",
+      "title": "DOT REDENOMINATION",
       "message": "On approximately August 21st at 16:40 UTC (block number 1,248,328), the DOT token will undergo a redenomination from its original sale. New DOTs will be 100x smaller than DOTs (old). Therefore, your DOT balance will be 100x higher and the price per DOT will be 100x lower.",
+      "post_redenomination": "On approximately August 21st at 16:40 UTC (block number 1,248,328), the DOT token underwent a redenomination from its original sale. New DOT are 100x smaller than DOT (old). Therefore, your DOT balance is 100x higher and the price per DOT is 100x lower. The percentage of the DOT you own relative to total supply is unchanged. This does not affect the total value of your position.",
       "more_info": "See the Polkadot blog post for more information: "
     }
   },

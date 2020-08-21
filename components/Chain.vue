@@ -1,6 +1,11 @@
 <template>
   <div v-if="lastBlock">
     <div class="row">
+      <div class="col-12">
+        <Redenomination />
+      </div>
+    </div>
+    <div class="row">
       <div v-if="inElection" class="col-12">
         <b-alert show dismissible variant="warning" class="text-center">
           <div>
@@ -215,6 +220,7 @@
 <script>
 import commonMixin from "../mixins/commonMixin.js";
 import Identicon from "../components/identicon.vue";
+import Redenomination from "../components/Redenomination.vue";
 import gql from "graphql-tag";
 import BN from "bn.js";
 import { isHex } from "@polkadot/util";
@@ -222,7 +228,8 @@ import { network } from "../polkastats.config.js";
 
 export default {
   components: {
-    Identicon
+    Identicon,
+    Redenomination
   },
   mixins: [commonMixin],
   data: function() {

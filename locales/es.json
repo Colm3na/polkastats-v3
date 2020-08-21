@@ -44,8 +44,9 @@
       "no_slash_found": "No se han encontrado slashes"
     },
     "redenomination": {
-      "title": "Faltan {blocksLeft} bloques para la REDENOMINACIÓN del DOT",
+      "title": "REDENOMINACIÓN del DOT",
       "message": "Aproximadamente el 21 de agosto a las 16:40 UTC (bloque 1,248,328), se producirá una REDENOMINACIÓN del token DOT con respecto a su oferta inicial de compra. Los nuevos DOTs serán 100 veces menos valiosos que los viejos DOTs. Por lo tanto después de la redenominación tu balance de DOTs será 100 veces mayor y su precio 100 veces más bajo.",
+      "post_redenomination": "El 21 de Agosto a las 16:40 UTC (bloque 1,248,328), se produjo una REDENOMINACIÓN del token DOT con respecto a su oferta inicial de compra. Los nuevos DOTs son 100 veces menos valiosos que los viejos DOTs. El porcentaje de DOT que posees con respecto a la cantidad total emitida no ha cambiado. El cambio no afecta al valor total de tu posición.",
       "more_info": "Para más información consulta este post en el blog de Polkadot: "
     }
   },
