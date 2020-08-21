@@ -7,16 +7,7 @@
         </h1>
       </b-col>
     </b-row>
-    <b-row v-if="network.name === `Polkadot`">
-      <b-col md="12 mb-4">
-        <b-alert variant="danger" show class="text-center">
-          <h2>Stake disabled due to Polkadot redenomination</h2>
-          Staking will be enabled two hours after redenomination, please be
-          patience.
-        </b-alert>
-      </b-col>
-    </b-row>
-    <b-row v-else>
+    <b-row>
       <b-col md="7 mb-4">
         <b-alert v-if="!detectedExtension" variant="danger" show>
           <i class="fa fa-frown-o"></i>
