@@ -1,14 +1,6 @@
 <template>
   <div v-if="lastBlock">
     <div class="row">
-      <div class="col-12">
-        <Redenomination
-          v-if="network.name === `Polkadot`"
-          :block-height="lastBlock.block_number"
-        />
-      </div>
-    </div>
-    <div class="row">
       <div v-if="inElection" class="col-12">
         <b-alert show dismissible variant="warning" class="text-center">
           <div>
@@ -226,13 +218,11 @@ import Identicon from "../components/identicon.vue";
 import gql from "graphql-tag";
 import BN from "bn.js";
 import { isHex } from "@polkadot/util";
-import Redenomination from "../components/Redenomination.vue";
 import { network } from "../polkastats.config.js";
 
 export default {
   components: {
-    Identicon,
-    Redenomination
+    Identicon
   },
   mixins: [commonMixin],
   data: function() {
