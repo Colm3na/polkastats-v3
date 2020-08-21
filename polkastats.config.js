@@ -8,7 +8,7 @@ export const networks = [
   {
     id: "polkadot-cc1",
     name: "Polkadot",
-    denom: "DOT (old)",
+    denom: "new DOT",
     coinGeckoDenom: "polkadot-old",
     decimalPlaces: 10,
     addressPrefix: 0,
