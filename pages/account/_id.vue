@@ -41,7 +41,7 @@
                 <span
                   v-if="USDConversion"
                   v-b-tooltip.hover
-                  :title="`1 DOT = ${USDConversion} $`"
+                  :title="`1 ${network.denom} = ${USDConversion} $`"
                   class="fiat"
                 >
                   (${{
@@ -263,6 +263,7 @@ export default {
   mixins: [commonMixin],
   data: function() {
     return {
+      network,
       loading: true,
       accountId: this.$route.params.id,
       parsedAccount: undefined,

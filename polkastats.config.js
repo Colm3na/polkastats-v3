@@ -1,6 +1,6 @@
 // Selected network
-const selectedNetwork = `Polkadot`;
-// const selectedNetwork = `Kusama`;
+// const selectedNetwork = `Polkadot`;
+const selectedNetwork = `Kusama`;
 // const selectedNetwork = `Westend`;
 
 // Substrate networks
