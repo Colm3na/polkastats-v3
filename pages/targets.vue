@@ -398,7 +398,8 @@ export default {
       return (
         (
           parseInt(
-            new BN(eraPayout)
+            // Workaround for DOT redenom, TODO: Update backend
+            new BN(network.name === "Polkadot" ? eraPayout : eraPayout / 100)
               .mul(new BN(100))
               .mul(new BN(network.erasPerDay))
               .mul(new BN(365))
