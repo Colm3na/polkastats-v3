@@ -157,7 +157,11 @@
                               networkDenom: network.denom
                             })
                           }}:
-                          {{ data.item.estimated_payout }}
+                          {{
+                            network.name === "Polkadot"
+                              ? data.item.estimated_payout / 100
+                              : data.item.estimated_payout
+                          }}
                         </div>
                         <div>
                           {{
@@ -326,6 +330,7 @@ export default {
         });
     },
     targetsJSON() {
+      const vm = this;
       return this.rewards.map(reward => {
         return {
           name: reward.display_name,
@@ -334,7 +339,10 @@ export default {
           total_stake: reward.stake_info.total,
           annualized_reward_percentage:
             reward.estimated_annualized_payout_percentage,
-          estimated_daily_payout_100_DOT: reward.estimated_payout
+          estimated_daily_payout_100_DOT:
+            vm.network.name === "Polkadot"
+              ? reward.estimated_payout / 100
+              : reward.estimated_payout
         };
       });
     }
@@ -399,7 +407,7 @@ export default {
         (
           parseInt(
             // Workaround for DOT redenom, TODO: Update backend
-            new BN(network.name === "Polkadot" ? eraPayout : eraPayout / 100)
+            new BN(network.name === "Polkadot" ? eraPayout / 100 : eraPayout)
               .mul(new BN(100))
               .mul(new BN(network.erasPerDay))
               .mul(new BN(365))
@@ -460,8 +468,11 @@ export default {
                 value.estimated_payout
               );
               // Payout per era per 100 DOT
+              // Workaround for DOT redenom, TODO: Update backend
               value.estimated_payout = this.formatAmount(
-                value.estimated_payout
+                network.name === "Polkadot"
+                  ? Math.round(value.estimated_payout / 100)
+                  : value.estimated_payout
               );
               value.favorite = this.isFavorite(value.stash_id);
             };
