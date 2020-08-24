@@ -328,7 +328,7 @@ export default {
         },
         yaxis: {
           title: {
-            text: "Total bonded (DOT)"
+            text: `Total bonded (${network.denom})`
           },
           labels: {
             formatter: function(val) {
