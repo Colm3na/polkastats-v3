@@ -54,9 +54,9 @@
               :to="`/block?blockNumber=${lastBlock.block_number}`"
               title="Click to see block info!"
             >
-              <h5 class="d-inline-block">
+              <h6 class="d-inline-block">
                 #{{ formatNumber(lastBlock.block_number) }}
-              </h5>
+              </h6>
             </nuxt-link>
           </div>
         </div>
@@ -72,9 +72,9 @@
               :to="`/block?blockNumber=${lastBlock.block_number_finalized}`"
               title="Click to see block info!"
             >
-              <h5 class="d-inline-block">
+              <h6 class="d-inline-block">
                 #{{ formatNumber(lastBlock.block_number_finalized) }}
-              </h5>
+              </h6>
             </nuxt-link>
           </div>
         </div>
@@ -148,7 +148,7 @@
         <div class="card">
           <div class="card-body">
             <h4 class="mb-3">{{ $t("components.chain.validators") }}</h4>
-            <h5 class="d-inline-block">
+            <h6 class="d-inline-block">
               <span
                 v-b-tooltip.hover
                 :title="$t('components.chain.validator_count')"
@@ -171,7 +171,7 @@
                   {{ formatNumber(waitingCount) }}
                 </small>
               </span>
-            </h5>
+            </h6>
           </div>
         </div>
       </div>
@@ -181,9 +181,9 @@
             <h4 class="mb-3">
               {{ $t("components.chain.nominators") }}
             </h4>
-            <h5 class="d-inline-block">
+            <h6 class="d-inline-block">
               {{ formatNumber(nominatorCount) }}
-            </h5>
+            </h6>
           </div>
         </div>
       </div>
@@ -193,9 +193,9 @@
             <h4 class="mb-3">
               {{ $t("components.chain.total_issuance") }}
             </h4>
-            <h5 class="d-inline-block">
+            <h6 class="d-inline-block">
               {{ formatAmount(lastBlock.total_issuance) }}
-            </h5>
+            </h6>
           </div>
         </div>
       </div>
@@ -205,11 +205,11 @@
             <h4 class="mb-3">
               {{ $t("components.chain.staked") }}
             </h4>
-            <h5 class="d-inline-block">
+            <h6 class="d-inline-block">
               {{ formatAmount(totalStakeBonded) }} ({{
                 bondedStakePercentage
               }}%)
-            </h5>
+            </h6>
           </div>
         </div>
       </div>
