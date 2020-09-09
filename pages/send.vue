@@ -338,6 +338,7 @@ export default {
               if (accounts.length > 0) {
                 this.detectedExtension = true;
                 this.extensionAccounts = accounts;
+                console.log(accounts);
                 accounts.forEach(account =>
                   this.extensionAddresses.push(
                     encodeAddress(account.address, this.network.addressPrefix)
@@ -385,21 +386,37 @@ export default {
         case "pico":
           return this.amount;
         case "nano":
-          return this.amount * 1000;
+          return network.name === `Polkadot`
+            ? this.amount * 10
+            : this.amount * 1000;
         case "micro":
-          return this.amount * 1000000;
+          return network.name === `Polkadot`
+            ? this.amount * 10000
+            : this.amount * 1000000;
         case "mili":
-          return this.amount * 1000000000;
+          return network.name === `Polkadot`
+            ? this.amount * 10000000
+            : this.amount * 1000000000;
         case `${network.denom}`:
-          return this.amount * 1000000000000;
+          return network.name === `Polkadot`
+            ? this.amount * 10000000000
+            : this.amount * 1000000000000;
         case "kilo":
-          return this.amount * 1000000000000000;
+          return network.name === `Polkadot`
+            ? this.amount * 10000000000000
+            : this.amount * 1000000000000000;
         case "mega":
-          return this.amount * 1000000000000000000;
+          return network.name === `Polkadot`
+            ? this.amount * 10000000000000000
+            : this.amount * 1000000000000000000;
         case "giga":
-          return this.amount * 1000000000000000000000;
+          return network.name === `Polkadot`
+            ? this.amount * 10000000000000000000
+            : this.amount * 1000000000000000000000;
         case "tera":
-          return this.amount * 1000000000000000000000000;
+          return network.name === `Polkadot`
+            ? this.amount * 10000000000000000000000
+            : this.amount * 1000000000000000000000000;
       }
     },
     async getBalance(address) {
@@ -407,15 +424,22 @@ export default {
       this.tranferableBalance = availableBalance;
     },
     async send() {
-      web3FromAddress(this.selectedAddress).then(async injector => {
-        this.api.setSigner(injector.signer);
-        const amount = this.getAmount();
-        const extrinsic = await this.api.tx.balances.transfer(
-          this.targetAddress,
-          amount
-        );
-        this.extrinsicHash = await extrinsic.signAndSend(this.selectedAddress);
-      });
+      this.selectedAccount = encodeAddress(this.selectedAddress, 42);
+      web3FromAddress(this.selectedAccount)
+        .then(async injector => {
+          this.api.setSigner(injector.signer);
+          const amount = this.getAmount();
+          const extrinsic = await this.api.tx.balances.transfer(
+            this.targetAddress,
+            amount
+          );
+          this.extrinsicHash = await extrinsic.signAndSend(
+            this.selectedAccount
+          );
+        })
+        .catch(error => {
+          console.log("Error: ", error);
+        });
     }
   },
   apollo: {

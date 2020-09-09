@@ -23,7 +23,7 @@
     "@nuxtjs/google-analytics": "^2.4.0",
     "@nuxtjs/toast": "^3.3.1",
     "@polkadot/api": "^1.32.1",
-    "@polkadot/extension-dapp": "^0.33.2",
+    "@polkadot/extension-dapp": "^0.33.4",
     "@polkadot/util": "^3.4.1",
     "@polkadot/util-crypto": "^3.4.1",
     "@polkadot/vue-identicon": "^0.58.1",
