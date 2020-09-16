@@ -31,7 +31,7 @@ export default {
             validator_era_staking(
               limit: 84
               where: { stash_id: { _eq: $account_id } }
-              order_by: { era_index: asc }
+              order_by: { era_index: desc }
             ) {
               era_index
               era_points
@@ -54,6 +54,8 @@ export default {
             newCategories.push(validator_era_staking[i].era_index);
             newData.push(validator_era_staking[i].era_points);
           }
+          newCategories.reverse();
+          newData.reverse();
 
           this.chartOptions = {
             series: [

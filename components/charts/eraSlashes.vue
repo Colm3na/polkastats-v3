@@ -32,7 +32,7 @@ export default {
             validator_era_slash(
               limit: 84
               where: { stash_id: { _eq: $account_id } }
-              order_by: { era_index: asc }
+              order_by: { era_index: desc }
             ) {
               era_index
               amount
@@ -58,6 +58,8 @@ export default {
                 Math.pow(10, this.network.decimalPlaces) || 0
             );
           }
+          newCategories.reverse();
+          newData.reverse();
 
           this.chartOptions = {
             series: [
