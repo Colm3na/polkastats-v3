@@ -503,7 +503,7 @@
       "session_length": "Longitud de la sesión",
       "session_per_era": "Sesión por era",
       "session_progress": "Progreso de la sesión",
-      "current_era_index": "Índice era actual",
+      "current_era_index": "Era",
       "era_length": "Longitud era",
       "era_progress": "Progreso Era",
       "system_events": "Eventos de sistema",

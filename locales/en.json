@@ -500,7 +500,7 @@
       "session_length": "Session length",
       "session_per_era": "Session per era",
       "session_progress": "Session progress",
-      "current_era_index": "Current era index",
+      "current_era_index": "Era index",
       "era_length": "Era length",
       "era_progress": "Era progress",
       "system_events": "System events",

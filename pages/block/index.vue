@@ -126,7 +126,7 @@
                   <tr>
                     <td>{{ $t("details.block.current_era_index") }}</td>
                     <td class="text-right">
-                      <p class="mb-0">{{ parsedBlock.current_era }}</p>
+                      <p class="mb-0">{{ parsedBlock.current_era - 1 }}</p>
                     </td>
                   </tr>
                   <tr>
