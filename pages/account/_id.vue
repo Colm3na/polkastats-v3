@@ -37,7 +37,12 @@
                 </span>
               </h4>
               <h4 class="text-center mb-4 amount">
-                {{ formatAmount(parsedAccount.balances.freeBalance) }}
+                {{
+                  formatAmount(
+                    parsedAccount.balances.freeBalance +
+                      parsedAccount.balances.reservedBalance
+                  )
+                }}
                 <span
                   v-if="USDConversion"
                   v-b-tooltip.hover
