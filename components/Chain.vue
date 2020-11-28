@@ -118,7 +118,7 @@
               class="mb-3"
             >
               {{ $t("components.chain.current_era") }} #{{
-                formatNumber(lastBlock.current_era)
+                formatNumber(lastBlock.current_era - 1)
               }}
             </h4>
             <b-progress
