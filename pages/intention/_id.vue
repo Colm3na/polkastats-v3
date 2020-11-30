@@ -955,7 +955,6 @@ export default {
             num_stakers: JSON.parse(data.intention[0].stakers).length,
             favorite: this.isFavorite(data.intention[0].account_id)
           };
-          console.log(this.intention);
           this.loading = false;
         }
       },
