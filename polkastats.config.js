@@ -1,6 +1,6 @@
 // Selected network
-const selectedNetwork = `Polkadot`;
-// const selectedNetwork = `Kusama`;
+// const selectedNetwork = `Polkadot`;
+const selectedNetwork = `Kusama`;
 // const selectedNetwork = `Westend`;
 
 // Substrate networks
@@ -17,7 +17,13 @@ export const networks = [
     backendHttp: "http://polkastats.io/api/v3",
     erasPerDay: 1,
     lockUpPeriod: 28,
-    validator: "15psTaipmWG86U5vNkF7Guv9TRPMRLKHkGS8cXT74v3RCC5t",
+    validators: [
+      {
+        name: "🤖 POLKASTATS",
+        path: "intention",
+        address: "15psTaipmWG86U5vNkF7Guv9TRPMRLKHkGS8cXT74v3RCC5t"
+      }
+    ],
     phragmenEnabled: true,
     googleAnalytics: "UA-144344973-1"
   },
@@ -33,7 +39,18 @@ export const networks = [
     backendHttp: "http://kusama.polkastats.io/api/v3",
     erasPerDay: 4,
     lockUpPeriod: 7,
-    validator: "GTzRQPzkcuynHgkEHhsPBFpKdh4sAacVRsnd8vYfPpTMeEY",
+    validators: [
+      {
+        name: "🤖 POLKASTATS/2",
+        path: "intention",
+        address: "EPStAMtjApGg8Ap6xKe9gyuinjmetz1MNhzu1cPmLQkWKUA"
+      },
+      {
+        name: "🤖 POLKASTATS",
+        path: "validator",
+        address: "GTzRQPzkcuynHgkEHhsPBFpKdh4sAacVRsnd8vYfPpTMeEY"
+      }
+    ],
     phragmenEnabled: true,
     googleAnalytics: "UA-172854168-1"
   },
@@ -49,7 +66,7 @@ export const networks = [
     backendHttp: "http://westend.polkastats.io/api/v3",
     erasPerDay: 4,
     lockUpPeriod: 7,
-    validator: undefined,
+    validators: [],
     phragmenEnabled: false,
     googleAnalytics: "UA-175653321-1"
   }

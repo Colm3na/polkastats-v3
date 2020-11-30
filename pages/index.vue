@@ -3,7 +3,7 @@
     <section>
       <b-container class="main py-5 dashboard">
         <b-alert
-          v-if="network.validator"
+          v-if="network.validators.length > 0"
           show
           dismissible
           variant="primary"
@@ -19,29 +19,23 @@
               }}
             </h5>
           </div>
-          <Identicon
-            :value="network.validator"
-            size="30"
-            theme="polkadot"
-            class="my-3"
-          />
-          <nuxt-link
-            :to="
-              `/${network.name === 'Kusama' ? 'validator' : 'account'}/${
-                network.validator
-              }`
-            "
-          >
-            <span
-              v-b-tooltip.hover
-              class="d-inline d-sm-none d-md-none d-lg-none d-xl-none"
-              title="15psTaipmWG86U5vNkF7Guv9TRPMRLKHkGS8cXT74v3RCC5t"
-              >{{ shortAddress(network.validator) }}</span
+          <b-row>
+            <div
+              v-for="validator in network.validators"
+              :key="validator.address"
+              class="col text-center"
             >
-            <span class="d-none d-sm-inline d-md-inline d-lg-inline d-xl-inline"
-              >🤖 POLKASTATS ({{ shortAddress(network.validator) }})</span
-            >
-          </nuxt-link>
+              <Identicon
+                :value="validator.address"
+                size="30"
+                theme="polkadot"
+                class="mt-2 mb-3"
+              />
+              <nuxt-link :to="`/${validator.path}/${validator.address}`">
+                {{ validator.name }} {{ validator.address }}
+              </nuxt-link>
+            </div>
+          </b-row>
         </b-alert>
 
         <Chain />
