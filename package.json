@@ -28,7 +28,7 @@
     "@polkadot/util-crypto": "^4.2.1",
     "@polkadot/vue-identicon": "^0.62.1",
     "@vue/cli-shared-utils": "^4.5.7",
-    "apexcharts": "^3.20.0",
+    "apexcharts": "^3.24.0",
     "apollo-link-ws": "^1.0.19",
     "axios": "^0.19.2",
     "bn.js": "^5.1.3",
