@@ -234,7 +234,7 @@
             href="https://basicattentiontoken.org/"
             target="_blank"
             data-testid="bat"
-            >Basic Atttention Token
+            >Basic Attention Token
             <img src="/img/brave/logo-full-color.png" class="img-fluid bat"
           /></a>
           <span class="mx-2">|</span>
