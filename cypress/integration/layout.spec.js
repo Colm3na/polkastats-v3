@@ -297,7 +297,7 @@ context("Footer", function() {
         .as("bat")
         .should("have.attr", "href", "https://basicattentiontoken.org/")
         .and("have.attr", "target", "_blank")
-        .contains("Basic Atttention Token");
+        .contains("Basic Attention Token");
 
       cy.get("@bat")
         .find("img")
