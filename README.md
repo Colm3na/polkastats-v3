@@ -2,7 +2,7 @@
 
 > Polkadot network statistics
 
-<img src="./static/img/grant_badge.png" width="200" alt="Web3 foundation grants program">
+This repository is ARCHIVED, for latest version go to https://github.com/polkastats/polkastats
 
 ## Build frontend
 
